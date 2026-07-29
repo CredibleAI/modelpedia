@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.claude/
+
+sources_pdfs/
+out/
+site/
+
+CLAUDE.md
+STATUS.md
+SUMMARY.md
+SCHEMA.md
+modelpedia_analiza_platform.md

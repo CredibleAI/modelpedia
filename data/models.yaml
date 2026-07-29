@@ -1,0 +1,65 @@
+model:terramind:
+  name: TerraMind
+  developer:
+    - IBM
+    - ESA
+    - Forschungszentrum Jülich
+  date: "2025-04-15"
+  domain: geospatial
+  anchor: https://arxiv.org/abs/2504.11171
+  artifact: https://github.com/IBM/terramind
+  description: >
+    Any-to-any generative multimodal foundation model for Earth observation, able to translate
+    between optical, SAR and auxiliary geospatial modalities. Pre-trained on TerraMesh with a
+    dual-scale encoder-decoder over both pixel patches and modality tokens.
+  variants:
+    variant:terramind-v1-tiny:
+      name: TerraMind v1 tiny
+    variant:terramind-v1-small:
+      name: TerraMind v1 small
+    variant:terramind-v1-base:
+      name: TerraMind v1 base
+    variant:terramind-v1-large:
+      name: TerraMind v1 large
+
+model:clip:
+  name: CLIP
+  developer:
+    - OpenAI
+  date: "2021-02-26"
+  domain: vision-language
+  anchor: https://arxiv.org/abs/2103.00020
+  artifact: https://github.com/openai/CLIP
+  description: >
+    Dual-encoder model that maps images and text into a shared space and scores their similarity.
+  variants:
+    variant:clip-rn50:
+      name: CLIP RN50
+    variant:clip-rn101:
+      name: CLIP RN101
+    variant:clip-rn50x4:
+      name: CLIP RN50x4
+    variant:clip-vit-b-32:
+      name: CLIP ViT-B/32
+    variant:clip-vit-b-16:
+      name: CLIP ViT-B/16
+    variant:clip-vit-l-14:
+      name: CLIP ViT-L/14
+    variant:clip-vit-l-14-336px:
+      name: CLIP ViT-L/14@336px
+
+model:sybil:
+  name: Sybil
+  developer:
+    - Massachusetts Institute of Technology
+    - Massachusetts General Hospital
+  date: "2023-01-12"
+  domain: medical-imaging
+  anchor: https://doi.org/10.1200/JCO.22.01345
+  artifact: https://github.com/reginabarzilaygroup/Sybil
+  description: >
+    Lung cancer risk prediction model built on a 3D ResNet-18 encoder over low-dose chest CT,
+    trained on NLST, predicting risk up to six years ahead from a single scan.
+  variants:
+    variant:sybil-ensemble:
+      name: Sybil ensemble (5 x 3D ResNet-18)

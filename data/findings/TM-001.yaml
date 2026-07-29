@@ -1,0 +1,29 @@
+id: TM-001
+title: A mean-difference vector between before and after image pairs acts as a transferable concept vector
+description: >
+  Take two satellite pictures of the same place, one before something happens and one after
+  - a wildfire, or winter arriving - and subtract the first embedding from the second. What
+  comes out is a single direction that seems to stand for that event by itself. The surprising
+  part is that this direction looks much the same regardless of the coordinates or the biome
+  the pictures came from, and it still shows up even when the change covers only a small part
+  of the image.
+concepts:
+  - ref: concept:linear-representation
+  - ref: concept:representation-invariance
+key_metric: null
+caveat: null
+models:
+  - ref: model:terramind
+    variant: not-specified-in-source
+sources:
+  - ref: source:terramind-concept-vectors
+datasets:
+  - ref: dataset:copernicus
+    role: source
+methods:
+  - ref: method:mean-difference-concept-vector
+    role: primary
+related_work:
+  - ref: rw:mikolov
+    role: builds-on
+related_findings: []

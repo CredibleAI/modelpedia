@@ -1,0 +1,87 @@
+concept:shortcut:
+  name: Shortcut
+  description: >
+    The model bases its prediction on a feature that correlates with the label in the data it saw
+    but has no causal connection to the thing being predicted. Shortcuts work until the
+    correlation disappears, which is usually at deployment. Claiming one is a claim about what the
+    model uses, not about what the data contains, so it needs evidence that removing the feature
+    changes the prediction.
+
+concept:acquisition-artefact:
+  name: Acquisition artefact
+  description: >
+    A feature introduced by how the measurement was taken rather than by the subject being
+    measured: equipment in the field of view, positioning aids, sensor or preprocessing settings.
+    It differs from an ordinary shortcut in that the same apparatus may reproduce it in every
+    future scan or image, so the spurious signal does not go away with a new sample.
+
+concept:linear-representation:
+  name: Linear representation
+  description: >
+    A property of the input is encoded so that it can be recovered by a linear operation on the
+    model's internal activations: a direction, a plane, or a linear read-out. Recoverability alone
+    does not show the model uses the encoding for anything, which is why findings of this kind
+    split into observational ones and interventional ones.
+
+concept:representation-invariance:
+  name: Representation invariance
+  description: >
+    The same internal encoding of a property is recovered regardless of context that might have
+    been expected to change it, such as location, season or land cover. Evidence that the encoding
+    tracks the property rather than the circumstances it was observed in.
+
+concept:scale-dependent-behaviour:
+  name: Scale-dependent behaviour
+  description: >
+    A property holds in some size variants of a model family and not in others. Findings of this
+    kind are statements about a variant rather than about an architecture, and they are only
+    interpretable when the variant is recorded.
+
+concept:causal-subspace:
+  name: Causal subspace
+  description: >
+    A subspace of the representation whose manipulation changes the model's output in the
+    predicted direction. Unlike a decodable direction, this is evidence of use rather than of
+    presence, because it was established by intervening instead of by observing.
+
+concept:failure-mode:
+  name: Failure mode
+  description: >
+    A reproducible condition under which the model produces a wrong or degraded output. The
+    finding names the condition, not a single bad example, so it has to say what the condition is
+    and over how many cases it was checked.
+
+concept:spatially-clustered-error:
+  name: Spatially clustered error
+  description: >
+    Model errors are not independent across space: neighbouring locations fail in similar ways.
+    Because detecting where the clusters sit means one test per location, findings of this kind
+    are only as strong as their multiple-testing correction.
+
+concept:attribution-artefact:
+  name: Attribution artefact
+  description: >
+    A pattern that dominates an explanation but comes from the analysis method or from the model's
+    internal bookkeeping rather than from what the model uses for the task. Reading it as a model
+    behaviour is the specific error this concept exists to name.
+
+concept:register-tokens:
+  name: Register tokens
+  description: >
+    A transformer reuses a few patch tokens as internal scratch space unrelated to the content of
+    those patches. They surface in attention and attribution maps as fixed positions that light up
+    whatever the input shows.
+
+concept:feature-interaction:
+  name: Feature interaction
+  description: >
+    An explanation assigns importance to combinations of features, not only to single ones.
+    Necessary wherever the output depends on a joint effect, as in the similarity between an image
+    region and a word, which no single-token score can express.
+
+concept:explanation-faithfulness:
+  name: Explanation faithfulness
+  description: >
+    How closely an explanation reproduces the behaviour of the model it explains, measured against
+    the model's own outputs. It is a property of the explanation method and says nothing about
+    whether the model itself is correct.

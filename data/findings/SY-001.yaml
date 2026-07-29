@@ -1,0 +1,37 @@
+id: SY-001
+title: Objects outside the patient, gown snaps and ECG electrodes, drive Sybil's risk predictions
+description: >
+  Instead of only asking which pixels Sybil looks at, the authors edited the CT scans themselves,
+  using a generative model to swap regions out for plausible healthy tissue, and watched what
+  happened to the predicted cancer risk. Two of the regions driving predictions turned out to sit
+  outside the patient altogether: metal snaps on a hospital gown pressed against the scanner
+  table, and ECG electrodes stuck to the chest. In one benign case those electrodes accounted for
+  half the predicted risk.
+concepts:
+  - ref: concept:shortcut
+  - ref: concept:acquisition-artefact
+key_metric: 50% of predicted risk traced to ECG electrodes in one benign case
+caveat: null
+models:
+  - ref: model:sybil
+    variant: not-specified-in-source
+sources:
+  - ref: source:sybil-audit
+datasets:
+  - ref: dataset:luna25
+    role: eval
+  - ref: dataset:ildct
+    role: eval
+  - ref: dataset:nlst
+    role: train
+methods:
+  - ref: method:gshnap
+    role: primary
+  - ref: method:sdb
+    role: primary
+  - ref: method:n-shapley
+    role: primary
+related_work:
+  - ref: rw:melanoma-overview
+    role: context
+related_findings: []

@@ -1,0 +1,36 @@
+id: TM-010
+title: Fixed corner patches dominate Integrated Gradients maps regardless of image content
+description: >
+  When the authors built attribution heatmaps with Integrated Gradients, nearly every map lit up
+  the same top and bottom left corner patches no matter what the image showed. Those corners are
+  most likely the model reusing spare tokens for internal bookkeeping rather than looking at
+  anything meaningful, and they dominate the clustering step so heavily that you cannot draw
+  conclusions from these maps without switching to a better attribution method first.
+concepts:
+  - ref: concept:attribution-artefact
+  - ref: concept:register-tokens
+key_metric: null
+caveat: >
+  The authors give the register-token explanation as a likely interpretation, not as a tested
+  claim.
+models:
+  - ref: model:terramind
+    variant: not-specified-in-source
+sources:
+  - ref: source:terramind-attention-attribution
+datasets:
+  - ref: dataset:eurosat
+    role: eval
+  - ref: dataset:patternnet
+    role: eval
+methods:
+  - ref: method:integrated-gradients
+    role: primary
+  - ref: method:spray
+    role: primary
+related_work:
+  - ref: rw:vit-registers
+    role: context
+  - ref: rw:attnlrp
+    role: context
+related_findings: []

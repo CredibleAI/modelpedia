@@ -1,0 +1,39 @@
+rw:mikolov:
+  name: Linguistic regularities in continuous space word representations
+  anchor: https://aclanthology.org/N13-1090/
+  artifact: null
+
+rw:vit-registers:
+  name: Vision Transformers Need Registers
+  anchor: https://arxiv.org/abs/2309.16588
+  artifact: null
+
+rw:attnlrp:
+  name: AttnLRP
+  anchor: https://arxiv.org/abs/2402.05602
+  artifact: null
+
+rw:linear-representation-hypothesis:
+  name: Linear representation hypothesis
+  anchor: https://arxiv.org/abs/2311.03658
+  artifact: null
+
+rw:game:
+  name: GAME (Generic Attention-model Explainability)
+  anchor: https://arxiv.org/abs/2103.15679
+  artifact: https://github.com/hila-chefer/Transformer-MM-Explainability
+
+rw:grad-eclip:
+  name: Grad-ECLIP
+  anchor: https://arxiv.org/abs/2502.18816
+  artifact: null
+
+rw:exclip:
+  name: exCLIP (second-order attributions for caption-image interactions)
+  anchor: https://openreview.net/forum?id=plkrRJt98c
+  artifact: null
+
+rw:melanoma-overview:
+  name: An overview of melanoma detection in dermoscopy images using image processing and machine learning
+  anchor: https://arxiv.org/abs/1601.07843
+  artifact: null

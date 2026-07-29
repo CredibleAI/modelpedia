@@ -1,0 +1,29 @@
+id: TM-013
+title: Intervening on the altitude plane raises generated terrain by almost 500 metres
+description: >
+  The authors pull a flat 2D plane encoding altitude out of TerraMind's hidden layers, then push
+  on it rather than just observing it. They move every latent vector's projection onto a
+  high-altitude spot on that plane and ask the model to generate a terrain heightmap. The
+  generated terrain rises by almost 500 metres while keeping its overall shape, and a Shapley
+  analysis confirms the plane genuinely matters to how elevation gets generated.
+concepts:
+  - ref: concept:linear-representation
+  - ref: concept:causal-subspace
+key_metric: almost 500 m altitude increase in the generated heightmap
+caveat: null
+models:
+  - ref: model:terramind
+    variant: not-specified-in-source
+sources:
+  - ref: source:terramind-geophysical-geometry
+datasets: []
+datasets_note: not specified in the paper
+methods:
+  - ref: method:latent-plane-intervention
+    role: primary
+  - ref: method:shapley-values
+    role: validation
+related_work:
+  - ref: rw:linear-representation-hypothesis
+    role: builds-on
+related_findings: []

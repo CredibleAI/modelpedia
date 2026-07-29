@@ -1,0 +1,43 @@
+id: FX-001
+title: Pairwise Banzhaf interactions explain CLIP similarity more faithfully than single-score methods
+description: >
+  Most explanation methods for CLIP hand you one importance score per image patch and per word.
+  FIXLIP also scores every pair, so you can see which word interacts with which part of the
+  picture. These pairwise explanations rebuild CLIP's similarity score faithfully and beat the
+  single-score methods GAME and Grad-ECLIP by a wide margin once more than one object is in the
+  picture.
+concepts:
+  - ref: concept:feature-interaction
+  - ref: concept:explanation-faithfulness
+key_metric: >
+  pointing game 0.83 / 0.81 / 0.83 / 0.85 for 1-4 objects (weighted Banzhaf, p = 0.7),
+  versus GAME 0.61 / 0.43 / 0.33 / 0.28
+caveat: >
+  A rival pairwise method, exCLIP, scores higher still on the multi-object cases.
+models:
+  - ref: model:clip
+    variant: not-specified-in-source
+sources:
+  - ref: source:fixlip
+datasets:
+  - ref: dataset:mscoco
+    role: eval
+  - ref: dataset:imagenet1k
+    role: eval
+methods:
+  - ref: method:weighted-banzhaf
+    role: primary
+  - ref: method:faith-shap
+    role: compared-to
+  - ref: method:pointing-game
+    role: eval
+  - ref: method:insertion-deletion-auc
+    role: eval
+related_work:
+  - ref: rw:game
+    role: compared-to
+  - ref: rw:grad-eclip
+    role: compared-to
+  - ref: rw:exclip
+    role: compared-to
+related_findings: []

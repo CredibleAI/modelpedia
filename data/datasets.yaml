@@ -1,0 +1,63 @@
+dataset:copernicus:
+  name: Copernicus Data Space Ecosystem
+  anchor: https://dataspace.copernicus.eu/
+  artifact: null
+  note: >
+    access portal for Sentinel imagery rather than a fixed dataset release; what a study drew
+    from it is defined by the study, not by a version number
+
+dataset:terramesh:
+  name: TerraMesh
+  anchor: https://arxiv.org/abs/2504.11172
+  artifact: https://huggingface.co/datasets/ibm-esa-geospatial/TerraMesh
+  note: null
+
+dataset:eurosat:
+  name: EuroSAT
+  anchor: https://arxiv.org/abs/1709.00029
+  artifact: https://github.com/phelber/EuroSAT
+  note: null
+
+dataset:patternnet:
+  name: PatternNet
+  anchor: https://arxiv.org/abs/1706.03424
+  artifact: https://sites.google.com/view/zhouwx/dataset
+  note: null
+
+dataset:mscoco:
+  name: MS COCO
+  anchor: https://arxiv.org/abs/1405.0312
+  artifact: https://huggingface.co/datasets/clip-benchmark/wds_mscoco_captions
+  note: >
+    the artifact is the webdataset packaging of the captions split used in CLIP benchmarking,
+    not the full COCO release
+
+dataset:imagenet1k:
+  name: ImageNet-1k
+  anchor: https://arxiv.org/abs/1409.0575
+  artifact: https://huggingface.co/datasets/ILSVRC/imagenet-1k
+  note: >
+    ImageNet-1k is the ILSVRC classification subset; the anchor is the challenge paper that
+    defines it
+
+dataset:luna25:
+  name: LUNA25
+  anchor: https://doi.org/10.5281/zenodo.15094631
+  artifact: null
+  note: >
+    curated subset of NLST, 4069 scans from 2120 patients; the Zenodo record is what the source
+    paper cites, and it is both the reference and the release
+
+dataset:nlst:
+  name: NLST (National Lung Screening Trial)
+  anchor: https://www.cancer.gov/types/lung/research/nlst
+  artifact: https://biometry.nci.nih.gov/cdas/learn/nlst/images/
+  note: images are released on request through the NCI Cancer Data Access System
+
+dataset:ildct:
+  name: iLDCT
+  anchor: null
+  artifact: null
+  description: >
+    Internal screening dataset, 243 scans from 145 patients.
+  note: no public release

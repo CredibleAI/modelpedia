@@ -1,0 +1,194 @@
+method:mean-difference-concept-vector:
+  name: Mean-difference concept vector
+  anchor: https://arxiv.org/abs/2308.10248
+  artifact: null
+  description: >
+    Average the embeddings of examples that have a property and subtract the average of examples
+    that do not. The resulting direction is treated as the model's internal representation of that
+    property. Shows that a direction correlates with the property; it does not show the model uses
+    it. The anchor is Turner et al., the activation-steering paper that the TerraMind concept
+    vector report cites for this construction.
+
+method:tcav:
+  name: TCAV (Testing with Concept Activation Vectors)
+  anchor: https://arxiv.org/abs/1711.11279
+  artifact: null
+  description: >
+    Trains a linear classifier separating activations of concept examples from random ones, then
+    measures how far the model's output moves along the resulting normal vector.
+
+method:morans-i:
+  name: Moran's I
+  anchor: https://en.wikipedia.org/wiki/Moran%27s_I
+  artifact: null
+  description: >
+    Global measure of spatial autocorrelation: whether nearby locations hold similar values.
+    Positive means clustering, near zero means randomness. Says nothing about where the clusters
+    are.
+
+method:getis-ord-gi:
+  name: Getis-Ord Gi*
+  anchor: https://en.wikipedia.org/wiki/Getis%E2%80%93Ord_statistics
+  artifact: null
+  description: >
+    Local statistic that flags individual locations whose neighbourhood sums are unusually high or
+    low. Answers where the clusters sit, which Moran's I does not. Produces one test per location,
+    so it needs multiple-testing correction.
+
+method:lisa:
+  name: Local Moran's I (LISA)
+  anchor: https://doi.org/10.1111/j.1538-4632.1995.tb00338.x
+  artifact: null
+  description: >
+    Decomposes global Moran's I into a per-location contribution, separating clusters of similar
+    values from spatial outliers. Introduced by Anselin in 1995.
+
+method:h3:
+  name: H3 hexagonal grid
+  anchor: https://h3geo.org/
+  artifact: null
+  description: >
+    Hierarchical global grid that tiles the Earth into hexagons at several resolutions. Used to
+    aggregate tile data into comparable units and repeat an analysis at different scales.
+
+method:bh-fdr:
+  name: Benjamini-Hochberg FDR correction
+  anchor: https://en.wikipedia.org/wiki/False_discovery_rate
+  artifact: null
+  description: >
+    Adjusts p-values when many hypotheses are tested at once. Without it, testing tens of
+    thousands of tiles produces significant regions by chance alone.
+
+method:probing-classifiers:
+  name: Probing classifiers
+  anchor: https://arxiv.org/abs/1610.01644
+  artifact: null
+  description: >
+    Freeze the model, train a small supervised model on its internal activations to predict a
+    property of the input. The probe's capacity matters: a strong probe can recover information
+    the model itself never uses, so linear and non-linear probes answer different questions. The
+    anchor is Alain and Bengio, who introduced linear probes; Belinkov's 2021 survey
+    (arXiv 2102.12452) is the other reference commonly cited for the same idea.
+
+method:ridge-regression:
+  name: Ridge regression
+  anchor: https://en.wikipedia.org/wiki/Ridge_regression
+  artifact: null
+  description: >
+    Linear regression with an L2 penalty. As a probe it tests whether a target is recoverable by a
+    linear read-out of the representation.
+
+method:mlp:
+  name: Multilayer perceptron
+  anchor: https://en.wikipedia.org/wiki/Multilayer_perceptron
+  artifact: null
+  description: >
+    Feed-forward network with at least one hidden layer. A gap between an MLP probe and a linear
+    probe indicates the information is present but entangled.
+
+method:xgboost:
+  name: XGBoost
+  anchor: https://arxiv.org/abs/1603.02754
+  artifact: null
+  description: >
+    Gradient-boosted decision trees. As a probe it sits between a linear probe and an MLP: it can
+    capture non-linear structure without being a full neural network, so it is used to separate
+    "not linearly readable" from "not readable by anything simple."
+
+method:integrated-gradients:
+  name: Integrated Gradients
+  anchor: https://arxiv.org/abs/1703.01365
+  artifact: null
+  description: >
+    Integrates gradients along a straight path from a baseline input to the real input. Requires
+    choosing a baseline, and the choice changes the result.
+
+method:spray:
+  name: SpRAy (Spectral Relevance Analysis)
+  anchor: https://doi.org/10.1038/s41467-019-08987-4
+  artifact: null
+  description: >
+    Clusters attribution heatmaps across a whole dataset to find recurring explanation patterns
+    rather than inspecting single examples. Inherits every weakness of the attribution method
+    feeding it.
+
+method:shapley-values:
+  name: Shapley values / SHAP
+  anchor: https://arxiv.org/abs/1705.07874
+  artifact: null
+  description: >
+    Distributes a prediction among input features by averaging each feature's marginal
+    contribution over all orderings. Exact computation is exponential, so practical use relies on
+    approximations.
+
+method:weighted-banzhaf:
+  name: Weighted Banzhaf interaction index
+  anchor: https://arxiv.org/abs/1001.3052
+  artifact: null
+  description: >
+    Cooperative-game index that assigns importance to groups of players, not only single ones.
+    Applied to explanations it yields a score per pair of features, with a weight parameter that
+    controls how much sparse or dense masks count. The anchor is Marichal and Mathonet.
+
+method:faith-shap:
+  name: Faith-Shap
+  anchor: https://arxiv.org/abs/2203.00870
+  artifact: null
+  description: >
+    Extends Shapley values to interactions by picking the interaction index that best approximates
+    the model's behaviour under a faithfulness criterion.
+
+method:pointing-game:
+  name: Pointing game
+  anchor: https://arxiv.org/abs/1608.00507
+  artifact: null
+  description: >
+    Evaluation protocol, not an explanation method. Checks whether the highest-scoring region of
+    an explanation falls inside the annotated object. Measures localisation, not faithfulness, and
+    the score is binary per image, so it cannot tell a narrow hit from a diffuse one. Introduced
+    by Zhang et al. alongside Excitation Backprop.
+
+method:insertion-deletion-auc:
+  name: Area between insertion and deletion curves
+  anchor: https://arxiv.org/abs/1806.07421
+  artifact: null
+  description: >
+    Faithfulness measure. Features are added or removed in order of attributed importance and the
+    output is tracked. Sensitive to how removed features are filled in. Introduced with RISE; the
+    behaviour of the area under those curves is analysed further in arXiv 2205.12423.
+
+method:gshnap:
+  name: gSHNAP (generalized SHNAP)
+  anchor: https://arxiv.org/abs/2602.02560v2
+  artifact: null
+  description: >
+    Attribution by generative intervention: an arbitrary region of a scan is replaced with
+    plausible healthy tissue and the change in predicted risk is attributed to the removed region.
+    Generalises SHNAP, which does the same for pulmonary nodules only.
+
+method:sdb:
+  name: System-embedded diffusion bridges
+  anchor: https://openreview.net/forum?id=cipx3rwfWp
+  artifact: null
+  description: >
+    Diffusion model constrained to respect the imaging system, used to generate edited scans that
+    remain physically plausible. Supplies the counterfactual images that gSHNAP attributes over.
+
+method:n-shapley:
+  name: n-Shapley values
+  anchor: https://arxiv.org/abs/2209.04012
+  artifact: null
+  description: >
+    Shapley values truncated at interactions of order n, giving a controlled trade-off between an
+    additive explanation and a full interaction decomposition.
+
+method:latent-plane-intervention:
+  name: Latent plane extraction and intervention
+  anchor: null
+  artifact: null
+  note: introduced in the source report, no separate publication
+  description: >
+    Identify a two-dimensional plane in a hidden layer that encodes a continuous property, then
+    move the projection of every latent vector onto a chosen point of that plane and generate from
+    the edited state. Moving from reading the plane to pushing on it is what turns a correlational
+    claim into an interventional one.

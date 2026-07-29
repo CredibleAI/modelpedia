@@ -1,0 +1,14 @@
+role:
+  datasets:
+    - train
+    - eval
+    - source
+  methods:
+    - primary
+    - compared-to
+    - validation
+    - eval
+  related_work:
+    - builds-on
+    - compared-to
+    - context

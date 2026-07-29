@@ -1,0 +1,92 @@
+source:terramind-concept-vectors:
+  authors:
+    - ref: person:filip-fedor
+    - ref: person:jan-urbanek
+    - ref: person:krzysztof-czerniawski
+  title: Concept vectors in TerraMind latent space
+  venue: Explainable Machine Learning 2025/2026, University of Warsaw
+  date: null
+  anchor: null
+  artifact: https://github.com/JanUrbanek/xai_terramind_project
+  note: course report, no public URL and no date printed on the document
+
+source:terramind-optical-sar-failure:
+  authors:
+    - ref: person:jakub-slowikowski
+    - ref: person:mateusz-boryczka
+  title: Where and Why TerraMind's Optical-to-SAR Generation Fails
+  venue: Explainable Machine Learning 2025/2026, University of Warsaw
+  date: null
+  anchor: null
+  artifact: null
+  note: course report, no public URL and no date printed on the document
+
+source:terramind-spatial-latent:
+  authors:
+    - ref: person:kamil-dybek
+    - ref: person:jakub-harchut
+    - ref: person:oskar-kulinski
+  title: "Where Are We Now? Investigating Spatial Information in TerraMind's Latent Space"
+  venue: Explainable Machine Learning 2025/2026, University of Warsaw
+  date: null
+  anchor: null
+  artifact: https://github.com/oskarkulinski/terramind-exploration
+  note: course report, no public URL and no date printed on the document
+
+source:terramind-attention-attribution:
+  authors:
+    - ref: person:agnieszka-przybysz
+    - ref: person:piotr-dada
+  title: What does the TerraMind model look at and think about?
+  venue: Explainable Machine Learning 2025/2026, University of Warsaw
+  date: "2026-06-19"
+  anchor: null
+  artifact: null
+  note: course report, no public URL; date taken from the title page
+
+source:terramind-geophysical-geometry:
+  authors:
+    - ref: person:s-kiedrzynski
+    - ref: person:m-nowicki
+    - ref: person:m-wolinski
+  title: Geometry of Geophysical Knowledge in TerraMind's Latent Space
+  venue: Explainable Machine Learning 2025/2026, University of Warsaw
+  date: null
+  anchor: null
+  artifact: null
+  note: course report, no public URL and no date printed on the document
+
+source:fixlip:
+  authors:
+    - ref: person:hubert-baniecki
+    - ref: person:maximilian-muschalik
+    - ref: person:fabian-fumagalli
+    - ref: person:barbara-hammer
+    - ref: person:eyke-hullermeier
+    - ref: person:przemyslaw-biecek
+  title: "FIXLIP: Explaining Similarity in Vision-Language Encoders with Weighted Banzhaf Interactions"
+  venue: NeurIPS 2025
+  date: "2025-11-18"
+  anchor: https://arxiv.org/abs/2508.05430v2
+  artifact: https://github.com/hbaniecki/fixlip
+  note: >
+    date and anchor point to v2, the version held in the project and verified against; the
+    camera-ready title page drops the FIXLIP prefix
+
+source:sybil-audit:
+  authors:
+    - ref: person:bartlomiej-sobieski
+    - ref: person:jakub-grzywaczewski
+    - ref: person:karol-dobiczek
+    - ref: person:mateusz-wojcik
+    - ref: person:tomasz-bartczak
+    - ref: person:patryk-szatkowski
+    - ref: person:przemyslaw-bombinski
+    - ref: person:matthew-tivnan
+    - ref: person:przemyslaw-biecek
+  title: "Auditing Sybil: Explaining Deep Lung Cancer Risk Prediction Through Generative Interventional Attributions"
+  venue: ICML 2026
+  date: "2026-05-13"
+  anchor: https://arxiv.org/abs/2602.02560v2
+  artifact: null
+  note: date and anchor point to v2, the version held in the project and verified against

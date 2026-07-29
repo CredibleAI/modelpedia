@@ -1,0 +1,35 @@
+id: TM-007
+title: Coordinates are linearly decodable only in the larger TerraMind variants
+description: >
+  A picture's coordinates can be partly read back out of TerraMind's internal representation by
+  training small probe models on its frozen features. How easily that works with a simple linear
+  probe depends on model size: in the small variants the information is present but tangled, so
+  a non-linear probe is needed to reach it, while the bigger models lay it out more plainly.
+  Ridge regression's average latitude error drops from about 1092 km on the Tiny model to
+  550 km on the Large one.
+concepts:
+  - ref: concept:linear-representation
+  - ref: concept:scale-dependent-behaviour
+key_metric: mean latitude error 1092 km (Tiny) to 550 km (Large), Ridge regression
+caveat: null
+models:
+  - ref: model:terramind
+    variant: variant:terramind-v1-tiny
+  - ref: model:terramind
+    variant: variant:terramind-v1-large
+sources:
+  - ref: source:terramind-spatial-latent
+datasets:
+  - ref: dataset:terramesh
+    role: eval
+methods:
+  - ref: method:probing-classifiers
+    role: primary
+  - ref: method:ridge-regression
+    role: primary
+  - ref: method:xgboost
+    role: primary
+  - ref: method:mlp
+    role: primary
+related_work: []
+related_findings: []

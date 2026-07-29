@@ -1,0 +1,86 @@
+person:filip-fedor:
+  name: Filip Fedor
+
+person:jan-urbanek:
+  name: Jan Urbanek
+
+person:krzysztof-czerniawski:
+  name: Krzysztof Czerniawski
+
+person:jakub-slowikowski:
+  name: Jakub Słowikowski
+
+person:mateusz-boryczka:
+  name: Mateusz Boryczka
+
+person:kamil-dybek:
+  name: Kamil Dybek
+
+person:jakub-harchut:
+  name: Jakub Harchut
+
+person:oskar-kulinski:
+  name: Oskar Kuliński
+
+person:agnieszka-przybysz:
+  name: Agnieszka Przybysz
+
+person:piotr-dada:
+  name: Piotr Dąda
+
+person:s-kiedrzynski:
+  name: S. Kiedrzyński
+  note: the report gives author initials only, so the first name is not recorded
+
+person:m-nowicki:
+  name: M. Nowicki
+  note: the report gives author initials only, so the first name is not recorded
+
+person:m-wolinski:
+  name: M. Woliński
+  note: the report gives author initials only, so the first name is not recorded
+
+person:hubert-baniecki:
+  name: Hubert Baniecki
+
+person:maximilian-muschalik:
+  name: Maximilian Muschalik
+
+person:fabian-fumagalli:
+  name: Fabian Fumagalli
+
+person:barbara-hammer:
+  name: Barbara Hammer
+
+person:eyke-hullermeier:
+  name: Eyke Hüllermeier
+
+person:przemyslaw-biecek:
+  name: Przemyslaw Biecek
+  note: >
+    both papers print the name without the diacritic; the project documentation spells it
+    Przemysław Biecek
+
+person:bartlomiej-sobieski:
+  name: Bartlomiej Sobieski
+
+person:jakub-grzywaczewski:
+  name: Jakub Grzywaczewski
+
+person:karol-dobiczek:
+  name: Karol Dobiczek
+
+person:mateusz-wojcik:
+  name: Mateusz Wójcik
+
+person:tomasz-bartczak:
+  name: Tomasz Bartczak
+
+person:patryk-szatkowski:
+  name: Patryk Szatkowski
+
+person:przemyslaw-bombinski:
+  name: Przemysław Bombiński
+
+person:matthew-tivnan:
+  name: Matthew Tivnan
