@@ -159,7 +159,8 @@ def link_items(nodes, data, field):
 
 def render_finding(nodes, node):
     data = node["data"]
-    pairs = [("Key metric", escape(data["key_metric"].strip()) if data.get("key_metric") else ""),
+    pairs = [("Evidence", escape(data["evidence_type"]) if data.get("evidence_type") else ""),
+             ("Key metric", escape(data["key_metric"].strip()) if data.get("key_metric") else ""),
              ("Caveat", escape(data["caveat"].strip()) if data.get("caveat") else "")]
     pairs += [(term, ", ".join(link_items(nodes, data, field))) for field, term in LINK_ROWS]
     authors = finding_authors(nodes, data)

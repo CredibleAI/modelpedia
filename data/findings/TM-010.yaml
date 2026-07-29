@@ -6,6 +6,7 @@ description: >
   most likely the model reusing spare tokens for internal bookkeeping rather than looking at
   anything meaningful, and they dominate the clustering step so heavily that you cannot draw
   conclusions from these maps without switching to a better attribution method first.
+evidence_type: observational
 concepts:
   - ref: concept:attribution-artefact
   - ref: concept:register-tokens

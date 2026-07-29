@@ -7,6 +7,7 @@ description: >
   fact that they were testing thousands of places at once, only five genuinely bad regions
   survived, most of them deserts. The check covered all 89,088 tiles in the TerraMesh
   validation split.
+evidence_type: correlational
 concepts:
   - ref: concept:failure-mode
   - ref: concept:spatially-clustered-error

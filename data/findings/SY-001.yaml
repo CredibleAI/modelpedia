@@ -7,6 +7,7 @@ description: >
   outside the patient altogether: metal snaps on a hospital gown pressed against the scanner
   table, and ECG electrodes stuck to the chest. In one benign case those electrodes accounted for
   half the predicted risk.
+evidence_type: interventional
 concepts:
   - ref: concept:shortcut
   - ref: concept:acquisition-artefact

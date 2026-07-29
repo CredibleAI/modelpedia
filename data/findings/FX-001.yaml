@@ -6,6 +6,7 @@ description: >
   picture. These pairwise explanations rebuild CLIP's similarity score faithfully and beat the
   single-score methods GAME and Grad-ECLIP by a wide margin once more than one object is in the
   picture.
+evidence_type: correlational
 concepts:
   - ref: concept:feature-interaction
   - ref: concept:explanation-faithfulness

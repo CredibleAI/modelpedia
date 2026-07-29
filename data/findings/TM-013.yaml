@@ -6,6 +6,7 @@ description: >
   high-altitude spot on that plane and ask the model to generate a terrain heightmap. The
   generated terrain rises by almost 500 metres while keeping its overall shape, and a Shapley
   analysis confirms the plane genuinely matters to how elevation gets generated.
+evidence_type: interventional
 concepts:
   - ref: concept:linear-representation
   - ref: concept:causal-subspace

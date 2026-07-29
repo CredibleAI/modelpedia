@@ -31,6 +31,8 @@ EXTERNAL_REGISTRIES = tuple(prefix for prefix in REGISTRY_FILES
 
 AUTHORS = "authors"
 
+EVIDENCE_TYPE = "evidence_type"
+
 ANY_REGISTRY = None
 
 
@@ -143,8 +145,15 @@ def check_finding(fid, finding, database):
         if not finding.get(field):
             yield "%s: missing %s" % (fid, field)
 
+    evidence = finding.get(EVIDENCE_TYPE)
+    if evidence and evidence not in database.vocabularies[EVIDENCE_TYPE]:
+        yield "%s: unknown evidence_type %s" % (fid, evidence)
+
     for field, spec in LINK_FIELDS.items():
         for link in finding.get(field) or []:
+            if not isinstance(link, dict) or "ref" not in link:
+                yield "%s: %s has an entry that is not a reference" % (fid, field)
+                continue
             ref = link["ref"]
             error = reference_error(field, spec, ref, database.entities)
             if error:
