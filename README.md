@@ -24,11 +24,17 @@ python3 build.py
 python3 render.py
 ```
 
+```bash
+python3 export.py
+```
+
 `build.py` validates `data/`, writes `out/graph.json` and prints a report of concept usage, shared
 nodes, missing anchors and unused registry entries. It exits non-zero and writes nothing if
 validation fails, so run it before every commit.
 
-`render.py` writes `site/modelpedia.html` from `out/graph.json`.
+`render.py` writes `site/modelpedia.html` and `export.py` writes one CSV per node type plus
+`edges.csv` into `out/csv/`. Both read `out/graph.json` and neither reads the YAML, so the build
+artifact is the only contract between the data and its consumers.
 
 ## Layout
 
@@ -37,7 +43,7 @@ data/*.yaml    source of truth
 graph.py       the shape of out/graph.json and how to query it
 build.py       YAML -> validate -> out/graph.json, plus the console report
 render.py      out/graph.json -> site/modelpedia.html
-SCHEMA.md      what each field means and why
+export.py      out/graph.json -> out/csv/*.csv
 ```
 
 `out/` and `site/` are build artifacts and are not tracked. Delete them and rebuild at any time.
