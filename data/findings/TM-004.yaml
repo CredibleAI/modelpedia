@@ -1,0 +1,31 @@
+id: TM-004
+review_status: draft
+extracted_by: automatic-extraction
+title: Land cover, not the acquisition time gap, correlates with optical-to-SAR reconstruction error
+description: >
+  What actually predicts a bad reconstruction is what is on the ground: snow, water, clouds and
+  flooded vegetation drive most of the correlation with error size. What barely matters is the
+  time gap between when the radar and the optical image were captured, which you might reasonably
+  have expected to be the main culprit.
+evidence_type: correlational
+concepts:
+  - ref: concept:failure-mode
+key_metric: null
+caveat: null
+models:
+  - ref: model:terramind
+    variant: variant:terramind-v1-base
+sources:
+  - ref: source:terramind-optical-sar-failure
+datasets:
+  - ref: dataset:terramesh
+    role: eval
+methods:
+  - ref: method:spearman-correlation
+    role: primary
+  - ref: method:bh-fdr
+    role: validation
+related_work: []
+related_findings:
+  - TM-003
+  - TM-005

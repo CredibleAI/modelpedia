@@ -1,4 +1,6 @@
 id: TM-001
+review_status: verified
+extracted_by: manual
 title: A mean-difference vector between before and after image pairs acts as a transferable concept vector
 description: >
   Take two satellite pictures of the same place, one before something happens and one after
@@ -7,15 +9,19 @@ description: >
   part is that this direction looks much the same regardless of the coordinates or the biome
   the pictures came from, and it still shows up even when the change covers only a small part
   of the image.
-evidence_type: observational
+evidence_type: correlational
 concepts:
   - ref: concept:linear-representation
   - ref: concept:representation-invariance
-key_metric: null
-caveat: null
+key_metric: >
+  mean cosine similarity to the empirical shift 0.799 (winter) and 0.713 (mostly burned),
+  against 0.122 and 0.078 for vectors built from negative-example pairs
+caveat: >
+  The authors name the absence of any evaluation other than the empirical shift as the main
+  limitation of the work.
 models:
   - ref: model:terramind
-    variant: not-specified-in-source
+    variant: variant:terramind-v1-base
 sources:
   - ref: source:terramind-concept-vectors
 datasets:
@@ -27,4 +33,5 @@ methods:
 related_work:
   - ref: rw:mikolov
     role: builds-on
-related_findings: []
+related_findings:
+  - TM-002

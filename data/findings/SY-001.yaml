@@ -1,4 +1,6 @@
 id: SY-001
+review_status: verified
+extracted_by: manual
 title: Objects outside the patient, gown snaps and ECG electrodes, drive Sybil's risk predictions
 description: >
   Instead of only asking which pixels Sybil looks at, the authors edited the CT scans themselves,
@@ -35,4 +37,5 @@ methods:
 related_work:
   - ref: rw:melanoma-overview
     role: context
-related_findings: []
+related_findings:
+  - SY-003

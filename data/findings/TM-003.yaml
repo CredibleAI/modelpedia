@@ -1,21 +1,30 @@
 id: TM-003
+review_status: verified
+extracted_by: manual
 title: Optical-to-SAR generation errors cluster spatially, but only five regions survive FDR control
 description: >
   TerraMind can turn optical satellite images into radar images, and it makes mistakes doing so.
   Those mistakes are not scattered at random across the globe: nearby tiles tend to fail in
   similar ways, at every map resolution the authors checked. But once they corrected for the
   fact that they were testing thousands of places at once, only five genuinely bad regions
-  survived, most of them deserts. The check covered all 89,088 tiles in the TerraMesh
-  validation split.
+  survived, four of them in the Sahara and Arabia. Those five appear at one resolution only:
+  at the three other grid sizes tested, nothing survived the correction at all.
 evidence_type: correlational
 concepts:
   - ref: concept:failure-mode
   - ref: concept:spatially-clustered-error
-key_metric: 5 hotspot regions surviving FDR control, over 89,088 tiles
-caveat: null
+key_metric: >
+  global Moran's I 0.14 to 0.62, all p <= 1e-3, at four H3 resolutions; 5 FDR-surviving
+  hotspot regions at resolution 2 and none at resolutions 1, 3 and 4; 80,384 of the 89,088
+  validation tiles retained after quality control
+caveat: >
+  The authors report that the reliability filter discards about 44 percent of cells as
+  islands at the finest resolution, so Moran's I there describes the densely sampled part of
+  the split rather than the globe, and that with 9,999 permutations the smallest reportable
+  p-value is 1e-4, so extreme z-scores should be read directionally.
 models:
   - ref: model:terramind
-    variant: not-specified-in-source
+    variant: variant:terramind-v1-base
 sources:
   - ref: source:terramind-optical-sar-failure
 datasets:
@@ -32,4 +41,6 @@ methods:
   - ref: method:bh-fdr
     role: validation
 related_work: []
-related_findings: []
+related_findings:
+  - TM-004
+  - TM-005

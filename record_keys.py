@@ -1,0 +1,5 @@
+REF = "ref"
+ROLE = "role"
+VARIANT = "variant"
+ANCHOR = "anchor"
+ARTIFACT = "artifact"

@@ -1,4 +1,6 @@
 id: TM-010
+review_status: verified
+extracted_by: manual
 title: Fixed corner patches dominate Integrated Gradients maps regardless of image content
 description: >
   When the authors built attribution heatmaps with Integrated Gradients, nearly every map lit up
@@ -16,7 +18,7 @@ caveat: >
   claim.
 models:
   - ref: model:terramind
-    variant: not-specified-in-source
+    variant: variant:terramind-v1-tiny
 sources:
   - ref: source:terramind-attention-attribution
 datasets:

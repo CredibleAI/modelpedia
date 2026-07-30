@@ -1,0 +1,41 @@
+id: SY-003
+review_status: draft
+extracted_by: automatic-extraction
+title: Sybil combines nodule contributions almost additively, and in some correct cases ignores them entirely
+description: >
+  Removing nodules one at a time and in combinations shows that Sybil adds their contributions up
+  almost like a simple linear formula with a few pairwise terms, which is a far simpler mechanism
+  than you would expect from a deep network. The same decomposition also exposes failures: in one
+  correct high-risk prediction the nodules contributed nothing at all and the background did the
+  entire job, and in follow-up scans of the same patient the model's focus jumps from one nodule
+  to another from year to year.
+evidence_type: interventional
+concepts:
+  - ref: concept:feature-interaction
+  - ref: concept:failure-mode
+key_metric: >
+  main effects alone reproduce the model's outputs at local fidelity R2 near 1 for the
+  majority of cases, and adding pairwise interactions removes almost all of the outlier tail
+caveat: null
+models:
+  - ref: model:sybil
+    variant: not-specified-in-source
+sources:
+  - ref: source:sybil-audit
+datasets:
+  - ref: dataset:luna25
+    role: eval
+  - ref: dataset:ildct
+    role: eval
+methods:
+  - ref: method:shnap
+    role: primary
+  - ref: method:sdb
+    role: primary
+  - ref: method:n-shapley
+    role: primary
+  - ref: method:local-fidelity-r2
+    role: eval
+related_findings:
+  - SY-001
+related_work: []

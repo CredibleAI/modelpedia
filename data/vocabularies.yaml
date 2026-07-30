@@ -1,7 +1,32 @@
-evidence_type:
-  - observational
-  - correlational
-  - interventional
+finding:
+  evidence_type:
+    - observational
+    - correlational
+    - interventional
+  review_status:
+    - draft
+    - verified
+  extracted_by:
+    - manual
+    - automatic-extraction
+
+model:
+  modality:
+    - text
+    - image
+    - video
+    - audio
+    - tabular
+    - graph
+    - time-series
+  domain:
+    - geospatial
+    - medical
+    - biological
+  task:
+    - generative
+    - discriminative
+    - reinforcement-learning
 
 role:
   datasets:
@@ -13,6 +38,8 @@ role:
     - compared-to
     - validation
     - eval
+    - labels
+    - supporting
   related_work:
     - builds-on
     - compared-to

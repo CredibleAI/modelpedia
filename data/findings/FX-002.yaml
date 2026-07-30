@@ -1,0 +1,51 @@
+id: FX-002
+review_status: draft
+extracted_by: automatic-extraction
+title: SigLIP-2 is more faithfully explainable through cross-modal interactions than CLIP
+description: >
+  Because FIXLIP only needs a model's inputs and outputs, you can point it at different
+  vision-language encoders and compare them on equal footing. Doing that, SigLIP-2 comes out
+  more faithfully explainable through cross-modal interactions than CLIP at both sizes where
+  the two were compared, and the ViT-B/32 models are more faithfully explainable than the
+  ViT-L/16 ones.
+evidence_type: correlational
+concepts:
+  - ref: concept:explanation-faithfulness
+  - ref: concept:scale-dependent-behaviour
+key_metric: >
+  pointing game recognition for 1 to 4 objects, ViT-B/32: SigLIP-2 0.90 / 0.90 / 0.89 / 0.89
+  against CLIP 0.83 / 0.81 / 0.82 / 0.85; ViT-B/16: SigLIP-2 0.86 / 0.88 / 0.87 / 0.87
+  against CLIP 0.81 / 0.81 / 0.81 / 0.82
+caveat: >
+  The authors call the SigLIP-2 result surprising and do not offer a mechanism for it. CLIP
+  was not run at ViT-L/16, so the size comparison rests on SigLIP and SigLIP-2 alone.
+models:
+  - ref: model:clip
+    variant: variant:clip-vit-b-32
+  - ref: model:clip
+    variant: variant:clip-vit-b-16
+  - ref: model:siglip
+    variant: variant:siglip-vit-b-16
+  - ref: model:siglip
+    variant: variant:siglip-vit-l-16
+  - ref: model:siglip-2
+    variant: variant:siglip2-vit-b-32
+  - ref: model:siglip-2
+    variant: variant:siglip2-vit-b-16
+  - ref: model:siglip-2
+    variant: variant:siglip2-vit-l-16
+sources:
+  - ref: source:fixlip
+datasets:
+  - ref: dataset:imagenet1k
+    role: eval
+  - ref: dataset:mscoco
+    role: eval
+methods:
+  - ref: method:weighted-banzhaf
+    role: primary
+  - ref: method:pointing-game
+    role: eval
+related_work: []
+related_findings:
+  - FX-001

@@ -1,30 +1,45 @@
 import csv
+import os
 from pathlib import Path
 
 import graph as graph_json
+from graph_io import load_graph
+import record_keys as keys
 
 ROOT = Path(__file__).parent
 GRAPH = ROOT / "out" / "graph.json"
 EXPORT = ROOT / "out" / "csv"
 
 TABLE_FILES = {
-    "finding": "findings.csv",
-    "model": "models.csv",
-    "variant": "variants.csv",
-    "concept": "concepts.csv",
-    "method": "methods.csv",
-    "dataset": "datasets.csv",
-    "source": "sources.csv",
-    "rw": "related_work.csv",
-    "person": "people.csv",
+    graph_json.FINDING: "findings.csv",
+    graph_json.MODEL: "models.csv",
+    graph_json.VARIANT: "variants.csv",
+    graph_json.CONCEPT: "concepts.csv",
+    graph_json.METHOD: "methods.csv",
+    graph_json.DATASET: "datasets.csv",
+    graph_json.SOURCE: "sources.csv",
+    graph_json.RELATED_WORK: "related_work.csv",
+    graph_json.PERSON: "people.csv",
 }
 
 EDGE_FILE = "edges.csv"
 
 EDGE_COLUMNS = ["source", "target", "type", "role"]
 
-COLUMN_ORDER = ["id", "label", "name", "title", "evidence_type", "key_metric", "caveat",
-                "developer", "authors", "venue", "date", "domain", "parent", "variants",
+REQUIRED_NONEMPTY_TYPES = (
+    graph_json.FINDING,
+    graph_json.MODEL,
+    graph_json.CONCEPT,
+    graph_json.METHOD,
+    graph_json.DATASET,
+    graph_json.SOURCE,
+    graph_json.RELATED_WORK,
+    graph_json.PERSON,
+)
+
+COLUMN_ORDER = ["id", "label", "name", "title", "review_status", "extracted_by",
+                "evidence_type", "key_metric", "caveat", "developer", "authors", "venue",
+                "date", "modality", "domain", "task", "parent", "variants",
                 "models", "concepts", "sources", "datasets", "methods", "related_work",
                 "related_findings", "anchor", "artifact", "description", "note"]
 
@@ -34,10 +49,10 @@ DERIVED_COLUMNS = ("type",)
 def link_text(item):
     if not isinstance(item, dict):
         return " ".join(str(item).split())
-    text = item.get("ref", "")
-    if item.get("role"):
-        text += "[%s]" % item["role"]
-    variant = item.get("variant")
+    text = item.get(keys.REF, "")
+    if item.get(keys.ROLE):
+        text += "[%s]" % item[keys.ROLE]
+    variant = item.get(keys.VARIANT)
     if variant and variant != graph_json.VARIANT_NOT_SPECIFIED:
         text += "(%s)" % variant
     return text
@@ -56,8 +71,10 @@ def cell(value):
 def columns_for(nodes):
     present = {key for node in nodes for key in node["data"]} - set(DERIVED_COLUMNS)
     present.add("id")
-    ordered = [column for column in COLUMN_ORDER if column in present]
-    return ordered + sorted(present - set(ordered))
+    unplaced = sorted(present - set(COLUMN_ORDER))
+    if unplaced:
+        raise KeyError("columns missing from COLUMN_ORDER in export.py: %s" % ", ".join(unplaced))
+    return [column for column in COLUMN_ORDER if column in present]
 
 
 def row_for(node, columns):
@@ -91,8 +108,17 @@ def nodes_by_type(graph):
     return grouped
 
 
+def missing_required_types(grouped):
+    return sorted(node_type for node_type in REQUIRED_NONEMPTY_TYPES if not grouped.get(node_type))
+
+
+def strict_required_types():
+    value = os.environ.get("MODELPEDIA_EXPORT_STRICT_REQUIRED_TYPES", "1").strip().lower()
+    return value not in ("0", "false", "no", "off")
+
+
 def main():
-    graph = graph_json.load(GRAPH)
+    graph = load_graph(GRAPH)
     grouped = nodes_by_type(graph)
     EXPORT.mkdir(parents=True, exist_ok=True)
 
@@ -101,6 +127,15 @@ def main():
         for node_type in unknown:
             print("ERROR node type %s has no table in TABLE_FILES" % node_type)
         return 1
+
+    missing = missing_required_types(grouped)
+    if missing:
+        if strict_required_types():
+            for node_type in missing:
+                print("ERROR node type %s has no rows in graph.json" % node_type)
+            return 1
+        for node_type in missing:
+            print("WARN node type %s has no rows in graph.json" % node_type)
 
     for node_type, filename in TABLE_FILES.items():
         nodes = grouped.get(node_type) or []

@@ -1,4 +1,6 @@
 id: TM-013
+review_status: verified
+extracted_by: manual
 title: Intervening on the altitude plane raises generated terrain by almost 500 metres
 description: >
   The authors pull a flat 2D plane encoding altitude out of TerraMind's hidden layers, then push
@@ -18,13 +20,13 @@ models:
 sources:
   - ref: source:terramind-geophysical-geometry
 datasets: []
-datasets_note: not specified in the paper
 methods:
-  - ref: method:latent-plane-intervention
+  - ref: method:geoex
     role: primary
   - ref: method:shapley-values
     role: validation
 related_work:
   - ref: rw:linear-representation-hypothesis
     role: builds-on
-related_findings: []
+related_findings:
+  - TM-011

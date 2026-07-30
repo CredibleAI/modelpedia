@@ -85,3 +85,47 @@ concept:explanation-faithfulness:
     How closely an explanation reproduces the behaviour of the model it explains, measured against
     the model's own outputs. It is a property of the explanation method and says nothing about
     whether the model itself is correct.
+
+concept:evaluation-artefact:
+  name: Evaluation artefact
+  description: >
+    A comparison comes out the way it does because of the protocol used to score it rather than
+    because of the thing being scored. The distinguishing test is whether the metric shares an
+    assumption with one of the methods it ranks, which gives that method an advantage by
+    construction rather than by merit.
+
+concept:geographic-confound:
+  name: Geographic confound
+  description: >
+    A representation that appears to encode a property of the world turns out to track position
+    instead, because the property and the position are correlated in the data. Establishing the
+    confound needs a comparison against a baseline built from coordinates alone.
+
+concept:depth-dependent-structure:
+  name: Depth-dependent structure
+  description: >
+    A property is organised progressively across the layers of a network rather than being present
+    throughout: the structure is weak or absent early and sharper deeper in. Findings of this kind
+    are claims about where in the model to look, and they require measuring at several depths.
+
+concept:circular-representation:
+  name: Circular representation
+  description: >
+    A quantity that wraps around, such as longitude or time of year, is encoded in a closed loop
+    rather than along a straight direction. It is the clearest counterexample to reading every
+    encoded property as a linear direction, and it cannot be recovered by a linear read-out.
+
+concept:distance-preservation:
+  name: Distance preservation
+  description: >
+    Distances between points in the representation track distances in the world the inputs came
+    from, so that traversing the representation costs what traversing reality costs. Stronger than
+    recovering a coordinate, because it is a claim about the whole geometry rather than about one
+    readable direction.
+
+concept:positional-bias:
+  name: Positional bias
+  description: >
+    The model's response to the same evidence depends on where in the input that evidence sits.
+    Distinct from an attribution artefact: the bias is in the model's own output, not in the map
+    drawn to explain it, so it needs the evidence to be moved and the output remeasured.

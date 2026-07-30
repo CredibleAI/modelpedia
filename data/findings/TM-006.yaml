@@ -1,19 +1,16 @@
-id: TM-007
-review_status: verified
-extracted_by: manual
-title: Coordinates are linearly decodable only in the larger TerraMind variants
+id: TM-006
+review_status: draft
+extracted_by: automatic-extraction
+title: Coordinates are recoverable from TerraMind's frozen features, latitude more accurately than longitude
 description: >
   A picture's coordinates can be partly read back out of TerraMind's internal representation by
-  training small probe models on its frozen features. How easily that works with a simple linear
-  probe depends on model size: in the small variants the information is present but tangled, so
-  a non-linear probe is needed to reach it, while the bigger models lay it out more plainly.
-  Ridge regression's average latitude error drops from about 1092 km on the Tiny model to
-  550 km on the Large one.
+  training small probe models on top of its frozen features. Across all 24 probe setups the
+  authors tried, latitude came out more accurately than longitude every single time: north-south
+  position is easier for the model to pin down than east-west.
 evidence_type: correlational
 concepts:
   - ref: concept:linear-representation
-  - ref: concept:scale-dependent-behaviour
-key_metric: mean latitude error 1092 km (Tiny) to 550 km (Large), Ridge regression
+key_metric: latitude beats longitude in all 24 probe configurations
 caveat: null
 models:
   - ref: model:terramind
@@ -40,6 +37,8 @@ methods:
     role: primary
   - ref: method:control-task
     role: validation
-related_work: []
+related_work:
+  - ref: rw:olmoearth
+    role: context
 related_findings:
-  - TM-006
+  - TM-007

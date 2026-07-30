@@ -1,4 +1,6 @@
 id: FX-001
+review_status: verified
+extracted_by: manual
 title: Pairwise Banzhaf interactions explain CLIP similarity more faithfully than single-score methods
 description: >
   Most explanation methods for CLIP hand you one importance score per image patch and per word.
@@ -17,7 +19,7 @@ caveat: >
   A rival pairwise method, exCLIP, scores higher still on the multi-object cases.
 models:
   - ref: model:clip
-    variant: not-specified-in-source
+    variant: variant:clip-vit-b-32
 sources:
   - ref: source:fixlip
 datasets:
@@ -41,4 +43,6 @@ related_work:
     role: compared-to
   - ref: rw:exclip
     role: compared-to
-related_findings: []
+related_findings:
+  - FX-002
+  - FX-003

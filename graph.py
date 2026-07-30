@@ -4,9 +4,39 @@ from typing import NamedTuple
 FORMAT_VERSION = 2
 
 FINDING = "finding"
+MODEL = "model"
 VARIANT = "variant"
+CONCEPT = "concept"
+METHOD = "method"
+DATASET = "dataset"
+SOURCE = "source"
+RELATED_WORK = "rw"
+PERSON = "person"
 
+NODE_TYPES = (FINDING, MODEL, VARIANT, CONCEPT, METHOD, DATASET, SOURCE, RELATED_WORK, PERSON)
+
+REGISTRY_TYPES = (MODEL, SOURCE, DATASET, METHOD, RELATED_WORK, CONCEPT, PERSON)
+
+TYPES_WITHOUT_ANCHORS = (CONCEPT, PERSON)
+
+URL_SEGMENTS = {
+    FINDING: "findings",
+    MODEL: "models",
+    CONCEPT: "concepts",
+    METHOD: "methods",
+    DATASET: "datasets",
+    SOURCE: "sources",
+    RELATED_WORK: "related-work",
+    PERSON: "people",
+}
+
+EDGE_ABOUT_MODEL = "about_model"
 EDGE_ABOUT_VARIANT = "about_variant"
+EDGE_TAGGED_CONCEPT = "tagged_concept"
+EDGE_REPORTED_IN = "reported_in"
+EDGE_USES_DATASET = "uses_dataset"
+EDGE_USES_METHOD = "uses_method"
+EDGE_CITES = "cites"
 EDGE_VARIANT_OF = "variant_of"
 EDGE_RELATES_TO_FINDING = "relates_to_finding"
 EDGE_AUTHORED_BY = "authored_by"
@@ -29,6 +59,10 @@ def dump(graph, path):
 
 def nodes_by_id(graph):
     return {node["id"]: node for node in graph["nodes"]}
+
+
+def nodes_of_type(nodes, node_type):
+    return [node for node in nodes.values() if node["type"] == node_type]
 
 
 def usage_by_entity(graph):
@@ -66,3 +100,26 @@ def findings_reaching(graph):
 
 def shared_entities(reached):
     return [key for key, findings in reached.items() if len(findings) > 1]
+
+
+def targets_by_finding(graph, edge_type):
+    targets = {}
+    for edge in graph["edges"]:
+        if edge["type"] == edge_type:
+            targets.setdefault(edge["source"], set()).add(edge["target"])
+    return targets
+
+
+def models_by_concept(graph):
+    models = targets_by_finding(graph, EDGE_ABOUT_MODEL)
+    reached = {}
+    for finding, concepts in targets_by_finding(graph, EDGE_TAGGED_CONCEPT).items():
+        for concept in concepts:
+            reached.setdefault(concept, set()).update(models.get(finding, ()))
+    return reached
+
+
+def concept_bridges(graph, model_id):
+    return sorted((concept, sorted(models - {model_id}))
+                  for concept, models in models_by_concept(graph).items()
+                  if model_id in models and len(models) > 1)

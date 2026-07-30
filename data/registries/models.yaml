@@ -5,13 +5,21 @@ model:terramind:
     - ESA
     - Forschungszentrum Jülich
   date: "2025-04-15"
-  domain: geospatial
+  modality:
+    - image
+  domain:
+    - geospatial
+  task:
+    - generative
   anchor: https://arxiv.org/abs/2504.11171
   artifact: https://github.com/IBM/terramind
   description: >
     Any-to-any generative multimodal foundation model for Earth observation, able to translate
     between optical, SAR and auxiliary geospatial modalities. Pre-trained on TerraMesh with a
     dual-scale encoder-decoder over both pixel patches and modality tokens.
+  note: >
+    the model is multimodal in the Earth-observation sense of several sensor modalities, all of
+    which are raster, so it carries a single modality value on this axis
   variants:
     variant:terramind-v1-tiny:
       name: TerraMind v1 tiny
@@ -27,7 +35,12 @@ model:clip:
   developer:
     - OpenAI
   date: "2021-02-26"
-  domain: vision-language
+  modality:
+    - image
+    - text
+  domain: null
+  task:
+    - discriminative
   anchor: https://arxiv.org/abs/2103.00020
   artifact: https://github.com/openai/CLIP
   description: >
@@ -48,13 +61,65 @@ model:clip:
     variant:clip-vit-l-14-336px:
       name: CLIP ViT-L/14@336px
 
+model:siglip:
+  name: SigLIP
+  developer:
+    - Google DeepMind
+  date: "2023-03"
+  modality:
+    - image
+    - text
+  domain: null
+  task:
+    - discriminative
+  anchor: https://arxiv.org/abs/2303.15343
+  artifact: null
+  description: >
+    Vision-language dual encoder trained with a pairwise sigmoid loss instead of the softmax
+    contrastive loss used by CLIP, which removes the need for a global normalisation over the
+    batch.
+  variants:
+    variant:siglip-vit-b-16:
+      name: SigLIP ViT-B/16
+    variant:siglip-vit-l-16:
+      name: SigLIP ViT-L/16
+
+model:siglip-2:
+  name: SigLIP-2
+  developer:
+    - Google DeepMind
+  date: "2025-02"
+  modality:
+    - image
+    - text
+  domain: null
+  task:
+    - discriminative
+  anchor: https://arxiv.org/abs/2502.14786
+  artifact: null
+  description: >
+    Successor to SigLIP, adding captioning-based pretraining and self-distillation objectives to
+    the sigmoid loss.
+  variants:
+    variant:siglip2-vit-b-32:
+      name: SigLIP-2 ViT-B/32
+    variant:siglip2-vit-b-16:
+      name: SigLIP-2 ViT-B/16
+    variant:siglip2-vit-l-16:
+      name: SigLIP-2 ViT-L/16
+
 model:sybil:
   name: Sybil
   developer:
     - Massachusetts Institute of Technology
     - Massachusetts General Hospital
   date: "2023-01-12"
-  domain: medical-imaging
+  modality:
+    - image
+  domain:
+    - medical
+  task:
+    - discriminative
   anchor: https://doi.org/10.1200/JCO.22.01345
   artifact: https://github.com/reginabarzilaygroup/Sybil
   description: >

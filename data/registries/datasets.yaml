@@ -61,3 +61,11 @@ dataset:ildct:
   description: >
     Internal screening dataset, 243 scans from 145 patients.
   note: no public release
+
+dataset:major-tom-core-s2l2a:
+  name: Major TOM Core-S2L2A
+  anchor: https://arxiv.org/abs/2402.12095
+  artifact: https://huggingface.co/datasets/Major-TOM/Core-S2L2A
+  note: >
+    Sentinel-2 Level-2A subset of the Major TOM Core global patch collection; the anchor is the
+    Major TOM paper that defines the collection

@@ -1,0 +1,32 @@
+id: TM-005
+review_status: draft
+extracted_by: automatic-extraction
+title: Flooded vegetation gives the lowest reconstruction error of any land-cover class, not the highest
+description: >
+  The single strongest correlate is flooded vegetation, and it runs the opposite way to what you
+  might guess. Tiles dominated by flooded vegetation come out with the lowest reconstruction
+  errors of any land-cover class, not the highest.
+evidence_type: correlational
+concepts:
+  - ref: concept:failure-mode
+key_metric: Spearman rho = -0.32 for flooded vegetation
+caveat: >
+  The authors offer the bimodal optical and SAR signature of inundated wetlands as a
+  plausible explanation, not a tested one.
+models:
+  - ref: model:terramind
+    variant: variant:terramind-v1-base
+sources:
+  - ref: source:terramind-optical-sar-failure
+datasets:
+  - ref: dataset:terramesh
+    role: eval
+methods:
+  - ref: method:spearman-correlation
+    role: primary
+  - ref: method:bh-fdr
+    role: validation
+related_work: []
+related_findings:
+  - TM-003
+  - TM-004

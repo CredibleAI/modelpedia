@@ -1,0 +1,44 @@
+id: SY-002
+review_status: draft
+extracted_by: automatic-extraction
+title: Sybil responds more weakly to nodules near the pleura, where adenocarcinoma tends to appear
+description: >
+  The authors took nodules of known malignancy and pasted them into thousands of positions across
+  patients' lungs, then measured how much the risk score moved each time. Two biases showed up.
+  Sybil reacts more strongly to nodules in the upper lobes, which actually matches clinical
+  practice. But it also reacts more weakly the closer a nodule sits to the edge of the lung, and
+  that is a real problem, because adenocarcinoma tends to appear exactly there.
+evidence_type: interventional
+concepts:
+  - ref: concept:positional-bias
+  - ref: concept:failure-mode
+key_metric: >
+  about 200,000 insertions; upper versus middle and lower lobes p <= 0.009; distance to pleura
+  p < 0.001
+caveat: >
+  Distance to the pleura on its own explains little of the variance in attribution
+  (R2 = 0.071); the authors reach R2 = 0.455 only after adding interactions with nodule
+  identity, and they offer zero-padding as a hypothesis for the bias rather than a result.
+models:
+  - ref: model:sybil
+    variant: not-specified-in-source
+sources:
+  - ref: source:sybil-audit
+datasets:
+  - ref: dataset:luna25
+    role: eval
+methods:
+  - ref: method:snap
+    role: primary
+  - ref: method:sdb
+    role: primary
+  - ref: method:anova-tukey
+    role: primary
+  - ref: method:linear-regression
+    role: primary
+  - ref: method:totalsegmentator
+    role: supporting
+related_work:
+  - ref: rw:mind-the-pad
+    role: context
+related_findings: []

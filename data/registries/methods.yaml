@@ -182,13 +182,164 @@ method:n-shapley:
     Shapley values truncated at interactions of order n, giving a controlled trade-off between an
     additive explanation and a full interaction decomposition.
 
-method:latent-plane-intervention:
-  name: Latent plane extraction and intervention
+method:geoex:
+  name: GeoEx feature-plane extraction
   anchor: null
   artifact: null
-  note: introduced in the source report, no separate publication
+  note: introduced in the source report under this name, no separate publication
   description: >
-    Identify a two-dimensional plane in a hidden layer that encodes a continuous property, then
-    move the projection of every latent vector onto a chosen point of that plane and generate from
-    the edited state. Moving from reading the plane to pushing on it is what turns a correlational
-    claim into an interventional one.
+    Train a probe constrained to an affine transform with an L1-sparsified scaling vector, so that
+    it must predict a continuous property from a low-dimensional plane of the hidden space. The
+    plane can then be read, or pushed on by moving every latent vector's projection onto a chosen
+    point and generating from the edited state. Moving from reading the plane to pushing on it is
+    what turns a correlational claim into an interventional one.
+
+method:pca:
+  name: Principal component analysis
+  anchor: https://en.wikipedia.org/wiki/Principal_component_analysis
+  artifact: null
+  description: >
+    Rotates the data onto orthogonal directions of decreasing variance. Used both to summarise how
+    concentrated a representation is and, on the first two components, to draw it. The share of
+    variance the top components carry is a claim about the representation; the picture is not.
+
+method:control-task:
+  name: Control task with shuffled labels
+  anchor: https://arxiv.org/abs/1909.03368
+  artifact: null
+  description: >
+    Retrain a probe on randomised labels to measure how much of its performance comes from the
+    representation rather than from the probe's own capacity. Without it, a strong probe scoring
+    well proves nothing. Introduced by Hewitt and Liang as probe selectivity.
+
+method:logistic-regression:
+  name: Logistic regression
+  anchor: https://en.wikipedia.org/wiki/Logistic_regression
+  artifact: null
+  description: >
+    Linear classifier over the log-odds of the outcome. Used as a supervised baseline against
+    which unsupervised or arithmetic constructions of a concept direction are compared.
+
+method:linear-svm:
+  name: Linear support vector machine
+  anchor: https://en.wikipedia.org/wiki/Support_vector_machine
+  artifact: null
+  description: >
+    Classifier that fits the separating hyperplane with the largest margin. Its normal vector is
+    frequently taken as a concept direction, which makes it the natural comparison for
+    difference-of-means constructions.
+
+method:spearman-correlation:
+  name: Spearman rank correlation
+  anchor: https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient
+  artifact: null
+  description: >
+    Correlation computed on ranks rather than values, so it detects monotone relationships without
+    assuming linearity and tolerates outliers. Measures association only.
+
+method:permutation-test:
+  name: Permutation test
+  anchor: https://en.wikipedia.org/wiki/Permutation_test
+  artifact: null
+  description: >
+    Builds a null distribution by repeatedly shuffling labels and recomputing the statistic. Makes
+    no distributional assumption, which is why it suits scores computed on embeddings.
+
+method:knn:
+  name: k-nearest neighbours classifier
+  anchor: https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm
+  artifact: null
+  description: >
+    Classifies a point by the labels of its closest neighbours. As a probe it tests whether a
+    property is recoverable from local neighbourhood structure, which is a weaker requirement than
+    linear separability.
+
+method:koppen-geiger:
+  name: Köppen-Geiger climate classification
+  anchor: https://doi.org/10.1038/sdata.2018.214
+  artifact: null
+  description: >
+    Taxonomy that assigns a climate class to a location from temperature and precipitation
+    patterns. It is a label source rather than an analysis technique: findings use it to supply
+    the ground truth a probe is asked to predict.
+
+method:circular-correlation:
+  name: Circular correlation
+  anchor: https://en.wikipedia.org/wiki/Directional_statistics
+  artifact: null
+  description: >
+    Correlation for quantities that wrap around, such as angles, longitudes and dates. Ordinary
+    correlation treats 359 degrees and 1 degree as far apart, which is what this corrects.
+
+method:dijkstra:
+  name: Dijkstra shortest path
+  anchor: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+  artifact: null
+  description: >
+    Finds the cheapest path through a weighted graph. Applied to a representation, the graph is
+    built from embedding similarity and the path cost becomes a measure of how far apart two
+    points are in the model's internal geometry.
+
+method:umap:
+  name: UMAP
+  anchor: https://arxiv.org/abs/1802.03426
+  artifact: null
+  description: >
+    Non-linear dimensionality reduction for visualisation. Distances and cluster sizes in the
+    projection are not faithful to the original space, so it supports illustration rather than
+    measurement.
+
+method:anova-tukey:
+  name: Two-way ANOVA with Tukey HSD
+  anchor: https://en.wikipedia.org/wiki/Tukey%27s_range_test
+  artifact: null
+  description: >
+    Tests whether group means differ across two factors, followed by a post-hoc procedure that
+    controls the error rate over all pairwise comparisons between groups.
+
+method:linear-regression:
+  name: Linear regression
+  anchor: https://en.wikipedia.org/wiki/Linear_regression
+  artifact: null
+  description: >
+    Fits a straight-line relationship between a predictor and an outcome. Used here to test
+    whether a model's response varies systematically with a continuous quantity such as distance.
+
+method:totalsegmentator:
+  name: TotalSegmentator
+  anchor: https://arxiv.org/abs/2208.05868
+  artifact: https://github.com/wasserth/TotalSegmentator
+  description: >
+    Automatic segmentation of anatomical structures in CT. Supplies the anatomical regions that an
+    analysis is aggregated over; it is a tool in the pipeline, not the object of the finding.
+
+method:shnap:
+  name: SHNAP
+  anchor: https://arxiv.org/abs/2602.02560v2
+  artifact: null
+  description: >
+    Removal-based attribution by generative intervention: each pulmonary nodule is replaced with
+    plausible healthy tissue and the prediction is decomposed into per-nodule contributions and
+    inter-nodule interactions. The generalisation to arbitrary regions is gSHNAP.
+
+method:snap:
+  name: SNAP
+  anchor: https://arxiv.org/abs/2602.02560v2
+  artifact: null
+  description: >
+    Insertion-based counterpart of SHNAP: nodules of known malignancy are systematically inserted
+    at many positions and the change in predicted risk is recorded, mapping where in the volume
+    the model is sensitive. SHNAP removes what is there, SNAP adds what is not, so the two answer
+    different questions and are separate methods rather than one name spelled two ways.
+
+method:local-fidelity-r2:
+  name: Local fidelity R2 over the feature lattice
+  anchor: null
+  artifact: null
+  note: >
+    the source paper does not introduce this measure; it calls it unweighted local fidelity and
+    attributes it to Garreau and Luxburg (2020), for which the source prints no URL
+  description: >
+    Measures how well a truncated interaction decomposition reproduces the model's own outputs
+    across all subsets of the features being removed. A high value licenses reading the
+    decomposition as the model's mechanism rather than as an approximation of it.
