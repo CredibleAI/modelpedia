@@ -71,7 +71,9 @@ source:fixlip:
   artifact: https://github.com/hbaniecki/fixlip
   note: >
     date and anchor point to v2, the version held in the project and verified against; the
-    camera-ready title page drops the FIXLIP prefix
+    camera-ready title page drops the FIXLIP prefix. Tables 1 and 2 disagree about CLIP
+    ViT-B/32 on the three-object pointing game, 0.83 against 0.82; FX-001 and FX-002 each
+    quote the table they rest on, so the two findings differ by one hundredth on that cell
 
 source:sybil-audit:
   authors:

@@ -1,7 +1,8 @@
-from collections import Counter
+from collections import Counter, defaultdict
 from typing import NamedTuple
 
-import graph as graph_json
+from modelpedia import graph as graph_json
+from modelpedia import record_keys as keys
 
 KEY_COLUMN = 40
 
@@ -33,15 +34,25 @@ def record_status(audit):
                                 for pair, count in sorted(counts.items())]
 
 
+def plural(count, word):
+    return "%d %s%s" % (count, word, "" if count == 1 else "s")
+
+
 def concept_use(audit):
-    counts = Counter(link["ref"]
-                     for finding in audit.findings.values()
-                     for link in finding["concepts"])
+    counts = Counter()
+    models = defaultdict(set)
+    for finding in audit.findings.values():
+        tagged = {link[keys.REF] for link in finding.get("models") or []}
+        for link in finding["concepts"]:
+            counts[link[keys.REF]] += 1
+            models[link[keys.REF]] |= tagged
     unused = sorted(key for key, entity in audit.entities.items()
                     if entity["type"] == graph_json.CONCEPT and key not in counts)
     return (["concepts"]
-            + [entry(key, count) for key, count in counts.most_common()]
-            + [entry(key, "0  (unused)") for key in unused])
+            + [entry(key, "%s, %s" % (plural(count, "finding"),
+                                      plural(len(models[key]), "model")))
+               for key, count in counts.most_common()]
+            + [entry(key, "0 findings  (unused)") for key in unused])
 
 
 def shared_nodes(audit):

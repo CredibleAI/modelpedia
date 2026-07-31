@@ -10,7 +10,7 @@ description: >
   conclusions from these maps without switching to a better attribution method first.
 evidence_type: observational
 concepts:
-  - ref: concept:attribution-artefact
+  - ref: concept:method-artefact
   - ref: concept:register-tokens
 key_metric: null
 caveat: >

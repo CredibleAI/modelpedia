@@ -1,5 +1,4 @@
 import csv
-import os
 import posixpath
 import re
 import tempfile
@@ -7,12 +6,12 @@ from pathlib import Path
 
 import build
 import export
-import graph_io
-import graph as graph_json
+from modelpedia import graph_io
+from modelpedia import graph as graph_json
 import render
-import report
-import site_paths
-from test_build import database
+from modelpedia import report
+from modelpedia import site_paths
+from tests.test_build import database
 
 
 def graph_of(**changes):
@@ -48,14 +47,40 @@ def test_record_status_counts_each_pair():
 
 
 def test_concept_use_counts_the_findings_that_tag_it():
-    assert line_for(report.concept_use(audit_of()), "concept:idea").split()[-1] == "1"
+    assert "1 finding," in line_for(report.concept_use(audit_of()), "concept:idea")
 
 
 def test_concept_use_marks_a_concept_no_finding_tags():
     def orphan(entities):
         entities["concept:lonely"] = {"type": graph_json.CONCEPT, "name": "Lonely"}
-    assert "0  (unused)" in line_for(report.concept_use(audit_of(entities=orphan)),
-                                     "concept:lonely")
+    assert "0 findings  (unused)" in line_for(report.concept_use(audit_of(entities=orphan)),
+                                              "concept:lonely")
+
+
+def test_concept_use_counts_the_distinct_models_a_concept_reaches():
+    def second_model(entities):
+        entities["model:other"] = {"type": graph_json.MODEL, "name": "Other",
+                                   "modality": ["image"], "variants": {}}
+
+    def reach_it(findings):
+        findings["XX-001"]["models"].append({"ref": "model:other", "variant": None})
+    line = line_for(report.concept_use(audit_of(entities=second_model, findings=reach_it)),
+                    "concept:idea")
+    assert "1 finding, 2 models" in line
+
+
+def test_concept_use_counts_two_variants_of_one_model_once():
+    def add_variant(entities):
+        entities["variant:thing-big"] = {"type": graph_json.VARIANT, "name": "Thing big",
+                                         "parent": "model:thing"}
+        entities["model:thing"]["variants"]["variant:thing-big"] = {"name": "Thing big"}
+
+    def reach_it(findings):
+        findings["XX-001"]["models"].append({"ref": "model:thing",
+                                             "variant": "variant:thing-big"})
+    line = line_for(report.concept_use(audit_of(entities=add_variant, findings=reach_it)),
+                    "concept:idea")
+    assert "1 finding, 1 model" in line
 
 
 def test_shared_nodes_reports_none_shared_for_a_single_finding():
@@ -172,27 +197,6 @@ def test_missing_required_types_reports_empty_required_tables():
     assert graph_json.FINDING in missing
     assert graph_json.MODEL in missing
     assert graph_json.VARIANT not in missing
-
-
-def test_export_is_strict_by_default():
-    original = os.environ.pop("MODELPEDIA_EXPORT_STRICT_REQUIRED_TYPES", None)
-    try:
-        assert export.strict_required_types() is True
-    finally:
-        if original is not None:
-            os.environ["MODELPEDIA_EXPORT_STRICT_REQUIRED_TYPES"] = original
-
-
-def test_export_can_disable_strict_mode_via_env():
-    original = os.environ.get("MODELPEDIA_EXPORT_STRICT_REQUIRED_TYPES")
-    os.environ["MODELPEDIA_EXPORT_STRICT_REQUIRED_TYPES"] = "false"
-    try:
-        assert export.strict_required_types() is False
-    finally:
-        if original is None:
-            del os.environ["MODELPEDIA_EXPORT_STRICT_REQUIRED_TYPES"]
-        else:
-            os.environ["MODELPEDIA_EXPORT_STRICT_REQUIRED_TYPES"] = original
 
 
 def test_written_tables_round_trip_through_csv():

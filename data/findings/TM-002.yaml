@@ -10,7 +10,7 @@ description: >
   ranking may say more about the yardstick than about the vectors.
 evidence_type: correlational
 concepts:
-  - ref: concept:evaluation-artefact
+  - ref: concept:method-artefact
   - ref: concept:linear-representation
 key_metric: >
   cosine similarity to the empirical shift, mostly burned and winter: mean difference

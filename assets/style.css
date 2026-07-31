@@ -4,8 +4,8 @@
   --rule: #a3a3a3;
   --faint: #e4e8ea;
   --bg: #fff;
-  --sans: "Lexend Deca", ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
-  --mono: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --sans: ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 * { box-sizing: border-box; }
 body { margin: 0 auto; padding: 3rem 1.5rem 5rem; max-width: 50rem; background: var(--bg);

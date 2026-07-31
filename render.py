@@ -2,19 +2,18 @@ import shutil
 from pathlib import Path
 from typing import NamedTuple
 
-import graph as graph_json
-from graph_io import load_graph
-from html_bits import anchor, definition_list, entry, entry_list, escape, heading, paragraph
-import record_keys as keys
-import site_paths
+from modelpedia import graph as graph_json
+from modelpedia.graph_io import load_graph
+from modelpedia.html_bits import anchor, definition_list, entry, entry_list, escape, heading, paragraph
+from modelpedia import record_keys as keys
+from modelpedia import site_paths
 
 ROOT = Path(__file__).parent
 SITE = ROOT / "site"
 GRAPH = ROOT / "out" / "graph.json"
 ASSETS = ROOT / "assets"
 
-INDEX = "index.html"
-HOME = INDEX
+HOME = site_paths.INDEX
 STYLESHEET = "style.css"
 
 SECTIONS = (
@@ -59,9 +58,6 @@ LEDE = ("A finding is a claim about how one model behaves, made by someone other
 
 FOOTER = ("%(findings)d findings, %(verified)d verified. "
           "%(nodes)d nodes, %(shared)d shared by more than one finding.")
-
-FONTS = ("https://fonts.googleapis.com/css2?"
-         "family=Lexend+Deca:wght@300;400;500&family=Roboto+Mono:wght@400;500&display=swap")
 
 
 class View(NamedTuple):
@@ -244,9 +240,6 @@ def page(view, title, body, body_class=""):
         '<!doctype html><html lang="en"><head><meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1">',
         "<title>%s</title>" % escape(title),
-        '<link rel="preconnect" href="https://fonts.googleapis.com">',
-        '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
-        '<link rel="stylesheet" href="%s">' % FONTS,
         '<link rel="stylesheet" href="%s">' % escape(site_paths.href(view.here, STYLESHEET)),
         "</head>",
         "<body%s>" % (' class="%s"' % body_class if body_class else ""),
@@ -318,8 +311,7 @@ def entity_body(view, node):
     rows = []
     if data.get("note") and data.get(keys.ANCHOR):
         rows.append(("Note", escape(data["note"].strip())))
-    if variant_names(node):
-        rows.append(("Variants", variant_names(node)))
+    rows.append(("Variants", variant_names(node)))
     out.append(definition_list(rows))
 
     used_by = findings_using(view, node["id"])
@@ -372,7 +364,8 @@ def main():
         target = SITE / path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(document, encoding="utf-8")
-        pages += 1
+        if path != STYLESHEET:
+            pages += 1
     print("wrote %d pages under site/, open site/%s" % (pages, HOME))
 
 

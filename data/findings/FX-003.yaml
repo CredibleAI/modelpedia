@@ -3,16 +3,19 @@ review_status: draft
 extracted_by: automatic-extraction
 title: CLIP matches a caption to text printed inside the photo, linking the word doll to a dollar patch
 description: >
-  Some of the interaction maps show CLIP matching an image to a caption because of words
-  physically printed inside the photo, rather than because of what the photo actually depicts. The
-  clearest case: the strongest link the method found was between the caption word doll and an
-  image patch containing the printed text dollar.
+  One of the interaction maps shows CLIP matching an image to a caption because of a word
+  physically printed inside the photo, rather than because of what the photo actually depicts:
+  the strongest link the method found was between the caption word doll and an image patch
+  containing the printed text dollar. The authors comment that the model is right for the wrong
+  reasons.
 evidence_type: observational
 concepts:
   - ref: concept:shortcut
   - ref: concept:feature-interaction
 key_metric: null
-caveat: null
+caveat: >
+  A single qualitative example from one figure. The authors do not measure how often printed
+  text drives the match, so the finding shows that this happens, not how common it is.
 models:
   - ref: model:clip
     variant: not-specified-in-source

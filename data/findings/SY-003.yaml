@@ -27,6 +27,8 @@ datasets:
     role: eval
   - ref: dataset:ildct
     role: eval
+  - ref: dataset:nlst
+    role: train
 methods:
   - ref: method:shnap
     role: primary

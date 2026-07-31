@@ -49,9 +49,8 @@ per finding and per entity. `export.py` writes one CSV per node type plus `edges
 `out/csv/`. Both read `out/graph.json` and neither reads the YAML, so the build artifact is the
 only contract between the data and its consumers.
 
-`export.py` enforces non-empty core node types by default; set
-`MODELPEDIA_EXPORT_STRICT_REQUIRED_TYPES=0` to allow warnings instead of failure in reduced
-or experimental datasets.
+`export.py` fails rather than writing a partial export if a core node type has no rows, on the
+grounds that an empty table is far more likely to mean a broken build than an intended one.
 
 Open `site/index.html` by double-clicking it. The links are relative, so the site needs no server,
 and the whole folder can be zipped and sent as one thing. The directory layout is the path scheme
@@ -60,25 +59,27 @@ the API will serve, so `site/findings/TM-003/` is the page for what will be `GET
 ## Layout
 
 ```
-data/vocabularies.yaml   the closed vocabularies; schema, not data
-data/registries/*.yaml   entities: models, methods, datasets, sources, concepts, people
-data/findings/*.yaml     one file per finding, the records themselves
-graph.py         node and edge type names, and how to query out/graph.json
 build.py         the schema declaration; YAML -> validate -> out/graph.json
-record_keys.py   shared string constants for link keys (ref, role, variant, ...)
-graph_io.py      loads out/graph.json and checks format_version
-site_paths.py    URL/path and slug logic for the static site
-html_bits.py     low-level HTML templating helpers
-report.py        the console audit that build.py prints
 render.py        out/graph.json -> site/, one page per finding and per entity
 export.py        out/graph.json -> out/csv/*.csv
+run_tests.py     runs both suites
+
+modelpedia/      the library, imported and never run
+  graph.py       node and edge type names, and how to query out/graph.json
+  record_keys.py shared string constants for link keys (ref, role, variant, ...)
+  graph_io.py    loads out/graph.json and checks format_version
+  site_paths.py  URL/path and slug logic for the static site
+  html_bits.py   low-level HTML templating helpers
+  report.py      the console audit that build.py prints
+
+tests/           test_build.py (data -> graph), test_outputs.py (graph -> report, HTML, CSV)
+data/            vocabularies.yaml, registries/*.yaml, findings/*.yaml
 assets/style.css stylesheet for the static site, loaded at render time
-test_build.py    tests for the validator, data -> graph
-test_outputs.py  tests for the consumers, graph -> report, HTML, CSV
-run_tests.py     runs both
 ```
 
-Node and edge type names are defined once, in `graph.py`, and imported everywhere else.
+The four runnable scripts sit at the root and match the four commands above; everything imported
+lives in `modelpedia/`. Node and edge type names are defined once, in `modelpedia/graph.py`, and
+imported everywhere else.
 
 `out/` and `site/` are build artifacts and are not tracked. Delete them and rebuild at any time.
 
@@ -95,10 +96,10 @@ link rather than in the registry.
 
 ## Current state
 
-20 findings across 7 registries; 158 nodes and 281 edges.
+20 findings across 7 registries; 152 nodes and 277 edges.
 
-Every finding carries two record fields. `review_status` is `verified` for the 7 that a human has
-confirmed against the full text of the source, and `draft` for the 13 that have not been promoted
+Every finding carries two record fields. `review_status` is `verified` for the 9 that a human has
+confirmed against the full text of the source, and `draft` for the 11 that have not been promoted
 yet. `extracted_by` is `manual` or `automatic-extraction` and records how the entry was produced.
 They are separate on purpose: an entry pulled out automatically and then checked is stronger than
 one typed by hand and never read back. **The site labels every draft and never hides one**, and

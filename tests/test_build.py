@@ -5,7 +5,7 @@ from pathlib import Path
 from contextlib import redirect_stdout
 
 import build
-import graph as graph_json
+from modelpedia import graph as graph_json
 import yaml
 
 VOCABULARIES = {

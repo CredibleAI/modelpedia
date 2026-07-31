@@ -27,6 +27,8 @@ sources:
 datasets:
   - ref: dataset:luna25
     role: eval
+  - ref: dataset:nlst
+    role: train
 methods:
   - ref: method:snap
     role: primary

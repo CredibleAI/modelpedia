@@ -1,7 +1,7 @@
 import importlib
 import traceback
 
-TEST_MODULES = ("test_build", "test_outputs")
+TEST_MODULES = ("tests.test_build", "tests.test_outputs")
 
 
 def tests_in(module):
@@ -28,7 +28,7 @@ def main():
         count, failures = run(module_name)
         total += count
         all_failures += [("%s.%s" % (module_name, name), report) for name, report in failures]
-        print("%-16s %2d tests, %d failed" % (module_name, count, len(failures)))
+        print("%-22s %2d tests, %d failed" % (module_name, count, len(failures)))
 
     for name, report in all_failures:
         print("\nFAIL %s\n%s" % (name, report))

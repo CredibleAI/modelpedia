@@ -4,9 +4,9 @@ from typing import NamedTuple
 
 import yaml
 
-import graph as graph_json
-import record_keys as keys
-import report as audit
+from modelpedia import graph as graph_json
+from modelpedia import record_keys as keys
+from modelpedia import report as audit
 
 ROOT = Path(__file__).parent
 DATA = ROOT / "data"

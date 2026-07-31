@@ -1,6 +1,6 @@
 id: TM-008
-review_status: draft
-extracted_by: automatic-extraction
+review_status: verified
+extracted_by: manual
 title: TerraMind embeddings separate hemispheres rather than climate zones
 description: >
   The authors hoped TerraMind's embeddings would group satellite images by climate zone without
@@ -9,8 +9,7 @@ description: >
   longitude sorts climate zones better than one given the model's embeddings.
 evidence_type: correlational
 concepts:
-  - ref: concept:geographic-confound
-  - ref: concept:linear-representation
+  - ref: concept:shortcut
 key_metric: >
   5-NN accuracy over climate zones: 80.4 percent from coordinates alone, 45.8 percent from
   the embeddings, 9.3 percent random; north-south centroid permutation test p = 1.00
@@ -31,9 +30,8 @@ methods:
   - ref: method:knn
     role: primary
   - ref: method:pca
-    role: primary
+    role: supporting
   - ref: method:koppen-geiger
-    role: labels
 related_work:
   - ref: rw:tile2vec
     role: builds-on

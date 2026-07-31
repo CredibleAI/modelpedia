@@ -38,7 +38,6 @@ role:
     - compared-to
     - validation
     - eval
-    - labels
     - supporting
   related_work:
     - builds-on

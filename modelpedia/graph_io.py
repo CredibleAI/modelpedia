@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import graph as graph_json
+from modelpedia import graph as graph_json
 
 
 def load_graph(path: Path):

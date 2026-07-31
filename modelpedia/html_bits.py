@@ -5,8 +5,8 @@ def escape(value):
     return html.escape(str(value), quote=True)
 
 
-def anchor(url, text, extra=""):
-    return '<a href="%s"%s>%s</a>' % (escape(url), extra, text)
+def anchor(url, body, extra=""):
+    return '<a href="%s"%s>%s</a>' % (escape(url), extra, body)
 
 
 def paragraph(text, css_class=None):

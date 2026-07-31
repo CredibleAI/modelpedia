@@ -1,10 +1,9 @@
 import csv
-import os
 from pathlib import Path
 
-import graph as graph_json
-from graph_io import load_graph
-import record_keys as keys
+from modelpedia import graph as graph_json
+from modelpedia.graph_io import load_graph
+from modelpedia import record_keys as keys
 
 ROOT = Path(__file__).parent
 GRAPH = ROOT / "out" / "graph.json"
@@ -112,11 +111,6 @@ def missing_required_types(grouped):
     return sorted(node_type for node_type in REQUIRED_NONEMPTY_TYPES if not grouped.get(node_type))
 
 
-def strict_required_types():
-    value = os.environ.get("MODELPEDIA_EXPORT_STRICT_REQUIRED_TYPES", "1").strip().lower()
-    return value not in ("0", "false", "no", "off")
-
-
 def main():
     graph = load_graph(GRAPH)
     grouped = nodes_by_type(graph)
@@ -130,12 +124,9 @@ def main():
 
     missing = missing_required_types(grouped)
     if missing:
-        if strict_required_types():
-            for node_type in missing:
-                print("ERROR node type %s has no rows in graph.json" % node_type)
-            return 1
         for node_type in missing:
-            print("WARN node type %s has no rows in graph.json" % node_type)
+            print("ERROR node type %s has no rows in graph.json" % node_type)
+        return 1
 
     for node_type, filename in TABLE_FILES.items():
         nodes = grouped.get(node_type) or []

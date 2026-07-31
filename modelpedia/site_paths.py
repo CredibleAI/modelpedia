@@ -1,6 +1,6 @@
 import posixpath
 
-import graph as graph_json
+from modelpedia import graph as graph_json
 
 INDEX = "index.html"
 

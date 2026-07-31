@@ -1,19 +1,14 @@
 concept:shortcut:
   name: Shortcut
   description: >
-    The model bases its prediction on a feature that correlates with the label in the data it saw
-    but has no causal connection to the thing being predicted. Shortcuts work until the
-    correlation disappears, which is usually at deployment. Claiming one is a claim about what the
-    model uses, not about what the data contains, so it needs evidence that removing the feature
-    changes the prediction.
-
-concept:acquisition-artefact:
-  name: Acquisition artefact
-  description: >
-    A feature introduced by how the measurement was taken rather than by the subject being
-    measured: equipment in the field of view, positioning aids, sensor or preprocessing settings.
-    It differs from an ordinary shortcut in that the same apparatus may reproduce it in every
-    future scan or image, so the spurious signal does not go away with a new sample.
+    The model relies on a feature that correlates with the target in the data it saw but has no
+    causal connection to it: printed text standing in for the object named in a caption, a chest
+    drain standing in for disease, position on the globe standing in for climate. Shortcuts work
+    until the correlation disappears, which is usually at deployment. The older name for the same
+    thing is Clever Hans behaviour, after Lapuschkin et al. 2019; both names point here rather than
+    at two nodes. How strongly the reliance was established -- by removing the feature and
+    remeasuring, or by beating the model with a baseline built from the spurious feature alone --
+    is recorded in evidence_type, not in this definition.
 
 concept:linear-representation:
   name: Linear representation
@@ -23,26 +18,12 @@ concept:linear-representation:
     does not show the model uses the encoding for anything, which is why findings of this kind
     split into observational ones and interventional ones.
 
-concept:representation-invariance:
-  name: Representation invariance
-  description: >
-    The same internal encoding of a property is recovered regardless of context that might have
-    been expected to change it, such as location, season or land cover. Evidence that the encoding
-    tracks the property rather than the circumstances it was observed in.
-
 concept:scale-dependent-behaviour:
   name: Scale-dependent behaviour
   description: >
     A property holds in some size variants of a model family and not in others. Findings of this
     kind are statements about a variant rather than about an architecture, and they are only
     interpretable when the variant is recorded.
-
-concept:causal-subspace:
-  name: Causal subspace
-  description: >
-    A subspace of the representation whose manipulation changes the model's output in the
-    predicted direction. Unlike a decodable direction, this is evidence of use rather than of
-    presence, because it was established by intervening instead of by observing.
 
 concept:failure-mode:
   name: Failure mode
@@ -51,19 +32,15 @@ concept:failure-mode:
     finding names the condition, not a single bad example, so it has to say what the condition is
     and over how many cases it was checked.
 
-concept:spatially-clustered-error:
-  name: Spatially clustered error
+concept:method-artefact:
+  name: Method artefact
   description: >
-    Model errors are not independent across space: neighbouring locations fail in similar ways.
-    Because detecting where the clusters sit means one test per location, findings of this kind
-    are only as strong as their multiple-testing correction.
-
-concept:attribution-artefact:
-  name: Attribution artefact
-  description: >
-    A pattern that dominates an explanation but comes from the analysis method or from the model's
-    internal bookkeeping rather than from what the model uses for the task. Reading it as a model
-    behaviour is the specific error this concept exists to name.
+    A result that comes from the apparatus used to study the model rather than from the model:
+    a pattern dominating an attribution map because of how the map is computed, or a comparison
+    coming out one way because the metric shares an assumption with one of the methods it ranks.
+    Attribution and evaluation are the two places this shows up and they are one concept, because
+    the error being named is the same in both -- reading a property of the instrument as a
+    property of the thing measured.
 
 concept:register-tokens:
   name: Register tokens
@@ -85,21 +62,6 @@ concept:explanation-faithfulness:
     How closely an explanation reproduces the behaviour of the model it explains, measured against
     the model's own outputs. It is a property of the explanation method and says nothing about
     whether the model itself is correct.
-
-concept:evaluation-artefact:
-  name: Evaluation artefact
-  description: >
-    A comparison comes out the way it does because of the protocol used to score it rather than
-    because of the thing being scored. The distinguishing test is whether the metric shares an
-    assumption with one of the methods it ranks, which gives that method an advantage by
-    construction rather than by merit.
-
-concept:geographic-confound:
-  name: Geographic confound
-  description: >
-    A representation that appears to encode a property of the world turns out to track position
-    instead, because the property and the position are correlated in the data. Establishing the
-    confound needs a comparison against a baseline built from coordinates alone.
 
 concept:depth-dependent-structure:
   name: Depth-dependent structure

@@ -1,6 +1,6 @@
 id: TM-009
-review_status: draft
-extracted_by: automatic-extraction
+review_status: verified
+extracted_by: manual
 title: A weak seasonal shift in the embeddings matches climatic intuition but is attributed to geography
 description: >
   There is still a faint climate signal in there. Moving from March to September shifts the
@@ -9,8 +9,7 @@ description: >
   probably driven mainly by geography rather than by any real grasp of climate.
 evidence_type: correlational
 concepts:
-  - ref: concept:geographic-confound
-  - ref: concept:linear-representation
+  - ref: concept:shortcut
 key_metric: >
   seasonal shift magnitude Af 7.59, Cwa 7.41, Am 7.17 against BWh 1.67 and BWk 1.89; mean
   cosine similarity between all pairs of shift vectors 0.32
@@ -27,7 +26,6 @@ datasets:
     role: eval
 methods:
   - ref: method:koppen-geiger
-    role: labels
   - ref: method:pca
     role: supporting
 related_work:
