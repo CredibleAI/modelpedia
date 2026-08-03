@@ -29,12 +29,16 @@ python3 export.py
 ```
 
 ```bash
+python3 check.py path/to/candidate.yaml
+```
+
+```bash
 python3 run_tests.py
 ```
 
-99 tests, no dependency beyond PyYAML. `test_build.py` covers every branch of the validator plus a
+120 tests, no dependency beyond PyYAML. `test_build.py` covers every branch of the validator plus a
 case asserting that the real `data/` still validates; `test_outputs.py` covers the three consumers
-of `out/graph.json`. `pytest` picks both files up if you prefer it.
+of `out/graph.json`; `test_pipeline.py` covers the ingestion core. `pytest` picks both files up if you prefer it.
 
 `build.py` validates `data/`, writes `out/graph.json` and prints an audit of record status,
 concept usage, shared nodes, findings whose source names no dataset, missing anchors and unused
@@ -62,7 +66,8 @@ the API will serve, so `site/findings/TM-003/` is the page for what will be `GET
 build.py         the schema declaration; YAML -> validate -> out/graph.json
 render.py        out/graph.json -> site/, one page per finding and per entity
 export.py        out/graph.json -> out/csv/*.csv
-run_tests.py     runs both suites
+check.py         a candidate finding -> schema errors plus link resolution
+run_tests.py     runs all three suites
 
 modelpedia/      the library, imported and never run
   graph.py       node and edge type names, and how to query out/graph.json
@@ -71,8 +76,11 @@ modelpedia/      the library, imported and never run
   site_paths.py  URL/path and slug logic for the static site
   html_bits.py   low-level HTML templating helpers
   report.py      the console audit that build.py prints
+  link.py        entity name -> hit / candidates / miss, against the registries
+  text.py        PDF -> normalised searchable text
 
-tests/           test_build.py (data -> graph), test_outputs.py (graph -> report, HTML, CSV)
+tests/           test_build.py (data -> graph), test_outputs.py (graph -> outputs),
+                 test_pipeline.py (linker, PDF text, candidate checking)
 data/            vocabularies.yaml, registries/*.yaml, findings/*.yaml
 assets/style.css stylesheet for the static site, loaded at render time
 ```
@@ -108,11 +116,3 @@ the footer counts both numbers.
 Gaps in the data are stated rather than guessed. Where a source names no dataset or prints no URL,
 the field is empty and `build.py` lists it in the audit.
 
-
-## Context
-
-Built during an internship at the University of Warsaw. Mentor: Przemysław Biecek.
-
-Theoretical foundation: *The Case for Model Science: Verify, Explore, Steer, Refine*
-([arXiv 2606.01189](https://arxiv.org/abs/2606.01189), extended version
-[arXiv 2508.20040](https://arxiv.org/abs/2508.20040)).
