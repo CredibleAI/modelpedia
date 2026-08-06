@@ -1,6 +1,6 @@
 id: TM-010
 review_status: verified
-extracted_by: manual
+extracted_by: manual-extraction
 title: Fixed corner patches dominate Integrated Gradients maps regardless of image content
 description: >
   When the authors built attribution heatmaps with Integrated Gradients, nearly every map lit up

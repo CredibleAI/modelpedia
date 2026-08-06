@@ -7,7 +7,7 @@ finding:
     - draft
     - verified
   extracted_by:
-    - manual
+    - manual-extraction
     - automatic-extraction
 
 model:

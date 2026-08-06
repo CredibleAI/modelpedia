@@ -7,8 +7,7 @@ description: >
   might guess. Tiles dominated by flooded vegetation come out with the lowest reconstruction
   errors of any land-cover class, not the highest.
 evidence_type: correlational
-concepts:
-  - ref: concept:failure-mode
+concepts: []
 key_metric: Spearman rho = -0.32 for flooded vegetation
 caveat: >
   The authors offer the bimodal optical and SAR signature of inundated wetlands as a

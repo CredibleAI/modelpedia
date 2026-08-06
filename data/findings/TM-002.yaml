@@ -1,13 +1,12 @@
 id: TM-002
 review_status: draft
 extracted_by: automatic-extraction
-title: The mean-difference concept vector outscores trained classifiers on a metric that favours it
+title: The mean-difference concept vector scores higher than trained classifiers under cosine similarity
 description: >
   The subtraction construction from TM-001 scores higher than a logistic regression and a linear
-  SVM trained to capture the same concept. That reads as a win for the simple method, but the
-  authors are upfront that it probably is not one: the score used to compare them is built around
-  how far embeddings shift, which is exactly what subtraction optimises for by construction. The
-  ranking may say more about the yardstick than about the vectors.
+  SVM trained to capture the same concept under the report's cosine-similarity evaluation. The
+  authors caution that the classifiers' lower values likely stem from this evaluation setup and
+  may not persist under another metric.
 evidence_type: correlational
 concepts:
   - ref: concept:method-artefact
@@ -16,8 +15,8 @@ key_metric: >
   cosine similarity to the empirical shift, mostly burned and winter: mean difference
   0.713 and 0.799, logistic regression 0.503 and 0.725, linear SVM 0.361 and 0.604
 caveat: >
-  The authors state in their discussion that the lower scores of the linear classifiers come from
-  the evaluation metric itself, and report this as the main limitation of the comparison.
+  The authors state that the lower classifier scores likely stem from the evaluation metric and
+  identify the lack of alternative evaluation methods as the main limitation of the comparison.
 models:
   - ref: model:terramind
     variant: variant:terramind-v1-base
@@ -33,6 +32,8 @@ methods:
     role: compared-to
   - ref: method:linear-svm
     role: compared-to
+  - ref: method:cosine-similarity
+    role: eval
 related_work:
   - ref: method:tcav
     role: builds-on

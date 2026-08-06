@@ -1,26 +1,30 @@
 import csv
+import io
 import posixpath
 import re
 import tempfile
+from contextlib import redirect_stdout
 from pathlib import Path
 
-import build
 import export
+from modelpedia.build import assemble
+from modelpedia.build import database
 from modelpedia import graph_io
 from modelpedia import graph as graph_json
+from modelpedia import paths
 import render
-from modelpedia import report
-from modelpedia import site_paths
-from tests.test_build import database
+from modelpedia.build import report
+from modelpedia.site import site_paths
+from tests.test_build import sample_db
 
 
 def graph_of(**changes):
-    return build.build(database(**changes))
+    return assemble.graph_from(sample_db(**changes))
 
 
 def audit_of(**changes):
-    db = database(**changes)
-    graph = build.build(db)
+    db = sample_db(**changes)
+    graph = assemble.graph_from(db)
     return report.Audit(findings=db.findings, entities=db.entities, graph=graph,
                         reached=graph_json.findings_reaching(graph))
 
@@ -43,7 +47,7 @@ def test_header_counts_findings_nodes_and_edges():
 
 
 def test_record_status_counts_each_pair():
-    assert "1" in line_for(report.record_status(audit_of()), "verified / manual")
+    assert "1" in line_for(report.record_status(audit_of()), "verified / manual-extraction")
 
 
 def test_concept_use_counts_the_findings_that_tag_it():
@@ -99,6 +103,17 @@ def test_findings_without_datasets_lists_the_finding_that_has_none():
     assert "source does not state one" in line_for(lines, "XX-001")
 
 
+def test_findings_without_concepts_says_none_when_every_finding_has_one():
+    assert report.findings_without_concepts(audit_of())[-1] == "  none"
+
+
+def test_findings_without_concepts_lists_an_uncovered_finding():
+    def drop(findings):
+        findings["XX-001"]["concepts"] = []
+    lines = report.findings_without_concepts(audit_of(findings=drop))
+    assert "no existing concept fits" in line_for(lines, "XX-001")
+
+
 def test_gaps_list_entities_that_should_have_an_anchor_but_do_not():
     lines = report.entities_without_anchors(audit_of())
     assert "nothing to link to" in line_for(lines, "rw:earlier")
@@ -130,8 +145,8 @@ def test_unused_registry_entries_name_the_type_of_each_orphan():
 
 
 def test_render_separates_every_section_with_a_blank_line():
-    db = database()
-    graph = build.build(db)
+    db = sample_db()
+    graph = assemble.graph_from(db)
     lines = report.render(db.findings, db.entities, graph).split("\n")
     assert lines[0].startswith("format ")
     assert lines.count("") == len(report.SECTIONS)
@@ -188,7 +203,7 @@ def test_a_column_missing_from_the_declared_order_is_an_error_not_a_silent_appen
 
 def test_every_node_type_the_build_produces_has_a_table():
     produced = {node["type"] for node in graph_of()["nodes"]}
-    assert produced <= set(export.TABLE_FILES)
+    assert produced <= set(graph_json.NODE_TYPE_BY_NAME)
 
 
 def test_missing_required_types_reports_empty_required_tables():
@@ -228,6 +243,15 @@ def test_graph_loader_accepts_current_format_version():
                         % graph_json.FORMAT_VERSION, encoding="utf-8")
         loaded = graph_io.load_graph(path)
     assert loaded["nodes"] == []
+
+
+def test_the_graph_is_replaced_in_one_step_and_leaves_no_partial_file():
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / "graph.json"
+        path.write_text("a stale graph from an earlier build", encoding="utf-8")
+        graph_io.dump_graph(graph_of(), path)
+        assert [entry.name for entry in Path(directory).iterdir()] == ["graph.json"]
+        assert graph_io.load_graph(path)["nodes"]
 
 
 def test_graph_loader_rejects_wrong_format_version():
@@ -361,31 +385,28 @@ def test_a_variant_recorded_as_not_specified_produces_no_link():
     assert render.model_row(view, view.nodes["XX-001"]["data"]).count("<a href=") == 1
 
 
-def test_a_verified_finding_carries_no_draft_label():
-    view = view_of()
-    assert render.DRAFT_LABEL not in render.finding_body(view, view.nodes["XX-001"])
-
-
-def test_a_draft_is_labelled_in_its_heading():
+def test_review_status_is_not_rendered_in_a_finding():
     def draft(findings):
         findings["XX-001"]["review_status"] = "draft"
     view = view_of(findings=draft)
     body = render.finding_body(view, view.nodes["XX-001"])
-    assert '<span class="draft">%s</span>' % render.DRAFT_LABEL in body
+    assert "draft" not in body
+    assert "verified" not in body
 
 
-def test_a_draft_is_labelled_everywhere_it_is_listed():
+def test_review_status_is_not_rendered_in_finding_lists():
     def draft(findings):
         findings["XX-001"]["review_status"] = "draft"
     pages = render.render_site(graph_of(findings=draft))
     for path in (render.HOME, "findings/index.html", "findings/XX-001/index.html"):
-        assert render.DRAFT_LABEL in pages[path], path
+        assert "not verified" not in pages[path], path
 
 
-def test_every_finding_states_its_record_status():
+def test_every_finding_states_its_extraction_method_only():
     view = view_of()
     body = render.finding_body(view, view.nodes["XX-001"])
-    assert "<dt>Record</dt><dd>verified, manual</dd>" in body
+    assert "<dt>Extraction</dt><dd>manual-extraction</dd>" in body
+    assert "<dt>Record</dt>" not in body
 
 
 def test_a_note_on_an_entity_with_an_anchor_qualifies_it_and_is_shown():
@@ -411,10 +432,12 @@ def test_authors_are_collected_from_the_sources_without_repeating_anyone():
     assert render.finding_authors(view, view.nodes["XX-001"]["data"]) == ["person:ada-lovelace"]
 
 
-def test_the_footer_counts_findings_and_verified_findings_separately():
+def test_the_footer_does_not_expose_review_status():
     def draft(findings):
         findings["XX-001"]["review_status"] = "draft"
-    assert render.footer(view_of(findings=draft)).startswith("1 findings, 0 verified.")
+    footer = render.footer(view_of(findings=draft))
+    assert footer.startswith("1 findings.")
+    assert "verified" not in footer
 
 
 def test_the_navigation_marks_the_section_the_page_belongs_to():
@@ -464,16 +487,165 @@ def test_every_node_except_a_variant_gets_its_own_page():
 def test_the_site_has_a_home_page_and_one_index_per_registry():
     pages = render.render_site(graph_of())
     assert render.HOME in pages
-    for node_type, _ in render.SECTIONS:
-        assert site_paths.registry_page(node_type) in pages
+    for node_type in graph_json.PAGE_TYPES:
+        assert site_paths.registry_page(node_type.name) in pages
 
 
 def test_every_internal_link_in_the_fixture_site_resolves():
     assert broken_links(render.render_site(graph_of())) == []
 
 
+def test_a_graph_that_fails_to_load_leaves_the_previous_site_untouched():
+    original_graph, original_site = paths.GRAPH, paths.SITE
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            paths.GRAPH = Path(directory) / "graph.json"
+            paths.SITE = Path(directory) / "site"
+            paths.SITE.mkdir()
+            kept = paths.SITE / "index.html"
+            kept.write_text("the page from the last good build", encoding="utf-8")
+            paths.GRAPH.write_text('{"format_version": 999, "nodes": [], "edges": []}',
+                                   encoding="utf-8")
+            try:
+                render.main()
+            except ValueError:
+                pass
+            else:
+                raise AssertionError("render.main accepted an incompatible graph")
+            assert kept.read_text(encoding="utf-8") == "the page from the last good build"
+    finally:
+        paths.GRAPH, paths.SITE = original_graph, original_site
+
+
+def test_the_export_clears_a_table_this_build_does_not_produce():
+    original_graph, original_csv = paths.GRAPH, paths.CSV
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            paths.GRAPH = Path(directory) / "graph.json"
+            paths.CSV = Path(directory) / "csv"
+            graph_io.dump_graph(graph_of(), paths.GRAPH)
+            paths.CSV.mkdir()
+            stale = paths.CSV / "retired_registry.csv"
+            stale.write_text("id\n", encoding="utf-8")
+            stream = io.StringIO()
+            with redirect_stdout(stream):
+                code = export.main()
+            assert code == 0
+            assert not stale.exists()
+            assert (paths.CSV / "findings.csv").exists()
+    finally:
+        paths.GRAPH, paths.CSV = original_graph, original_csv
+
+
+def test_the_export_keeps_the_previous_tables_when_the_graph_fails_to_load():
+    original_graph, original_csv = paths.GRAPH, paths.CSV
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            paths.GRAPH = Path(directory) / "graph.json"
+            paths.CSV = Path(directory) / "csv"
+            paths.CSV.mkdir()
+            kept = paths.CSV / "findings.csv"
+            kept.write_text("id\nXX-001\n", encoding="utf-8")
+            paths.GRAPH.write_text('{"format_version": 999, "nodes": [], "edges": []}',
+                                   encoding="utf-8")
+            try:
+                export.main()
+            except ValueError:
+                pass
+            else:
+                raise AssertionError("export.main accepted an incompatible graph")
+            assert kept.read_text(encoding="utf-8") == "id\nXX-001\n"
+    finally:
+        paths.GRAPH, paths.CSV = original_graph, original_csv
+
+
+def test_a_render_that_crashes_part_way_leaves_the_previous_site_intact():
+    original_graph, original_site, real = paths.GRAPH, paths.SITE, render.iter_pages
+
+    def crashing(graph, stylesheet=None):
+        for number, item in enumerate(real(graph, stylesheet=stylesheet)):
+            if number >= 3:
+                raise RuntimeError("the disk filled up")
+            yield item
+
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            paths.GRAPH = Path(directory) / "graph.json"
+            paths.SITE = Path(directory) / "site"
+            graph_io.dump_graph(graph_of(), paths.GRAPH)
+            paths.SITE.mkdir()
+            kept = paths.SITE / "index.html"
+            kept.write_text("the page from the last good build", encoding="utf-8")
+            render.iter_pages = crashing
+            try:
+                render.main()
+            except RuntimeError:
+                pass
+            else:
+                raise AssertionError("the injected failure did not reach render.main")
+            assert [entry.name for entry in paths.SITE.iterdir()] == ["index.html"]
+            assert kept.read_text(encoding="utf-8") == "the page from the last good build"
+    finally:
+        render.iter_pages = real
+        paths.GRAPH, paths.SITE = original_graph, original_site
+
+
+def test_an_export_that_crashes_part_way_leaves_the_previous_tables_intact():
+    original_graph, original_csv, real = paths.GRAPH, paths.CSV, export.write_table
+    calls = []
+
+    def crashing(nodes, path):
+        calls.append(path.name)
+        if len(calls) >= 2:
+            raise RuntimeError("the disk filled up")
+        return real(nodes, path)
+
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            paths.GRAPH = Path(directory) / "graph.json"
+            paths.CSV = Path(directory) / "csv"
+            graph_io.dump_graph(graph_of(), paths.GRAPH)
+            paths.CSV.mkdir()
+            for name in ("findings.csv", "models.csv", "edges.csv"):
+                (paths.CSV / name).write_text("the last complete export\n", encoding="utf-8")
+            export.write_table = crashing
+            try:
+                export.main()
+            except RuntimeError:
+                pass
+            else:
+                raise AssertionError("the injected failure did not reach export.main")
+            assert sorted(entry.name for entry in paths.CSV.iterdir()) == [
+                "edges.csv", "findings.csv", "models.csv"]
+            assert (paths.CSV / "findings.csv").read_text(
+                encoding="utf-8") == "the last complete export\n"
+    finally:
+        export.write_table = real
+        paths.GRAPH, paths.CSV = original_graph, original_csv
+
+
+def test_a_successful_render_and_export_leave_no_staging_directory():
+    original_graph, original_site, original_csv = paths.GRAPH, paths.SITE, paths.CSV
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            paths.GRAPH = root / "graph.json"
+            paths.SITE = root / "site"
+            paths.CSV = root / "csv"
+            graph_io.dump_graph(graph_of(), paths.GRAPH)
+            stream = io.StringIO()
+            with redirect_stdout(stream):
+                render.main()
+                assert export.main() == 0
+            assert list(root.glob("*" + paths.PARTIAL)) == []
+            assert (paths.SITE / render.HOME).is_file()
+            assert (paths.CSV / "findings.csv").is_file()
+    finally:
+        paths.GRAPH, paths.SITE, paths.CSV = original_graph, original_site, original_csv
+
+
 def test_every_internal_link_in_the_real_site_resolves():
-    assert broken_links(render.render_site(build.build(build.load()))) == []
+    assert broken_links(render.render_site(assemble.graph_from(database.load()))) == []
 
 
 def test_the_stylesheet_is_written_once_and_linked_from_every_page():
@@ -487,8 +659,8 @@ def test_the_stylesheet_is_written_once_and_linked_from_every_page():
 
 
 def test_pipeline_smoke_real_data_builds_site_and_csv_outputs():
-    db = build.load()
-    graph = build.build(db)
+    db = database.load()
+    graph = assemble.graph_from(db)
     pages = render.render_site(graph)
     grouped = export.nodes_by_type(graph)
     assert render.HOME in pages
@@ -496,11 +668,11 @@ def test_pipeline_smoke_real_data_builds_site_and_csv_outputs():
     with tempfile.TemporaryDirectory() as directory:
         out = Path(directory)
         table_rows = 0
-        for node_type in export.TABLE_FILES:
-            nodes = grouped.get(node_type) or []
+        for node_type in graph_json.NODE_TYPES:
+            nodes = grouped.get(node_type.name) or []
             if not nodes:
                 continue
-            rows, _ = export.write_table(nodes, out / export.TABLE_FILES[node_type])
+            rows, _ = export.write_table(nodes, out / node_type.table_file)
             table_rows += rows
         edge_rows, _ = export.write_edges(graph, out / export.EDGE_FILE)
     assert table_rows == len(graph["nodes"])

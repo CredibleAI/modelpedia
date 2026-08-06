@@ -1,6 +1,6 @@
 id: TM-001
 review_status: verified
-extracted_by: manual
+extracted_by: manual-extraction
 title: A mean-difference vector between before and after image pairs acts as a transferable concept vector
 description: >
   Take two satellite pictures of the same place, one before something happens and one after

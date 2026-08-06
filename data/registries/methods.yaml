@@ -229,6 +229,15 @@ method:linear-svm:
     frequently taken as a concept direction, which makes it the natural comparison for
     difference-of-means constructions.
 
+method:cosine-similarity:
+  name: Cosine similarity
+  anchor: https://en.wikipedia.org/wiki/Cosine_similarity
+  artifact: null
+  description: >
+    Normalised dot product between two vectors. It measures directional alignment independently
+    of vector magnitude; in the TerraMind concept-vector report it evaluates alignment with the
+    empirical embedding shift.
+
 method:spearman-correlation:
   name: Spearman rank correlation
   anchor: https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient
@@ -279,6 +288,16 @@ method:dijkstra:
     Finds the cheapest path through a weighted graph. Applied to a representation, the graph is
     built from embedding similarity and the path cost becomes a measure of how far apart two
     points are in the model's internal geometry.
+
+method:hybrid-geo-latent-graph:
+  name: Hybrid geo-latent graph
+  anchor: null
+  artifact: null
+  description: >
+    Graph introduced in the TerraMind geophysical-geometry report. Candidate neighbours are
+    restricted by geographic radius and their edges are weighted or filtered using cosine
+    distance in the latent representation.
+  note: local method introduced in the course report, with no separate publication or artifact
 
 method:umap:
   name: UMAP

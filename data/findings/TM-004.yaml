@@ -1,12 +1,11 @@
 id: TM-004
 review_status: draft
 extracted_by: automatic-extraction
-title: Land cover, not the acquisition time gap, correlates with optical-to-SAR reconstruction error
+title: Surface composition, not the acquisition time gap, correlates with optical-to-SAR reconstruction error
 description: >
-  What actually predicts a bad reconstruction is what is on the ground: snow, water, clouds and
-  flooded vegetation drive most of the correlation with error size. What barely matters is the
-  time gap between when the radar and the optical image were captured, which you might reasonably
-  have expected to be the main culprit.
+  Surface composition dominates the correlation ranking: water, snow and ice are associated with
+  higher residuals, while flooded vegetation is associated with lower residuals. The time gap
+  between radar and optical acquisition is practically irrelevant.
 evidence_type: correlational
 concepts:
   - ref: concept:failure-mode

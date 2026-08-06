@@ -3,11 +3,7 @@ from typing import NamedTuple
 
 from modelpedia import graph as graph_json
 from modelpedia import record_keys as keys
-
-KEY_COLUMN = 40
-
-TYPES_WITH_ANCHORS = tuple(node_type for node_type in graph_json.REGISTRY_TYPES
-                           if node_type not in graph_json.TYPES_WITHOUT_ANCHORS)
+from modelpedia.console import entry, plural
 
 
 class Audit(NamedTuple):
@@ -15,10 +11,6 @@ class Audit(NamedTuple):
     entities: dict
     graph: dict
     reached: dict
-
-
-def entry(key, note):
-    return "  %-*s %s" % (KEY_COLUMN, key, note)
 
 
 def header(audit):
@@ -32,10 +24,6 @@ def record_status(audit):
                      for finding in audit.findings.values())
     return ["record status"] + [entry("%s / %s" % pair, count)
                                 for pair, count in sorted(counts.items())]
-
-
-def plural(count, word):
-    return "%d %s%s" % (count, word, "" if count == 1 else "s")
 
 
 def concept_use(audit):
@@ -71,11 +59,20 @@ def findings_without_datasets(audit):
     return lines + [entry(fid, "source does not state one") for fid in empty]
 
 
+def findings_without_concepts(audit):
+    empty = sorted(fid for fid, finding in audit.findings.items() if not finding.get("concepts"))
+    lines = ["findings not yet covered by the concept vocabulary"]
+    if not empty:
+        return lines + ["  none"]
+    return lines + [entry(fid, "no existing concept fits the source-backed claim") for fid in empty]
+
+
 def entities_without_anchors(audit):
     missing = sorted(key for key, entity in audit.entities.items()
-                     if entity["type"] in TYPES_WITH_ANCHORS and not entity.get("anchor"))
+                     if entity["type"] in graph_json.ANCHORED_TYPES
+                     and not entity.get(keys.ANCHOR))
     return ["gaps"] + [
-        entry(key, "no anchor, %s" % ("artifact only" if audit.entities[key].get("artifact")
+        entry(key, "no anchor, %s" % ("artifact only" if audit.entities[key].get(keys.ARTIFACT)
                                       else "nothing to link to"))
         for key in missing]
 
@@ -89,6 +86,7 @@ def entities_without_findings(audit):
 
 
 SECTIONS = (record_status, concept_use, shared_nodes, findings_without_datasets,
+            findings_without_concepts,
             entities_without_anchors, entities_without_findings)
 
 

@@ -1,4 +1,3 @@
-import json
 from typing import NamedTuple
 
 FORMAT_VERSION = 2
@@ -13,22 +12,46 @@ SOURCE = "source"
 RELATED_WORK = "rw"
 PERSON = "person"
 
-NODE_TYPES = (FINDING, MODEL, VARIANT, CONCEPT, METHOD, DATASET, SOURCE, RELATED_WORK, PERSON)
 
-REGISTRY_TYPES = (MODEL, SOURCE, DATASET, METHOD, RELATED_WORK, CONCEPT, PERSON)
+class NodeType(NamedTuple):
+    name: str
+    label: str
+    registry_file: str | None
+    url_segment: str | None
+    table_file: str
+    anchored: bool
+    required: bool
 
-TYPES_WITHOUT_ANCHORS = (CONCEPT, PERSON)
 
-URL_SEGMENTS = {
-    FINDING: "findings",
-    MODEL: "models",
-    CONCEPT: "concepts",
-    METHOD: "methods",
-    DATASET: "datasets",
-    SOURCE: "sources",
-    RELATED_WORK: "related-work",
-    PERSON: "people",
-}
+NODE_TYPES = (
+    NodeType(FINDING, "Findings", registry_file=None, url_segment="findings",
+             table_file="findings.csv", anchored=False, required=True),
+    NodeType(MODEL, "Models", registry_file="models.yaml", url_segment="models",
+             table_file="models.csv", anchored=True, required=True),
+    NodeType(VARIANT, "Variants", registry_file=None, url_segment=None,
+             table_file="variants.csv", anchored=False, required=False),
+    NodeType(CONCEPT, "Concepts", registry_file="concepts.yaml", url_segment="concepts",
+             table_file="concepts.csv", anchored=False, required=True),
+    NodeType(METHOD, "Methods", registry_file="methods.yaml", url_segment="methods",
+             table_file="methods.csv", anchored=True, required=True),
+    NodeType(DATASET, "Datasets", registry_file="datasets.yaml", url_segment="datasets",
+             table_file="datasets.csv", anchored=True, required=True),
+    NodeType(SOURCE, "Sources", registry_file="sources.yaml", url_segment="sources",
+             table_file="sources.csv", anchored=True, required=True),
+    NodeType(RELATED_WORK, "Related work", registry_file="related_work.yaml",
+             url_segment="related-work", table_file="related_work.csv",
+             anchored=True, required=True),
+    NodeType(PERSON, "People", registry_file="people.yaml", url_segment="people",
+             table_file="people.csv", anchored=False, required=True),
+)
+
+NODE_TYPE_BY_NAME = {node_type.name: node_type for node_type in NODE_TYPES}
+
+PAGE_TYPES = tuple(node_type for node_type in NODE_TYPES if node_type.url_segment)
+
+REGISTRY_TYPES = tuple(node_type.name for node_type in NODE_TYPES if node_type.registry_file)
+
+ANCHORED_TYPES = tuple(node_type.name for node_type in NODE_TYPES if node_type.anchored)
 
 EDGE_ABOUT_MODEL = "about_model"
 EDGE_ABOUT_VARIANT = "about_variant"
@@ -47,14 +70,6 @@ VARIANT_NOT_SPECIFIED = "not-specified-in-source"
 class Usage(NamedTuple):
     finding: str
     role: str | None
-
-
-def load(path):
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def dump(graph, path):
-    path.write_text(json.dumps(graph, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
 def nodes_by_id(graph):

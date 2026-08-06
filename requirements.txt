@@ -1,0 +1,2 @@
+PyYAML>=6.0
+openreview-py>=2.4.0

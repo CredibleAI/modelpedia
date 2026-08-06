@@ -3,18 +3,19 @@ review_status: draft
 extracted_by: automatic-extraction
 title: Coordinates are recoverable from TerraMind's frozen features, latitude more accurately than longitude
 description: >
-  A picture's coordinates can be partly read back out of TerraMind's internal representation by
-  training small probe models on top of its frozen features. Across all 12 probe setups the
-  authors tried, four model sizes by three probe types, latitude came out more accurately than
-  longitude every single time: north-south position is easier for the model to pin down than
-  east-west.
+  A picture's coordinates can be partly decoded from TerraMind's frozen internal representation
+  by training probe models on top of its features. Across all 12 combinations of four model
+  variants and three probe types, latitude was decoded more accurately than longitude.
 evidence_type: correlational
 concepts:
   - ref: concept:linear-representation
 key_metric: >
-  latitude beats longitude in all 12 probe configurations, 4 model variants by 3 probe types;
-  the source counts these as 24 experiments because it runs latitude and longitude separately
-caveat: null
+  latitude R2 exceeds longitude R2 in all 12 probe configurations, 4 model variants by 3 probe
+  types; the source counts latitude and longitude predictions separately as 24 experiments
+caveat: >
+  The conclusion is based on three probe families; the authors state that a broader and more
+  principled selection of probing models is needed to improve interpretation of the latent-space
+  structure.
 models:
   - ref: model:terramind
     variant: variant:terramind-v1-tiny

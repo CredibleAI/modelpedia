@@ -1,6 +1,6 @@
 id: TM-008
 review_status: verified
-extracted_by: manual
+extracted_by: manual-extraction
 title: TerraMind embeddings separate hemispheres rather than climate zones
 description: >
   The authors hoped TerraMind's embeddings would group satellite images by climate zone without

@@ -1,6 +1,6 @@
 id: TM-003
 review_status: verified
-extracted_by: manual
+extracted_by: manual-extraction
 title: Optical-to-SAR generation errors cluster spatially, but only five regions survive FDR control
 description: >
   TerraMind can turn optical satellite images into radar images, and it makes mistakes doing so.

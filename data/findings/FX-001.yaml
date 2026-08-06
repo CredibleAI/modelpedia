@@ -1,6 +1,6 @@
 id: FX-001
 review_status: verified
-extracted_by: manual
+extracted_by: manual-extraction
 title: Pairwise Banzhaf interactions explain CLIP similarity more faithfully than single-score methods
 description: >
   Most explanation methods for CLIP hand you one importance score per image patch and per word.

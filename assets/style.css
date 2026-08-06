@@ -37,9 +37,6 @@ p:last-child { margin-bottom: 0; }
 .byline { font-family: var(--mono); font-size: .72rem; font-weight: 400; color: var(--quiet);
   margin-bottom: .9rem; }
 .role { font-family: var(--mono); font-size: .72em; font-weight: 400; color: var(--quiet); }
-.draft { font-family: var(--mono); font-size: .68rem; border: 1px solid var(--ink);
-  border-radius: 2px; padding: 0 .4em; margin-left: .6em; letter-spacing: .12em;
-  white-space: nowrap; }
 .lede { margin: 1.2rem 0 0; }
 ul.entries { list-style: none; margin: 1.1rem 0 0; padding: 0; }
 ul.entries li { padding: .7rem 0; border-bottom: 1px solid var(--faint); display: flex;

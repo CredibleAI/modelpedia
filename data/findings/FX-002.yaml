@@ -1,14 +1,12 @@
 id: FX-002
 review_status: draft
 extracted_by: automatic-extraction
-title: SigLIP-2 is more faithfully explainable through cross-modal interactions than CLIP
+title: FIXLIP gives SigLIP-2 higher pointing-game recognition than CLIP at ViT-B/32 and ViT-B/16
 description: >
-  Because FIXLIP only needs a model's inputs and outputs, you can point it at different
-  vision-language encoders and compare them on equal footing. Doing that, SigLIP-2 comes out
-  more faithfully explainable through cross-modal interactions than CLIP at both sizes where
-  the two were compared. The authors also read the table as showing that smaller models are
-  more faithfully explainable than larger ones, but SigLIP-2 is the only model they ran at both
-  ViT-B/32 and ViT-L/16.
+  In Table 2, FIXLIP explanations of SigLIP-2 obtain higher pointing-game recognition than CLIP at
+  both reported patch configurations, ViT-B/32 and ViT-B/16. The authors interpret this as
+  SigLIP-2 being more faithfully explainable through cross-modal interactions and suggest that
+  smaller models may be more faithfully explainable than larger ones.
 evidence_type: correlational
 concepts:
   - ref: concept:explanation-faithfulness
@@ -18,9 +16,10 @@ key_metric: >
   against CLIP 0.83 / 0.81 / 0.82 / 0.85; ViT-B/16: SigLIP-2 0.86 / 0.88 / 0.87 / 0.87
   against CLIP 0.81 / 0.81 / 0.81 / 0.82
 caveat: >
-  The authors call the SigLIP-2 result surprising and do not offer a mechanism for it. Only
-  SigLIP-2 was measured at both ViT-B/32 and ViT-L/16, so the size claim rests on that model
-  alone; SigLIP, measured at ViT-B/16 and ViT-L/16 only, scores no lower at the larger size.
+  The comparison does not use exactly the same pointing-game cases: subgames containing goldfish
+  or ipod are omitted for SigLIP models because their tokenizer splits those labels into multiple
+  tokens. The authors offer no mechanism for the SigLIP-2 result. Their scale interpretation is
+  not uniform across families: SigLIP scores no lower at ViT-L/16 than at ViT-B/16.
 models:
   - ref: model:clip
     variant: variant:clip-vit-b-32
@@ -40,8 +39,6 @@ sources:
   - ref: source:fixlip
 datasets:
   - ref: dataset:imagenet1k
-    role: eval
-  - ref: dataset:mscoco
     role: eval
 methods:
   - ref: method:weighted-banzhaf

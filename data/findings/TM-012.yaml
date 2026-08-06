@@ -1,18 +1,19 @@
 id: TM-012
 review_status: draft
 extracted_by: automatic-extraction
-title: Longitude and time of year are encoded circularly, and only in the deeper encoder blocks
+title: Longitude and time-of-year planes become circular in deeper encoder blocks
 description: >
-  Longitude and time of year are both circular quantities: 359 degrees sits right next to 0, and
-  December sits right next to January. TerraMind turns out to represent them in a genuinely
-  circular shape inside its latent space, and that circularity only appears in the deeper encoder
-  blocks rather than being there from the start.
+  GeoEx-extracted planes for longitude and time of year show increasingly circular organisation
+  in deeper encoder blocks rather than displaying the same structure from the start.
 evidence_type: correlational
 concepts:
   - ref: concept:circular-representation
   - ref: concept:depth-dependent-structure
 key_metric: null
-caveat: null
+caveat: >
+  Longitude and year progression were supplied to GeoEx as sine and cosine targets, so the
+  experiment does not fully separate native latent circularity from structure selected by the
+  supervised extraction. Random planes provide a partial control.
 models:
   - ref: model:terramind
     variant: not-specified-in-source

@@ -1,22 +1,24 @@
 id: SY-003
 review_status: draft
 extracted_by: automatic-extraction
-title: Sybil combines nodule contributions almost additively, and in some correct cases ignores them entirely
+title: Sybil processes pulmonary nodules almost additively, with limited pairwise interactions
 description: >
-  Removing nodules one at a time and in combinations shows that Sybil adds their contributions up
-  almost like a simple linear formula with a few pairwise terms, which is a far simpler mechanism
-  than you would expect from a deep network. The same decomposition also exposes failures: in one
-  correct high-risk prediction the nodules contributed nothing at all and the background did the
-  entire job, and in follow-up scans of the same patient the model's focus jumps from one nodule
-  to another from year to year.
+  Using SHNAP, the authors replaced each detected nodule with generated healthy tissue, constructed
+  a nodule-free baseline, restored the original nodules in every possible coalition, and evaluated
+  Sybil on each coalition. Across the full LUNA25 test split and iLDCT, main effects reproduced
+  Sybil's outputs with local-fidelity R2 near 1 for the majority of cases, while adding pairwise
+  interactions almost entirely eliminated the outlier tail.
 evidence_type: interventional
 concepts:
   - ref: concept:feature-interaction
-  - ref: concept:failure-mode
 key_metric: >
   main effects alone reproduce the model's outputs at local fidelity R2 near 1 for the
   majority of cases, and adding pairwise interactions removes almost all of the outlier tail
-caveat: null
+caveat: >
+  The analysis relies on partially synthetic nodule removals, which the authors identify as the
+  study's primary limitation despite a blinded radiologist study. The remaining low-fidelity
+  cases typically involve rare, anomalously large nodules for which SDB struggles with
+  reconstruction.
 models:
   - ref: model:sybil
     variant: not-specified-in-source

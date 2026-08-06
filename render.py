@@ -1,31 +1,17 @@
 import shutil
-from pathlib import Path
 from typing import NamedTuple
 
 from modelpedia import graph as graph_json
 from modelpedia.graph_io import load_graph
-from modelpedia.html_bits import anchor, definition_list, entry, entry_list, escape, heading, paragraph
+from modelpedia.site.html_bits import (anchor, definition_list, entry, entry_list, escape,
+                                       heading, paragraph)
+from modelpedia import paths
 from modelpedia import record_keys as keys
-from modelpedia import site_paths
-
-ROOT = Path(__file__).parent
-SITE = ROOT / "site"
-GRAPH = ROOT / "out" / "graph.json"
-ASSETS = ROOT / "assets"
+from modelpedia import schema
+from modelpedia.site import site_paths
 
 HOME = site_paths.INDEX
 STYLESHEET = "style.css"
-
-SECTIONS = (
-    (graph_json.FINDING, "Findings"),
-    (graph_json.MODEL, "Models"),
-    (graph_json.CONCEPT, "Concepts"),
-    (graph_json.METHOD, "Methods"),
-    (graph_json.DATASET, "Datasets"),
-    (graph_json.SOURCE, "Sources"),
-    (graph_json.RELATED_WORK, "Related work"),
-    (graph_json.PERSON, "People"),
-)
 
 TEXT_ROWS = (
     ("evidence_type", "Evidence"),
@@ -44,11 +30,6 @@ LINK_ROWS = (
 
 META_FIELDS = ("developer", "date", "modality", "domain", "task", "venue")
 
-AUTHORS = "authors"
-
-DRAFT = "draft"
-DRAFT_LABEL = "not verified"
-
 PAGE_TITLE = "Modelpedia"
 TAGLINE = "Findings about machine learning models"
 
@@ -56,8 +37,8 @@ LEDE = ("A finding is a claim about how one model behaves, made by someone other
         "authors, after the fact. Findings about different models meet on the mechanisms they "
         "describe.")
 
-FOOTER = ("%(findings)d findings, %(verified)d verified. "
-          "%(nodes)d nodes, %(shared)d shared by more than one finding.")
+FOOTER = ("%(findings)d findings. %(nodes)d nodes, "
+          "%(shared)d shared by more than one finding.")
 
 
 class View(NamedTuple):
@@ -69,7 +50,7 @@ class View(NamedTuple):
 
 
 def stylesheet_text():
-    return (ASSETS / STYLESHEET).read_text(encoding="utf-8")
+    return (paths.ASSETS / STYLESHEET).read_text(encoding="utf-8")
 
 
 def join_values(value):
@@ -88,18 +69,10 @@ def link(view, node_id, label=None, role=None):
                   text) + role_marker(role)
 
 
-def is_draft(data):
-    return data.get("review_status") == DRAFT
-
-
-def draft_mark(data):
-    return '<span class="draft">%s</span>' % DRAFT_LABEL if is_draft(data) else ""
-
-
 def finding_authors(view, data):
     authors = []
     for source in data.get("sources") or []:
-        for author in view.nodes[source[keys.REF]]["data"].get(AUTHORS) or []:
+        for author in view.nodes[source[keys.REF]]["data"].get(keys.AUTHORS) or []:
             if author[keys.REF] not in authors:
                 authors.append(author[keys.REF])
     return authors
@@ -163,7 +136,7 @@ def distinct_refs(data, field):
 
 def finding_entry(view, node):
     data = node["data"]
-    body = link(view, node["id"], label=data["title"]) + draft_mark(data)
+    body = link(view, node["id"], label=data["title"])
     models = ", ".join(link(view, ref) for ref in distinct_refs(data, "models"))
     if models:
         body += '<span class="entry-note">%s</span>' % models
@@ -202,7 +175,7 @@ def entity_meta(view, node):
 
 def variant_names(node):
     return ", ".join('<span id="%s">%s</span>' % (site_paths.html_id(key), escape(variant["name"]))
-                     for key, variant in (node["data"].get("variants") or {}).items())
+                     for key, variant in (node["data"].get(keys.VARIANTS) or {}).items())
 
 
 def bridge_entries(view, node):
@@ -216,12 +189,12 @@ def bridge_entries(view, node):
 
 def navigation(view):
     items = ["<li>%s</li>" % anchor(site_paths.href(view.here, HOME), escape(PAGE_TITLE))]
-    for node_type, title in SECTIONS:
+    for node_type in graph_json.PAGE_TYPES:
         current = ' aria-current="page"' if view.here.startswith(
-            graph_json.URL_SEGMENTS[node_type] + "/") else ""
+            node_type.url_segment + "/") else ""
         items.append("<li>%s</li>" % anchor(
-            site_paths.href(view.here, site_paths.registry_page(node_type)),
-            escape(title), current))
+            site_paths.href(view.here, site_paths.registry_page(node_type.name)),
+            escape(node_type.label), current))
     return "<nav><ul>%s</ul></nav>" % "".join(items)
 
 
@@ -229,7 +202,6 @@ def footer(view):
     findings = nodes_of(view, graph_json.FINDING)
     return FOOTER % {
         "findings": len(findings),
-        "verified": sum(1 for node in findings if not is_draft(node["data"])),
         "nodes": len(view.nodes),
         "shared": len(graph_json.shared_entities(view.reached)),
     }
@@ -252,8 +224,8 @@ def page(view, title, body, body_class=""):
 def home_body(view):
     models = sorted(nodes_of(view, graph_json.MODEL), key=by_reach(view))
     findings = sorted(nodes_of(view, graph_json.FINDING), key=lambda node: node["id"])
-    registries = [(node_type, title) for node_type, title in SECTIONS
-                  if node_type != graph_json.FINDING]
+    registries = [node_type for node_type in graph_json.PAGE_TYPES
+                  if node_type.name != graph_json.FINDING]
     return "".join([
         "<header><h1>%s</h1>%s</header>" % (escape(PAGE_TITLE), paragraph(TAGLINE, "tagline")),
         paragraph(escape(LEDE), "lede"),
@@ -264,10 +236,11 @@ def home_body(view):
         heading("Findings"),
         entry_list([finding_entry(view, node) for node in findings]),
         heading("Registries"),
-        entry_list([entry("", anchor(site_paths.href(view.here, site_paths.registry_page(node_type)),
-                                     escape(title)),
-                          "%d" % len(nodes_of(view, node_type)))
-                    for node_type, title in registries]),
+        entry_list([entry("", anchor(site_paths.href(view.here,
+                                                     site_paths.registry_page(node_type.name)),
+                                     escape(node_type.label)),
+                          "%d" % len(nodes_of(view, node_type.name)))
+                    for node_type in registries]),
     ])
 
 
@@ -288,14 +261,14 @@ def finding_body(view, node):
     rows += [(term, model_row(view, data) if field == "models"
               else ", ".join(link_items(view, data, field)))
              for field, term in LINK_ROWS]
-    rows.append(("Related findings", ", ".join(link(view, fid, label=fid)
-                                               for fid in data.get("related_findings") or [])))
-    rows.append(("Record", "%s, %s" % (escape(data["review_status"]),
-                                       escape(data["extracted_by"]))))
+    rows.append(("Related findings",
+                 ", ".join(link(view, fid, label=fid)
+                           for fid in data.get(schema.RELATED_FINDINGS_FIELD) or [])))
+    rows.append(("Extraction", escape(data["extracted_by"])))
     authors = finding_authors(view, data)
     return "".join([
-        '<header><h1><span class="ident">%s%s</span>%s</h1></header>'
-        % (escape(node["id"]), draft_mark(data), escape(data["title"])),
+        '<header><h1><span class="ident">%s</span>%s</h1></header>'
+        % (escape(node["id"]), escape(data["title"])),
         paragraph(", ".join(link(view, ref) for ref in authors), "byline") if authors else "",
         paragraph(escape(data["description"].strip())),
         definition_list(rows),
@@ -339,10 +312,10 @@ def iter_pages(graph, stylesheet=None):
     yield STYLESHEET, stylesheet
     yield HOME, page(base, PAGE_TITLE, home_body(base), body_class="home")
 
-    for node_type, title in SECTIONS:
-        view = base._replace(here=site_paths.registry_page(node_type))
-        yield view.here, page(view, "%s — %s" % (title, PAGE_TITLE),
-                              registry_body(view, node_type, title))
+    for node_type in graph_json.PAGE_TYPES:
+        view = base._replace(here=site_paths.registry_page(node_type.name))
+        yield view.here, page(view, "%s — %s" % (node_type.label, PAGE_TITLE),
+                              registry_body(view, node_type.name, node_type.label))
 
     for node in base.nodes.values():
         if node["type"] == graph_json.VARIANT:
@@ -358,14 +331,19 @@ def render_site(graph, stylesheet=None):
 
 
 def main():
-    shutil.rmtree(SITE, ignore_errors=True)
+    graph = load_graph(paths.GRAPH)
+    stylesheet = stylesheet_text()
+    staging = paths.SITE.with_name(paths.SITE.name + paths.PARTIAL)
+    shutil.rmtree(staging, ignore_errors=True)
     pages = 0
-    for path, document in iter_pages(load_graph(GRAPH)):
-        target = SITE / path
+    for path, document in iter_pages(graph, stylesheet=stylesheet):
+        target = staging / path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(document, encoding="utf-8")
         if path != STYLESHEET:
             pages += 1
+    shutil.rmtree(paths.SITE, ignore_errors=True)
+    staging.replace(paths.SITE)
     print("wrote %d pages under site/, open site/%s" % (pages, HOME))
 
 

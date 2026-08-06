@@ -2,10 +2,13 @@
 __pycache__/
 *.pyc
 .claude/
+.vscode/
 
 sources_pdfs/
+corpus/
 out/
 site/
+*.part
 
 CLAUDE.md
 docs/

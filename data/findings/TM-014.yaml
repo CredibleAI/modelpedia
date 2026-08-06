@@ -1,18 +1,19 @@
 id: TM-014
 review_status: draft
 extracted_by: automatic-extraction
-title: Shortest-path cost through the latent space spikes at physical barriers on the ground
+title: Per-edge latent distance along shortest paths spikes at physical barriers
 description: >
-  If you walk between two places through the model's latent space, always taking the cheapest next
-  step by embedding similarity, the cost of each step tracks real geography. Crossing the
-  Himalayas or leaving the Tibetan plateau shows up as sharp spikes in cost, while moving across
-  flat, uniform terrain stays cheap.
+  Along a Dijkstra shortest path through a hybrid geographic and latent graph, individual edge
+  distances track real geography. Crossing the Himalayas or leaving the Tibetan plateau appears
+  as sharp local spikes, while movement across flat, uniform terrain remains cheaper.
 evidence_type: correlational
 concepts:
   - ref: concept:distance-preservation
-  - ref: concept:depth-dependent-structure
 key_metric: null
-caveat: null
+caveat: >
+  The graph is geographically gated, so local spatial continuity is partly imposed by
+  construction. Barrier alignment is illustrated on one South and Central Asia path without an
+  aggregate correlation or significance test.
 models:
   - ref: model:terramind
     variant: not-specified-in-source
@@ -21,6 +22,8 @@ sources:
 datasets: []
 methods:
   - ref: method:geoex
+    role: supporting
+  - ref: method:hybrid-geo-latent-graph
     role: primary
   - ref: method:dijkstra
     role: primary

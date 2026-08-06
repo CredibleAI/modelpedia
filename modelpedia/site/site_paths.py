@@ -13,12 +13,16 @@ def slug_of(node_id):
     return node_id.partition(":")[2] or node_id
 
 
+def url_segment(node_type):
+    return graph_json.NODE_TYPE_BY_NAME[node_type].url_segment
+
+
 def page_of(node):
-    return "%s/%s/%s" % (graph_json.URL_SEGMENTS[node["type"]], slug_of(node["id"]), INDEX)
+    return "%s/%s/%s" % (url_segment(node["type"]), slug_of(node["id"]), INDEX)
 
 
 def registry_page(node_type):
-    return "%s/%s" % (graph_json.URL_SEGMENTS[node_type], INDEX)
+    return "%s/%s" % (url_segment(node_type), INDEX)
 
 
 def target_of(node_id, nodes):

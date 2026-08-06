@@ -1,29 +1,26 @@
 id: FX-003
 review_status: draft
 extracted_by: automatic-extraction
-title: CLIP matches a caption to text printed inside the photo, linking the word doll to a dollar patch
+title: FIXLIP's strongest interaction in one CLIP example links doll to an image patch reading dollar
 description: >
-  One of the interaction maps shows CLIP matching an image to a caption because of a word
-  physically printed inside the photo, rather than because of what the photo actually depicts:
-  the strongest link the method found was between the caption word doll and an image patch
-  containing the printed text dollar. The authors comment that the model is right for the wrong
-  reasons.
+  In one qualitative CLIP explanation, FIXLIP assigns the strongest interaction to the caption
+  token doll and an image patch containing the printed word dollar. The authors describe this as
+  a case where one could say the model is right for the wrong reasons.
 evidence_type: observational
 concepts:
   - ref: concept:shortcut
   - ref: concept:feature-interaction
 key_metric: null
 caveat: >
-  A single qualitative example from one figure. The authors do not measure how often printed
-  text drives the match, so the finding shows that this happens, not how common it is.
+  This is one qualitative interaction map. The paper reports neither its frequency nor a targeted
+  intervention removing the printed word, so it supports a local explanation of this prediction,
+  not a general causal claim that printed text drives CLIP matching.
 models:
   - ref: model:clip
     variant: not-specified-in-source
 sources:
   - ref: source:fixlip
-datasets:
-  - ref: dataset:mscoco
-    role: eval
+datasets: []
 methods:
   - ref: method:weighted-banzhaf
     role: primary

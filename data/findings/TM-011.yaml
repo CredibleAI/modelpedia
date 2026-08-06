@@ -10,9 +10,10 @@ description: >
 evidence_type: correlational
 concepts:
   - ref: concept:depth-dependent-structure
-  - ref: concept:linear-representation
 key_metric: null
-caveat: null
+caveat: >
+  Moran's I is measured on supervised, GeoEx-selected planes. Recoverability through the probe
+  does not establish that TerraMind uses the encoded structure.
 models:
   - ref: model:terramind
     variant: not-specified-in-source
@@ -21,8 +22,6 @@ sources:
 datasets: []
 methods:
   - ref: method:geoex
-    role: primary
-  - ref: method:probing-classifiers
     role: primary
   - ref: method:morans-i
     role: primary

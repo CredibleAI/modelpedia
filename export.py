@@ -1,40 +1,14 @@
 import csv
-from pathlib import Path
+import shutil
 
 from modelpedia import graph as graph_json
 from modelpedia.graph_io import load_graph
+from modelpedia import paths
 from modelpedia import record_keys as keys
-
-ROOT = Path(__file__).parent
-GRAPH = ROOT / "out" / "graph.json"
-EXPORT = ROOT / "out" / "csv"
-
-TABLE_FILES = {
-    graph_json.FINDING: "findings.csv",
-    graph_json.MODEL: "models.csv",
-    graph_json.VARIANT: "variants.csv",
-    graph_json.CONCEPT: "concepts.csv",
-    graph_json.METHOD: "methods.csv",
-    graph_json.DATASET: "datasets.csv",
-    graph_json.SOURCE: "sources.csv",
-    graph_json.RELATED_WORK: "related_work.csv",
-    graph_json.PERSON: "people.csv",
-}
 
 EDGE_FILE = "edges.csv"
 
 EDGE_COLUMNS = ["source", "target", "type", "role"]
-
-REQUIRED_NONEMPTY_TYPES = (
-    graph_json.FINDING,
-    graph_json.MODEL,
-    graph_json.CONCEPT,
-    graph_json.METHOD,
-    graph_json.DATASET,
-    graph_json.SOURCE,
-    graph_json.RELATED_WORK,
-    graph_json.PERSON,
-)
 
 COLUMN_ORDER = ["id", "label", "name", "title", "review_status", "extracted_by",
                 "evidence_type", "key_metric", "caveat", "developer", "authors", "venue",
@@ -108,18 +82,18 @@ def nodes_by_type(graph):
 
 
 def missing_required_types(grouped):
-    return sorted(node_type for node_type in REQUIRED_NONEMPTY_TYPES if not grouped.get(node_type))
+    return sorted(node_type.name for node_type in graph_json.NODE_TYPES
+                  if node_type.required and not grouped.get(node_type.name))
 
 
 def main():
-    graph = load_graph(GRAPH)
+    graph = load_graph(paths.GRAPH)
     grouped = nodes_by_type(graph)
-    EXPORT.mkdir(parents=True, exist_ok=True)
 
-    unknown = sorted(set(grouped) - set(TABLE_FILES))
+    unknown = sorted(set(grouped) - set(graph_json.NODE_TYPE_BY_NAME))
     if unknown:
         for node_type in unknown:
-            print("ERROR node type %s has no table in TABLE_FILES" % node_type)
+            print("ERROR node type %s is not declared in graph.py NODE_TYPES" % node_type)
         return 1
 
     missing = missing_required_types(grouped)
@@ -128,15 +102,24 @@ def main():
             print("ERROR node type %s has no rows in graph.json" % node_type)
         return 1
 
-    for node_type, filename in TABLE_FILES.items():
-        nodes = grouped.get(node_type) or []
+    staging = paths.CSV.with_name(paths.CSV.name + paths.PARTIAL)
+    shutil.rmtree(staging, ignore_errors=True)
+    staging.mkdir(parents=True)
+
+    written = []
+    for node_type in graph_json.NODE_TYPES:
+        nodes = grouped.get(node_type.name) or []
         if not nodes:
             continue
-        rows, columns = write_table(nodes, EXPORT / filename)
-        print("%-20s %3d rows, %2d columns" % (filename, rows, columns))
+        written.append((node_type.table_file,) + write_table(nodes, staging / node_type.table_file))
 
-    rows, columns = write_edges(graph, EXPORT / EDGE_FILE)
-    print("%-20s %3d rows, %2d columns" % (EDGE_FILE, rows, columns))
+    written.append((EDGE_FILE,) + write_edges(graph, staging / EDGE_FILE))
+
+    shutil.rmtree(paths.CSV, ignore_errors=True)
+    staging.replace(paths.CSV)
+
+    for filename, rows, columns in written:
+        print("%-20s %3d rows, %2d columns" % (filename, rows, columns))
     return 0
 
 

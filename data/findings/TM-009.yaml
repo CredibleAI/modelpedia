@@ -1,6 +1,6 @@
 id: TM-009
 review_status: verified
-extracted_by: manual
+extracted_by: manual-extraction
 title: A weak seasonal shift in the embeddings matches climatic intuition but is attributed to geography
 description: >
   There is still a faint climate signal in there. Moving from March to September shifts the

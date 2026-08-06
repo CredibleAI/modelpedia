@@ -3,11 +3,12 @@ review_status: draft
 extracted_by: automatic-extraction
 title: Sybil responds more weakly to nodules near the pleura, where adenocarcinoma tends to appear
 description: >
-  The authors took nodules of known malignancy and pasted them into thousands of positions across
-  patients' lungs, then measured how much the risk score moved each time. Two biases showed up.
-  Sybil reacts more strongly to nodules in the upper lobes, which actually matches clinical
-  practice. But it also reacts more weakly the closer a nodule sits to the edge of the lung, and
-  that is a real problem, because adenocarcinoma tends to appear exactly there.
+  The authors inserted 10 malignant and 10 benign nodules into 12 target scans, using a
+  diffusion-bridge procedure to integrate each nodule with the surrounding anatomy. Across 240
+  patient-nodule combinations and approximately 900 lung positions per combination, Sybil
+  responded more strongly in the upper lobes but less strongly near the pleural surface. The
+  latter is clinically concerning because adenocarcinoma predominantly arises in the lung
+  periphery.
 evidence_type: interventional
 concepts:
   - ref: concept:positional-bias
@@ -16,17 +17,17 @@ key_metric: >
   about 200,000 insertions; upper versus middle and lower lobes p <= 0.009; distance to pleura
   p < 0.001
 caveat: >
-  Distance to the pleura on its own explains little of the variance in attribution
-  (R2 = 0.071); the authors reach R2 = 0.455 only after adding interactions with nodule
-  identity, and they offer zero-padding as a hypothesis for the bias rather than a result.
+  Distance to the pleura alone explained little attribution variance (R2 = 0.071); adding
+  interactions with nodule identity raised R2 to 0.455. Zero-padding is proposed only as a
+  hypothesis for the radial bias. The interventions are partially synthetic, which the authors
+  identify as the study's primary limitation, although insertion realism was assessed by two
+  board-certified radiologists.
 models:
   - ref: model:sybil
     variant: not-specified-in-source
 sources:
   - ref: source:sybil-audit
 datasets:
-  - ref: dataset:luna25
-    role: eval
   - ref: dataset:nlst
     role: train
 methods:
