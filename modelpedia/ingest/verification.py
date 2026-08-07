@@ -99,6 +99,11 @@ def page_number_mentions(doc):
     return by_number
 
 
+def other_notation(canonical):
+    value, percent = canonical
+    return (value, not percent)
+
+
 def number_checks(finding, doc):
     source = page_number_mentions(doc)
     checks = []
@@ -110,12 +115,16 @@ def number_checks(finding, doc):
         if claim.canonical in seen:
             continue
         seen.add(claim.canonical)
-        matches = source.get(claim.canonical, ())
-        pages = tuple(dict.fromkeys(page for page, _ in matches))
+        matches = tuple(source.get(claim.canonical, ()))
+        unmarked = tuple(source.get(other_notation(claim.canonical), ()))
+        pages = tuple(dict.fromkeys(page for page, _ in matches + unmarked))
         contextual = [context for _, context in matches if context & claim.context]
         if not pages:
             state = MISSING
             detail = "numeric value not found in extracted text"
+        elif not matches:
+            state = REVIEW
+            detail = "numeric value occurs, but only without the claimed percent sign"
         elif claim.context and not contextual:
             state = REVIEW
             detail = "numeric value occurs, but nearby terminology differs"

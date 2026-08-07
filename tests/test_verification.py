@@ -49,9 +49,16 @@ def test_numeric_evidence_normalises_decimal_precision():
     assert by_subject["12"].state == verification.MISSING
 
 
-def test_numeric_evidence_preserves_percent_as_a_different_unit():
+def test_a_percent_sign_the_source_omits_is_review_not_missing():
     finding = dict(FINDING, key_metric="accuracy 90%")
     checks = verification.number_checks(finding, document("accuracy was 90"))
+    assert checks[0].state == verification.REVIEW
+    assert checks[0].pages == (1,)
+
+
+def test_a_number_absent_in_any_notation_is_still_missing():
+    finding = dict(FINDING, key_metric="accuracy 90%")
+    checks = verification.number_checks(finding, document("accuracy was 71"))
     assert checks[0].state == verification.MISSING
 
 

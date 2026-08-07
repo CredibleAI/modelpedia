@@ -474,14 +474,15 @@ def test_a_model_page_names_the_models_it_shares_a_mechanism_with():
     assert "also in" in page
 
 
-def test_every_node_except_a_variant_gets_its_own_page():
+def test_only_node_types_with_a_url_segment_get_their_own_page():
     graph = graph_of()
     pages = render.render_site(graph)
     nodes = graph_json.nodes_by_id(graph)
     expected = {site_paths.page_of(node) for node in nodes.values()
-                if node["type"] != graph_json.VARIANT}
+                if graph_json.NODE_TYPE_BY_NAME[node["type"]].url_segment}
     assert expected <= set(pages)
     assert "variants/thing-small/index.html" not in pages
+    assert not any(page.startswith("None/") for page in pages)
 
 
 def test_the_site_has_a_home_page_and_one_index_per_registry():

@@ -10,6 +10,7 @@ TIMEOUT = 120
 
 SOFT_HYPHEN = "\u00ad"
 HYPHENATED = re.compile(r"(\w)[\u00ad\-][ \t]*\n[ \t]*(\w)")
+SPACED_CAPS = re.compile(r"(?<![A-Za-z])([A-Z])[ \t]+([A-Z]{2,})(?![a-z])")
 WHITESPACE = re.compile(r"\s+")
 NOT_ALNUM = re.compile(r"[^a-z0-9]+")
 
@@ -34,12 +35,20 @@ def join_hyphens(value):
     return HYPHENATED.sub(r"\1\2", str(value))
 
 
+def join_small_caps(value):
+    return SPACED_CAPS.sub(r"\1\2", str(value))
+
+
+def repaired(value):
+    return join_small_caps(join_hyphens(value))
+
+
 def normalise(value):
-    return WHITESPACE.sub(" ", fold(join_hyphens(value))).strip()
+    return WHITESPACE.sub(" ", fold(repaired(value))).strip()
 
 
 def flatten(value):
-    return NOT_ALNUM.sub("", fold(join_hyphens(value)))
+    return NOT_ALNUM.sub("", fold(repaired(value)))
 
 
 def read_pdf(path):

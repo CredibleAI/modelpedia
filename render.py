@@ -63,10 +63,20 @@ def role_marker(role):
     return ' <span class="role">[%s]</span>' % escape(role) if role else ""
 
 
+def has_page(node_type):
+    return bool(graph_json.NODE_TYPE_BY_NAME[node_type].url_segment) \
+        or node_type == graph_json.VARIANT
+
+
 def link(view, node_id, label=None, role=None):
-    text = escape(label or view.nodes[node_id]["label"])
-    return anchor(site_paths.href(view.here, site_paths.target_of(node_id, view.nodes)),
-                  text) + role_marker(role)
+    node = view.nodes[node_id]
+    text = escape(label or node["label"])
+    if has_page(node["type"]):
+        body = anchor(site_paths.href(view.here, site_paths.target_of(node_id, view.nodes)), text)
+    else:
+        target = (node.get("data") or {}).get(keys.ANCHOR)
+        body = anchor(target, text, ' rel="external"') if target else text
+    return body + role_marker(role)
 
 
 def finding_authors(view, data):
@@ -318,7 +328,7 @@ def iter_pages(graph, stylesheet=None):
                               registry_body(view, node_type.name, node_type.label))
 
     for node in base.nodes.values():
-        if node["type"] == graph_json.VARIANT:
+        if not graph_json.NODE_TYPE_BY_NAME[node["type"]].url_segment:
             continue
         view = base._replace(here=site_paths.page_of(node))
         body = (finding_body(view, node) if node["type"] == graph_json.FINDING

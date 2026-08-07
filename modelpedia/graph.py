@@ -39,9 +39,9 @@ NODE_TYPES = (
     NodeType(SOURCE, "Sources", registry_file="sources.yaml", url_segment="sources",
              table_file="sources.csv", anchored=True, required=True),
     NodeType(RELATED_WORK, "Related work", registry_file="related_work.yaml",
-             url_segment="related-work", table_file="related_work.csv",
+             url_segment=None, table_file="related_work.csv",
              anchored=True, required=True),
-    NodeType(PERSON, "People", registry_file="people.yaml", url_segment="people",
+    NodeType(PERSON, "People", registry_file="people.yaml", url_segment=None,
              table_file="people.csv", anchored=False, required=True),
 )
 

@@ -251,16 +251,49 @@ def fetch_pdf(connection, paper_id, target, retries=RETRIES, delay=DELAY):
     return True
 
 
-def harvest_pdfs(tiers=DOWNLOAD_TIERS, limit=None, delay=DELAY):
+def read_ids(path):
+    try:
+        lines = Path(path).read_text(encoding="utf-8").splitlines()
+    except OSError as error:
+        raise SystemExit(fail("cannot read %s: %s" % (path, error)))
+    ids = []
+    for number, line in enumerate(lines, start=1):
+        candidate = line.strip()
+        if not candidate or candidate.startswith("#"):
+            continue
+        try:
+            ids.append(safe_id(candidate))
+        except ValueError:
+            raise SystemExit(fail("%s line %d is not an identifier: %r"
+                                  % (path, number, candidate)))
+    if not ids:
+        raise SystemExit(fail("%s contains no identifiers" % path))
+    return list(dict.fromkeys(ids))
+
+
+def selected_rows(tiers, ids):
+    rows = manifest_rows()
+    if ids is None:
+        return [row for row in rows if row["tier"] in tiers]
+    held = {row["id"]: row for row in rows}
+    absent = [paper_id for paper_id in ids if paper_id not in held]
+    if absent:
+        print("  WARN %d of %d requested ids are not in the manifest: %s"
+              % (len(absent), len(ids), ", ".join(absent[:5])))
+    return [held[paper_id] for paper_id in ids if paper_id in held]
+
+
+def harvest_pdfs(tiers=DOWNLOAD_TIERS, limit=None, delay=DELAY, ids=None):
     PDFS.mkdir(parents=True, exist_ok=True)
     clear_partials(PDFS)
-    wanted = [row for row in manifest_rows() if row["tier"] in tiers]
+    wanted = selected_rows(tiers, ids)
     todo = [row for row in wanted if not (PDFS / ("%s.pdf" % safe_id(row["id"]))).exists()]
     if limit:
         todo = todo[:limit]
 
-    print("%d in tiers %s, %d already on disk, fetching %d"
-          % (len(wanted), "/".join(tiers), len(wanted) - len(todo), len(todo)))
+    source = "from --ids" if ids is not None else "in tiers %s" % "/".join(tiers)
+    print("%d %s, %d already on disk, fetching %d"
+          % (len(wanted), source, len(wanted) - len(todo), len(todo)))
     if not todo:
         return 0
 
@@ -352,13 +385,15 @@ def preflight(venue_id=None):
         connection.get_invitation(invitation)
         print("%-26s %s" % ("submission invitation", invitation))
     except openreview.OpenReviewException as error:
-        print("%-26s NOT FOUND: %s" % ("submission invitation", error))
-        return 1
+        invitation = None
+        print("%-26s UNAVAILABLE: %s" % ("submission invitation", error))
 
-    checks = (("accepted (venueid)", {"content": {"venueid": venue_id}}),
-              ("all submissions", {"invitation": invitation}))
-    failed = False
-    for label, query in checks:
+    checks = [("accepted (venueid)", {"content": {"venueid": venue_id}}, True)]
+    if invitation:
+        checks.append(("all submissions", {"invitation": invitation}, False))
+
+    blocking = False
+    for label, query, required in checks:
         try:
             notes, count = connection.get_notes(limit=1, with_count=True, **query)
             print("%-26s %s" % (label, count))
@@ -369,15 +404,17 @@ def preflight(venue_id=None):
                 print("%-26s %s" % (label + " sample",
                                      "ok" if not missing
                                      else "MISSING " + ", ".join(missing)))
-                failed = failed or bool(missing)
+                blocking = blocking or bool(missing) and required
         except openreview.OpenReviewException as error:
             print("%-26s unavailable: %s" % (label, error))
-            failed = True
+            blocking = blocking or required
 
-    if failed:
+    if blocking:
         print("\nnot ready: fix the checks above before harvesting")
         return 1
     print("\nready: harvest.py meta %s" % venue_id)
+    if not invitation:
+        print("--all is not available for this venue; accepted-only harvesting is unaffected")
     return 0
 
 
@@ -397,7 +434,8 @@ USAGE = """usage: run these with .venv/bin/python -- openreview-py lives there, 
   .venv/bin/python harvest.py venues [substring]     list venue identifiers
   .venv/bin/python harvest.py meta <venue_id> [--all]  metadata only, screened, resumable
   .venv/bin/python harvest.py stats                  tier breakdown of the manifest
-  .venv/bin/python harvest.py pdfs [--tier a,b] [--limit N]
+  .venv/bin/python harvest.py pdfs [--tier a,b] [--limit N] [--ids FILE]
+                                                     --ids overrides --tier; one id per line
   .venv/bin/python harvest.py text                   pdftotext over downloaded pdfs
 
   OPENREVIEW_USERNAME and OPENREVIEW_PASSWORD must be set in the environment."""
@@ -424,12 +462,15 @@ def main(argv):
     if command == "pdfs":
         tiers = DOWNLOAD_TIERS
         limit = None
+        ids = None
         for index, flag in enumerate(rest):
             if flag == "--tier" and index + 1 < len(rest):
                 tiers = tuple(rest[index + 1].split(","))
             if flag == "--limit" and index + 1 < len(rest):
                 limit = int(rest[index + 1])
-        return harvest_pdfs(tiers, limit)
+            if flag == "--ids" and index + 1 < len(rest):
+                ids = read_ids(rest[index + 1])
+        return harvest_pdfs(tiers, limit, ids=ids)
     if command == "text":
         return harvest_text()
 

@@ -133,6 +133,21 @@ def test_a_hyphenated_name_matches_with_or_without_the_hyphen():
     assert text.contains(doc, "Köppen-Geiger")
 
 
+def test_a_small_caps_heading_split_by_pdftotext_is_rejoined():
+    doc = text.from_text("t", "A BSTRACT\nwe study I NTRODUCTION and the NL-E YE benchmark")
+    assert text.contains(doc, "abstract")
+    assert text.contains(doc, "introduction")
+    assert text.contains(doc, "NL-Eye")
+    assert "abstract" in doc.text
+    assert "introduction" in doc.text
+
+
+def test_rejoining_small_caps_leaves_ordinary_prose_alone():
+    assert text.normalise("A model was trained") == "a model was trained"
+    assert text.normalise("see Table A for details") == "see table a for details"
+    assert text.normalise("the AI Act") == "the ai act"
+
+
 def test_absent_text_is_reported_absent():
     assert not text.contains(text.from_text("t", "nothing to see"), "OlmoEarth")
 
@@ -302,6 +317,46 @@ def test_harvest_manifest_row_carries_the_screening():
 def test_harvest_downloads_only_tiers_it_was_asked_for():
     assert screen.WEAK not in harvest.DOWNLOAD_TIERS
     assert screen.STRONG in harvest.DOWNLOAD_TIERS
+
+
+def test_an_explicit_id_list_selects_rows_and_reports_the_ones_it_cannot_find():
+    original = harvest.MANIFEST
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            harvest.MANIFEST = Path(directory) / "manifest.jsonl"
+            harvest.MANIFEST.write_text(
+                '{"id": "aaa", "tier": "weak"}\n{"id": "bbb", "tier": "strong"}\n',
+                encoding="utf-8")
+            assert [row["id"] for row in harvest.selected_rows((), ["bbb", "aaa"])] == ["bbb", "aaa"]
+            assert [row["id"] for row in harvest.selected_rows((), ["bbb", "ccc"])] == ["bbb"]
+            assert [row["id"] for row in harvest.selected_rows(("strong",), None)] == ["bbb"]
+    finally:
+        harvest.MANIFEST = original
+
+
+def test_an_id_file_rejects_anything_that_is_not_an_identifier():
+    with tempfile.TemporaryDirectory() as directory:
+        good = Path(directory) / "good.txt"
+        good.write_text("# comment\naaa\n\nbbb\naaa\n", encoding="utf-8")
+        assert harvest.read_ids(good) == ["aaa", "bbb"]
+        hostile = Path(directory) / "hostile.txt"
+        hostile.write_text("aaa\n../../etc/passwd\n", encoding="utf-8")
+        try:
+            harvest.read_ids(hostile)
+            raise AssertionError("accepted a path as an identifier")
+        except SystemExit:
+            pass
+
+
+def test_accepted_only_harvest_never_needs_the_submission_invitation():
+    class Connection:
+        def get_all_notes(self, **query):
+            return sorted(query)
+
+        def get_group(self, venue_id):
+            raise AssertionError("accepted-only reached the invitation lookup")
+
+    assert harvest.submissions(Connection(), "V/2026") == ["content"]
 
 
 def test_a_paper_identifier_is_never_used_as_a_path():
