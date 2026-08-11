@@ -32,8 +32,10 @@ methods:
   - ref: method:spray
     role: primary
 related_work:
-  - ref: rw:vit-registers
+  - name: "Vision Transformers Need Registers"
+    anchor: https://arxiv.org/abs/2309.16588
     role: context
-  - ref: rw:attnlrp
+  - name: "AttnLRP"
+    anchor: https://arxiv.org/abs/2402.05602
     role: context
 related_findings: []

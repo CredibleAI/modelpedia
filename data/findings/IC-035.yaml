@@ -1,0 +1,35 @@
+id: IC-035
+title: Removing the inductive bias of locality from Vision Transformers improves or matches performance
+  on classification and regression tasks.
+description: The paper compares a standard Vision Transformer (ViT), which uses non-degenerate patches
+  (e.g., 2x2), to a locality-free variant (ViT/1) that treats each individual pixel as a token with
+  learnable position embeddings. This locality-free model is evaluated on CIFAR-100, ImageNet, Oxford-102-Flowers,
+  and NYU-v2 depth estimation. The key finding is that the pixel-based transformer, which has zero prior
+  about the 2D grid structure, consistently outperforms its patch-based counterpart across all these
+  tasks, challenging the conventional belief that locality is a fundamental inductive bias for vision.
+models:
+- ref: model:vit
+concepts: []
+sources:
+- ref: source:image-worth-more-than-16x16-patches
+datasets:
+- ref: dataset:cifar-100
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:oxford-102-flowers
+  role: eval
+- ref: dataset:nyu-v2
+  role: eval
+methods: []
+related_work:
+- ref: model:vit
+  role: builds-on
+evidence_type: correlational
+key_metric: 'CIFAR-100: ViT-t/2 (83.6% acc@1) vs. ViT-t/1 (85.1%); ViT-s/2 (83.7%) vs. ViT-s/1 (86.4%).
+  ImageNet: ViT-b/2 (75.7%) vs. ViT-b/1 (76.1%). Oxford-102-Flower: ViT-s/2 (45.8%) vs. ViT-s/1 (46.3%).
+  NYU-v2 RMSE: ViT-s/2 (0.80) vs. ViT-s/1 (0.72).'
+caveat: The paper notes that the pixel-based transformer is computationally expensive due to the quadratic
+  complexity of self-attention, making it 'more of an approach for investigation, and less for applications.'
+review_status: draft
+extracted_by: automatic-extraction

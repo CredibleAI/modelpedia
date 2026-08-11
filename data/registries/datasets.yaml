@@ -2,9 +2,8 @@ dataset:copernicus:
   name: Copernicus Data Space Ecosystem
   anchor: https://dataspace.copernicus.eu/
   artifact: null
-  note: >
-    access portal for Sentinel imagery rather than a fixed dataset release; what a study drew
-    from it is defined by the study, not by a version number
+  note: access portal for Sentinel imagery rather than a fixed dataset release; what a study drew from
+    it is defined by the study, not by a version number
 
 dataset:terramesh:
   name: TerraMesh
@@ -25,27 +24,24 @@ dataset:patternnet:
   note: null
 
 dataset:mscoco:
-  name: MS COCO
+  name: MS COCO / COCO
   anchor: https://arxiv.org/abs/1405.0312
   artifact: https://huggingface.co/datasets/clip-benchmark/wds_mscoco_captions
-  note: >
-    the artifact is the webdataset packaging of the captions split used in CLIP benchmarking,
-    not the full COCO release
+  note: the artifact is the webdataset packaging of the captions split used in CLIP benchmarking, not
+    the full COCO release
 
 dataset:imagenet1k:
-  name: ImageNet-1k
+  name: ImageNet-1k / ImageNet
   anchor: https://arxiv.org/abs/1409.0575
   artifact: https://huggingface.co/datasets/ILSVRC/imagenet-1k
-  note: >
-    ImageNet-1k is the ILSVRC classification subset; the anchor is the challenge paper that
-    defines it
+  note: ImageNet-1k is the ILSVRC classification subset; the anchor is the challenge paper that defines
+    it
 
 dataset:luna25:
   name: LUNA25
   anchor: https://doi.org/10.5281/zenodo.15094631
   artifact: null
-  note: >
-    curated subset of NLST, 4069 scans from 2120 patients; the Zenodo record is what the source
+  note: curated subset of NLST, 4069 scans from 2120 patients; the Zenodo record is what the source
     paper cites, and it is both the reference and the release
 
 dataset:nlst:
@@ -58,14 +54,397 @@ dataset:ildct:
   name: iLDCT
   anchor: null
   artifact: null
-  description: >
-    Internal screening dataset, 243 scans from 145 patients.
-  note: no public release
+  description: Internal screening dataset, 243 scans from 145 patients.
+  note: 'no anchor: the set comes from a student report in sources_pdfs/ and is not a public release'
 
 dataset:major-tom-core-s2l2a:
   name: Major TOM Core-S2L2A
   anchor: https://arxiv.org/abs/2402.12095
   artifact: https://huggingface.co/datasets/Major-TOM/Core-S2L2A
-  note: >
-    Sentinel-2 Level-2A subset of the Major TOM Core global patch collection; the anchor is the
+  note: Sentinel-2 Level-2A subset of the Major TOM Core global patch collection; the anchor is the
     Major TOM paper that defines the collection
+
+dataset:cifar-10:
+  name: CIFAR-10
+  anchor: https://www.cs.toronto.edu/~kriz/cifar.html
+  artifact: null
+  note: 'anchor is the dataset''s official page, which is the most authoritative reference that exists
+    for it: the underlying reference is Krizhevsky''s 2009 technical report "Learning multiple layers
+    of features from tiny images", which carries no arXiv id or DOI'
+
+dataset:cifar-100:
+  name: CIFAR-100
+  anchor: https://www.cs.toronto.edu/~kriz/cifar.html
+  artifact: null
+  note: 'anchor is the dataset''s official page, which is the most authoritative reference that exists
+    for it: the underlying reference is Krizhevsky''s 2009 technical report "Learning multiple layers
+    of features from tiny images", which carries no arXiv id or DOI'
+
+dataset:mnist:
+  name: MNIST
+  anchor: null
+  artifact: null
+  note: named in the citing paper without a reference entry, so there is no citable anchor
+
+dataset:svhn:
+  name: SVHN
+  anchor: null
+  artifact: null
+  note: named in the citing paper without a reference entry, so there is no citable anchor
+
+dataset:places365:
+  name: Places365
+  anchor: null
+  artifact: null
+  note: named in the citing paper without a reference entry, so there is no citable anchor
+
+dataset:inaturalist:
+  name: iNaturalist
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:imagewoof:
+  name: ImageWoof
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:oxford-102-flowers:
+  name: Oxford-102-Flowers
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:textures:
+  name: Textures
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:openimages-o:
+  name: OpenImages-O
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:ninco:
+  name: NINCO
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:ssb-hard:
+  name: SSB-hard
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:nyu-v2:
+  name: NYU-v2
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:mit-states:
+  name: MIT-States
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:ut-zappos:
+  name: UT-Zappos
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:cc3m:
+  name: Conceptual 3M / CC3M
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:cc12m:
+  name: CC12M
+  anchor: https://arxiv.org/abs/2102.08981
+  artifact: null
+  note: 'anchor found by search and checked against this entry: "Conceptual 12M: Pushing Web-Scale Image-Text
+    Pre-Training To Recognize Long-Tail Visual Concepts"'
+
+dataset:the-pile:
+  name: The Pile
+  anchor: https://arxiv.org/abs/2101.00027
+  artifact: null
+  note: null
+
+dataset:fineweb:
+  name: FineWeb
+  anchor: https://arxiv.org/abs/2406.17557
+  artifact: null
+  note: null
+
+dataset:wikitext-103:
+  name: Wikitext-103
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:wikidata:
+  name: Wikidata
+  anchor: null
+  artifact: https://www.wikidata.org
+  note: a live knowledge base rather than a fixed release, so what a study drew from it is defined by
+    the study and not by a version; the artifact is the base itself. The citing paper does give a reference
+    entry for it
+
+dataset:squad:
+  name: SQuAD
+  anchor: https://arxiv.org/abs/1606.05250
+  artifact: null
+  note: null
+
+dataset:triviaqa:
+  name: TriviaQA
+  anchor: https://arxiv.org/abs/1705.03551
+  artifact: null
+  note: null
+
+dataset:webquestions:
+  name: WebQuestions
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:eli5:
+  name: ELI5
+  anchor: https://arxiv.org/abs/1907.09190
+  artifact: null
+  note: null
+
+dataset:gsm8k:
+  name: GSM8K
+  anchor: https://arxiv.org/abs/2110.14168
+  artifact: null
+  note: null
+
+dataset:big-bench-hard:
+  name: Big-Bench Hard
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the citing paper attaches arXiv 2206.04615, which is BIG-bench ("Beyond
+    the Imitation Game") and not BIG-Bench Hard. Verified in the bibliography of corpus/text/st77ShxP1K.txt,
+    which prints no identifier for BBH itself'
+
+dataset:wizard-of-wikipedia:
+  name: Wizard of Wikipedia
+  anchor: https://arxiv.org/abs/1811.01241
+  artifact: null
+  note: null
+
+dataset:t-rex:
+  name: T-REx
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:codexglue:
+  name: CodeXGLUE
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:needle-in-a-haystack:
+  name: Needle-in-a-haystack
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:anthropic-hh:
+  name: Anthropic-HH
+  anchor: https://arxiv.org/abs/2204.05862
+  artifact: null
+  note: null
+
+dataset:ultrafeedback:
+  name: UltraFeedback
+  anchor: https://arxiv.org/abs/2310.01377
+  artifact: null
+  note: null
+
+dataset:wildjailbreak:
+  name: WildJailbreak
+  anchor: https://arxiv.org/abs/2406.18510
+  artifact: null
+  note: null
+
+dataset:sorrybench:
+  name: SorryBench
+  anchor: https://arxiv.org/abs/2406.14598
+  artifact: null
+  note: null
+
+dataset:figstep:
+  name: FigStep
+  anchor: https://arxiv.org/abs/2311.05608
+  artifact: null
+  note: null
+
+dataset:mm-safetybench:
+  name: MM-SafetyBench
+  anchor: https://arxiv.org/abs/2311.17600
+  artifact: null
+  note: null
+
+dataset:siuo:
+  name: SIUO
+  anchor: https://arxiv.org/abs/2406.15279
+  artifact: null
+  note: null
+
+dataset:mmke-bench:
+  name: MMKE-Bench
+  anchor: https://openreview.net/forum?id=VVO3ApdMUE
+  artifact: null
+  note: introduced by the paper that uses it, so the anchor is that paper; the dataset has no separate
+    release of its own that the source prints
+
+dataset:nl-eye:
+  name: NL-Eye
+  anchor: https://openreview.net/forum?id=2zmO1GVT0Y
+  artifact: null
+  note: introduced by the paper that uses it, so the anchor is that paper; the dataset has no separate
+    release of its own that the source prints
+
+dataset:aha-dataset:
+  name: AHA dataset
+  anchor: https://openreview.net/forum?id=JVkdSi7Ekg
+  artifact: null
+  note: introduced by the paper that uses it, so the anchor is that paper; the dataset has no separate
+    release of its own that the source prints
+
+dataset:benchform:
+  name: BENCHFORM
+  anchor: https://openreview.net/forum?id=st77ShxP1K
+  artifact: null
+  note: introduced by the paper that uses it, so the anchor is that paper; the dataset has no separate
+    release of its own that the source prints
+
+dataset:multitp:
+  name: MultiTP
+  anchor: https://openreview.net/forum?id=VEqPDZIDAh
+  artifact: null
+  note: introduced by the paper that uses it, so the anchor is that paper; the dataset has no separate
+    release of its own that the source prints
+
+dataset:moral-machine:
+  name: Moral Machine dataset
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:maniskill-fail:
+  name: Maniskill-Fail
+  anchor: https://openreview.net/forum?id=JVkdSi7Ekg
+  artifact: null
+  note: introduced by the paper that uses it, so the anchor is that paper; the dataset has no separate
+    release of its own that the source prints
+
+dataset:robofail:
+  name: Robofail
+  anchor: https://arxiv.org/abs/2306.15724
+  artifact: null
+  note: null
+
+dataset:ravel:
+  name: RAVEL
+  anchor: https://doi.org/10.18653/v1/2024.acl-long.470
+  artifact: null
+  note: null
+
+dataset:ioi:
+  name: IOI dataset
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:hust-obs:
+  name: HUST-OBS
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:evobc:
+  name: EVOBC
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:o2br:
+  name: O2BR
+  anchor: https://openreview.net/forum?id=hL5jone2Oh
+  artifact: null
+  note: introduced by the paper that uses it, so the anchor is that paper; the dataset has no separate
+    release of its own that the source prints
+
+dataset:obi-component-20:
+  name: OBI Component 20
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'
+
+dataset:obi-rejoin:
+  name: OBI-Rejoin
+  anchor: https://openreview.net/forum?id=hL5jone2Oh
+  artifact: null
+  note: introduced by the paper that uses it, so the anchor is that paper; the dataset has no separate
+    release of its own that the source prints
+
+dataset:yinqiwenyuan-detection:
+  name: Yinqiwenyuandetection
+  anchor: null
+  artifact: null
+  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
+    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
+    than in the source'

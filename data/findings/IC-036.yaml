@@ -1,0 +1,27 @@
+id: IC-036
+title: Removing locality from Vision Transformers improves performance in self-supervised learning via
+  Masked Autoencoding.
+description: The paper extends its investigation to self-supervised learning, using the Masked Autoencoder
+  (MAE) framework. They compare the standard ViT with patches (ViT/2) against their locality-free pixel-based
+  variant (ViT/1) for pre-training on CIFAR-100. After pre-training, the models are fine-tuned for classification.
+  The results show that the locality-free variant consistently achieves higher top-1 and top-5 accuracy
+  compared to the patch-based baseline, confirming that the finding generalizes beyond supervised learning.
+models:
+- ref: model:vit
+concepts: []
+sources:
+- ref: source:image-worth-more-than-16x16-patches
+datasets:
+- ref: dataset:cifar-100
+  role: eval
+methods: []
+related_work:
+- name: MAE
+  role: builds-on
+evidence_type: correlational
+key_metric: 'CIFAR-100 fine-tuning: ViT-t/2 (85.7% acc@1) vs. ViT-t/1 (86.0%); ViT-s/2 (87.4%) vs. ViT-s/1
+  (87.7%).'
+caveat: The study is limited to CIFAR-100 due to its inherent 32x32 size, which allows for a full exploration
+  of pixels as tokens.
+review_status: draft
+extracted_by: automatic-extraction

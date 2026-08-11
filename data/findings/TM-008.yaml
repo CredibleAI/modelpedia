@@ -33,7 +33,8 @@ methods:
     role: supporting
   - ref: method:koppen-geiger
 related_work:
-  - ref: rw:tile2vec
+  - name: "Tile2Vec: unsupervised representation learning for spatially distributed data"
+    anchor: https://arxiv.org/abs/1805.02855
     role: builds-on
 related_findings:
   - TM-009

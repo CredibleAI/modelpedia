@@ -30,7 +30,8 @@ methods:
   - ref: method:mean-difference-concept-vector
     role: primary
 related_work:
-  - ref: rw:mikolov
+  - name: "Linguistic regularities in continuous space word representations"
+    anchor: https://aclanthology.org/N13-1090/
     role: builds-on
 related_findings:
   - TM-002

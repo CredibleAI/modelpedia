@@ -1,0 +1,23 @@
+id: IC-041
+title: CLIP and SigLIP use the modality gap to control logit entropy
+description: The paper finds that the modality gap can serve as a mechanism to adjust the entropy (uncertainty)
+  of the output logits. When the temperature parameter is frozen, models increase the modality gap to
+  achieve the same entropy as models with a learnable temperature. This suggests the gap is a flexible
+  tool for controlling the logit entropy on a per-sample basis, rather than a simple bug.
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:two-effects-one-trigger-modality-gap
+datasets:
+- ref: dataset:cc12m
+  role: train
+methods: []
+related_work: []
+evidence_type: interventional
+key_metric: Modality gap (l2m & rmg) and entropy over logits are similar for frozen temperature and
+  learnable temperature settings after fine-tuning.
+caveat: The paper does not claim a causal relationship; it states that the changes to the embedding
+  are 'measurable by the modality gap'.
+review_status: draft
+extracted_by: automatic-extraction

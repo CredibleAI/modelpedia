@@ -26,7 +26,8 @@ methods:
   - ref: method:morans-i
     role: primary
 related_work:
-  - ref: rw:language-models-space-time
+  - name: "Language models represent space and time"
+    anchor: https://arxiv.org/abs/2310.02207
     role: builds-on
 related_findings:
   - TM-012

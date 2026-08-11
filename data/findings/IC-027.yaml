@@ -1,0 +1,63 @@
+id: IC-027
+title: LMM performance in deciphering oracle bone inscriptions is comparable to untrained humans for
+  common characters but declines for rarer and structurally complex characters
+description: The study evaluates the interpretive abilities of 23 LMMs on 140 oracle bone characters
+  across three datasets. Performance was measured using BERTScore to compare the model's generated English
+  descriptions against expert-labelled golden descriptions. For high-frequency characters, models like
+  GPT-4o, GPT-4V, and Gemini 1.5 Pro approached or exceeded the performance of a public-level human
+  baseline. However, performance decreased with lower character frequency, and was noticeably worse
+  for ideograms and structurally similar radical variants.
+models:
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-flash
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:gpt-4o
+- ref: model:qwen-vl
+  variant: variant:qwen-vl-max
+- ref: model:xgen-mm
+- ref: model:mplug-owl-3
+- ref: model:minicpm-v
+  variant: variant:minicpm-v-2-6
+- ref: model:moondream-2
+- ref: model:internvl-2
+  variant: variant:internvl-2-llama3-76b
+- ref: model:internvl-2
+  variant: variant:internvl-2-40b
+- ref: model:internvl-2
+  variant: variant:internvl-2-8b
+- ref: model:glm-4v
+  variant: variant:glm-4v-9b
+- ref: model:cogvlm-2
+  variant: variant:cogvlm-2-llama3-19b
+- ref: model:llava-next
+- ref: model:idefics-2
+  variant: variant:idefics-2-8b
+- ref: model:deepseek-vl
+- ref: model:internlm-xcomposer-2-vl
+- ref: model:llava-1-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:obi-bench-lmms-aid-study-ancient
+datasets:
+- ref: dataset:hust-obs
+  role: eval
+- ref: dataset:evobc
+  role: eval
+- ref: dataset:obi-component-20
+  role: eval
+methods:
+- ref: method:bertscore
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Average BERTScore on HUST-OBS: GPT-4o 0.3687, Gemini 1.5 Pro 0.3730, Public human 0.3943.
+  Average BERTScore on radical subset: 0.1636.'
+caveat: Decipherment is subjective and BERTScore is an approximation of semantic similarity, not definitive
+  accuracy. The evaluation is limited to 140 characters and only uses English descriptions, potentially
+  missing nuances of interpretation in other languages or from historical context.
+review_status: draft
+extracted_by: automatic-extraction

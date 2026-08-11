@@ -1,0 +1,28 @@
+id: IC-008
+title: Misaligned models tend to binarize moral preferences while better-aligned models capture probabilistic
+  nuances
+description: The paper decomposes overall misalignment into six moral dimensions and finds that poorly
+  aligned models like GPT-4o-mini exhibit extreme, binary preferences (e.g., always preferring humans
+  over animals at 100%), whereas better-aligned models like Llama 3.1 70B show more probabilistic, nuanced
+  preferences that better reflect human judgment distributions. The dimensions most strongly correlated
+  with overall misalignment are gender (correlation 0.87), age (0.69), and fitness (0.68), all with
+  p < 0.001.
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:llama-3-1
+concepts: []
+sources:
+- ref: source:language-model-alignment-multilingual-trolley-problems
+datasets:
+- ref: dataset:multitp
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Pearson correlation with overall misalignment: gender 0.87, age 0.69, fitness 0.68, status
+  0.45, number 0.44, species 0.30 (all p < 0.001)'
+caveat: The analysis assumes that human preference distributions can be represented as points in a 6-dimensional
+  space, which may oversimplify the complexity of moral judgments.
+review_status: draft
+extracted_by: automatic-extraction

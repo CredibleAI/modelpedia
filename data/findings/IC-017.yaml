@@ -1,0 +1,29 @@
+id: IC-017
+title: Truncating MLP weights improves few-shot Chain-of-Thought reasoning accuracy on GSM8K for Phi-3
+  and Llama-3.1-8B
+description: The paper evaluates the effect of LASER on the performance of Phi-3 and Llama-3.1-8B models
+  on the GSM8K math word problem benchmark using few-shot Chain-of-Thought prompting. For 1-shot and
+  2-shot settings, applying LASER improves accuracy compared to the full model. For example, Phi-3 accuracy
+  improves from 56.0% to 66.1% in the 1-shot setting.
+models:
+- ref: model:phi-3
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+concepts: []
+sources:
+- ref: source:distributional-associations-vs-context-reasoning-study
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+methods:
+- ref: method:chain-of-thought-prompting
+  role: primary
+- ref: method:layer-selective-rank-reduction
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: Phi-3 1-shot accuracy improves from 56.0% to 66.1% with LASER. Llama-3.1-8B 1-shot accuracy
+  improves from 44.7% to 46.1% with LASER.
+caveat: In the standard 8-shot setting, performance is worse with LASER.
+review_status: draft
+extracted_by: automatic-extraction

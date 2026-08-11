@@ -1,0 +1,39 @@
+id: IC-021
+title: Vision-language adaptation degrades safety in Llama-2-chat-7b even when training data is filtered
+  for safety
+description: The authors measure the attack success rate of Llama-2-chat-7b before and after adapting
+  it to a vision-language model (Llama-2-chat-vl) using data filtered to remove unsafe text and images.
+  They find that the average ASR on text-only safety benchmarks rises from 10.4% for the base LLM to
+  54.4% for the adapted LVLM, and on multimodal safety benchmarks the ASR reaches 96.2%. This degradation
+  occurs even though the training data was explicitly filtered for safety, indicating that the adaptation
+  process itself, rather than unsafe training data, is responsible for the safety loss.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:vision-language-adaptation-impact-safety-vision
+datasets:
+- ref: dataset:sorrybench
+  role: eval
+- ref: dataset:wildjailbreak
+  role: eval
+- ref: dataset:mm-safetybench
+  role: eval
+- ref: dataset:siuo
+  role: eval
+- ref: dataset:figstep
+  role: eval
+methods: []
+related_work:
+- name: Li et al. (2024)
+  anchor: https://arxiv.org/abs/2408.17003
+  role: builds-on
+evidence_type: correlational
+key_metric: text-only average ASR 10.4% (Llama-2-chat-7b) -> 54.4% (Llama-2-chat-vl); multimodal average
+  ASR 96.2% for Llama-2-chat-vl
+caveat: Only evaluated on the Llama-2 architecture and LLaVA-style adaptation; may not generalise to
+  all VL adaptation methods or all LLMs.
+review_status: draft
+extracted_by: automatic-extraction

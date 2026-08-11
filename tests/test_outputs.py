@@ -116,21 +116,19 @@ def test_findings_without_concepts_lists_an_uncovered_finding():
 
 def test_gaps_list_entities_that_should_have_an_anchor_but_do_not():
     lines = report.entities_without_anchors(audit_of())
-    assert "nothing to link to" in line_for(lines, "rw:earlier")
     assert "nothing to link to" in line_for(lines, "source:the-paper")
 
 
 def test_gaps_distinguish_an_entity_that_has_only_an_artifact():
     def artifact_only(entities):
-        entities["rw:earlier"]["artifact"] = "https://example.org/code"
+        entities["source:the-paper"]["artifact"] = "https://example.org/code"
     assert "artifact only" in line_for(report.entities_without_anchors(
-        audit_of(entities=artifact_only)), "rw:earlier")
+        audit_of(entities=artifact_only)), "source:the-paper")
 
 
-def test_gaps_never_report_concepts_or_people_as_missing_an_anchor():
+def test_gaps_never_report_concepts_as_missing_an_anchor():
     text = "\n".join(report.entities_without_anchors(audit_of()))
     assert "concept:idea" not in text
-    assert "person:ada-lovelace" not in text
 
 
 def test_unused_registry_entries_say_none_when_everything_is_reached():
@@ -429,7 +427,7 @@ def test_authors_are_collected_from_the_sources_without_repeating_anyone():
         findings["XX-001"]["sources"] = [{"ref": "source:the-paper"},
                                          {"ref": "source:the-paper"}]
     view = view_of(findings=twice)
-    assert render.finding_authors(view, view.nodes["XX-001"]["data"]) == ["person:ada-lovelace"]
+    assert render.finding_authors(view, view.nodes["XX-001"]["data"]) == ["Ada Lovelace"]
 
 
 def test_the_footer_does_not_expose_review_status():

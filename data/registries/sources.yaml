@@ -1,8 +1,8 @@
 source:terramind-concept-vectors:
   authors:
-    - ref: person:filip-fedor
-    - ref: person:jan-urbanek
-    - ref: person:krzysztof-czerniawski
+  - Filip Fedor
+  - Jan Urbanek
+  - Krzysztof Czerniawski
   title: Concept vectors in TerraMind latent space
   venue: Explainable Machine Learning 2025/2026, University of Warsaw
   date: null
@@ -12,8 +12,8 @@ source:terramind-concept-vectors:
 
 source:terramind-optical-sar-failure:
   authors:
-    - ref: person:jakub-slowikowski
-    - ref: person:mateusz-boryczka
+  - Jakub Słowikowski
+  - Mateusz Boryczka
   title: Where and Why TerraMind's Optical-to-SAR Generation Fails
   venue: Explainable Machine Learning 2025/2026, University of Warsaw
   date: null
@@ -23,10 +23,10 @@ source:terramind-optical-sar-failure:
 
 source:terramind-spatial-latent:
   authors:
-    - ref: person:kamil-dybek
-    - ref: person:jakub-harchut
-    - ref: person:oskar-kulinski
-  title: "Where Are We Now? Investigating Spatial Information in TerraMind's Latent Space"
+  - Kamil Dybek
+  - Jakub Harchut
+  - Oskar Kuliński
+  title: Where Are We Now? Investigating Spatial Information in TerraMind's Latent Space
   venue: Explainable Machine Learning 2025/2026, University of Warsaw
   date: null
   anchor: null
@@ -35,20 +35,20 @@ source:terramind-spatial-latent:
 
 source:terramind-attention-attribution:
   authors:
-    - ref: person:agnieszka-przybysz
-    - ref: person:piotr-dada
+  - Agnieszka Przybysz
+  - Piotr Dąda
   title: What does the TerraMind model look at and think about?
   venue: Explainable Machine Learning 2025/2026, University of Warsaw
-  date: "2026-06-19"
+  date: '2026-06-19'
   anchor: null
   artifact: null
   note: course report, no public URL; date taken from the title page
 
 source:terramind-geophysical-geometry:
   authors:
-    - ref: person:s-kiedrzynski
-    - ref: person:m-nowicki
-    - ref: person:m-wolinski
+  - S. Kiedrzyński
+  - M. Nowicki
+  - M. Woliński
   title: Geometry of Geophysical Knowledge in TerraMind's Latent Space
   venue: Explainable Machine Learning 2025/2026, University of Warsaw
   date: null
@@ -58,37 +58,320 @@ source:terramind-geophysical-geometry:
 
 source:fixlip:
   authors:
-    - ref: person:hubert-baniecki
-    - ref: person:maximilian-muschalik
-    - ref: person:fabian-fumagalli
-    - ref: person:barbara-hammer
-    - ref: person:eyke-hullermeier
-    - ref: person:przemyslaw-biecek
-  title: "FIXLIP: Explaining Similarity in Vision-Language Encoders with Weighted Banzhaf Interactions"
+  - Hubert Baniecki
+  - Maximilian Muschalik
+  - Fabian Fumagalli
+  - Barbara Hammer
+  - Eyke Hüllermeier
+  - Przemyslaw Biecek
+  title: 'FIXLIP: Explaining Similarity in Vision-Language Encoders with Weighted Banzhaf Interactions'
   venue: NeurIPS 2025
-  date: "2025-11-18"
+  date: '2025-11-18'
   anchor: https://arxiv.org/abs/2508.05430v2
   artifact: https://github.com/hbaniecki/fixlip
-  note: >
-    date and anchor point to v2, the version held in the project and verified against; the
-    camera-ready title page drops the FIXLIP prefix. Tables 1 and 2 disagree about CLIP
-    ViT-B/32 on the three-object pointing game, 0.83 against 0.82; FX-001 and FX-002 each
-    quote the table they rest on, so the two findings differ by one hundredth on that cell
+  note: 'date and anchor point to v2, the version held in the project and verified against; the camera-ready
+    title page drops the FIXLIP prefix. Tables 1 and 2 disagree about CLIP ViT-B/32 on the three-object
+    pointing game, 0.83 against 0.82; FX-001 and FX-002 each quote the table they rest on, so the two
+    findings differ by one hundredth on that cell
+
+    '
 
 source:sybil-audit:
   authors:
-    - ref: person:bartlomiej-sobieski
-    - ref: person:jakub-grzywaczewski
-    - ref: person:karol-dobiczek
-    - ref: person:mateusz-wojcik
-    - ref: person:tomasz-bartczak
-    - ref: person:patryk-szatkowski
-    - ref: person:przemyslaw-bombinski
-    - ref: person:matthew-tivnan
-    - ref: person:przemyslaw-biecek
-  title: "Auditing Sybil: Explaining Deep Lung Cancer Risk Prediction Through Generative Interventional Attributions"
+  - Bartlomiej Sobieski
+  - Jakub Grzywaczewski
+  - Karol Dobiczek
+  - Mateusz Wójcik
+  - Tomasz Bartczak
+  - Patryk Szatkowski
+  - Przemysław Bombiński
+  - Matthew Tivnan
+  - Przemyslaw Biecek
+  title: 'Auditing Sybil: Explaining Deep Lung Cancer Risk Prediction Through Generative Interventional
+    Attributions'
   venue: ICML 2026
-  date: "2026-05-13"
+  date: '2026-05-13'
   anchor: https://arxiv.org/abs/2602.02560v2
   artifact: null
   note: date and anchor point to v2, the version held in the project and verified against
+
+source:aha-vision-language-model-detecting-reasoning:
+  authors:
+  - Jiafei Duan
+  - Wilbert Pumacay
+  - Nishanth Kumar
+  - Yi Ru Wang
+  - Shulin Tian
+  - Wentao Yuan
+  - Ranjay Krishna
+  - Dieter Fox
+  - Ajay Mandlekar
+  - Yijie Guo
+  title: 'AHA: A Vision-Language-Model for Detecting and Reasoning Over Failures in Robotic Manipulation'
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=JVkdSi7Ekg
+  artifact: null
+  note: null
+
+source:as-we-not-as-you-think:
+  authors:
+  - Zhiyuan Weng
+  - Guikun Chen
+  - Wenguan Wang
+  title: 'Do as We Do, Not as You Think: the Conformity of Large Language Models'
+  venue: ICLR 2025 Oral
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=st77ShxP1K
+  artifact: null
+  note: null
+
+source:distributional-associations-vs-context-reasoning-study:
+  authors:
+  - Lei Chen
+  - Joan Bruna
+  - Alberto Bietti
+  title: 'Distributional Associations vs In-Context Reasoning: A Study of Feed-forward and Attention
+    Layers'
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=WCVMqRHWW5
+  artifact: null
+  note: null
+
+source:hyperdas-automating-mechanistic-interpretability-hypernetworks:
+  authors:
+  - Jiuding Sun
+  - Jing Huang
+  - Sidharth Baskaran
+  - Karel D'Oosterlinck
+  - Christopher Potts
+  - Michael Sklar
+  - Atticus Geiger
+  title: 'HyperDAS: Towards Automating Mechanistic Interpretability with Hypernetworks'
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=6fDjUoEQvm
+  artifact: null
+  note: null
+
+source:i-know-this-entity-knowledge-awareness:
+  authors:
+  - Javier Ferrando
+  - Oscar Balcells Obeso
+  - Senthooran Rajamanoharan
+  - Neel Nanda
+  title: Do I Know This Entity? Knowledge Awareness and Hallucinations in Language Models
+  venue: ICLR 2025 Oral
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=WCRQFlji2q
+  artifact: null
+  note: null
+
+source:image-worth-more-than-16x16-patches:
+  authors:
+  - Duy Kien Nguyen
+  - Mido Assran
+  - Unnat Jain
+  - Martin R. Oswald
+  - Cees G. M. Snoek
+  - Xinlei Chen
+  title: 'An Image is Worth More Than 16x16 Patches: Exploring Transformers on Individual Pixels'
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=tjNf0L8QjR
+  artifact: null
+  note: null
+
+source:interpreting-visual-information-processing-vision-language:
+  authors:
+  - Clement Neo
+  - Luke Ong
+  - Philip Torr
+  - Mor Geva
+  - David Krueger
+  - Fazl Barez
+  title: Towards Interpreting Visual Information Processing in Vision-Language Models
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=chanJGoa7f
+  artifact: null
+  note: null
+
+source:language-model-alignment-multilingual-trolley-problems:
+  authors:
+  - Zhijing Jin
+  - Max Kleiman-Weiner
+  - Giorgio Piatti
+  - Sydney Levine
+  - Jiarui Liu
+  - Fernando Gonzalez Adauto
+  - Francesco Ortu
+  - András Strausz
+  - Mrinmaya Sachan
+  - Rada Mihalcea
+  - Yejin Choi
+  - Bernhard Schölkopf
+  title: Language Model Alignment in Multilingual Trolley Problems
+  venue: ICLR 2025 Spotlight
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=VEqPDZIDAh
+  artifact: null
+  note: null
+
+source:learning-dynamics-llm-finetuning:
+  authors:
+  - Yi Ren
+  - Danica J. Sutherland
+  title: Learning Dynamics of LLM Finetuning
+  venue: ICLR 2025 Oral
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=tPNHOoZFl9
+  artifact: null
+  note: null
+
+source:mmke-bench-multimodal-editing-benchmark-diverse:
+  authors:
+  - Yuntao Du.
+  - Kailin Jiang
+  - Zhi Gao
+  - Chenrui Shi
+  - Zilong Zheng
+  - Siyuan Qi
+  - Qing Li
+  title: 'MMKE-Bench: A Multimodal Editing Benchmark for Diverse Visual Knowledge'
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=v8qABSeeKO
+  artifact: null
+  note: null
+
+source:nl-eye-abductive-nli-images:
+  authors:
+  - Mor Ventura
+  - Michael Toker
+  - Nitay Calderon
+  - Zorik Gekhman
+  - Yonatan Bitton
+  - Roi Reichart
+  title: 'NL-Eye: Abductive NLI For Images'
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=2zmO1GVT0Y
+  artifact: null
+  note: null
+
+source:obi-bench-lmms-aid-study-ancient:
+  authors:
+  - Zijian Chen
+  - tingzhu chen
+  - Wenjun Zhang
+  - Guangtao Zhai
+  title: 'OBI-Bench: Can LMMs Aid in Study of Ancient Script on Oracle Bones?'
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=hL5jone2Oh
+  artifact: null
+  note: null
+
+source:provably-safeguarding-classifier-from-ood-adversarial:
+  authors:
+  - Nicolas Atienza
+  - Johanne Cohen
+  - Christophe Labreuche
+  - Michele Sebag
+  title: Provably Safeguarding a Classifier from OOD and Adversarial Samples
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=kwCHcaeHrf
+  artifact: null
+  note: null
+
+source:retrieval-head-mechanistically-explains-long-context:
+  authors:
+  - Wenhao Wu
+  - Yizhong Wang
+  - Guangxuan Xiao
+  - Hao Peng
+  - Yao Fu
+  title: Retrieval Head Mechanistically Explains Long-Context Factuality
+  venue: ICLR 2025 Oral
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=EytBpUGB1Z
+  artifact: null
+  note: null
+
+source:secrets-your-manifolds-hold-understanding-local:
+  authors:
+  - Ahmed Imtiaz Humayun
+  - Ibtihel Amara
+  - Cristina Nader Vasconcelos
+  - Deepak Ramachandran
+  - Candice Schumann
+  - Junfeng He
+  - Katherine A Heller
+  - Golnoosh Farnadi
+  - Negar Rostamzadeh
+  - Mohammad Havaei
+  title: What Secrets Do Your Manifolds Hold? Understanding the Local Geometry of Generative Models
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=etif9j1CnG
+  artifact: null
+  note: null
+
+source:theory-token-level-harmonization-retrieval-augmented:
+  authors:
+  - Shicheng Xu
+  - Liang Pang
+  - Huawei Shen
+  - Xueqi Cheng
+  title: A Theory for Token-Level Harmonization in Retrieval-Augmented Generation
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=tbx3u2oZAu
+  artifact: null
+  note: null
+
+source:two-effects-one-trigger-modality-gap:
+  authors:
+  - Simon Schrodi
+  - David T. Hoffmann
+  - Max Argus
+  - Volker Fischer
+  - Thomas Brox
+  title: 'Two Effects, One Trigger: On the Modality Gap, Object Bias, and Information Imbalance in Contrastive
+    Vision-Language Models'
+  venue: ICLR 2025 Oral
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=uAFHCZRmXk
+  artifact: null
+  note: null
+
+source:vision-language-adaptation-impact-safety-vision:
+  authors:
+  - Seongyun Lee
+  - Geewook Kim
+  - Jiyeon Kim
+  - Hyunji Lee
+  - Hoyeon Chang
+  - Sue Hyun Park
+  - Minjoon Seo
+  title: How Does Vision-Language Adaptation Impact the Safety of Vision Language Models?
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=eXB5TCrAu9
+  artifact: null
+  note: null
+
+source:yolo-rd-introducing-relevant-compact-explicit:
+  authors:
+  - Hao-Tang Tsui
+  - Chien-Yao Wang
+  - Hong-Yuan Mark Liao
+  title: 'YOLO-RD: Introducing Relevant and Compact Explicit Knowledge to YOLO by Retriever-Dictionary'
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=KXDOmD7DM7
+  artifact: null
+  note: null

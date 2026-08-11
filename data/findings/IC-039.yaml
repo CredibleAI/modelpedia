@@ -1,0 +1,32 @@
+id: IC-039
+title: Object bias in CLIP and SigLIP is not correlated with performance on attribute tasks
+description: The paper measures object bias in contrastive VLMs using a new metric, Moad. They find
+  that models pre-trained on large-scale data tend to have a lower object bias than those on medium-scale
+  data. However, there is no clear correlation between object bias and performance on attribute recognition
+  tasks. The paper finds that performance improvements on object tasks correlate with improvements on
+  attribute tasks, suggesting that general model improvement also benefits attribute recognition.
+models:
+- ref: model:clip
+- ref: model:siglip
+concepts: []
+sources:
+- ref: source:two-effects-one-trigger-modality-gap
+datasets:
+- ref: dataset:mit-states
+  role: eval
+- ref: dataset:ut-zappos
+  role: eval
+- ref: dataset:mscoco
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+methods: []
+related_work:
+- name: Open-vocabulary attribute detection
+  role: context
+evidence_type: correlational
+key_metric: 'No clear correlation found; medium-to-strong correlations between object and attribute
+  performance (Kendall’s τ: 39.0 to 78.1).'
+caveat: The metric Moad is a new measure and its relationship to other forms of bias is not fully explored.
+review_status: draft
+extracted_by: automatic-extraction

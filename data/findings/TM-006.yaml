@@ -42,7 +42,9 @@ methods:
   - ref: method:control-task
     role: validation
 related_work:
-  - ref: rw:olmoearth
+  - name: "OlmoEarth: stable latent image modeling for multimodal earth observation"
+    note: >
+      the citing report gives this as a CVPR 2026 paper, pages 34806-34817, and prints no URL or identifier for it, so the anchor is left empty rather than guessed. This entry was previously removed from the database as a fabricated citation; it is not one. The check that removed it searched the extracted text for the string OlmoEarth, which the source PDF breaks across a line as Ol-moearth, so the search returned a false negative
     role: context
 related_findings:
   - TM-007

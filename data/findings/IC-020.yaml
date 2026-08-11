@@ -1,0 +1,34 @@
+id: IC-020
+title: LLaVA-1.5 extracts object information directly from visual tokens to the last token in mid-late
+  layers
+description: The study investigated how visual information flows to the last token position for object
+  identification. Using attention knockout, they selectively blocked attention connections between different
+  token groups across layers. Blocking attention from the object tokens and their surrounding buffer
+  to the last token position in mid-late layers led to a significant drop in prediction accuracy and
+  probability. In contrast, blocking attention from visual tokens to the last row of visual tokens had
+  minimal effect, suggesting the model does not rely on a summarization step in this last row for the
+  task. These findings were replicated with a sliding window on LLaVA-Phi-3.
+models:
+- ref: model:llava-1-5
+- ref: model:llava-phi
+  variant: variant:llava-phi-3
+concepts: []
+sources:
+- ref: source:interpreting-visual-information-processing-vision-language
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods:
+- ref: method:attention-knockout
+  role: primary
+related_work:
+- name: Basu et al. (2024)
+  anchor: https://arxiv.org/abs/2406.04236
+  role: compared-to
+evidence_type: interventional
+key_metric: Relative performance on the correct token drops to 0.88 (accuracy) and 0.82 (probability)
+  when blocking attention from object tokens to the last token position in mid-late layers.
+caveat: The analysis focuses on a simple object identification task and may not generalize to more complex
+  reasoning tasks.
+review_status: draft
+extracted_by: automatic-extraction

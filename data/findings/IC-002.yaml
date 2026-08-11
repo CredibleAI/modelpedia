@@ -1,0 +1,36 @@
+id: IC-002
+title: Even when VLMs select the correct hypothesis, their explanations are often invalid or unhelpful
+description: The paper evaluates free-text explanations from VLMs for correct predictions in the triplet
+  setup. Human annotators judged whether the explanation logically justifies why the correct hypothesis
+  is more plausible. Humans achieve 95% valid explanations, while the best VLM (Claude-Sonnet-3.5) only
+  achieves 50%. GPT-4o achieves 44% and 23% in separate and combined image strategies, respectively.
+  Many models score below 40%, indicating that even correct predictions are often based on shallow or
+  incorrect reasoning.
+models:
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:gpt-4o
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+- ref: model:llava-next
+- ref: model:fuyu
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:nl-eye-abductive-nli-images
+datasets:
+- ref: dataset:nl-eye
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: Human explanation validity 95%; Claude-Sonnet-3.5 separate images 50%, GPT-4o separate images
+  23%, GPT-4-Vision 39%, Gemini-1.5-Pro 38%
+caveat: Explanation evaluation is subjective and uses a binary validity judgment; the reference explanations
+  may not cover all possible valid reasoning paths.
+review_status: draft
+extracted_by: automatic-extraction

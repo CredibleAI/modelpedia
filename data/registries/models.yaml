@@ -1,24 +1,22 @@
 model:terramind:
   name: TerraMind
   developer:
-    - IBM
-    - ESA
-    - Forschungszentrum Jülich
-  date: "2025-04-15"
+  - IBM
+  - ESA
+  - Forschungszentrum Jülich
+  date: '2025-04-15'
   modality:
-    - image
+  - image
   domain:
-    - geospatial
+  - geospatial
   task:
-    - generative
+  - generative
   anchor: https://arxiv.org/abs/2504.11171
   artifact: https://github.com/IBM/terramind
-  description: >
-    Any-to-any generative multimodal foundation model for Earth observation, able to translate
-    between optical, SAR and auxiliary geospatial modalities. Pre-trained on TerraMesh with a
-    dual-scale encoder-decoder over both pixel patches and modality tokens.
-  note: >
-    the model is multimodal in the Earth-observation sense of several sensor modalities, all of
+  description: Any-to-any generative multimodal foundation model for Earth observation, able to translate
+    between optical, SAR and auxiliary geospatial modalities. Pre-trained on TerraMesh with a dual-scale
+    encoder-decoder over both pixel patches and modality tokens.
+  note: the model is multimodal in the Earth-observation sense of several sensor modalities, all of
     which are raster, so it carries a single modality value on this axis
   variants:
     variant:terramind-v1-tiny:
@@ -33,18 +31,17 @@ model:terramind:
 model:clip:
   name: CLIP
   developer:
-    - OpenAI
-  date: "2021-02-26"
+  - OpenAI
+  date: '2021-02-26'
   modality:
-    - image
-    - text
+  - image
+  - text
   domain: null
   task:
-    - discriminative
+  - discriminative
   anchor: https://arxiv.org/abs/2103.00020
   artifact: https://github.com/openai/CLIP
-  description: >
-    Dual-encoder model that maps images and text into a shared space and scores their similarity.
+  description: Dual-encoder model that maps images and text into a shared space and scores their similarity.
   variants:
     variant:clip-rn50:
       name: CLIP RN50
@@ -64,20 +61,18 @@ model:clip:
 model:siglip:
   name: SigLIP
   developer:
-    - Google DeepMind
-  date: "2023-03"
+  - Google DeepMind
+  date: 2023-03
   modality:
-    - image
-    - text
+  - image
+  - text
   domain: null
   task:
-    - discriminative
+  - discriminative
   anchor: https://arxiv.org/abs/2303.15343
   artifact: null
-  description: >
-    Vision-language dual encoder trained with a pairwise sigmoid loss instead of the softmax
-    contrastive loss used by CLIP, which removes the need for a global normalisation over the
-    batch.
+  description: Vision-language dual encoder trained with a pairwise sigmoid loss instead of the softmax
+    contrastive loss used by CLIP, which removes the need for a global normalisation over the batch.
   variants:
     variant:siglip-vit-b-16:
       name: SigLIP ViT-B/16
@@ -87,19 +82,18 @@ model:siglip:
 model:siglip-2:
   name: SigLIP-2
   developer:
-    - Google DeepMind
-  date: "2025-02"
+  - Google DeepMind
+  date: 2025-02
   modality:
-    - image
-    - text
+  - image
+  - text
   domain: null
   task:
-    - discriminative
+  - discriminative
   anchor: https://arxiv.org/abs/2502.14786
   artifact: null
-  description: >
-    Successor to SigLIP, adding captioning-based pretraining and self-distillation objectives to
-    the sigmoid loss.
+  description: Successor to SigLIP, adding captioning-based pretraining and self-distillation objectives
+    to the sigmoid loss.
   variants:
     variant:siglip2-vit-b-32:
       name: SigLIP-2 ViT-B/32
@@ -111,20 +105,990 @@ model:siglip-2:
 model:sybil:
   name: Sybil
   developer:
-    - Massachusetts Institute of Technology
-    - Massachusetts General Hospital
-  date: "2023-01-12"
+  - Massachusetts Institute of Technology
+  - Massachusetts General Hospital
+  date: '2023-01-12'
   modality:
-    - image
+  - image
   domain:
-    - medical
+  - medical
   task:
-    - discriminative
+  - discriminative
   anchor: https://doi.org/10.1200/JCO.22.01345
   artifact: https://github.com/reginabarzilaygroup/Sybil
-  description: >
-    Lung cancer risk prediction model built on a 3D ResNet-18 encoder over low-dose chest CT,
-    trained on NLST, predicting risk up to six years ahead from a single scan.
+  description: Lung cancer risk prediction model built on a 3D ResNet-18 encoder over low-dose chest
+    CT, trained on NLST, predicting risk up to six years ahead from a single scan.
   variants:
     variant:sybil-ensemble:
       name: Sybil ensemble (5 x 3D ResNet-18)
+
+model:llama-2:
+  name: Llama 2
+  developer: null
+  date: 2023-07
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2307.09288
+  artifact: null
+  description: Open-weight autoregressive language model family released in 7B, 13B and 70B sizes, with
+    chat-tuned counterparts. Used across the ICLR 2025 corpus as a standard open baseline for alignment,
+    safety and long-context work.
+  note: developer not named in any citing paper's reference entry, so the field is left empty rather
+    than filled from outside the sources
+  variants:
+    variant:llama-2-7b:
+      name: Llama 2 7B
+    variant:llama-2-7b-chat:
+      name: Llama 2 7B Chat / Llama-2-chat-7b
+    variant:llama-2-13b:
+      name: Llama 2 13B
+    variant:llama-2-70b:
+      name: Llama 2 70B
+
+model:llama-3:
+  name: Llama 3
+  developer:
+  - Meta
+  date: null
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: null
+  artifact: https://huggingface.co/meta-llama/Meta-Llama-3-8B
+  description: Second-generation open-weight Llama family, cited in the corpus in its 8B and 70B sizes.
+  note: 'no citable paper: the citing papers reference a Meta announcement post. The artifact is the
+    official Hugging Face release, whose card states the 8B and 70B sizes carried here'
+  variants:
+    variant:llama-3-8b:
+      name: Llama 3 8B
+    variant:llama-3-70b:
+      name: Llama 3 70B
+
+model:llama-3-1:
+  name: Llama 3.1
+  developer:
+  - Meta
+  date: 2024-07
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2407.21783
+  artifact: null
+  description: Open-weight language model family extending Llama 3 with a longer context window, cited
+    in the corpus in its 8B and 70B sizes and in the instruction-tuned 8B checkpoint.
+  variants:
+    variant:llama-3-1-8b:
+      name: Llama 3.1 8B
+    variant:llama-3-1-8b-instruct:
+      name: Llama 3.1 8B Instruct
+    variant:llama-3-1-70b:
+      name: Llama 3.1 70B
+
+model:gemma-2:
+  name: Gemma 2
+  developer: null
+  date: 2024-08
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2408.00118
+  artifact: null
+  description: Open-weight language model family released at 2B, 9B and 27B, used in the corpus as a
+    small to mid-size open baseline alongside Llama and Qwen.
+  note: cited as "Gemma Team" with no organisation named in the reference entry, so developer is left
+    empty rather than filled from outside the sources
+  variants:
+    variant:gemma-2-2b:
+      name: Gemma 2 2B
+    variant:gemma-2-2b-it:
+      name: Gemma 2 2B It
+    variant:gemma-2-9b:
+      name: Gemma 2 9B
+    variant:gemma-2-27b:
+      name: Gemma 2 27B
+
+model:mistral-7b:
+  name: Mistral 7B / Mistral
+  developer: null
+  date: 2023-10
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2310.06825
+  artifact: null
+  description: Open-weight 7B language model, present in the corpus in its base and instruction-tuned
+    releases at two point versions.
+  variants:
+    variant:mistral-7b-v0-1:
+      name: Mistral 7B v0.1
+    variant:mistral-7b-v0-2:
+      name: Mistral 7B v0.2
+    variant:mistral-7b-instruct-v0-2:
+      name: Mistral 7B Instruct v0.2
+
+model:mixtral-8x7b:
+  name: Mixtral 8x7B
+  developer: null
+  date: 2024-01
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2401.04088
+  artifact: null
+  description: Sparse mixture-of-experts language model built from 7B experts, cited in the corpus as
+    the mixture-of-experts point of comparison against dense open models.
+  variants:
+    variant:mixtral-8x7b-v0-1:
+      name: Mixtral 8x7B v0.1
+
+model:phi-3:
+  name: Phi-3
+  developer: null
+  date: 2024-04
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2404.14219
+  artifact: null
+  description: Small language model family trained on heavily filtered and synthetic data, cited in
+    the corpus at the Medium size and in the 3.5 point release at Mini and mixture-of-experts sizes.
+  note: the 3.5 releases are carried as variants rather than as a separate model, because the citing
+    papers reference them against this same technical report
+  variants:
+    variant:phi-3-medium:
+      name: Phi-3 Medium
+    variant:phi-3-5:
+      name: Phi-3.5
+    variant:phi-3-5-mini:
+      name: Phi-3.5 Mini
+    variant:phi-3-5-moe:
+      name: Phi-3.5 MoE
+
+model:qwen-1-5:
+  name: Qwen1.5
+  developer: null
+  date: 2023-09
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2309.16609
+  artifact: null
+  description: Open-weight language model family spanning 0.5B to 14B in the sizes the corpus cites,
+    with chat-tuned counterparts.
+  note: the anchor is the Qwen technical report, which the citing papers use for the whole series rather
+    than for this release specifically
+  variants:
+    variant:qwen-1-5-0-5b:
+      name: Qwen1.5 0.5B
+    variant:qwen-1-5-1-8b:
+      name: Qwen1.5 1.8B
+    variant:qwen-1-5-14b:
+      name: Qwen1.5 14B
+    variant:qwen-1-5-14b-chat:
+      name: Qwen1.5 14B Chat
+
+model:qwen-2:
+  name: Qwen 2
+  developer: null
+  date: null
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2407.10671
+  artifact: null
+  description: Open-weight language model family cited in the corpus at 7B and 72B, including the instruction-tuned
+    7B checkpoint.
+  note: 'anchor found by search and checked against this entry''s own description before it was recorded:
+    "Qwen2 Technical Report", covering 0.5B to 72B, which spans the 7B and 72B carried here'
+  variants:
+    variant:qwen-2-7b:
+      name: Qwen 2 7B
+    variant:qwen-2-7b-instruct:
+      name: Qwen 2 7B Instruct
+    variant:qwen-2-72b:
+      name: Qwen 2 72B
+
+model:yi:
+  name: Yi
+  developer: null
+  date: 2024-03
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2403.04652
+  artifact: null
+  description: Open-weight bilingual language model family, cited in the corpus at 6B and 34B including
+    the 200K long-context checkpoints.
+  variants:
+    variant:yi-6b:
+      name: Yi 6B
+    variant:yi-6b-200k:
+      name: Yi 6B 200K
+    variant:yi-34b-200k:
+      name: Yi 34B 200K
+
+model:glm-4:
+  name: GLM-4
+  developer: null
+  date: 2024-06
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2406.12793
+  artifact: null
+  description: Bilingual language model family, cited in the corpus in its Plus release as a closed-weight
+    comparison point.
+  variants:
+    variant:glm-4-plus:
+      name: GLM-4 Plus
+
+model:pythia:
+  name: Pythia
+  developer: null
+  date: null
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2304.01373
+  artifact: https://github.com/EleutherAI/pythia
+  description: Suite of language models trained on one corpus in a fixed data order across sizes, built
+    to make training dynamics comparable between scales. Cited in the corpus from 410M to 2.8B.
+  note: 'anchor found by search rather than in a citing paper, and checked against this entry''s own
+    description before it was recorded: "Pythia: A Suite for Analyzing Large Language Models Across
+    Training and Scaling"'
+  variants:
+    variant:pythia-410m:
+      name: Pythia 410M
+    variant:pythia-1b:
+      name: Pythia 1B
+    variant:pythia-1-4b:
+      name: Pythia 1.4B
+    variant:pythia-2-8b:
+      name: Pythia 2.8B
+
+model:opt:
+  name: OPT
+  developer: null
+  date: null
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2205.01068
+  artifact: null
+  description: Open pre-trained transformer language model family, cited in the corpus at 6.7B.
+  note: 'anchor found by search and checked against this entry: "OPT: Open Pre-trained Transformer Language
+    Models", spanning 125M to 175B, which covers the 6.7B carried here'
+  variants:
+    variant:opt-6-7b:
+      name: OPT 6.7B
+
+model:gpt-4:
+  name: GPT-4
+  developer:
+  - OpenAI
+  date: 2023-03
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2303.08774
+  artifact: null
+  description: Closed-weight multimodal language model served through an API, used across the corpus
+    as the strongest general-purpose baseline, including its vision-enabled release.
+  variants:
+    variant:gpt-4-0613:
+      name: GPT-4 0613
+    variant:gpt-4v:
+      name: GPT-4V / GPT-4 vision
+
+model:gpt-4o:
+  name: GPT-4o
+  developer:
+  - OpenAI
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2410.21276
+  artifact: https://openai.com/index/gpt-4o-system-card/
+  description: Closed-weight multimodal model served through an API, the most frequently measured model
+    in the corpus, present in four of the twenty-one papers.
+  note: 'anchor found by search and checked against this entry: the GPT-4o System Card, which OpenAI
+    also publishes on its own site. The citing papers in this corpus attach the older GPT-4 technical
+    report instead'
+  variants:
+    variant:gpt-4o-0513:
+      name: GPT-4o 0513
+    variant:gpt-4o-0806:
+      name: GPT-4o 0806
+    variant:gpt-4o-mini:
+      name: GPT-4o mini
+
+model:gpt-3:
+  name: GPT-3
+  developer:
+  - OpenAI
+  date: null
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: null
+  artifact: null
+  description: Closed-weight autoregressive language model, cited in the corpus in its instruction-tuned
+    text-davinci-003 release.
+  note: 'no anchor recorded: the paper behind it is Brown et al., "Language Models are Few-Shot Learners",
+    NeurIPS 2020, but no search returned its identifier from a source, so writing one here would be
+    memory rather than evidence'
+  variants:
+    variant:text-davinci-003:
+      name: text-davinci-003
+
+model:gpt-3-5:
+  name: GPT-3.5
+  developer:
+  - OpenAI
+  date: null
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: null
+  artifact: null
+  description: Closed-weight language model served through an API, cited in the corpus in a pinned long-context
+    chat release.
+  note: closed-weight model with no paper of its own. The citing paper attaches the InstructGPT reference,
+    which describes the training method rather than this release, so no anchor is recorded
+  variants:
+    variant:gpt-3-5-turbo-16k-0613:
+      name: gpt-3.5-turbo-16k-0613
+
+model:gemini-1-5:
+  name: Gemini 1.5
+  developer:
+  - Google
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2403.05530
+  artifact: null
+  description: Closed-weight multimodal model family served through an API, cited in the corpus at the
+    Pro and Flash tiers.
+  note: 'anchor found by search rather than in a citing paper, and checked against this entry''s own
+    description before it was recorded: "Gemini 1.5: Unlocking multimodal understanding across millions
+    of tokens of context", which covers both the Pro and Flash tiers carried here'
+  variants:
+    variant:gemini-1-5-pro:
+      name: Gemini 1.5 Pro
+    variant:gemini-1-5-flash:
+      name: Gemini 1.5 Flash
+
+model:claude-3:
+  name: Claude 3
+  developer:
+  - Anthropic
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://www.anthropic.com/news/claude-3-family
+  artifact: null
+  description: Closed-weight multimodal model family served through an API, cited in the corpus at the
+    Opus tier.
+  note: closed-weight model with no paper; the anchor is the vendor announcement for the family, which
+    names the Opus tier carried here and links the model card
+  variants:
+    variant:claude-3-opus:
+      name: Claude 3 Opus
+
+model:claude-3-5:
+  name: Claude 3.5
+  developer:
+  - Anthropic
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://www.anthropic.com/news/claude-3-5-sonnet
+  artifact: null
+  description: Closed-weight multimodal model family served through an API, cited in the corpus at the
+    Sonnet tier.
+  note: closed-weight model with no paper; the anchor is the vendor announcement for the Sonnet tier
+    carried here
+  variants:
+    variant:claude-3-5-sonnet:
+      name: Claude 3.5 Sonnet
+
+model:llava-1-5:
+  name: LLaVA-1.5 / LLaVA-v1.5
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2310.03744
+  artifact: null
+  description: Open-weight vision-language model pairing a CLIP vision encoder with an open language
+    model through a projection layer, cited in the corpus at 7B and 13B.
+  note: 'anchor found by search rather than in a citing paper, and checked against this entry''s own
+    description before it was recorded: "Improved Baselines with Visual Instruction Tuning"'
+  variants:
+    variant:llava-1-5-7b:
+      name: LLaVA-1.5 7B
+    variant:llava-1-5-13b:
+      name: LLaVA-1.5 13B
+
+model:llava-next:
+  name: LLaVA-NeXT / LLaVA 1.6
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: null
+  artifact: https://huggingface.co/llava-hf
+  description: Successor to LLaVA-1.5 with higher input resolution, cited in the corpus on two different
+    language-model backbones. Also referred to as LLaVA 1.6.
+  note: 'no paper: the release was a blog post, which Hugging Face states explicitly on its cards. The
+    artifact is the official organisation holding the LLaVA-v1.6 releases'
+  variants:
+    variant:llava-next-llama3-8b:
+      name: LLaVA-NeXT Llama3-8B
+    variant:llava-next-qwen1-5-72b:
+      name: LLaVA-NeXT Qwen1.5-72B
+
+model:llava-onevision:
+  name: LLaVA-OneVision
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: null
+  artifact: null
+  description: Vision-language model in the LLaVA line trained for single-image, multi-image and video
+    inputs, cited in the corpus on a Qwen2 backbone.
+  note: named in the citing paper without a reference entry, so there is no citable anchor
+  variants:
+    variant:llava-onevision-qwen2-7b-ov:
+      name: LLaVA-OneVision Qwen2 7B OV
+
+model:llava-phi:
+  name: LLaVA-Phi
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2401.02330
+  artifact: null
+  description: Small vision-language model in the LLaVA line built on a Phi language backbone, cited
+    in the corpus in two generations.
+  note: 'anchor found by search and checked against this entry: "LLaVA-Phi: Efficient Multi-Modal Assistant
+    with Small Language Model", which builds LLaVA-1.5 on a Phi backbone, exactly as this entry says'
+  variants:
+    variant:llava-phi-2:
+      name: LLaVA-Phi
+    variant:llava-phi-3:
+      name: LLaVA-Phi-3
+
+model:qwen-vl:
+  name: Qwen-VL
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2308.12966
+  artifact: null
+  description: Vision-language model family on a Qwen backbone, cited in the corpus in its base and
+    Max releases.
+  note: 'anchor found by search and checked against this entry''s own description before it was recorded:
+    "Qwen-VL: A Versatile Vision-Language Model for Understanding, Localization, Text Reading, and Beyond"'
+  variants:
+    variant:qwen-vl-max:
+      name: Qwen-VL-Max
+
+model:qwen-2-vl:
+  name: Qwen2-VL
+  developer: null
+  date: 2024-09
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2409.12191
+  artifact: null
+  description: Vision-language model handling images at native resolution, cited in the corpus at 2B.
+  variants:
+    variant:qwen-2-vl-2b:
+      name: Qwen2-VL 2B
+
+model:internvl-2:
+  name: InternVL2
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: null
+  artifact: https://huggingface.co/OpenGVLab/InternVL2-8B
+  description: Open-weight vision-language model family, cited in the corpus at three sizes on three
+    different language backbones.
+  note: 'no anchor recorded on purpose: searching returns the InternVL paper, which is the previous
+    generation, not InternVL2. The artifact is the official Hugging Face repository for the 8B release,
+    one of the three sizes this corpus cites'
+  variants:
+    variant:internvl-2-8b:
+      name: InternVL2-8B
+    variant:internvl-2-40b:
+      name: InternVL2-40B
+    variant:internvl-2-llama3-76b:
+      name: InternVL2-Llama3-76B
+
+model:internlm-xcomposer-2-vl:
+  name: InternLM-XComposer2-VL
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2401.16420
+  artifact: null
+  description: Vision-language model built on an InternLM backbone for interleaved text and image composition.
+  note: 'anchor found by search and checked against this entry''s own description: "InternLM-XComposer2:
+    Mastering Free-form Text-Image Composition and Comprehension", built on InternLM2-7B, which is the
+    backbone the citing paper records'
+
+model:cogvlm-2:
+  name: CogVLM2
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2408.16500
+  artifact: null
+  description: Vision-language model on a Llama 3 backbone, cited in the corpus at 19B.
+  note: 'anchor found by search and checked against this entry''s own description: "CogVLM2: Visual
+    Language Models for Image and Video Understanding"'
+  variants:
+    variant:cogvlm-2-llama3-19b:
+      name: CogVLM2-Llama3-19B
+
+model:deepseek-vl:
+  name: DeepSeek-VL
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2403.05525
+  artifact: null
+  description: Open-weight vision-language model on a DeepSeek language backbone.
+  note: 'anchor found by search and checked against this entry''s own description before it was recorded:
+    "DeepSeek-VL: Towards Real-World Vision-Language Understanding"'
+
+model:glm-4v:
+  name: GLM-4V
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2408.16500
+  artifact: https://huggingface.co/THUDM/glm-4v-9b
+  description: Vision-language release of the GLM-4 family, cited in the corpus at 9B.
+  note: 'anchor found by search: the CogVLM2 paper states that the family it describes includes GLM-4V,
+    so it is the reference for this release too. The artifact is the official repository for the 9B
+    variant'
+  variants:
+    variant:glm-4v-9b:
+      name: GLM-4V-9B
+
+model:minicpm-v:
+  name: MiniCPM-V
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2408.01800
+  artifact: null
+  description: Small vision-language model aimed at on-device use, cited in the corpus in its 2.6 release
+    on a Qwen2 backbone.
+  note: 'anchor found by search and checked against this entry''s own description before it was recorded:
+    "MiniCPM-V: A GPT-4V Level MLLM on Your Phone"'
+  variants:
+    variant:minicpm-v-2-6:
+      name: MiniCPM-V 2.6
+
+model:idefics-2:
+  name: Idefics2
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2405.02246
+  artifact: null
+  description: Open-weight vision-language model on a Mistral backbone, cited in the corpus at 8B.
+  note: 'anchor found by search and checked against this entry''s own description before it was recorded:
+    "What matters when building vision-language models?", which introduces Idefics2 at 8B'
+  variants:
+    variant:idefics-2-8b:
+      name: Idefics2-8B
+
+model:mplug-owl-3:
+  name: mPLUG-Owl3
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2408.04840
+  artifact: null
+  description: Vision-language model on a Qwen2 backbone, cited in the corpus for long image sequences.
+  note: 'anchor found by search and checked against this entry''s own description before it was recorded:
+    "mPLUG-Owl3: Towards Long Image-Sequence Understanding in Multi-Modal Large Language Models"'
+
+model:xgen-mm:
+  name: XGen-MM
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2408.08872
+  artifact: null
+  description: Open-weight multimodal model, cited in the corpus in its interleaved instruction-tuned
+    4B release.
+  note: 'anchor found by search and checked against this entry''s own description before it was recorded:
+    "xGen-MM (BLIP-3): A Family of Open Large Multimodal Models", which releases the 4B carried here'
+
+model:moondream-2:
+  name: Moondream2
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: null
+  artifact: https://huggingface.co/vikhyatk/moondream2
+  description: Small open-weight vision-language model, cited in the corpus at a pinned release date.
+  note: no paper found; the artifact is the official Hugging Face repository, which is versioned by
+    release date and so matches the pinned release this corpus cites
+
+model:blip-2:
+  name: BLIP-2
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2301.12597
+  artifact: null
+  description: Vision-language model bridging a frozen image encoder and a frozen language model through
+    a querying transformer.
+  note: 'anchor found by search and checked against this entry: "BLIP-2: Bootstrapping Language-Image
+    Pre-training with Frozen Image Encoders and Large Language Models", whose lightweight Querying Transformer
+    is exactly what this entry describes'
+
+model:minigpt-4:
+  name: MiniGPT-4
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2304.10592
+  artifact: null
+  description: Vision-language model aligning a frozen visual encoder to a frozen language model with
+    a single projection layer.
+  note: 'anchor found by search and checked against this entry''s own description: "MiniGPT-4: Enhancing
+    Vision-Language Understanding with Advanced Large Language Models", whose abstract describes the
+    single projection layer this entry records'
+
+model:fuyu:
+  name: Fuyu
+  developer: null
+  date: null
+  modality:
+  - text
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: null
+  artifact: null
+  description: Vision-language model that feeds image patches straight into the language model without
+    a separate vision encoder.
+  note: the citing paper gives an author list with no arXiv id or DOI in the entry, so no anchor is
+    recorded
+
+model:jamba:
+  name: Jamba
+  developer: null
+  date: null
+  modality:
+  - text
+  domain: null
+  task:
+  - generative
+  anchor: null
+  artifact: null
+  description: Hybrid state-space and attention language model, cited in the corpus as a long-context
+    comparison point.
+  note: named in the citing paper without a reference entry, so there is no citable anchor
+
+model:vit:
+  name: ViT
+  developer: null
+  date: null
+  modality:
+  - image
+  domain: null
+  task:
+  - discriminative
+  anchor: https://arxiv.org/abs/2010.11929
+  artifact: null
+  description: Vision transformer applying a plain transformer to sequences of image patches. The backbone
+    most of the vision-language models in the corpus build on.
+  note: 'anchor found by search rather than in a citing paper, and checked against this entry''s own
+    description before it was recorded: "An Image is Worth 16x16 Words: Transformers for Image Recognition
+    at Scale"'
+  variants:
+    variant:vit-b-16:
+      name: ViT-B/16
+
+model:resnet:
+  name: ResNet
+  developer: null
+  date: null
+  modality:
+  - image
+  domain: null
+  task:
+  - discriminative
+  anchor: https://arxiv.org/abs/1512.03385
+  artifact: null
+  description: Convolutional image classifier built from residual blocks, still the standard convolutional
+    baseline in the corpus.
+  note: 'anchor found by search and checked against this entry''s own description: "Deep Residual Learning
+    for Image Recognition", the paper that introduces the residual blocks this entry describes'
+  variants:
+    variant:resnet-18:
+      name: ResNet-18
+
+model:vgg:
+  name: VGG
+  developer: null
+  date: null
+  modality:
+  - image
+  domain: null
+  task:
+  - discriminative
+  anchor: https://arxiv.org/abs/1409.1556
+  artifact: null
+  description: Deep convolutional image classifier built from stacked small-kernel convolutions.
+  note: 'anchor found by search and checked against this entry''s own description: "Very Deep Convolutional
+    Networks for Large-Scale Image Recognition", confirmed by opening the arXiv page: 3x3 filters at
+    16-19 weight layers, which is the VGG-16 carried here'
+  variants:
+    variant:vgg-16:
+      name: VGG-16
+
+model:dit:
+  name: DiT
+  developer: null
+  date: null
+  modality:
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: https://arxiv.org/abs/2212.09748
+  artifact: null
+  description: Diffusion model with a transformer backbone in place of the usual convolutional U-Net.
+  note: 'anchor found by search and checked against this entry: "Scalable Diffusion Models with Transformers",
+    which replaces the U-Net backbone with a transformer over latent patches, exactly as this entry
+    says'
+
+model:stable-diffusion:
+  name: Stable Diffusion
+  developer: null
+  date: null
+  modality:
+  - image
+  domain: null
+  task:
+  - generative
+  anchor: null
+  artifact: https://huggingface.co/CompVis/stable-diffusion-v1-4
+  description: Open-weight latent diffusion model for text-to-image generation, cited in the corpus
+    at version 1.4.
+  note: the latent-diffusion paper behind it is Rombach et al., CVPR 2022, but no search returned its
+    identifier from a source, so no anchor is recorded. The artifact is the official repository for
+    the 1.4 checkpoint this corpus cites
+  variants:
+    variant:stable-diffusion-1-4:
+      name: Stable Diffusion 1.4
+
+model:faster-r-cnn:
+  name: Faster R-CNN
+  developer: null
+  date: null
+  modality:
+  - image
+  domain: null
+  task:
+  - discriminative
+  anchor: null
+  artifact: null
+  description: Two-stage object detector with a learned region proposal network.
+  note: the citing paper gives an author list with no arXiv id or DOI in the entry, so no anchor is
+    recorded
+
+model:deformable-detr:
+  name: Deformable DETR
+  developer: null
+  date: null
+  modality:
+  - image
+  domain: null
+  task:
+  - discriminative
+  anchor: null
+  artifact: null
+  description: Transformer object detector using sparse deformable attention over a small set of sampling
+    points.
+  note: the citing paper gives an author list with no arXiv id or DOI in the entry, so no anchor is
+    recorded
+
+model:yolov7:
+  name: YOLOv7
+  developer: null
+  date: null
+  modality:
+  - image
+  domain: null
+  task:
+  - discriminative
+  anchor: https://arxiv.org/abs/2207.02696
+  artifact: null
+  description: Single-stage real-time object detector.
+  note: 'anchor found by search and checked against this entry''s own description: "YOLOv7: Trainable
+    bag-of-freebies sets new state-of-the-art for real-time object detectors"'
+
+model:yolov9:
+  name: YOLOv9
+  developer: null
+  date: null
+  modality:
+  - image
+  domain: null
+  task:
+  - discriminative
+  anchor: https://arxiv.org/abs/2402.13616
+  artifact: null
+  description: Single-stage real-time object detector, the generation after YOLOv7 in the corpus.
+  note: 'anchor found by search and checked against this entry''s own description: "YOLOv9: Learning
+    What You Want to Learn Using Programmable Gradient Information"'

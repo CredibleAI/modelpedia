@@ -43,16 +43,8 @@ def check_entity_dates(database):
 def check_authors(database):
     for key, entity in database.entities.items():
         for author in entity.get(keys.AUTHORS) or []:
-            if not isinstance(author, dict) or keys.REF not in author:
-                yield "registry: %s has an author that is not a reference" % key
-                continue
-            ref = author[keys.REF]
-            if not isinstance(ref, str):
-                yield "registry: %s has an author reference that is not a string" % key
-            elif not ref.startswith(graph_json.PERSON + ":"):
-                yield "registry: %s lists %s as an author, which is not a person" % (key, ref)
-            elif ref not in database.entities:
-                yield "registry: %s lists unknown author %s" % (key, ref)
+            if not isinstance(author, str) or not author.strip():
+                yield "registry: %s has an author that is not a name" % key
 
 
 def check_model_facets(database):
@@ -108,10 +100,14 @@ def check_finding_links(fid, finding, database):
             yield "%s: %s is not a list" % (fid, field)
             continue
         for link in links or []:
-            if not isinstance(link, dict) or keys.REF not in link:
+            if not isinstance(link, dict):
+                yield "%s: %s has an entry that is not a mapping" % (fid, field)
+                continue
+            inline = keys.REF not in link
+            if inline and not spec.inline:
                 yield "%s: %s has an entry that is not a reference" % (fid, field)
                 continue
-            allowed = {keys.REF}
+            allowed = {keys.NAME, keys.ANCHOR, keys.NOTE} if inline else {keys.REF}
             if field in schema.ROLE_FIELDS:
                 allowed.add(keys.ROLE)
             if field == schema.MODELS_FIELD:
@@ -120,10 +116,16 @@ def check_finding_links(fid, finding, database):
             if unknown_keys:
                 yield "%s: %s has unknown keys: %s" % (fid, field, ", ".join(unknown_keys))
 
-            ref = link[keys.REF]
-            error = reference_error(field, spec, ref, database.entities)
-            if error:
-                yield "%s: %s" % (fid, error)
+            if inline:
+                ref = link.get(keys.NAME)
+                if not isinstance(ref, str) or not ref.strip():
+                    yield "%s: %s has an entry with no name" % (fid, field)
+                    continue
+            else:
+                ref = link[keys.REF]
+                error = reference_error(field, spec, ref, database.entities)
+                if error:
+                    yield "%s: %s" % (fid, error)
 
             role = link.get(keys.ROLE)
             if role is not None:

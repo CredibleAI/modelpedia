@@ -1,0 +1,22 @@
+id: IC-016
+title: Truncating MLP weights in Pythia-1b increases the probability of the correct answer in a factual
+  recall task
+description: The paper evaluates the effect of LASER on the performance of Pythia-1b on a factual recall
+  task. They measure the average probability of predicting the target fact ('spain') and the generic
+  token 'the' for the prompt 'madrid is located in'. Applying LASER to the MLP weights of Pythia-1b
+  boosts the probability ratio of 'spain' over 'the' from 0.16x to 11.3x at 14k training steps.
+models:
+- ref: model:pythia
+concepts: []
+sources:
+- ref: source:distributional-associations-vs-context-reasoning-study
+datasets: []
+methods:
+- ref: method:layer-selective-rank-reduction
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: Average probability ratio of 'spain' over 'the' improves from 0.16x to 11.3x at 14k steps.
+caveat: The paper notes that better prompting could avoid the need for LASER in this case.
+review_status: draft
+extracted_by: automatic-extraction

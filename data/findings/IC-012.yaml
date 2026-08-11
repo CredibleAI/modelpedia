@@ -1,0 +1,49 @@
+id: IC-012
+title: Sparse autoencoders uncover entity recognition directions in Gemma 2 and Llama 3.1 models that
+  are causally relevant for knowledge refusal.
+description: Using sparse autoencoders (SAEs), the authors find linear directions in the residual stream
+  of the final token of an entity that detect whether the model can recall facts about that entity.
+  These directions, found in the base model, are shown to causally affect knowledge refusal in the chat-tuned
+  versions of Gemma 2 2b, Gemma 2 9b, and Llama 3.1 8b. Steering with the unknown entity latent increases
+  refusal rates for questions about known entities, while steering with the known entity latent causes
+  the model to hallucinate when asked about unknown entities. Weight orthogonalization against the unknown
+  direction reduces refusal rates.
+models:
+- ref: model:gemma-2
+  variant: variant:gemma-2-2b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:i-know-this-entity-knowledge-awareness
+datasets:
+- ref: dataset:wikidata
+  role: source
+- ref: dataset:the-pile
+  role: source
+- ref: dataset:fineweb
+  role: source
+methods:
+- ref: method:sparse-autoencoder
+  role: primary
+- ref: method:activation-steering
+  role: primary
+- ref: method:weight-orthogonalization
+  role: primary
+related_work:
+- name: Refusal in language models is mediated by a single direction
+  anchor: https://openreview.net/forum?id=ph3xaqme6c
+  role: builds-on
+evidence_type: interventional
+key_metric: 'Refusal rates on 100 unknown entity queries: Gemma 2 2b original ~20-80% (by entity type),
+  steering unknown latent ~100%, orthogonalized model ~0-10%; Gemma 2 9b original ~30-70%, steering
+  unknown latent ~70-100%, orthogonalized model ~0-20%; Llama 3.1 8b original ~80-100% on unknown entities,
+  steering unknown latent ~90-100%.'
+caveat: Results are shown for a specific set of entity types (players, movies, cities, songs) and may
+  not generalize to all forms of knowledge. The effect of steering with the known entity latent was
+  less pronounced in Llama 3.1 8b.
+review_status: draft
+extracted_by: automatic-extraction

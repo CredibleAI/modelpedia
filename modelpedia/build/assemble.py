@@ -25,6 +25,8 @@ def finding_edges(findings):
     for fid, finding in findings.items():
         for field, spec in schema.LINK_FIELDS.items():
             for link in finding.get(field) or []:
+                if keys.REF not in link:
+                    continue
                 edges.append(edge(fid, link[keys.REF], spec.edge_type, link.get(keys.ROLE)))
                 variant = link.get(keys.VARIANT)
                 if variant and variant != graph_json.VARIANT_NOT_SPECIFIED:
@@ -39,17 +41,10 @@ def variant_edges(entities):
             for key, entity in entities.items() if entity["type"] == graph_json.VARIANT]
 
 
-def author_edges(entities):
-    return [edge(key, author[keys.REF], graph_json.EDGE_AUTHORED_BY)
-            for key, entity in entities.items()
-            for author in entity.get(keys.AUTHORS) or []]
-
-
 def graph_from(database):
     return {
         "format_version": graph_json.FORMAT_VERSION,
         "nodes": finding_nodes(database.findings) + entity_nodes(database.entities),
         "edges": (finding_edges(database.findings)
-                  + variant_edges(database.entities)
-                  + author_edges(database.entities)),
+                  + variant_edges(database.entities)),
     }

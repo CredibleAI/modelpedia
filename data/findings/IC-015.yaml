@@ -1,0 +1,25 @@
+id: IC-015
+title: Truncating MLP weights in Pythia-1b increases the probability of the correct answer in an Indirect
+  Object Identification task
+description: The paper evaluates the effect of Layer-Selective Rank Reduction (LASER) on the performance
+  of Pythia models on an Indirect Object Identification (IOI) task. They measure the average probability
+  of predicting the correct indirect object token ('[io]'), the distractor subject token ('[s]'), and
+  the generic token 'the' over a dataset of 100 IOI sentences. Applying LASER to the MLP weights of
+  Pythia-1b boosts the probability ratio of '[io]' over 'the' from 2.3x to 12.3x at 14k training steps.
+models:
+- ref: model:pythia
+concepts: []
+sources:
+- ref: source:distributional-associations-vs-context-reasoning-study
+datasets:
+- ref: dataset:ioi
+  role: eval
+methods:
+- ref: method:layer-selective-rank-reduction
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: Average probability ratio of [io] over 'the' improves from 2.3x to 12.3x at 14k steps.
+caveat: The analysis is performed on a specific set of 100 generated IOI sentences.
+review_status: draft
+extracted_by: automatic-extraction

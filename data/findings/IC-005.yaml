@@ -1,0 +1,38 @@
+id: IC-005
+title: GPT-4o underperforms AHA and other VLMs in detecting and reasoning about robotic manipulation
+  failures across multiple datasets.
+description: 'The paper benchmarks several state-of-the-art VLMs, including GPT-4o, on their ability
+  to detect failures and provide natural language reasoning for those failures in robotic manipulation
+  tasks. The evaluation is done across three datasets: a held-out portion of the AHA dataset, the Maniskill-Fail
+  dataset, and the Robofail dataset. Metrics include ROUGE-L, cosine similarity, binary success rate,
+  and fuzzy matching. The results show that GPT-4o, even with 5-shot in-context learning, is outperformed
+  by the authors'' fine-tuned model, AHA, on nearly all metrics and datasets.'
+models:
+- ref: model:gpt-4o
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:aha-vision-language-model-detecting-reasoning
+datasets:
+- ref: dataset:aha-dataset
+  role: eval
+- ref: dataset:maniskill-fail
+  role: eval
+- ref: dataset:robofail
+  role: eval
+methods:
+- ref: method:rouge-l
+  role: eval
+- ref: method:cosine-similarity
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'On the AHA dataset (test), GPT-4o-ICL achieves ROUGE-L 0.226, cosine similarity 0.380,
+  binary success 0.611, fuzzy match 0.776. On Maniskill-Fail: ROUGE-L 0.341, cosine similarity 0.429,
+  binary success 0.971, fuzzy match 0.630. On Robofail: ROUGE-L 0.236, cosine similarity 0.429, binary
+  success 0.571, fuzzy match 0.418.'
+caveat: The paper notes that AHA was fine-tuned specifically for this failure reasoning task, while
+  GPT-4o is a general-purpose VLM evaluated in a zero-shot or few-shot setting, which may not be its
+  optimal use case.
+review_status: draft
+extracted_by: automatic-extraction

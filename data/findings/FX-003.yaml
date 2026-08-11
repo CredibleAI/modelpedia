@@ -25,7 +25,8 @@ methods:
   - ref: method:weighted-banzhaf
     role: primary
 related_work:
-  - ref: rw:eyes-wide-shut
+  - name: "Eyes Wide Shut? Exploring the visual shortcomings of multimodal LLMs"
+    anchor: https://arxiv.org/abs/2401.06209
     role: context
 related_findings:
   - FX-001

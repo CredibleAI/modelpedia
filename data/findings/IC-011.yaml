@@ -1,0 +1,26 @@
+id: IC-011
+title: Jailbreaking LLMs can reduce refusal rates and improve alignment with human preferences
+description: The paper applies an uncensoring technique to four open-source LLMs (Llama 3.1 8B, Gemma
+  2 2B, Qwen 2 7B, and Llama 2 7B) to reduce refusal rates on morally sensitive prompts. The uncensored
+  models show lower refusal rates across all six moral dimensions and better align with human preferences
+  compared to their censored counterparts, though refusal rates do not drop to zero.
+models:
+- ref: model:llama-3-1
+- ref: model:gemma-2
+- ref: model:qwen-2
+- ref: model:llama-2
+concepts: []
+sources:
+- ref: source:language-model-alignment-multilingual-trolley-problems
+datasets:
+- ref: dataset:multitp
+  role: eval
+methods: []
+related_work: []
+evidence_type: interventional
+key_metric: Refusal rates and preference decomposition scores for uncensored versus censored models
+  (reported in radar plots in Appendix F)
+caveat: Jailbreaking does not eliminate all refusals, and the approach is limited to a specific uncensoring
+  technique; findings may not generalize to other jailbreaking methods or other models.
+review_status: draft
+extracted_by: automatic-extraction

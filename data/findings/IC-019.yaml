@@ -1,0 +1,32 @@
+id: IC-019
+title: Visual token representations in LLaVA-1.5 evolve to align with interpretable text tokens
+description: Using the logit lens technique, the study analyzed how the representations of visual tokens
+  evolve across layers in the language model of LLaVA-1.5. In mid-to-late layers, decoding the activation
+  at a visual token position often yields a token that describes the object in the corresponding image
+  patch. Quantitatively, in the best-performing layer, an average of 23.7% of object patch token positions
+  correspond to the correct object class token. This refinement occurs despite the model not being pre-trained
+  on next-token prediction for visual inputs. A similar pattern was observed for Qwen2VL-2B, where 6.5%
+  of tokens corresponded correctly at the best layer.
+models:
+- ref: model:llava-1-5
+- ref: model:qwen-2-vl
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:interpreting-visual-information-processing-vision-language
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods:
+- ref: method:logit-lens
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 23.7% of object patch token positions correspond to the correct object class token at the
+  best-performing layer (layer 25.7). For Qwen2VL, 6.5% correspondence at layer 25.1.
+caveat: The logit lens is an inference technique and may not perfectly reflect the model's internal
+  processing. The numbers reported are averages from a specific set of images from the COCO validation
+  set.
+review_status: draft
+extracted_by: automatic-extraction

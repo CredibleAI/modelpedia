@@ -1,0 +1,60 @@
+id: IC-034
+title: Benefit and detriment in RAG can be traded off at token level for Llama-2, OPT and Mistral using
+  representation similarity
+description: The paper derives a theory that the effect of retrieval-augmented generation (RAG) can
+  be predicted at token level by comparing the similarity of distributions from the RAG model, the pure
+  LLM, and the retrieved text distribution. This theory was validated on Llama-2-7b, OPT-6.7b, and Mistral-7b
+  across several QA and generation tasks. In practice, the authors implement this theory as Tok-RAG,
+  which performs collaborative generation between the pure LLM and the RAG system at each token. The
+  method is shown to achieve better accuracy and robustness than baselines, especially when retrieved
+  passages contain noisy or irrelevant information.
+models:
+- ref: model:opt
+- ref: model:llama-2
+- ref: model:mistral-7b
+concepts: []
+sources:
+- ref: source:theory-token-level-harmonization-retrieval-augmented
+datasets:
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:webquestions
+  role: eval
+- ref: dataset:squad
+  role: eval
+- ref: dataset:wizard-of-wikipedia
+  role: eval
+- ref: dataset:t-rex
+  role: eval
+- ref: dataset:wikitext-103
+  role: eval
+- ref: dataset:eli5
+  role: eval
+- ref: dataset:codexglue
+  role: eval
+methods:
+- ref: method:tok-rag
+  role: primary
+- ref: method:crag
+  role: compared-to
+- ref: method:retrobust
+  role: compared-to
+- ref: method:self-rag
+  role: compared-to
+- ref: method:info-rag
+  role: compared-to
+related_work:
+- name: In-context learning as Bayesian inference
+  anchor: https://arxiv.org/abs/2111.02080
+  role: builds-on
+- name: In-context learning as gradient descent
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Accuracy on TriviaQA: 85.7 (0% hard negatives), 53.5 (100% hard negatives) with llama-2-7b;
+  AUC on benefit-detriment classification: 81.89 for llama-2-7b, 68.64 for opt-6.7b, 75.85 for mistral-7b
+  on Wikitext'
+caveat: The method's effectiveness depends on a hyperparameter for identifying the distribution fusion
+  layer; the theory relies on approximations using KL divergence and may have maximum error that decreases
+  as detriment increases
+review_status: draft
+extracted_by: automatic-extraction

@@ -26,7 +26,8 @@ methods:
   - ref: method:circular-correlation
     role: primary
 related_work:
-  - ref: rw:not-all-features-linear
+  - name: "Not all language model features are one-dimensionally linear"
+    anchor: https://arxiv.org/abs/2405.14860
     role: builds-on
 related_findings:
   - TM-011

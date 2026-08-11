@@ -39,10 +39,8 @@ ENTITIES = {
     "concept:idea": {"type": graph_json.CONCEPT, "name": "Idea"},
     "method:probe": {"type": graph_json.METHOD, "name": "Probe", "anchor": "https://example.org"},
     "dataset:pile": {"type": graph_json.DATASET, "name": "Pile", "anchor": "https://example.org"},
-    "rw:earlier": {"type": graph_json.RELATED_WORK, "name": "Earlier work"},
-    "person:ada-lovelace": {"type": graph_json.PERSON, "name": "Ada Lovelace"},
     "source:the-paper": {"type": graph_json.SOURCE, "name": "The paper", "date": "2026-01",
-                         "authors": [{"ref": "person:ada-lovelace"}]},
+                         "authors": ["Ada Lovelace"]},
 }
 
 FINDING = {
@@ -57,7 +55,8 @@ FINDING = {
     "sources": [{"ref": "source:the-paper"}],
     "datasets": [{"ref": "dataset:pile", "role": "eval"}],
     "methods": [{"ref": "method:probe", "role": "primary"}],
-    "related_work": [{"ref": "rw:earlier", "role": "builds-on"}],
+    "related_work": [{"name": "Earlier work", "anchor": "https://example.org/earlier",
+                      "role": "builds-on"}],
     "related_findings": [],
 }
 
@@ -109,28 +108,16 @@ def test_date_must_be_a_quoted_iso_string():
     assert "quoted ISO string" in only_error(sample_db(entities=break_date))
 
 
-def test_author_must_be_a_reference():
+def test_author_must_be_a_name_not_a_reference():
     def break_author(entities):
-        entities["source:the-paper"]["authors"] = ["Ada Lovelace"]
-    assert "not a reference" in only_error(sample_db(entities=break_author))
+        entities["source:the-paper"]["authors"] = [{"ref": "person:ada-lovelace"}]
+    assert "author that is not a name" in only_error(sample_db(entities=break_author))
 
 
-def test_author_reference_must_be_a_string():
-    def break_author(entities):
-        entities["source:the-paper"]["authors"] = [{"ref": 12}]
-    assert "author reference that is not a string" in only_error(sample_db(entities=break_author))
-
-
-def test_author_must_be_a_person():
-    def wrong_registry(entities):
-        entities["source:the-paper"]["authors"] = [{"ref": "model:thing"}]
-    assert "not a person" in only_error(sample_db(entities=wrong_registry))
-
-
-def test_author_must_exist():
-    def unknown(entities):
-        entities["source:the-paper"]["authors"] = [{"ref": "person:nobody"}]
-    assert "unknown author" in only_error(sample_db(entities=unknown))
+def test_an_empty_author_name_is_reported():
+    def blank(entities):
+        entities["source:the-paper"]["authors"] = ["   "]
+    assert "author that is not a name" in only_error(sample_db(entities=blank))
 
 
 def test_model_facet_must_be_a_list():
@@ -196,7 +183,13 @@ def test_closed_field_value_must_be_in_the_vocabulary():
 def test_link_must_be_a_reference():
     def bare_string(findings):
         findings["XX-001"]["methods"] = ["method:probe"]
-    assert "not a reference" in only_error(sample_db(findings=bare_string))
+    assert "not a mapping" in only_error(sample_db(findings=bare_string))
+
+
+def test_a_field_that_is_not_related_work_still_demands_a_reference():
+    def inline(findings):
+        findings["XX-001"]["methods"] = [{"name": "Some probe"}]
+    assert "not a reference" in only_error(sample_db(findings=inline))
 
 
 def test_link_field_must_be_a_list():
@@ -379,12 +372,19 @@ def test_a_variant_link_adds_an_edge_to_the_variant():
     assert [e["target"] for e in variant_edges] == ["variant:thing-small"]
 
 
-def test_a_person_is_reached_through_the_source_not_the_finding():
+def test_an_author_is_carried_on_the_source_and_makes_no_node():
     graph = assemble.graph_from(sample_db())
-    reached = graph_json.findings_reaching(graph)
-    assert reached["person:ada-lovelace"] == {"XX-001"}
-    assert not [e for e in graph["edges"]
-                if e["source"] == "XX-001" and e["target"].startswith("person:")]
+    assert not [n for n in graph["nodes"] if n["id"].startswith("person:")]
+    source = [n for n in graph["nodes"] if n["id"] == "source:the-paper"][0]
+    assert source["data"]["authors"] == ["Ada Lovelace"]
+
+
+def test_related_work_from_outside_the_registries_makes_no_node_and_no_edge():
+    graph = assemble.graph_from(sample_db())
+    assert not [n for n in graph["nodes"] if n["id"].startswith("rw:")]
+    assert not [e for e in graph["edges"] if e["type"] == graph_json.EDGE_CITES]
+    finding = [n for n in graph["nodes"] if n["id"] == "XX-001"][0]
+    assert finding["data"]["related_work"][0]["name"] == "Earlier work"
 
 
 def test_a_yaml_document_that_is_not_a_mapping_is_reported_not_raised():

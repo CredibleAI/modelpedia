@@ -1,0 +1,32 @@
+id: IC-018
+title: Object information is localized to specific visual tokens in LLaVA-1.5
+description: The study investigates whether object-specific information in the visual tokens of the
+  language model component of LLaVA-1.5 is localized or dispersed. Ablation experiments were conducted
+  where tokens corresponding to the object's spatial location were removed and replaced with a mean
+  embedding. This led to a significant drop in the model's ability to identify the object across three
+  tasks (generative description, binary polling, and VQA). The drop was substantially larger than when
+  ablating an equivalent number of random tokens or tokens identified as important via Integrated Gradients,
+  supporting the claim of localization.
+models:
+- ref: model:llava-1-5
+- ref: model:llava-phi
+concepts: []
+sources:
+- ref: source:interpreting-visual-information-processing-vision-language
+datasets:
+- ref: dataset:mscoco
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:integrated-gradients
+  role: compared-to
+related_work: []
+evidence_type: interventional
+key_metric: 'For generative description: 71.79% decrease (for +1 buffer, 33.4 tokens); For polling:
+  51.28% decrease; For VQA: 86.67% decrease.'
+caveat: The results are for object identification tasks and on the LLaVA family of models. The study
+  only investigates a subset of 100 images for the VQA task, and the filtering process for the dataset
+  may introduce bias.
+review_status: draft
+extracted_by: automatic-extraction

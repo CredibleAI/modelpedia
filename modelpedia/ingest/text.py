@@ -39,16 +39,12 @@ def join_small_caps(value):
     return SPACED_CAPS.sub(r"\1\2", str(value))
 
 
-def repaired(value):
-    return join_small_caps(join_hyphens(value))
-
-
 def normalise(value):
-    return WHITESPACE.sub(" ", fold(repaired(value))).strip()
+    return WHITESPACE.sub(" ", fold(join_hyphens(value))).strip()
 
 
 def flatten(value):
-    return NOT_ALNUM.sub("", fold(repaired(value)))
+    return NOT_ALNUM.sub("", fold(join_hyphens(value)))
 
 
 def read_pdf(path):
@@ -70,8 +66,9 @@ def document(path):
 
 
 def from_text(name, raw):
-    pages = tuple(raw.split(PAGE_BREAK))
-    return Document(name=name, pages=pages, text=normalise(raw), flat=flatten(raw))
+    body = join_small_caps(raw)
+    pages = tuple(body.split(PAGE_BREAK))
+    return Document(name=name, pages=pages, text=normalise(body), flat=flatten(body))
 
 
 def contains(doc, needle):

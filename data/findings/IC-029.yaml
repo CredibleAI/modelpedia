@@ -1,0 +1,43 @@
+id: IC-029
+title: Large language models show conformity to group answers in multi-agent interactions
+description: The paper introduces BENCHFORM, a benchmark built from Big-Bench Hard tasks, with five
+  interaction protocols (raw, correct guidance, wrong guidance, trust, doubt) to study conformity. Eleven
+  LLMs were evaluated, including GPT-4o, GPT-3.5, Llama3, Llama3.1, Gemma2, Qwen2, and GLM-4-Plus. Metrics
+  include accuracy, conformity rate (proportion of originally correct answers that become incorrect
+  under a protocol), and independence rate. All models show conformity under some protocols, with doubt
+  protocol being most effective at inducing errors (average CRD across five representative models is
+  47.2% versus CRW 23.5% and CRT 31.3%). Larger models generally show higher independence rates, e.g.,
+  Qwen2-72B IR 57.6% vs Qwen2-7B IR 20.3%.
+models:
+- ref: model:gpt-3-5
+- ref: model:gpt-4o
+- ref: model:llama-3
+- ref: model:llama-3-1
+- ref: model:gemma-2
+- ref: model:qwen-2
+- ref: model:glm-4
+  variant: variant:glm-4-plus
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:as-we-not-as-you-think
+datasets:
+- ref: dataset:benchform
+  role: eval
+- ref: dataset:big-bench-hard
+  role: source
+methods: []
+related_work:
+- name: Asch conformity experiments
+  role: context
+evidence_type: correlational
+key_metric: 'Conformity rates: for five representative LLMs average CRW=23.5%, CRT=31.3%, CRD=47.2%.
+  Accuracy drops: ∆C=24.1% (Gemma2-27B) to 1.0% (Llama3.1-405B); ∆W=22.8% (Gemma2-27B) to 2.2% (Llama3-70B);
+  ∆T=38.6% (Gemma2-27B) to 2.5% (Llama3.1-405B); ∆D=44.7% (Llama3-70B) to 13.0% (GPT-4o). Independence
+  rate ranges from 7.8% (Llama3.1-8B) to 57.6% (Qwen2-72B).'
+caveat: The benchmark uses multiple-choice questions which may not reflect real-world interactions;
+  agents are exposed to others' answers before providing their own. Conformity is measured as a necessary
+  but not sufficient test. Lack of public training details limits conclusions about causes of varying
+  conformity across architectures.
+review_status: draft
+extracted_by: automatic-extraction

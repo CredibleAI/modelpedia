@@ -34,7 +34,8 @@ methods:
   - ref: method:n-shapley
     role: primary
 related_work:
-  - ref: rw:melanoma-overview
+  - name: "An overview of melanoma detection in dermoscopy images using image processing and machine learning"
+    anchor: https://arxiv.org/abs/1601.07843
     role: context
 related_findings:
   - SY-003

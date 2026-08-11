@@ -29,7 +29,8 @@ methods:
   - ref: method:pca
     role: supporting
 related_work:
-  - ref: rw:seasonal-contrast
+  - name: "Seasonal Contrast: unsupervised pre-training from uncurated remote sensing data"
+    anchor: https://arxiv.org/abs/2103.16607
     role: compared-to
 related_findings:
   - TM-008

@@ -1,0 +1,57 @@
+id: IC-004
+title: Retrieval heads are sparse, universal, and causally responsible for long-context retrieval in
+  LLMs
+description: The paper identifies a small subset of attention heads, termed 'retrieval heads,' which
+  are primarily responsible for retrieving relevant information (copy-paste or paraphrase) from long
+  contexts. Across all tested model families (Llama, Yi, Qwen, Mistral, Mixtral) and variants, only
+  about 5% of attention heads are retrieval heads, and they exist intrinsically in base models. Causal
+  intervention by masking retrieval heads sharply degrades performance on the needle-in-a-haystack task,
+  while masking random non-retrieval heads has little effect. The study further shows that these heads
+  are dynamically activated based on context and that their role extends to extractive QA and chain-of-thought
+  reasoning.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-v0-2
+- ref: model:mixtral-8x7b
+  variant: variant:mixtral-8x7b-v0-1
+- ref: model:yi
+  variant: variant:yi-6b-200k
+- ref: model:yi
+  variant: variant:yi-6b
+- ref: model:yi
+  variant: variant:yi-34b-200k
+- ref: model:qwen-1-5
+  variant: variant:qwen-1-5-14b
+- ref: model:qwen-1-5
+  variant: variant:qwen-1-5-14b-chat
+- ref: model:jamba
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:retrieval-head-mechanistically-explains-long-context
+datasets:
+- ref: dataset:needle-in-a-haystack
+  role: eval
+methods:
+- ref: method:head-masking
+  role: primary
+related_work:
+- name: Induction heads
+  anchor: https://arxiv.org/abs/2209.11895
+  role: compared-to
+- name: Attention sinks
+  anchor: https://arxiv.org/abs/2309.17453
+  role: compared-to
+evidence_type: interventional
+key_metric: Accuracy drops from 94.7% (20 random heads masked) to 63.6% (top 20 retrieval heads masked)
+  on NIAH for Llama-2-7b-80k; retrieval heads are <5% of all heads; performance drops below 50% when
+  masking >50 retrieval heads.
+caveat: The retrieval score threshold of 0.1 and the focus on copy-paste behavior for detection may
+  not capture all retrieval functions; tasks heavily reliant on parametric knowledge (e.g., MMLU without
+  CoT) are less affected.
+review_status: draft
+extracted_by: automatic-extraction

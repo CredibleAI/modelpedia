@@ -1,0 +1,26 @@
+id: IC-010
+title: LLM responses to trolley problems are moderately robust across prompt paraphrases
+description: The paper tests consistency across five different paraphrases of each prompt on two models
+  (Llama 3 8B and 70B) across 14 languages. It reports that 75.9% of samples have consistent outputs
+  where at least four out of five paraphrases agree, pairwise F1 score is 78%, pairwise accuracy is
+  81%, and the average Fleiss' kappa is 0.56 (moderate agreement). The 70B model demonstrates higher
+  consistency than the 8B model.
+models:
+- ref: model:llama-3
+concepts: []
+sources:
+- ref: source:language-model-alignment-multilingual-trolley-problems
+datasets:
+- ref: dataset:multitp
+  role: eval
+methods:
+- ref: method:fleiss-kappa
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 75.9% samples consistent across >=4/5 paraphrases; pairwise F1 78%; pairwise accuracy 81%;
+  Fleiss' kappa 0.56
+caveat: Only tested on 14 languages and two models due to computational cost, and results may not generalize
+  to all models or languages.
+review_status: draft
+extracted_by: automatic-extraction

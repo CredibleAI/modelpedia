@@ -1,0 +1,35 @@
+id: IC-042
+title: No single knowledge editing method excels across all criteria when editing visual and user-specific
+  knowledge in LMMs.
+description: The paper evaluates five editing methods (fine-tuning, KE, MEND, SERAC, and IKE) on three
+  LMMs (BLIP-2, MiniGPT-4, LLaVA-1.5) using the proposed MMKE-Bench. Results show that in-context learning-based
+  IKE is strongest for reliability and generalization, memory-based SERAC excels at locality, and parameter-based
+  KE handles portability best. Visual semantic and user-specific edits are more challenging than visual
+  entity edits, evidenced by lower reliability and portability scores.
+models:
+- ref: model:blip-2
+- ref: model:minigpt-4
+- ref: model:llava-1-5
+concepts: []
+sources:
+- ref: source:mmke-bench-multimodal-editing-benchmark-diverse
+datasets:
+- ref: dataset:mmke-bench
+methods:
+- ref: method:knowledge-editor
+- ref: method:mend
+- ref: method:serac
+- ref: method:in-context-knowledge-editing
+related_work:
+- name: MMEdit
+- name: MIKE
+- name: MC-MKE
+- name: VLKEB
+evidence_type: correlational
+key_metric: IKE on LLaVA-1.5 achieves t-rel 63.49, i-rel 59.98, i-gen 59.98 for visual entity editing;
+  SERAC achieves t-loc 99.87 and i-loc 99.26; KE achieves port 48.77. All methods fall below 52% on
+  visual semantic portability.
+caveat: The results are contingent on the specific benchmark design and the choice of models and editing
+  methods; they may not generalize to all LMMs or editing scenarios.
+review_status: draft
+extracted_by: automatic-extraction

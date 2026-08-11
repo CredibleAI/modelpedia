@@ -1,0 +1,28 @@
+id: IC-037
+title: Removing locality from Diffusion Transformers improves image generation quality.
+description: The paper applies the locality-free principle to a Diffusion Transformer (DiT) for class-conditional
+  image generation on ImageNet. They compare their pixel-based variant (DiT/1) operating on latent tokens
+  from a VQGAN to the standard patch-based DiT (DiT/2). The pixel-based DiT achieves better FID, sFID,
+  and Inception Score, demonstrating that the removal of locality is beneficial even in a generative
+  setting with a different input representation and architecture.
+models:
+- ref: model:dit
+concepts: []
+sources:
+- ref: source:image-worth-more-than-16x16-patches
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods: []
+related_work:
+- ref: model:dit
+  role: builds-on
+- name: VQGAN
+  role: builds-on
+evidence_type: correlational
+key_metric: 'FID (↓): DiT-l/2 (4.16) vs. DiT-l/1 (4.05); sFID (↓): DiT-l/2 (4.97) vs. DiT-l/1 (4.66);
+  IS (↑): DiT-l/2 (210.18) vs. DiT-l/1 (232.95).'
+caveat: The extended training results (1400 epochs) show a larger gap, but the main comparison is at
+  400 epochs. The paper notes the high computational cost of the pixel-based approach.
+review_status: draft
+extracted_by: automatic-extraction

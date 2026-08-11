@@ -1,0 +1,37 @@
+id: IC-030
+title: Larger language models exhibit higher independence rates and lower conformity under some protocols
+description: The paper finds that model size correlates positively with independence rates across model
+  families. For example, Qwen2 series IR rises from 19.6% at 7B to 57.6% at 72B; Llama3.1-405B has the
+  second-highest IR at 56.1%. Conversely, smaller models show higher conformity, with Qwen2-7B showing
+  98.7% CRC and 95.3% CRW. The paper also notes architectural and training differences affect conformity,
+  e.g., Llama3.1-70B has low CRW of 9.2% attributed to larger high-quality datasets and long-context
+  pretraining.
+models:
+- ref: model:qwen-2
+- ref: model:llama-3
+- ref: model:llama-3-1
+- ref: model:gemma-2
+- ref: model:gpt-4o
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:as-we-not-as-you-think
+datasets:
+- ref: dataset:benchform
+  role: eval
+methods: []
+related_work:
+- name: Meta Llama 3.1 technical report
+  role: context
+- name: Qwen technical report
+  anchor: https://arxiv.org/abs/2309.16609
+  role: context
+evidence_type: correlational
+key_metric: 'Independence rates: Qwen2-7B 19.6%, Qwen2-72B 57.6%; Llama3.1-405B 56.1%. Conformity rates:
+  Qwen2-7B CRC=98.7%, CRW=95.3%, CRT=79.4%, CRD=27.5%; Llama3.1-70B CRC=12.0%, CRW=9.2%, CRT=15.6%,
+  CRD=73.5%.'
+caveat: The precise causes of differences across model sizes and families remain unclear due to limited
+  public information on training processes and alignment strategies.
+review_status: draft
+extracted_by: automatic-extraction

@@ -1,0 +1,59 @@
+id: IC-025
+title: LMMs exhibit poor fine-grained perception in locating individual characters on original oracle
+  bones
+description: The study evaluates the ability of 23 LMMs to perform dense object localization of oracle
+  bone characters on original oracle bone images (from the O2BR dataset) and inked rubbings (from the
+  Yinqiwenyuandetection dataset). The 'where' question required the models to return bounding boxes
+  for each detected character. Performance was measured using mean Intersection over Union (mIoU). All
+  evaluated models performed poorly, with Gemini 1.5 Pro significantly outperforming others by two orders
+  of magnitude, yet still far from public-level human performance.
+models:
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-flash
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:gpt-4o
+- ref: model:qwen-vl
+  variant: variant:qwen-vl-max
+- ref: model:xgen-mm
+- ref: model:mplug-owl-3
+- ref: model:minicpm-v
+  variant: variant:minicpm-v-2-6
+- ref: model:moondream-2
+- ref: model:internvl-2
+  variant: variant:internvl-2-llama3-76b
+- ref: model:internvl-2
+  variant: variant:internvl-2-40b
+- ref: model:internvl-2
+  variant: variant:internvl-2-8b
+- ref: model:glm-4v
+  variant: variant:glm-4v-9b
+- ref: model:cogvlm-2
+  variant: variant:cogvlm-2-llama3-19b
+- ref: model:llava-next
+- ref: model:idefics-2
+  variant: variant:idefics-2-8b
+- ref: model:deepseek-vl
+- ref: model:internlm-xcomposer-2-vl
+- ref: model:llava-1-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:obi-bench-lmms-aid-study-ancient
+datasets:
+- ref: dataset:o2br
+  role: eval
+- ref: dataset:yinqiwenyuan-detection
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'mIoU: Gemini 1.5 Pro 0.1126 (O2BR) / 0.0586 (Yinqiwenyuandetection); GPT-4o 0.0038 (O2BR)
+  / 0.0182 (Yinqiwenyuandetection)'
+caveat: Gemini 1.5 Pro's superior performance is attributed to its exclusive coordinate return function,
+  which is not a standard capability of other models. Performance is far from human-level, indicating
+  the task remains a significant challenge.
+review_status: draft
+extracted_by: automatic-extraction

@@ -1,0 +1,38 @@
+id: IC-022
+title: Safety layers in Llama-2-chat-7b show substantial divergence during VL adaptation, correlating
+  with safety degradation
+description: The authors compute cosine similarity between hidden states of Llama-2-chat-7b and its
+  adapted LVLM Llama-2-chat-vl at each layer during VL adaptation, using harmful prompts. The previously
+  identified 'safety layers' (layers 6–14) show cosine similarity around 0.5, substantially lower than
+  near-1.0 similarity in early layers, and this divergence increases from early to late training. Freezing
+  only these safety layers during VL adaptation (SPPFT) reduces text-only ASR from 26.2% to 22.3% at
+  400 steps and 58.6% to 41.3% at final checkpoints, but multimodal safety improvement is more modest,
+  suggesting changes in these layers contribute to safety loss.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:vision-language-adaptation-impact-safety-vision
+datasets:
+- ref: dataset:sorrybench
+  role: eval
+- ref: dataset:mm-safetybench
+  role: eval
+methods:
+- ref: method:cosine-similarity
+  role: primary
+- ref: method:safely-partial-parameter-fine-tuning
+  role: validation
+related_work:
+- name: Li et al. (2024)
+  anchor: https://arxiv.org/abs/2408.17003
+  role: builds-on
+evidence_type: interventional
+key_metric: 'cosine similarity in safety layers ~0.5; text-only ASR at final checkpoint: 58.6% (full
+  fine-tuning) vs 41.3% (SPPFT)'
+caveat: Correlational analysis of layer similarity does not prove causal effect; SPPFT only partially
+  recovers safety, and gains are stronger for text-only than multimodal safety.
+review_status: draft
+extracted_by: automatic-extraction

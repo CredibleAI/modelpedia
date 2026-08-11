@@ -9,6 +9,7 @@ ANY_REGISTRY = None
 class LinkField(NamedTuple):
     registry: str | None
     edge_type: str
+    inline: bool = False
 
 
 LINK_FIELDS = {
@@ -17,7 +18,7 @@ LINK_FIELDS = {
     "sources": LinkField(graph_json.SOURCE, graph_json.EDGE_REPORTED_IN),
     "datasets": LinkField(graph_json.DATASET, graph_json.EDGE_USES_DATASET),
     "methods": LinkField(graph_json.METHOD, graph_json.EDGE_USES_METHOD),
-    "related_work": LinkField(ANY_REGISTRY, graph_json.EDGE_CITES),
+    "related_work": LinkField(ANY_REGISTRY, graph_json.EDGE_CITES, inline=True),
 }
 
 MODELS_FIELD = "models"

@@ -1,0 +1,33 @@
+id: IC-031
+title: Empowered persona prompts and reflection mechanisms reduce conformity in large language models
+description: 'The paper tests two prompt-based mitigation strategies: empowered persona prompts (encouraging
+  independent thinking) and reflection prompts (asking models to re-evaluate answers). For Llama3-70B,
+  empowered persona increases IR from 28.6% to 40.0% and reduces CRD from 69.9% to around 35-55% across
+  variants; reflection increases IR from 28.6% to 68.5% and reduces CRD from 69.9% to 35.2%. For Qwen2-72B,
+  empowered persona increases IR from 57.6% to 68.6%, while reflection produces mixed results (CRT increases
+  from 30.5% to 45.0%) suggesting the strategy interacts with model characteristics.'
+models:
+- ref: model:llama-3
+- ref: model:qwen-2
+concepts: []
+sources:
+- ref: source:as-we-not-as-you-think
+datasets:
+- ref: dataset:benchform
+  role: eval
+methods: []
+related_work:
+- name: Reflexion
+  role: context
+- name: Self-Refine
+  role: context
+evidence_type: interventional
+key_metric: 'Llama3-70B: IR from 28.6% to 40.0% (empowered persona) and to 68.5% (reflection). Qwen2-72B:
+  IR from 57.6% to 68.6% (empowered persona); CRT increases from 30.5% to 45.0% under reflection while
+  CRC, CRW, CRD decrease. Prompt P3 and P5 selected as best performing.'
+caveat: Effectiveness depends on carefully calibrated prompts and may vary across models; universal
+  prompts are challenging to design. Reflection increased conformity for Qwen2-72B on trust protocol,
+  indicating potential backfire. Strategies' generalizability across diverse LLM characteristics remains
+  a challenge.
+review_status: draft
+extracted_by: automatic-extraction

@@ -1,0 +1,79 @@
+id: IC-028
+title: SPADE, an abstaining classifier built on top of ResNet, ViT, and VGG models, detects out-of-distribution
+  and adversarial samples with provable guarantees.
+description: The paper introduces SPADE, a method that fits a Generalized Extreme Value (GEV) model
+  to the latent distances of a pre-trained teacher model's training distribution. This GEV model is
+  used to define an abstaining classifier that rejects samples deemed extreme. The method is empirically
+  validated on ResNet, VGG, and ViT architectures using CIFAR-10, CIFAR-100, and ImageNet-1K datasets.
+  Results show that SPADE performs comparably or better than state-of-the-art methods like MSP, ODIN,
+  MDS, kNN, and CIDER for both OOD and adversarial sample detection.
+models:
+- ref: model:resnet
+- ref: model:vgg
+- ref: model:vit
+concepts: []
+sources:
+- ref: source:provably-safeguarding-classifier-from-ood-adversarial
+datasets:
+- ref: dataset:cifar-10
+  role: train
+- ref: dataset:cifar-100
+  role: train
+- ref: dataset:imagenet1k
+  role: train
+- ref: dataset:ssb-hard
+  role: eval
+- ref: dataset:ninco
+  role: eval
+- ref: dataset:inaturalist
+  role: eval
+- ref: dataset:textures
+  role: eval
+- ref: dataset:openimages-o
+  role: eval
+- ref: dataset:mnist
+  role: eval
+- ref: dataset:svhn
+  role: eval
+- ref: dataset:places365
+  role: eval
+methods:
+- ref: method:spade
+  role: primary
+- ref: method:msp
+  role: compared-to
+- ref: method:odin
+  role: compared-to
+- ref: method:mahalanobis-distance-score
+  role: compared-to
+- ref: method:knn
+  role: compared-to
+- ref: method:cider
+  role: compared-to
+- ref: method:fgsm
+  role: eval
+- ref: method:pgd
+  role: eval
+- ref: method:autoattack
+  role: eval
+related_work:
+- ref: method:msp
+  role: compared-to
+- ref: method:odin
+  role: compared-to
+- ref: method:mahalanobis-distance-score
+  role: compared-to
+- ref: method:knn
+  role: compared-to
+- ref: method:cider
+  role: compared-to
+evidence_type: correlational
+key_metric: For OOD detection on ImageNet-1K with ResNet, SPADE achieves AUROC/FPR95 scores of 61.91/85.27
+  (SSB-hard), 77.99/61.04 (NINCO), 85.26/44.84 (iNaturalist), 95.86/24.63 (Textures), 85.79/46.33 (OpenImages-O),
+  ranking second overall. For adversarial detection (FGSM, ε=0.001-0.004) on CIFAR-10, SPADE achieves
+  average AUROC/FPR95 of 86.10/54.43, ranking first in AUROC.
+caveat: The theoretical guarantees for adversarial robustness depend on the Lipschitz constant of the
+  teacher model, which can lead to trivial bounds. The authors mitigate this with a local Lipschitz
+  constant analysis.
+review_status: draft
+extracted_by: automatic-extraction

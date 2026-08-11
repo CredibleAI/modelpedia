@@ -1,0 +1,35 @@
+id: IC-033
+title: Pre-training the SFT stage on both chosen and rejected responses mitigates the DPO squeezing
+  effect and improves alignment win rates
+description: Inspired by the analysis of the squeezing effect, the paper proposes a method to mitigate
+  it by augmenting the SFT dataset with (prompt, rejected response) pairs before running DPO. This pulls
+  up the probability of the rejected response region, so the subsequent DPO negative gradient is imposed
+  on a less unlikely region, weakening the squeezing effect. The method is evaluated on the Anthropic-HH
+  dataset using Qwen1.5-1.8B. The proposed 'extend' method shows a slower decay of other responses during
+  DPO and a slower increase in the argmax confidence. In pairwise comparisons against a baseline SFT-then-DPO
+  pipeline using GPT-3.5-Turbo and Claude3-Haiku as judges, the extended method achieves a win rate
+  of 0.6928 and 0.6045 respectively after 4 epochs of DPO, indicating improved alignment performance.
+models:
+- ref: model:qwen-1-5
+concepts: []
+sources:
+- ref: source:learning-dynamics-llm-finetuning
+datasets:
+- ref: dataset:anthropic-hh
+  role: train
+- ref: dataset:anthropic-hh
+  role: eval
+methods:
+- ref: method:direct-preference-optimization
+  role: primary
+related_work:
+- ref: method:direct-preference-optimization
+  role: builds-on
+evidence_type: interventional
+key_metric: 'Win rate of extended method vs baseline after 4 DPO epochs: 0.6928 (GPT-3.5-Turbo) and
+  0.6045 (Claude3-Haiku)'
+caveat: The method is evaluated on a single dataset (Anthropic-HH) and model size (Qwen1.5-1.8B); results
+  may not generalise to other settings. The win-rate evaluation is conducted by LLM judges, which may
+  have their own biases.
+review_status: draft
+extracted_by: automatic-extraction

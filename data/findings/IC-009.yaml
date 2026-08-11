@@ -1,0 +1,42 @@
+id: IC-009
+title: LLM moral preferences show significant language sensitivity but not inequality toward low-resource
+  languages
+description: The paper measures language sensitivity by computing the standard deviation of preference
+  vectors across 107 languages and performs k-means clustering to identify language groups with similar
+  preference patterns. Sensitivity scores range from 14.7 (Phi-3.5 MoE) to 24.7 (Gemma 2 9B), indicating
+  substantial variation across languages. However, correlation between misalignment scores and number
+  of speakers per language is near zero for most models, challenging the 'language inequality' hypothesis
+  for this task.
+models:
+- ref: model:gpt-3
+- ref: model:gpt-4
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:llama-2
+- ref: model:llama-3
+- ref: model:llama-3-1
+- ref: model:gemma-2
+- ref: model:mistral-7b
+- ref: model:phi-3
+  variant: variant:phi-3-5
+- ref: model:qwen-2
+concepts: []
+sources:
+- ref: source:language-model-alignment-multilingual-trolley-problems
+datasets:
+- ref: dataset:multitp
+  role: eval
+methods:
+- ref: method:k-means
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Language sensitivity scores: 14.7 (Phi-3.5 MoE), 14.9 (Llama 3 8B), 15.1 (GPT-3), 15.3
+  (Llama 3 70B), 15.8 (GPT-4), 18.0 (Llama 3.1 70B), 18.1 (GPT-4o-mini), 18.5 (Llama 2 70B), 19.8 (Llama
+  2 7B), 19.9 (Llama 3.1 8B), 21.0 (Llama 2 13B), 21.1 (Qwen 2 72B), 21.3 (Mistral 7B), 21.3 (Phi-3.5
+  Mini), 21.7 (Gemma 2 27B), 22.2 (Qwen 2 7B), 22.8 (Phi-3 Medium), 22.9 (Gemma 2 2B), 24.7 (Gemma 2
+  9B); correlation with speaker count near 0 across models'
+caveat: Language-to-country mapping is approximated by weighted averaging based on speaker counts, which
+  does not account for dialectal variation (e.g., US English vs. UK English).
+review_status: draft
+extracted_by: automatic-extraction

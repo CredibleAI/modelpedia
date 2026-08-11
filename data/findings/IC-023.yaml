@@ -1,0 +1,41 @@
+id: IC-023
+title: Local scaling, rank, and complexity of Stable Diffusion correlate with generation aesthetics,
+  diversity, and memorization
+description: 'The paper analyzes the local geometry of Stable Diffusion''s learned manifold using three
+  descriptors: local scaling (ψ), local rank (ν), and local complexity (δ). These descriptors are computed
+  from the input-output Jacobian of the model. The study finds that higher local scaling correlates
+  with increased visual complexity and diversity in generated images, while lower values correlate with
+  more modal, subject-focused images. Local rank is associated with the dimensionality of the manifold
+  and background texture. Memorized prompts show distinct trajectories in these descriptors compared
+  to random prompts, and classifier-free guidance scales affect these geometric properties. The analysis
+  covers 50k ImageNet images and COCO prompts.'
+models:
+- ref: model:stable-diffusion
+concepts: []
+sources:
+- ref: source:secrets-your-manifolds-hold-understanding-local
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:mscoco
+  role: eval
+methods:
+- ref: method:rahf-score
+  role: eval
+- ref: method:vendi-score
+  role: eval
+related_work:
+- name: MAGNet
+  role: builds-on
+- name: SplineCAM
+  role: builds-on
+evidence_type: correlational
+key_metric: Local scaling (ψ), local rank (ν), local complexity (δ); Vendi score diversity and RAHF
+  human preference scores reported for bins of local scaling; statistical significance (t-test) of differences
+  between in-domain and out-of-domain descriptor distributions; memorized prompts show distinct mean
+  geometry compared to COCO prompts (confidence intervals shown in plots, no specific numbers quoted
+  in text for memorization)
+caveat: The method relies on approximations for large models (randomized SVD, first-order Taylor for
+  non-CPWL activations) and computational complexity is a limitation.
+review_status: draft
+extracted_by: automatic-extraction

@@ -1,0 +1,46 @@
+id: IC-013
+title: Entity recognition directions regulate attention to entity tokens in attribute extraction heads
+  in Gemma and Llama models.
+description: The study shows that attention scores from downstream heads (e.g., l18h5 and l20h3 in Gemma
+  2 2b) to the last token of an entity are higher for known entities than for unknown ones. Steering
+  the residual stream at the entity's last token with the discovered known entity latent increases attention
+  to the entity, while steering with the unknown entity latent decreases it. This causal relationship
+  is observed in Gemma 2 2b, Gemma 2 9b, and Llama 3.1 8b.
+models:
+- ref: model:gemma-2
+  variant: variant:gemma-2-2b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:i-know-this-entity-knowledge-awareness
+datasets:
+- ref: dataset:wikidata
+  role: source
+methods:
+- ref: method:activation-patching
+  role: primary
+- ref: method:activation-steering
+  role: primary
+related_work:
+- name: 'Fact finding: Attempting to reverse-engineer factual recall on the neuron level'
+  role: builds-on
+- name: 'Attention satisfies: a constraint-satisfaction lens on factual errors of language models'
+  anchor: https://openreview.net/forum?id=gffvatffpd
+  role: context
+evidence_type: interventional
+key_metric: Change in attention scores from attribute extraction heads to entity tokens. Statistical
+  tests comparing steering with entity recognition latents versus random SAE latents show significant
+  differences in the expected direction in most cases. For Gemma 2 2b, known latent steering increases
+  attention (10/10 tests), unknown latent steering decreases attention (9/10 tests). For Gemma 2 9b,
+  known latent steering increases attention (10/10 tests), unknown latent steering shows mixed results.
+  For Llama 3.1 8b, known latent steering increases attention (7/10 tests), unknown latent steering
+  decreases attention (10/10 tests).
+caveat: The effect of steering with the unknown entity latent on attention in Gemma 2 9b was less consistent
+  than for other models. Attention score changes are measured on specific attribute extraction heads
+  identified via activation patching.
+review_status: draft
+extracted_by: automatic-extraction

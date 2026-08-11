@@ -1,0 +1,33 @@
+id: IC-038
+title: Few embedding dimensions drive the modality gap in CLIP and SigLIP
+description: The paper analyzes the embedding space of off-the-shelf CLIP and SigLIP models. It measures
+  the mean difference per embedding dimension between the image and text modalities. Most dimensions
+  show similar means, but a small subset shows large differences. Two of these dimensions are sufficient
+  to perfectly separate the image and text embeddings.
+models:
+- ref: model:clip
+- ref: model:siglip
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:two-effects-one-trigger-modality-gap
+datasets:
+- ref: dataset:mscoco
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:cifar-10
+  role: eval
+- ref: dataset:cifar-100
+  role: eval
+methods:
+- ref: method:kendall-tau-distance
+  role: supporting
+related_work:
+- name: 'Mind the gap: Understanding the modality gap in multi-modal contrastive representation learning'
+  role: builds-on
+evidence_type: observational
+key_metric: Two dimensions suffice to perfectly separate the modalities.
+caveat: The finding is based on analysis of the embedding geometry, not on downstream task performance.
+review_status: draft
+extracted_by: automatic-extraction

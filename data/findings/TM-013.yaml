@@ -25,7 +25,8 @@ methods:
   - ref: method:shapley-values
     role: validation
 related_work:
-  - ref: rw:linear-representation-hypothesis
+  - name: "Linear representation hypothesis"
+    anchor: https://arxiv.org/abs/2311.03658
     role: builds-on
 related_findings:
   - TM-011

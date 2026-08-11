@@ -1,0 +1,42 @@
+id: IC-024
+title: Reward model trained on local scaling of Stable Diffusion can guide generation to increase diversity
+  and aesthetic scores
+description: The paper trains a reward model to predict local scaling level sets for Stable Diffusion.
+  Using this reward model with universal guidance during the reverse diffusion process, the authors
+  show they can increase or decrease the local scaling of generated images. Maximizing the reward leads
+  to added texture, sharpness, contrast, and higher diversity (Vendi score) and human preference scores,
+  while minimizing it leads to blurring and loss of detail. The reward model is trained on 50k to 800k
+  samples from ImageNet latents.
+models:
+- ref: model:stable-diffusion
+concepts: []
+sources:
+- ref: source:secrets-your-manifolds-hold-understanding-local
+datasets:
+- ref: dataset:imagenet1k
+  role: train
+- ref: dataset:imagewoof
+  role: eval
+methods:
+- ref: method:universal-guidance
+  role: primary
+- ref: method:classifier-free-guidance
+  role: compared-to
+- ref: method:rahf-score
+  role: eval
+- ref: method:vendi-score
+  role: eval
+related_work:
+- name: Universal Guidance for Diffusion Models
+  role: builds-on
+- name: MAGNet
+  role: context
+evidence_type: interventional
+key_metric: Change in Vendi score, change in average local scaling, change in RAHF aesthetic score for
+  increasing pre-guidance local scaling level sets; results shown for reward models trained on 50k,
+  200k, 400k, 800k samples; guidance strength ρ values (1, 2, -1, -3, -5) used to control effect
+caveat: Training a reward model on local scaling requires computing descriptors for a large dataset;
+  the approach is demonstrated only for Stable Diffusion; the human preference model (RAHF) is trained
+  on synthetic images and may be less reliable for real images.
+review_status: draft
+extracted_by: automatic-extraction

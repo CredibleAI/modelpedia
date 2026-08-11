@@ -1,0 +1,47 @@
+id: IC-001
+title: Vision-language models perform near chance on the NL-Eye visual abductive reasoning benchmark
+description: The paper evaluates several vision-language models on NL-Eye, a new benchmark for visual
+  abductive reasoning. The task involves selecting the more plausible hypothesis image given a premise
+  image. Humans achieve 83-85% accuracy, while most VLMs perform at or below random baselines. For example,
+  in the triplet setup with separate images, Gemini-1.5-Pro gets 51%, GPT-4-Vision 46%, and Claude-Sonnet-3.5
+  49%, with the dumb pixel baseline at 50%. Performance is sensitive to hypothesis order and input format,
+  indicating a lack of robust reasoning.
+models:
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:gpt-4o
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+- ref: model:llava-next
+- ref: model:fuyu
+- ref: model:minicpm-v
+  variant: variant:minicpm-v-2-6
+- ref: model:llava-onevision
+  variant: variant:llava-onevision-qwen2-7b-ov
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:nl-eye-abductive-nli-images
+datasets:
+- ref: dataset:nl-eye
+  role: eval
+methods: []
+related_work:
+- name: SNLI-VE
+  anchor: https://arxiv.org/abs/1901.06706
+  role: context
+- name: Sherlock
+  role: context
+- name: Whoops!
+  role: context
+evidence_type: correlational
+key_metric: Human accuracy 83-85%; Gemini-1.5-Pro 51%, GPT-4-Vision 46%, GPT-4o 16%, Claude-Sonnet-3.5
+  49% in separate-images triplet setup; Dumb pixel baseline 50%
+caveat: The benchmark is new and synthetic, which may not fully reflect real-world visual reasoning;
+  performance varies significantly with input strategy and model version.
+review_status: draft
+extracted_by: automatic-extraction

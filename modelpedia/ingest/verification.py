@@ -21,6 +21,13 @@ NUMBER = re.compile(
 ARXIV = re.compile(r"arxiv\.org/(?:abs|pdf)/(\d{4}\.\d{4,5})(?:v\d+)?", re.I)
 DOI = re.compile(r"doi\.org/(10\.\d{4,9}/[^\s?#]+)", re.I)
 OPENREVIEW = re.compile(r"openreview\.net/(?:forum|pdf)\?id=([A-Za-z0-9_-]+)", re.I)
+BARE_ARXIV = re.compile(r"arxiv[:\s]\s*(\d{4}\.\d{4,5})(?:v\d+)?", re.I)
+BARE_DOI = re.compile(r"(?<![\w/])(10\.\d{4,9}/[^\s,;]+)")
+IDENTIFIERS = ((ARXIV, "arXiv"), (DOI, "DOI"), (OPENREVIEW, "OpenReview"),
+               (BARE_ARXIV, "arXiv"), (BARE_DOI, "DOI"))
+ANCHOR_URL = {"arXiv": "https://arxiv.org/abs/%s",
+              "DOI": "https://doi.org/%s",
+              "OpenReview": "https://openreview.net/forum?id=%s"}
 WORD = re.compile(r"[a-z][a-z0-9-]+")
 STOPWORDS = frozenset({
     "and", "the", "of", "to", "in", "by", "for", "as", "with", "at", "from", "than",
@@ -172,11 +179,18 @@ def entity_checks(finding, entities, doc):
 
 
 def anchor_identifier(anchor):
-    for pattern, kind in ((ARXIV, "arXiv"), (DOI, "DOI"), (OPENREVIEW, "OpenReview")):
+    for pattern, kind in IDENTIFIERS:
         match = pattern.search(str(anchor or ""))
         if match:
             return kind, match.group(1).rstrip(".,;)")
     return None
+
+
+def anchor_url(found):
+    if not found:
+        return ""
+    kind, value = found
+    return ANCHOR_URL[kind] % value
 
 
 def anchor_checks(finding, entities, doc):

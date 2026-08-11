@@ -2,7 +2,10 @@ import difflib
 import re
 from typing import NamedTuple
 
+from modelpedia import graph as graph_json
 from modelpedia.ingest.text import fold
+
+VARIANT = graph_json.VARIANT
 
 HIT = "hit"
 CANDIDATES = "candidates"
@@ -11,6 +14,7 @@ MISS = "miss"
 BY_KEY = "key"
 BY_NAME = "name"
 BY_SLUG = "slug"
+BY_COMPACT = "compact"
 
 THRESHOLD = 0.6
 MIN_BLOCK = 4
@@ -18,6 +22,7 @@ MAX_CANDIDATES = 5
 
 PUNCTUATION = re.compile(r"[^a-z0-9]+")
 ALIAS = re.compile(r"\s+/\s+")
+QUALIFIER = re.compile(r"\s*\([^)]*\)\s*$")
 
 
 class Resolution(NamedTuple):
@@ -33,6 +38,7 @@ class Index(NamedTuple):
     identifiers: frozenset
     by_name: dict
     by_slug: dict
+    by_compact: dict
     by_gram: dict
     short: frozenset
 
@@ -43,6 +49,10 @@ def normalise(value):
 
 def slugify(value):
     return PUNCTUATION.sub("-", fold(value)).strip("-")
+
+
+def compact(value):
+    return PUNCTUATION.sub("", fold(value))
 
 
 def display_name(key, entity):
@@ -56,14 +66,20 @@ def aliases(name):
 
 
 def index_of(entities, node_type=None):
-    identifiers, by_name, by_slug = [], {}, {}
+    identifiers, by_name, by_slug, by_compact = [], {}, {}, {}
     for key, entity in sorted(entities.items()):
         if node_type is not None and entity.get("type") != node_type:
             continue
         identifiers.append(key)
+        slug = key.partition(":")[2]
         for alias in aliases(display_name(key, entity)):
-            by_name.setdefault(normalise(alias), []).append(key)
-        by_slug.setdefault(key.partition(":")[2], []).append(key)
+            for form in dict.fromkeys([alias, QUALIFIER.sub("", alias).strip()]):
+                if not form:
+                    continue
+                by_name.setdefault(normalise(form), []).append(key)
+                by_compact.setdefault(compact(form), []).append(key)
+        by_slug.setdefault(slug, []).append(key)
+        by_compact.setdefault(compact(slug), []).append(key)
 
     by_gram, short = {}, set()
     for name in by_name:
@@ -74,6 +90,8 @@ def index_of(entities, node_type=None):
             by_gram.setdefault(gram, set()).add(name)
     return Index(node_type=node_type, identifiers=frozenset(identifiers),
                  by_name=by_name, by_slug=by_slug,
+                 by_compact={form: list(dict.fromkeys(keys))
+                             for form, keys in by_compact.items()},
                  by_gram={gram: frozenset(names) for gram, names in by_gram.items()},
                  short=frozenset(short))
 
@@ -138,6 +156,32 @@ def nearby(query, index, threshold):
     return [key for key, _ in ranked[:MAX_CANDIDATES]]
 
 
+def parents_of(entities):
+    return {key: entity.get("parent") for key, entity in entities.items()
+            if entity.get("type") == VARIANT and entity.get("parent")}
+
+
+def through_variant(found, parents):
+    if found.kind == HIT:
+        return hit(found.query, parents.get(found.slug, ""), "%s via variant" % found.how), \
+            found.slug
+    seen = [parents[key] for key in found.candidates if key in parents]
+    return miss(found.query, tuple(dict.fromkeys(seen))), ""
+
+
+def resolve_model(query, models, variants, parents, threshold=THRESHOLD):
+    direct = resolve(query, models, threshold)
+    if direct.kind == HIT:
+        return direct, ""
+    named, variant = through_variant(resolve(query, variants, threshold), parents)
+    if named.kind == HIT and named.slug:
+        return named, variant
+    if direct.kind == CANDIDATES or named.candidates:
+        pool = dict.fromkeys(tuple(direct.candidates) + tuple(named.candidates))
+        return ambiguous(str(query).strip(), pool, direct.how), ""
+    return direct, ""
+
+
 def resolve(query, index, threshold=THRESHOLD):
     if not query or not str(query).strip():
         return miss(query)
@@ -153,6 +197,16 @@ def resolve(query, index, threshold=THRESHOLD):
     by_slug = index.by_slug.get(slugify(text))
     if by_slug:
         return settle(text, by_slug, BY_SLUG)
+
+    by_compact = index.by_compact.get(compact(text))
+    if by_compact:
+        return settle(text, by_compact, BY_COMPACT)
+
+    trimmed = QUALIFIER.sub("", text).strip()
+    if trimmed and trimmed != text:
+        without = resolve(trimmed, index, threshold)
+        if without.kind == HIT:
+            return hit(text, without.slug, "%s without qualifier" % without.how)
 
     close = nearby(text, index, threshold)
     if close:

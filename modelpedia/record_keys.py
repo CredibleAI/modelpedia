@@ -1,6 +1,8 @@
 REF = "ref"
 ROLE = "role"
 VARIANT = "variant"
+NAME = "name"
+NOTE = "note"
 ANCHOR = "anchor"
 ARTIFACT = "artifact"
 AUTHORS = "authors"

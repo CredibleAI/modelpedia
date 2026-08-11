@@ -1,0 +1,28 @@
+id: IC-040
+title: Information imbalance triggers both the modality gap and object bias in contrastive VLMs
+description: The paper hypothesizes and validates that an information imbalance between image and text
+  (where images contain more information than their captions) is the main cause for both the modality
+  gap and object bias. Experiments on a synthetic dataset (MAD) and on real data (CC12M) show that reducing
+  the information imbalance (by including more attributes in captions) decreases the modality gap and
+  object bias while improving performance.
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:two-effects-one-trigger-modality-gap
+datasets:
+- ref: dataset:cc12m
+  role: train
+- ref: dataset:cc3m
+  role: train
+methods: []
+related_work:
+- name: Partial multi-label learning
+  role: context
+evidence_type: interventional
+key_metric: Modality gap (l2m & rmg) and object bias (MOAD) decrease as information imbalance is reduced;
+  performance (accuracy and r@1) improves.
+caveat: Experiments were conducted on small- to medium-scale datasets (MAD, CC3M, CC12M) and may not
+  fully represent the dynamics on larger datasets like LAION.
+review_status: draft
+extracted_by: automatic-extraction

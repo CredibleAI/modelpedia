@@ -8,7 +8,13 @@ import harvest
 from modelpedia.build import database
 from modelpedia import paths
 from modelpedia import graph as graph_json
+from modelpedia.ingest import answers
+from modelpedia.ingest import citations
 from modelpedia.ingest import link
+from modelpedia.ingest import prompt
+from modelpedia.ingest import proposals
+from modelpedia.ingest import split as splitter
+from modelpedia.ingest import tagging
 from modelpedia.build import validate
 from modelpedia.ingest import screen
 from modelpedia.ingest import text
@@ -142,10 +148,16 @@ def test_a_small_caps_heading_split_by_pdftotext_is_rejoined():
     assert "introduction" in doc.text
 
 
-def test_rejoining_small_caps_leaves_ordinary_prose_alone():
-    assert text.normalise("A model was trained") == "a model was trained"
-    assert text.normalise("see Table A for details") == "see table a for details"
-    assert text.normalise("the AI Act") == "the ai act"
+def test_rejoining_small_caps_never_touches_text_that_did_not_come_from_a_pdf():
+    for prose in ("A BERT model for classification", "We use A GPT-4 baseline",
+                  "an LLM and A VLM", "A model was trained", "the AI Act"):
+        assert text.normalise(prose) == prose.lower()
+        assert text.flatten(prose) == prose.lower().replace(" ", "").replace("-", "")
+
+
+def test_a_small_caps_split_is_repaired_only_when_reading_a_document():
+    assert "abstract" not in text.normalise("A BSTRACT")
+    assert "abstract" in text.from_text("t", "A BSTRACT").text
 
 
 def test_absent_text_is_reported_absent():
@@ -344,8 +356,9 @@ def test_an_id_file_rejects_anything_that_is_not_an_identifier():
         try:
             harvest.read_ids(hostile)
             raise AssertionError("accepted a path as an identifier")
-        except SystemExit:
+        except ValueError:
             pass
+    assert harvest.main(["harvest.py", "pdfs", "--ids", str(hostile)]) == 1
 
 
 def test_accepted_only_harvest_never_needs_the_submission_invitation():
@@ -374,11 +387,12 @@ def test_an_interrupted_manifest_line_does_not_swallow_the_next_row():
     try:
         with tempfile.TemporaryDirectory() as directory:
             harvest.MANIFEST = Path(directory) / "manifest.jsonl"
-            harvest.MANIFEST.write_text('{"id": "kept"}\n{"id": "interrupted"',
-                                        encoding="utf-8")
+            harvest.MANIFEST.write_text(
+                '{"id": "kept", "tier": "weak"}\n{"id": "interrupted", "tier"',
+                encoding="utf-8")
             assert harvest.close_unterminated_line()
             with harvest.MANIFEST.open("a", encoding="utf-8") as log:
-                log.write('{"id": "next"}\n')
+                log.write('{"id": "next", "tier": "weak"}\n')
             assert [row["id"] for row in harvest.manifest_rows()] == ["kept", "next"]
     finally:
         harvest.MANIFEST = original
@@ -389,9 +403,10 @@ def test_a_manifest_that_already_ends_cleanly_is_left_alone():
     try:
         with tempfile.TemporaryDirectory() as directory:
             harvest.MANIFEST = Path(directory) / "manifest.jsonl"
-            harvest.MANIFEST.write_text('{"id": "kept"}\n', encoding="utf-8")
+            harvest.MANIFEST.write_text('{"id": "kept", "tier": "weak"}\n', encoding="utf-8")
             assert not harvest.close_unterminated_line()
-            assert harvest.MANIFEST.read_text(encoding="utf-8") == '{"id": "kept"}\n'
+            assert harvest.MANIFEST.read_text(encoding="utf-8") == \
+                '{"id": "kept", "tier": "weak"}\n'
     finally:
         harvest.MANIFEST = original
 
@@ -536,3 +551,622 @@ def test_submission_invitation_falls_back_when_the_group_does_not_name_it():
     for content in ({}, None, {"submission_name": None}):
         connection = FakeConnection(content)
         assert harvest.submission_invitation(connection, "V/2026").endswith("/-/Submission")
+
+
+ANSWER = """considered:
+- model: "GPT-4o"
+  released: true
+  why: "public API"
+findings:
+- title: "GPT-4o mislabels chart axes"
+  models:
+  - name: GPT-4o
+entities:
+- name: "MS COCO"
+  kind: dataset
+  citation: "Lin et al. Microsoft COCO: common objects in context, 2014."
+"""
+
+
+def test_a_fenced_answer_is_read_without_its_fence():
+    answer = answers.read("```yaml\n" + ANSWER + "```")
+    assert not answer.repaired
+    assert answer.document[answers.FINDINGS][0]["title"] == "GPT-4o mislabels chart axes"
+
+
+def test_unquoted_prose_containing_a_colon_is_repaired_not_rejected():
+    raw = 'findings:\n- title: We compare two setups: greedy and sampled\n'
+    answer = answers.read(raw)
+    assert answer.repaired
+    assert answer.document[answers.FINDINGS][0]["title"] == "We compare two setups: greedy and sampled"
+
+
+def test_a_key_indented_by_one_space_is_repaired():
+    raw = 'considered:\n- model: "A"\n released: true\nfindings: []\n'
+    answer = answers.read(raw)
+    assert answer.repaired
+    assert answer.document["considered"][0]["released"] is True
+
+
+def test_an_answer_without_findings_is_refused():
+    for raw in ("[]", "notes: nothing", "findings: 3", "", "just prose"):
+        try:
+            answers.read(raw)
+            raise AssertionError("accepted %r" % raw)
+        except answers.Unreadable:
+            pass
+
+
+def test_an_empty_result_still_carries_marks_from_the_considered_block():
+    answer = answers.read('considered:\n- model: "Chinchilla"\nfindings: []\n')
+    assert "chinchilla" in answers.named_in(answer.document)
+
+
+def test_a_name_shared_by_every_paper_cannot_decide_the_match():
+    corpus = {"a": "bert and gpt4 and widgetron", "b": "bert and gpt4", "c": "bert and gpt4"}
+    document = {answers.FINDINGS: [], "considered": [{"model": "BERT"}, {"model": "GPT-4"}]}
+    assert not answers.match(document, corpus).confident()
+    document["considered"].append({"model": "Widgetron"})
+    found = answers.match(document, corpus)
+    assert found.paper == "a" and found.confident()
+
+
+def test_matching_an_empty_corpus_is_not_confident():
+    assert not answers.match({answers.FINDINGS: []}, {}).confident()
+
+
+def test_a_citation_present_in_the_source_is_confirmed():
+    pages = ("nothing here", "Lin et al. Microsoft COCO: common objects in context, 2014.")
+    verdict = citations.judge("Lin et al. Microsoft COCO: common objects in context, 2014.", pages)
+    assert verdict.state == citations.CONFIRMED
+    assert verdict.page == 2 and verdict.usable()
+
+
+def test_a_citation_absent_from_the_source_is_rejected():
+    verdict = citations.judge("Herzog et al. OlmoEarth foundation models, 2026.",
+                              ("a page about something else entirely",))
+    assert verdict.state == citations.REJECTED
+    assert not verdict.usable()
+
+
+def test_an_empty_citation_is_absent_not_rejected():
+    for blank in ("", None, "   "):
+        verdict = citations.judge(blank, ("any page",))
+        assert verdict.state == citations.ABSENT
+        assert verdict.usable()
+
+
+def test_an_identifier_is_read_out_of_a_citation_when_the_paper_printed_one():
+    assert citations.identifier_in("Lin et al. arxiv.org/abs/1405.0312, 2014.") == "arXiv:1405.0312"
+    assert citations.identifier_in("Lin et al. In ECCV, 2014.") == ""
+
+
+def test_a_prompt_carries_the_paper_and_the_closed_concept_list():
+    concepts = {"concept:shortcut": {"name": "Shortcut", "description": "relies on a proxy"}}
+    body, truncated = prompt.build("A title", "Body text of the paper.", concepts, [], {})
+    assert not truncated
+    assert "concept:shortcut" in body and "relies on a proxy" in body
+    assert "A title" in body
+    assert "body text of the paper." in body
+
+
+def test_a_long_paper_is_clipped_from_the_middle_and_says_so():
+    body, truncated = prompt.build("T", "x" * 5000, {}, [], {}, limit=1000)
+    assert truncated
+    assert prompt.OMITTED.strip() in body
+
+
+def test_worked_examples_show_names_and_never_registry_identifiers():
+    record = {"id": "TM-001", "title": "t", "description": "d", "key_metric": "", "caveat": "",
+              "models": [{"ref": "model:terramind", "variant": "variant:terramind-v1-tiny"}],
+              "methods": [{"ref": "method:probing-classifiers", "role": "primary"}],
+              "concepts": [{"ref": "concept:shortcut"}]}
+    names = {"model:terramind": "TerraMind", "method:probing-classifiers": "Probing classifiers",
+             "variant:terramind-v1-tiny": "TerraMind 1.0 tiny"}
+    shown = prompt.as_example(record, names)
+    assert "TerraMind" in shown and "Probing classifiers" in shown
+    assert "model:terramind" not in shown and "method:probing-classifiers" not in shown
+    assert "concept:shortcut" in shown
+    assert "TM-001" not in shown
+
+
+def with_manifest(body, rows):
+    original = harvest.MANIFEST
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            harvest.MANIFEST = Path(directory) / "manifest.jsonl"
+            harvest.MANIFEST.write_text(rows, encoding="utf-8")
+            return body()
+    finally:
+        harvest.MANIFEST = original
+
+
+def test_an_option_without_a_value_is_refused_instead_of_widening_the_download():
+    taken = []
+    original = harvest.harvest_pdfs
+    harvest.harvest_pdfs = lambda *args, **kw: taken.append((args, kw)) or 0
+    try:
+        for argv in (["h", "pdfs", "--ids"], ["h", "pdfs", "--limit"], ["h", "pdfs", "--tier"]):
+            assert harvest.main(argv) == 1
+        assert taken == []
+    finally:
+        harvest.harvest_pdfs = original
+
+
+def test_an_unknown_option_or_tier_is_refused():
+    assert harvest.main(["h", "pdfs", "--everything"]) == 1
+    assert harvest.main(["h", "pdfs", "--tier", "enormous"]) == 1
+    assert harvest.main(["h", "pdfs", "--limit", "bad"]) == 1
+    assert harvest.main(["h", "pdfs", "--limit", "0"]) == 1
+
+
+def test_the_default_tiers_are_still_used_when_no_option_is_given():
+    assert harvest.chosen_tiers(None) == harvest.DOWNLOAD_TIERS
+    assert harvest.chosen_tiers("weak,strong") == ("weak", "strong")
+    assert harvest.positive("5") == 5 and harvest.positive(None) is None
+
+
+def test_a_manifest_row_of_the_wrong_shape_is_skipped_not_crashed_on():
+    rows = '42\n"text"\n{"id": "a"}\n{"id": "b", "tier": "strong"}\n'
+    kept, weak = with_manifest(
+        lambda: (harvest.manifest_rows(), harvest.selected_rows(("weak",), None)), rows)
+    assert [row["id"] for row in kept] == ["b"]
+    assert weak == []
+
+
+def test_a_repeated_manifest_id_is_collapsed_to_its_last_row():
+    rows = ('{"id": "a", "tier": "weak"}\n{"id": "a", "tier": "strong"}\n')
+    kept = with_manifest(lambda: harvest.manifest_rows(), rows)
+    assert len(kept) == 1 and kept[0]["tier"] == "strong"
+
+
+def test_requesting_only_ids_the_manifest_does_not_hold_is_a_failure():
+    rows = '{"id": "real", "tier": "strong"}\n'
+    assert with_manifest(lambda: harvest.harvest_pdfs(ids=["ghost"]), rows) == 1
+    assert with_manifest(lambda: harvest.selected_rows((), ["real", "ghost"]), rows) != []
+
+
+def answer_with(**fields):
+    document = {"findings": [{"models": [], "methods": [], "datasets": [], "related_work": []}]}
+    document["findings"][0].update(fields.pop("finding", {}))
+    document.update(fields)
+    return document
+
+
+def test_a_name_already_in_a_registry_is_not_proposed_again():
+    db = sample_db()
+    documents = {"p1": answer_with(finding={"methods": [{"name": "Probe"}, {"name": "Widgetron"}]})}
+    found = proposals.gather(documents, db.entities)
+    assert [item.name for item in found] == ["Widgetron"]
+
+
+def test_a_proposal_counts_the_papers_it_came_from_and_ranks_by_reach():
+    db = sample_db()
+    documents = {
+        "p1": answer_with(finding={"methods": [{"name": "Widgetron"}, {"name": "Onceler"}]}),
+        "p2": answer_with(finding={"methods": [{"name": "Widgetron"}]}),
+    }
+    found = proposals.gather(documents, db.entities)
+    assert [(item.name, item.reach()) for item in found] == [("Widgetron", 2), ("Onceler", 1)]
+    assert found[0].papers == ("p1", "p2")
+
+
+def test_a_proposal_carries_the_citation_and_its_verdict():
+    db = sample_db()
+    documents = {"p1": answer_with(
+        finding={"methods": [{"name": "Widgetron"}]},
+        entities=[{"name": "Widgetron", "kind": "method",
+                   "citation": "Ada Lovelace. The widgetron, 1843."}])}
+    verdicts = {("p1", text.flatten("Widgetron")): citations.CONFIRMED}
+    found = proposals.gather(documents, db.entities, verdicts)
+    assert found[0].state == citations.CONFIRMED
+    assert found[0].citation.startswith("Ada Lovelace")
+    assert found[0].kind == "method"
+
+
+def test_a_near_match_is_offered_as_a_candidate_never_as_a_link():
+    db = sample_db()
+    documents = {"p1": answer_with(finding={"methods": [{"name": "Probes"}]})}
+    found = proposals.gather(documents, db.entities)
+    assert found[0].candidates == ("method:probe",)
+
+
+def test_names_sharing_their_words_are_grouped_into_one_decision():
+    def proposal(name):
+        return proposals.Proposal(name, "methods", ("p1",), "method", "", "absent", "", ())
+    family = proposals.families([proposal("Balanced Forman Curvature (BFC)"),
+                                 proposal("Augmented Forman Curvature with 3-cycles (AFC3)"),
+                                 proposal("Integrated gradients")])
+    assert len(family) == 1
+    assert {member.name for member in family[0].members} == {
+        "Balanced Forman Curvature (BFC)", "Augmented Forman Curvature with 3-cycles (AFC3)"}
+
+
+def test_a_single_name_is_never_reported_as_a_family():
+    def proposal(name):
+        return proposals.Proposal(name, "methods", ("p1",), "method", "", "absent", "", ())
+    assert proposals.families([proposal("Integrated gradients")]) == []
+
+
+def test_a_proposed_concept_is_gathered_with_every_paper_that_asked_for_it():
+    documents = {
+        "p1": {"findings": [], "concepts_considered": [
+            {"name": "Positional bias", "definition": "output depends on position",
+             "instead_of": "shortcut is about data"}]},
+        "p2": {"findings": [], "concepts_considered": [{"name": "positional  bias"}]},
+    }
+    gathered = proposals.concept_answers(documents).proposals
+    assert len(gathered) == 1
+    assert gathered[0]["papers"] == ["p1", "p2"]
+    assert gathered[0]["definitions"] == ["output depends on position"]
+
+
+VARIANT_ENTITIES = {
+    "model:llama-3-1": {"type": "model", "name": "Llama 3.1"},
+    "model:llama-2": {"type": "model", "name": "Llama 2"},
+    "variant:llama-3-1-8b": {"type": "variant", "name": "Llama 3.1 8B",
+                             "parent": "model:llama-3-1"},
+    "variant:orphan": {"type": "variant", "name": "Orphan checkpoint"},
+}
+
+
+def variant_setup():
+    return (link.index_of(VARIANT_ENTITIES, "model"),
+            link.index_of(VARIANT_ENTITIES, "variant"),
+            link.parents_of(VARIANT_ENTITIES))
+
+
+def test_a_checkpoint_name_resolves_to_its_model_and_records_the_variant():
+    models, variants, parents = variant_setup()
+    found, variant = link.resolve_model("Llama 3.1 8B", models, variants, parents)
+    assert found.kind == link.HIT
+    assert found.slug == "model:llama-3-1"
+    assert variant == "variant:llama-3-1-8b"
+
+
+def test_a_model_name_still_resolves_directly_and_names_no_variant():
+    models, variants, parents = variant_setup()
+    found, variant = link.resolve_model("Llama 2", models, variants, parents)
+    assert (found.kind, found.slug, variant) == (link.HIT, "model:llama-2", "")
+
+
+def test_a_variant_with_no_parent_never_becomes_a_hit_on_an_empty_slug():
+    models, variants, parents = variant_setup()
+    found, variant = link.resolve_model("Orphan checkpoint", models, variants, parents)
+    assert found.kind != link.HIT
+    assert not found.slug
+
+
+def test_a_name_written_without_separators_still_finds_its_entity():
+    models, variants, parents = variant_setup()
+    for written in ("llama3.1", "Llama-3.1", "LLAMA 3.1", "llama31"):
+        found, _ = link.resolve_model(written, models, variants, parents)
+        assert (found.kind, found.slug) == (link.HIT, "model:llama-3-1"), written
+
+
+def test_a_registry_name_carrying_a_qualifier_is_found_by_its_bare_form():
+    def qualified(entities):
+        entities["method:mds"] = {"type": graph_json.METHOD,
+                                  "name": "MDS (Mahalanobis Distance-based Score)",
+                                  "anchor": "https://example.org"}
+    index = index_of(graph_json.METHOD, entities=qualified)
+    assert link.resolve("MDS", index).slug == "method:mds"
+
+
+def test_a_name_matching_nothing_is_still_a_miss():
+    models, variants, parents = variant_setup()
+    found, variant = link.resolve_model("Widgetron 9000", models, variants, parents)
+    assert (found.kind, variant) == (link.MISS, "")
+
+
+def test_an_identifier_printed_the_way_a_bibliography_prints_it_is_recognised():
+    for line, wanted in (
+            ("Tsung-Yi Lin et al. Microsoft COCO. arXiv preprint arXiv:1405.0312, 2014.",
+             "arXiv:1405.0312"),
+            ("A. Author. A paper. arXiv 2305.12345v2, 2023.", "arXiv:2305.12345"),
+            ("B. Author. A paper. Nature, 2024. 10.1038/s41586-024-07421-0",
+             "DOI:10.1038/s41586-024-07421-0")):
+        assert citations.identifier_in(line) == wanted
+
+
+def test_a_citation_with_no_identifier_yields_none_rather_than_a_guess():
+    for line in ("R. R. Selvaraju et al. Grad-CAM. In ICCV, 2017.",
+                 "K. He et al. Deep residual learning. In CVPR, pages 770-778, 2016."):
+        assert citations.identifier_in(line) == ""
+        assert citations.anchor_from(line) == ""
+
+
+def test_a_recognised_identifier_becomes_a_canonical_anchor_url():
+    assert citations.anchor_from("arXiv preprint arXiv:1405.0312, 2014.") == \
+        "https://arxiv.org/abs/1405.0312"
+    assert citations.anchor_from("see https://openreview.net/forum?id=AbC123 for details") == \
+        "https://openreview.net/forum?id=AbC123"
+
+
+def test_a_url_form_and_a_bare_form_of_one_identifier_agree():
+    assert citations.identifier_in("https://arxiv.org/abs/1405.0312") == \
+        citations.identifier_in("arXiv:1405.0312")
+
+
+def test_a_concept_the_model_invented_is_reported_rather_than_taken_on_trust():
+    documents = {"p1": {"findings": [{"title": "one", "concepts": ["concept:shortcut"]},
+                                     {"title": "two", "concepts": ["concept:vibes"]}]}}
+    unknown, misshapen = proposals.off_list(documents, {"concept:shortcut"})
+    assert [item.value for item in unknown] == ["concept:vibes"]
+    assert misshapen == ()
+
+
+def test_a_concept_written_in_the_wrong_shape_is_read_but_still_reported():
+    documents = {"p1": {"findings": [{"title": "one", "concepts": [{"concept": "shortcut"}]}]}}
+    unknown, misshapen = proposals.off_list(documents, {"concept:shortcut"})
+    assert unknown == ()
+    assert [item.value for item in misshapen] == ["concept:shortcut"]
+
+
+def test_a_concept_definition_with_an_uncited_colon_is_repaired_rather_than_lost():
+    raw = ('findings:\n- title: "CLIP leans on the caption"\n  concepts: []\n'
+           'concepts_considered:\n'
+           '- finding: CLIP leans on the caption: the image barely matters\n'
+           '  name: Positional bias\n'
+           '  definition: the output depends on position: answer A beats answer D\n'
+           '  instead_of: shortcut is closest: it is about data, not position\n')
+    answer = answers.read(raw)
+    assert answer.repaired
+    entry = answer.document["concepts_considered"][0]
+    assert entry["finding"] == "CLIP leans on the caption: the image barely matters"
+    assert entry["definition"] == "the output depends on position: answer A beats answer D"
+
+
+def test_an_entry_carrying_no_name_is_a_refusal_and_not_a_dropped_record():
+    documents = {"p1": {"findings": [{"title": "CLIP leans on the caption", "concepts": []}],
+                        "concepts_considered": [{"finding": "CLIP leans on the caption",
+                                                 "closest": "concept:shortcut",
+                                                 "why": "the mechanism is this paper's own"}]}}
+    answered = proposals.concept_answers(documents)
+    assert answered.proposals == ()
+    assert [refusal.closest for refusal in answered.refusals] == ["concept:shortcut"]
+    assert answered.silent == ()
+    assert answered.without_concept == 1 and answered.answered() == 1
+
+
+def test_an_untagged_finding_nobody_answered_for_is_reported_rather_than_passed_over():
+    documents = {"p1": {"findings": [{"title": "CLIP leans on the caption", "concepts": []},
+                                     {"title": "SigLIP does not", "concepts": []}],
+                        "concepts_considered": [{"finding": "CLIP leans on the caption",
+                                                 "why": "nothing fits"}]}}
+    answered = proposals.concept_answers(documents)
+    assert answered.without_concept == 2 and answered.answered() == 1
+    assert [gap.finding for gap in answered.silent] == ["SigLIP does not"]
+
+
+def test_a_missing_concepts_key_counts_the_same_as_an_empty_one():
+    documents = {"p1": {"findings": [{"title": "CLIP leans on the caption"}],
+                        "concepts_considered": []}}
+    assert proposals.concept_answers(documents).without_concept == 1
+
+
+def test_a_finding_that_took_a_concept_is_never_asked_to_account_for_itself():
+    documents = {"p1": {"findings": [{"title": "CLIP leans on the caption",
+                                      "concepts": ["concept:shortcut"]}]}}
+    answered = proposals.concept_answers(documents)
+    assert answered.without_concept == 0 and answered.silent == ()
+
+
+def test_an_entry_matches_its_finding_even_when_the_title_is_shortened():
+    documents = {"p1": {"findings": [{"title": "CLIP leans on the caption, not the image",
+                                      "concepts": []}],
+                        "concepts_considered": [{"finding": "CLIP leans on the caption",
+                                                 "why": "nothing fits"}]}}
+    assert proposals.concept_answers(documents).silent == ()
+
+
+def test_a_citation_too_short_to_carry_information_is_never_confirmed():
+    page = "this paper reports on iccv 2017 and everything else besides"
+    for thin in ("This paper.", "In ICCV, 2017."):
+        assert citations.judge(thin, (page,)).state == citations.PARTIAL
+
+
+def test_a_block_that_is_not_a_list_of_records_is_refused_at_the_gate():
+    for raw in ('findings: []\nentities: "oops"\n',
+                'findings:\n- "just a string"\n',
+                'findings: []\nconsidered: 5\n',
+                'findings: []\nentities:\n- null\n',
+                'findings: []\nconcepts_considered: "no"\n'):
+        try:
+            answers.read(raw)
+            raise AssertionError("accepted %r" % raw)
+        except answers.Unreadable:
+            pass
+
+
+def test_every_reader_of_a_block_goes_through_the_same_gate():
+    document = {"findings": [], "entities": "oops"}
+    for call in (lambda: answers.named_in(document),
+                 lambda: proposals.entity_notes(document),
+                 lambda: proposals.gather({"p": document}, {})):
+        try:
+            call()
+        except answers.Unreadable:
+            continue
+        except Exception as error:
+            raise AssertionError("leaked %s instead of Unreadable" % type(error).__name__)
+
+
+SPLIT_ENTITIES = {
+    "model:llama-2": {"type": "model", "name": "Llama 2"},
+    "variant:llama-2-7b-chat": {"type": "variant", "name": "Llama 2 7B Chat",
+                                "parent": "model:llama-2"},
+    "method:probe": {"type": "method", "name": "Probing classifiers"},
+    "concept:shortcut": {"type": "concept", "name": "Shortcut"},
+}
+
+
+SPLIT_ROLES = {"methods": ["primary"], "datasets": ["eval"],
+               "related_work": ["builds-on", "context"]}
+
+
+def split_of(findings, entities=None, papers={"p1": "source:the-paper"}):
+    documents = {"p1": {"findings": findings, "entities": entities or []}}
+    return splitter.split(documents, SPLIT_ENTITIES, papers, "IC", {"concept:shortcut"},
+                          SPLIT_ROLES)
+
+
+def test_a_finding_whose_title_names_an_unresolved_model_is_refused_not_reassigned():
+    kept, dropped, refused = split_of([
+        {"title": "Safety survives in Llama-2-chat-vl but not elsewhere",
+         "description": "d", "models": [{"name": "Llama-2-chat-vl"}, {"name": "Llama 2"}]}])
+    assert kept == []
+    assert refused[0].why == "the title names a model that resolved to nothing"
+
+
+def test_a_secondary_unresolved_model_does_not_refuse_the_finding():
+    kept, dropped, refused = split_of([
+        {"title": "Retrieval heads are sparse across open models",
+         "description": "d", "models": [{"name": "Llama-2-chat-vl"}, {"name": "Llama 2"}]}])
+    assert refused == []
+    assert [m["ref"] for m in kept[0].record["models"]] == ["model:llama-2"]
+
+
+def test_a_finding_with_no_resolvable_model_is_refused():
+    kept, dropped, refused = split_of([
+        {"title": "Something about a private model", "description": "d",
+         "models": [{"name": "Widgetron"}]}])
+    assert kept == [] and refused[0].why == "no model resolved to a registry entry"
+
+
+def test_a_role_from_the_wrong_field_never_reaches_the_record():
+    kept, _, _ = split_of([{"title": "A claim", "description": "d",
+                            "models": [{"name": "Llama 2"}],
+                            "methods": [{"name": "Probing classifiers", "role": "builds-on"}]}])
+    assert kept[0].record["methods"] == [{"ref": "method:probe"}]
+
+
+def test_an_unresolved_method_is_dropped_but_the_finding_survives():
+    kept, dropped, refused = split_of([
+        {"title": "Llama 2 leans on position", "description": "d",
+         "models": [{"name": "Llama 2"}],
+         "methods": [{"name": "Probing classifiers"}, {"name": "Adam optimizer"}]}])
+    assert [m["ref"] for m in kept[0].record["methods"]] == ["method:probe"]
+    assert [d.name for d in dropped] == ["Adam optimizer"]
+
+
+def test_a_checkpoint_name_becomes_a_model_reference_carrying_its_variant():
+    kept, _, _ = split_of([{"title": "A claim", "description": "d",
+                            "models": [{"name": "Llama 2 7B Chat"}]}])
+    assert kept[0].record["models"] == [{"ref": "model:llama-2",
+                                         "variant": "variant:llama-2-7b-chat"}]
+
+
+def test_related_work_naming_an_existing_node_becomes_a_reference_not_an_inline_copy():
+    kept, _, _ = split_of([{"title": "A claim", "description": "d",
+                            "models": [{"name": "Llama 2"}],
+                            "related_work": [{"name": "Probing classifiers", "role": "builds-on"}]}])
+    assert kept[0].record["related_work"] == [{"ref": "method:probe", "role": "builds-on"}]
+
+
+def test_related_work_is_written_inline_with_the_anchor_from_its_citation():
+    kept, _, _ = split_of(
+        [{"title": "A claim", "description": "d", "models": [{"name": "Llama 2"}],
+          "related_work": [{"name": "Earlier work", "role": "builds-on"}]}],
+        entities=[{"name": "Earlier work", "citation": "A. Author. Earlier work. arXiv:2301.00001, 2023."}])
+    assert kept[0].record["related_work"] == [
+        {"name": "Earlier work", "anchor": "https://arxiv.org/abs/2301.00001", "role": "builds-on"}]
+
+
+def test_related_work_that_is_only_an_author_citation_with_no_anchor_is_dropped():
+    kept, _, _ = split_of([{"title": "A claim", "description": "d",
+                            "models": [{"name": "Llama 2"}],
+                            "related_work": [{"name": "Geva et al. (2022)"},
+                                             {"name": "Nostalgebraist (2020)"},
+                                             {"name": "A real title about registers"}]}])
+    assert [r["name"] for r in kept[0].record["related_work"]] == ["A real title about registers"]
+
+
+def test_an_author_citation_that_does_carry_an_anchor_is_kept_because_it_is_clickable():
+    kept, _, _ = split_of(
+        [{"title": "A claim", "description": "d", "models": [{"name": "Llama 2"}],
+          "related_work": [{"name": "Geva et al. (2022)"}]}],
+        entities=[{"name": "Geva et al. (2022)", "citation": "M. Geva. A paper. arXiv:2203.14680, 2022."}])
+    assert kept[0].record["related_work"][0]["anchor"] == "https://arxiv.org/abs/2203.14680"
+
+
+def test_every_written_record_is_a_draft_from_automatic_extraction():
+    kept, _, _ = split_of([{"title": "A claim", "description": "d",
+                            "models": [{"name": "Llama 2"}]}])
+    assert kept[0].record["review_status"] == "draft"
+    assert kept[0].record["extracted_by"] == "automatic-extraction"
+    assert kept[0].identifier == "IC-001"
+
+
+def test_a_concept_outside_the_closed_list_never_reaches_the_record():
+    kept, _, _ = split_of([{"title": "A claim", "description": "d",
+                            "models": [{"name": "Llama 2"}],
+                            "concepts": ["concept:shortcut", "concept:vibes"]}])
+    assert kept[0].record["concepts"] == [{"ref": "concept:shortcut"}]
+
+
+def test_a_finding_with_no_source_for_its_paper_is_refused():
+    kept, _, refused = split_of([{"title": "A claim", "description": "d",
+                                  "models": [{"name": "Llama 2"}]}], papers={})
+    assert kept == [] and refused[0].why == "no source entry for the paper"
+
+
+TAG_CONCEPTS = {
+    "concept:shortcut": {"type": "concept", "name": "Shortcut",
+                         "description": "The model relies on a feature that correlates with the "
+                                        "target but does not cause it."},
+}
+
+
+def test_a_tagging_prompt_carries_the_finding_and_the_definitions_and_nothing_else():
+    finding = {"title": "CLIP leans on the caption", "description": "A long story.",
+               "key_metric": "42% drop", "caveat": "one dataset only"}
+    body = tagging.build(finding, TAG_CONCEPTS)
+    assert "CLIP leans on the caption" in body
+    assert "correlates with the" in body
+    assert "42% drop" not in body and "one dataset only" not in body
+
+
+def test_tagging_asks_for_the_phrase_of_the_definition_not_just_an_identifier():
+    body = tagging.build({"title": "t", "description": "d"}, TAG_CONCEPTS)
+    assert "because" in body
+    assert "quote" in body.lower()
+
+
+def test_only_findings_with_no_concept_are_offered_for_tagging_by_default():
+    db = sample_db()
+    db.findings["XX-002"] = {"title": "b", "description": "d", "concepts": []}
+    db.findings["XX-001"]["concepts"] = [{"ref": "concept:idea"}]
+    assert list(tagging.wanted(db)) == ["XX-002"]
+    assert sorted(tagging.wanted(db, only_untagged=False)) == ["XX-001", "XX-002"]
+
+
+def test_agreement_counts_what_a_re_tagging_run_actually_changed():
+    before = {"XX-001": ["concept:a"], "XX-002": []}
+    after = {"XX-001": ["concept:a"], "XX-002": ["concept:b"]}
+    assert tagging.agreement(before, after) == {"findings": 2, "unchanged": 1,
+                                                "added": 1, "removed": 0}
+
+
+def test_a_paper_that_yielded_no_finding_needs_no_source_entry():
+    documents = {"p1": {"findings": [], "entities": []},
+                 "p2": {"findings": [{"title": "A claim", "description": "d",
+                                      "models": [{"name": "Llama 2"}]}], "entities": []}}
+    kept, _, _ = splitter.split(documents, SPLIT_ENTITIES,
+                                {"p1": "source:empty", "p2": "source:the-paper"},
+                                "IC", set(), SPLIT_ROLES)
+    needed = {link["ref"] for candidate in kept for link in candidate.record["sources"]}
+    assert needed == {"source:the-paper"}
+
+
+def test_a_bare_model_is_dropped_when_the_same_model_appears_with_a_variant():
+    kept, _, _ = split_of([{"title": "A claim", "description": "d",
+                            "models": [{"name": "Llama 2"}, {"name": "Llama 2 7B Chat"}]}])
+    assert kept[0].record["models"] == [{"ref": "model:llama-2",
+                                         "variant": "variant:llama-2-7b-chat"}]
+
+
+def test_a_bare_model_survives_when_no_variant_of_it_is_named():
+    kept, _, _ = split_of([{"title": "A claim", "description": "d",
+                            "models": [{"name": "Llama 2"}]}])
+    assert kept[0].record["models"] == [{"ref": "model:llama-2"}]

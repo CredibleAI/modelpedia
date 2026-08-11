@@ -1,6 +1,6 @@
 from typing import NamedTuple
 
-FORMAT_VERSION = 2
+FORMAT_VERSION = 3
 
 FINDING = "finding"
 MODEL = "model"
@@ -38,11 +38,6 @@ NODE_TYPES = (
              table_file="datasets.csv", anchored=True, required=True),
     NodeType(SOURCE, "Sources", registry_file="sources.yaml", url_segment="sources",
              table_file="sources.csv", anchored=True, required=True),
-    NodeType(RELATED_WORK, "Related work", registry_file="related_work.yaml",
-             url_segment=None, table_file="related_work.csv",
-             anchored=True, required=True),
-    NodeType(PERSON, "People", registry_file="people.yaml", url_segment=None,
-             table_file="people.csv", anchored=False, required=True),
 )
 
 NODE_TYPE_BY_NAME = {node_type.name: node_type for node_type in NODE_TYPES}

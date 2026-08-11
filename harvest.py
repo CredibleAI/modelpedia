@@ -126,21 +126,38 @@ def submissions(connection, venue_id, accepted_only=True):
     return connection.get_all_notes(invitation=submission_invitation(connection, venue_id))
 
 
+ROW_KEYS = ("id", "tier")
+
+
+def usable_row(row):
+    return isinstance(row, dict) and all(isinstance(row.get(key), str) for key in ROW_KEYS)
+
+
 def manifest_rows():
     if not MANIFEST.exists():
         return []
-    rows, damaged = [], 0
+    by_id, damaged, repeated = {}, 0, 0
     for number, line in enumerate(MANIFEST.read_text(encoding="utf-8").splitlines(), start=1):
         if not line.strip():
             continue
         try:
-            rows.append(json.loads(line))
+            row = json.loads(line)
         except json.JSONDecodeError:
             damaged += 1
             print("  WARN %s line %d is not valid JSON, skipped" % (MANIFEST.name, number))
+            continue
+        if not usable_row(row):
+            damaged += 1
+            print("  WARN %s line %d lacks %s, skipped"
+                  % (MANIFEST.name, number, " and ".join(ROW_KEYS)))
+            continue
+        repeated += row["id"] in by_id
+        by_id[row["id"]] = row
     if damaged:
-        print("  WARN %d damaged line(s); they will be re-harvested" % damaged)
-    return rows
+        print("  WARN %d unusable line(s); those papers will be re-harvested" % damaged)
+    if repeated:
+        print("  WARN %d repeated id(s); the last row for each wins" % repeated)
+    return list(by_id.values())
 
 
 def seen_ids():
@@ -251,11 +268,46 @@ def fetch_pdf(connection, paper_id, target, retries=RETRIES, delay=DELAY):
     return True
 
 
+PDF_OPTIONS = ("--tier", "--limit", "--ids")
+ALL_TIERS = (screen.STRONG, screen.POSSIBLE, screen.WEAK)
+
+
+def options(rest, allowed):
+    given, index = {}, 0
+    while index < len(rest):
+        flag = rest[index]
+        if flag not in allowed:
+            raise ValueError("unknown option %r; expected one of %s" % (flag, ", ".join(allowed)))
+        if index + 1 >= len(rest):
+            raise ValueError("%s needs a value" % flag)
+        given[flag] = rest[index + 1]
+        index += 2
+    return given
+
+
+def chosen_tiers(value):
+    if value is None:
+        return DOWNLOAD_TIERS
+    tiers = tuple(part.strip() for part in value.split(",") if part.strip())
+    unknown = [tier for tier in tiers if tier not in ALL_TIERS]
+    if not tiers or unknown:
+        raise ValueError("--tier takes %s, not %r" % ("/".join(ALL_TIERS), value))
+    return tiers
+
+
+def positive(value):
+    if value is None:
+        return None
+    if not value.isdigit() or int(value) < 1:
+        raise ValueError("--limit takes a positive whole number, not %r" % value)
+    return int(value)
+
+
 def read_ids(path):
     try:
         lines = Path(path).read_text(encoding="utf-8").splitlines()
     except OSError as error:
-        raise SystemExit(fail("cannot read %s: %s" % (path, error)))
+        raise ValueError("cannot read %s: %s" % (path, error))
     ids = []
     for number, line in enumerate(lines, start=1):
         candidate = line.strip()
@@ -264,10 +316,9 @@ def read_ids(path):
         try:
             ids.append(safe_id(candidate))
         except ValueError:
-            raise SystemExit(fail("%s line %d is not an identifier: %r"
-                                  % (path, number, candidate)))
+            raise ValueError("%s line %d is not an identifier: %r" % (path, number, candidate))
     if not ids:
-        raise SystemExit(fail("%s contains no identifiers" % path))
+        raise ValueError("%s contains no identifiers" % path)
     return list(dict.fromkeys(ids))
 
 
@@ -287,13 +338,18 @@ def harvest_pdfs(tiers=DOWNLOAD_TIERS, limit=None, delay=DELAY, ids=None):
     PDFS.mkdir(parents=True, exist_ok=True)
     clear_partials(PDFS)
     wanted = selected_rows(tiers, ids)
-    todo = [row for row in wanted if not (PDFS / ("%s.pdf" % safe_id(row["id"]))).exists()]
-    if limit:
+    if ids is not None and not wanted:
+        return fail("none of the %d requested ids is in the manifest" % len(ids))
+    held = [row for row in wanted if (PDFS / ("%s.pdf" % safe_id(row["id"]))).exists()]
+    todo = [row for row in wanted if row not in held]
+    capped = len(todo) - limit if limit and len(todo) > limit else 0
+    if capped:
         todo = todo[:limit]
 
     source = "from --ids" if ids is not None else "in tiers %s" % "/".join(tiers)
-    print("%d %s, %d already on disk, fetching %d"
-          % (len(wanted), source, len(wanted) - len(todo), len(todo)))
+    print("%d %s, %d already on disk, fetching %d%s"
+          % (len(wanted), source, len(held), len(todo),
+             ", %d held back by --limit" % capped if capped else ""))
     if not todo:
         return 0
 
@@ -460,16 +516,13 @@ def main(argv):
     if command == "stats":
         return show_stats()
     if command == "pdfs":
-        tiers = DOWNLOAD_TIERS
-        limit = None
-        ids = None
-        for index, flag in enumerate(rest):
-            if flag == "--tier" and index + 1 < len(rest):
-                tiers = tuple(rest[index + 1].split(","))
-            if flag == "--limit" and index + 1 < len(rest):
-                limit = int(rest[index + 1])
-            if flag == "--ids" and index + 1 < len(rest):
-                ids = read_ids(rest[index + 1])
+        try:
+            given = options(rest, PDF_OPTIONS)
+            tiers = chosen_tiers(given.get("--tier"))
+            limit = positive(given.get("--limit"))
+            ids = read_ids(given["--ids"]) if "--ids" in given else None
+        except ValueError as error:
+            return fail(str(error))
         return harvest_pdfs(tiers, limit, ids=ids)
     if command == "text":
         return harvest_text()

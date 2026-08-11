@@ -1,0 +1,44 @@
+id: IC-003
+title: HyperDAS dynamically selects intervention tokens and learns linear subspaces in Llama3-8b that
+  mediate entity attributes.
+description: The paper introduces HyperDAS, a hypernetwork-based method to automate the localization
+  of concepts in a pre-trained Llama3-8b model. HyperDAS uses a transformer to encode a natural language
+  description of a concept (e.g., 'the country of a city') and then selects token positions and identifies
+  a linear subspace in the model's residual stream for intervention. It is trained and evaluated on
+  the RAVEL benchmark, which measures the ability to disentangle entity attributes (e.g., country, birth
+  year) through causal interventions. HyperDAS achieves state-of-the-art disentanglement scores, outperforming
+  the Multi-task Distributed Alignment Search (MDAS) baseline across five entity domains. The analysis
+  shows that HyperDAS targets different token positions depending on the layer, with middle layers focusing
+  on entity tokens and deeper layers targeting syntax tokens.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:hyperdas-automating-mechanistic-interpretability-hypernetworks
+datasets:
+- ref: dataset:ravel
+  role: eval
+methods:
+- ref: method:hyperdas
+  role: primary
+- ref: method:distributed-alignment-search
+- ref: method:multi-task-distributed-alignment-search
+  role: compared-to
+- ref: method:sparse-autoencoder
+  role: compared-to
+related_work:
+- ref: method:distributed-alignment-search
+  role: builds-on
+- ref: method:multi-task-distributed-alignment-search
+  role: compared-to
+evidence_type: interventional
+key_metric: 'Disentangle score: HyperDAS (asymmetric) 84.7 average, MDAS 76.0 average (Table 3a); City
+  domain: HyperDAS-sym 76.9 / 90.9 / 83.9 (cause/iso/disentangle) at layer 15 (Figure 3b).'
+caveat: The paper notes that HyperDAS will only be successful if the target concept is mediated by linear
+  features, and that non-linear mediators are a possibility. It also acknowledges the risk that the
+  method might 'hack' evaluations and inject information rather than uncovering causal structure, though
+  design choices were made to mitigate this.
+review_status: draft
+extracted_by: automatic-extraction

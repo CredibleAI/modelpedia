@@ -83,14 +83,23 @@ def finding_authors(view, data):
     authors = []
     for source in data.get("sources") or []:
         for author in view.nodes[source[keys.REF]]["data"].get(keys.AUTHORS) or []:
-            if author[keys.REF] not in authors:
-                authors.append(author[keys.REF])
+            if author not in authors:
+                authors.append(author)
     return authors
+
+
+def outside_link(item):
+    text = escape(str(item.get(keys.NAME) or ""))
+    target = item.get(keys.ANCHOR)
+    return anchor(target, text, ' rel="external"') if target else text
 
 
 def link_items(view, data, field):
     items = []
     for item in data.get(field) or []:
+        if keys.REF not in item:
+            items.append(outside_link(item) + role_marker(item.get(keys.ROLE)))
+            continue
         text = link(view, item[keys.REF], role=item.get(keys.ROLE))
         variant = item.get(keys.VARIANT)
         if variant and variant != graph_json.VARIANT_NOT_SPECIFIED:
@@ -279,7 +288,7 @@ def finding_body(view, node):
     return "".join([
         '<header><h1><span class="ident">%s</span>%s</h1></header>'
         % (escape(node["id"]), escape(data["title"])),
-        paragraph(", ".join(link(view, ref) for ref in authors), "byline") if authors else "",
+        paragraph(", ".join(escape(name) for name in authors), "byline") if authors else "",
         paragraph(escape(data["description"].strip())),
         definition_list(rows),
     ])

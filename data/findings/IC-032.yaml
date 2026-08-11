@@ -1,0 +1,43 @@
+id: IC-032
+title: Off-policy DPO causes a squeezing effect in LLMs where probability mass shifts to the most confident
+  token, explaining degenerate repetition
+description: 'The paper analyses the learning dynamics of LLM finetuning, decomposing the per-step change
+  in predicted probabilities during SFT and DPO. For off-policy DPO, the negative gradient imposed on
+  the rejected response is shown to create a ''squeezing effect'': probability mass is squeezed from
+  all but the most confident token prediction, making the model’s output distribution peakier. This
+  is verified by tracking the log-likelihood of various response types during training on the Anthropic-HH
+  and UltraFeedback datasets using Pythia and Qwen1.5 models. The confidence of the greedy-decoded (argmax)
+  response increases rapidly during DPO while the confidence of all other tracked responses decreases,
+  including the chosen response and its rephrases, offering an explanation for the ''repeater'' phenomenon
+  reported in prior work.'
+models:
+- ref: model:pythia
+- ref: model:qwen-1-5
+concepts: []
+sources:
+- ref: source:learning-dynamics-llm-finetuning
+datasets:
+- ref: dataset:anthropic-hh
+  role: eval
+- ref: dataset:ultrafeedback
+  role: eval
+methods:
+- ref: method:direct-preference-optimization
+  role: primary
+- ref: method:empirical-ntk
+  role: supporting
+- ref: method:probing-classifiers
+  role: eval
+related_work:
+- ref: method:direct-preference-optimization
+  role: builds-on
+- name: From r to Q*
+  anchor: https://arxiv.org/abs/2404.12358
+  role: builds-on
+evidence_type: correlational
+key_metric: log-likelihood of greedy-decoded response increases from -113 to -63 over 8 epochs; confidence
+  of chosen response decreases while argmax increases
+caveat: Analysis relies on the assumption that the relative influence of the empirical neural tangent
+  kernel is stable during training, which is verified empirically but not proven theoretically.
+review_status: draft
+extracted_by: automatic-extraction

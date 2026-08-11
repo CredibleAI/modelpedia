@@ -1,0 +1,50 @@
+id: IC-026
+title: LLMs can assist in OB rejoining by identifying rejoinable fragments with moderate accuracy, but
+  are not yet truly usable
+description: The study evaluates LMMs on the OB rejoining task using a new dataset (OBI-Rejoin). Models
+  were assessed on their ability to determine if two fragments are rejoinable, using both 'yes-or-no'
+  queries (measuring accuracy) and 'how' queries (measuring rejoinable probability with acc@k). GPT-4o
+  and Gemini 1.5 Pro achieved acc@10 scores over 76%, suggesting a potential for assisting scholars
+  by narrowing down candidates. However, open-source models performed poorly, with average acc@1, acc@5,
+  and acc@10 scores of 3.85%, 11.39%, and 18.65%, respectively.
+models:
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-flash
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:gpt-4o
+- ref: model:qwen-vl
+  variant: variant:qwen-vl-max
+- ref: model:glm-4v
+- ref: model:xgen-mm
+- ref: model:mplug-owl-3
+- ref: model:minicpm-v
+  variant: variant:minicpm-v-2-6
+- ref: model:internvl-2
+  variant: variant:internvl-2-llama3-76b
+- ref: model:internvl-2
+  variant: variant:internvl-2-40b
+- ref: model:internvl-2
+  variant: variant:internvl-2-8b
+- ref: model:llava-next
+- ref: model:idefics-2
+  variant: variant:idefics-2-8b
+- ref: model:deepseek-vl
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:obi-bench-lmms-aid-study-ancient
+datasets:
+- ref: dataset:obi-rejoin
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'acc@10: GPT-4o 78.47%, Gemini 1.5 Pro 76.67%; acc@1: GPT-4o 29.13%, Gemini 1.5 Pro 24.88%'
+caveat: Performance is significantly better with 'how' queries (probabilistic output) than 'yes-or-no'
+  queries, suggesting that the format of the answer greatly influences the results. Open-source models
+  remain far from practical utility.
+review_status: draft
+extracted_by: automatic-extraction

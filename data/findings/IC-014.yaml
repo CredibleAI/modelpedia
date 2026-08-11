@@ -1,0 +1,35 @@
+id: IC-014
+title: Sparse autoencoders can identify 'uncertainty' directions in the residual stream before an answer,
+  which are predictive of incorrect responses.
+description: The authors identify SAE latents in the residual stream at the end-of-instruction token
+  that differentiate between correct and incorrect responses. These directions, found in Gemma 2 2b
+  and Gemma 2 9b, appear to signal model uncertainty. The highest-scoring latent in Gemma 2 2b achieves
+  a 73.2% AUROC and an F1 score of 72% in classifying correct vs. incorrect responses on a test set.
+  An analysis of the latent's activations on a large text corpus shows it fires on text related to uncertainty
+  or undisclosed information.
+models:
+- ref: model:gemma-2
+  variant: variant:gemma-2-2b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:i-know-this-entity-knowledge-awareness
+datasets:
+- ref: dataset:wikidata
+  role: source
+- ref: dataset:fineweb
+  role: source
+methods:
+- ref: method:sparse-autoencoder
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Top latent for Gemma 2 2b: 73.2% AUROC, F1 score 72%. The t-statistic is used to select
+  top latents from a training set.'
+caveat: This analysis excludes instances where the model refuses to answer. The relationship is correlational;
+  the study does not intervene on these directions to demonstrate causality. Results are based on a
+  specific set of entity types.
+review_status: draft
+extracted_by: automatic-extraction

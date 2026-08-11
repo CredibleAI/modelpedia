@@ -37,11 +37,14 @@ methods:
   - ref: method:insertion-deletion-auc
     role: eval
 related_work:
-  - ref: rw:game
+  - name: "GAME (Generic Attention-model Explainability)"
+    anchor: https://arxiv.org/abs/2103.15679
     role: compared-to
-  - ref: rw:grad-eclip
+  - name: "Grad-ECLIP"
+    anchor: https://arxiv.org/abs/2502.18816
     role: compared-to
-  - ref: rw:exclip
+  - name: "exCLIP (second-order attributions for caption-image interactions)"
+    anchor: https://openreview.net/forum?id=plkrRJt98c
     role: compared-to
 related_findings:
   - FX-002
