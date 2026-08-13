@@ -28,5 +28,4 @@ key_metric: 23.7% of object patch token positions correspond to the correct obje
 caveat: The logit lens is an inference technique and may not perfectly reflect the model's internal
   processing. The numbers reported are averages from a specific set of images from the COCO validation
   set.
-review_status: draft
 extracted_by: automatic-extraction

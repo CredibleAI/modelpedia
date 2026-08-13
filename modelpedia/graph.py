@@ -1,6 +1,6 @@
 from typing import NamedTuple
 
-FORMAT_VERSION = 3
+FORMAT_VERSION = 4
 
 FINDING = "finding"
 MODEL = "model"

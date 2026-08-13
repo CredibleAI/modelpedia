@@ -13,7 +13,8 @@ description: 'The paper analyses the learning dynamics of LLM finetuning, decomp
 models:
 - ref: model:pythia
 - ref: model:qwen-1-5
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:learning-dynamics-llm-finetuning
 datasets:
@@ -39,5 +40,4 @@ key_metric: log-likelihood of greedy-decoded response increases from -113 to -63
   of chosen response decreases while argmax increases
 caveat: Analysis relies on the assumption that the relative influence of the empirical neural tangent
   kernel is stable during training, which is verified empirically but not proven theoretically.
-review_status: draft
 extracted_by: automatic-extraction

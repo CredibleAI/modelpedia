@@ -19,5 +19,4 @@ key_metric: Modality gap (l2m & rmg) and entropy over logits are similar for fro
   learnable temperature settings after fine-tuning.
 caveat: The paper does not claim a causal relationship; it states that the changes to the embedding
   are 'measurable by the modality gap'.
-review_status: draft
 extracted_by: automatic-extraction

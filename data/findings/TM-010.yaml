@@ -1,5 +1,4 @@
 id: TM-010
-review_status: verified
 extracted_by: manual-extraction
 title: Fixed corner patches dominate Integrated Gradients maps regardless of image content
 description: >

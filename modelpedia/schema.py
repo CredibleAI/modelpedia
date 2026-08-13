@@ -26,13 +26,13 @@ MODELS_FIELD = "models"
 RELATED_FINDINGS_FIELD = "related_findings"
 
 REQUIRED_FIELDS = ("id", "title", "description", "concepts", "models", "sources",
-                   "review_status", "extracted_by")
+                   "extracted_by")
 
 EMPTY_ALLOWED = frozenset(("concepts",))
 
 OPTIONAL_FIELDS = ("key_metric", "caveat", RELATED_FINDINGS_FIELD)
 
-CLOSED_FIELDS = ("evidence_type", "review_status", "extracted_by")
+CLOSED_FIELDS = ("evidence_type", "extracted_by")
 
 MODEL_FACETS = ("modality", "domain", "task")
 

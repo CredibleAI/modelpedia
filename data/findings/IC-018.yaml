@@ -28,5 +28,4 @@ key_metric: 'For generative description: 71.79% decrease (for +1 buffer, 33.4 to
 caveat: The results are for object identification tasks and on the LLaVA family of models. The study
   only investigates a subset of 100 images for the VQA task, and the filtering process for the dataset
   may introduce bias.
-review_status: draft
 extracted_by: automatic-extraction

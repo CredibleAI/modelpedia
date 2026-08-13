@@ -56,5 +56,4 @@ key_metric: 'Accuracy on TriviaQA: 85.7 (0% hard negatives), 53.5 (100% hard neg
 caveat: The method's effectiveness depends on a hyperparameter for identifying the distribution fusion
   layer; the theory relies on approximations using KL divergence and may have maximum error that decreases
   as detriment increases
-review_status: draft
 extracted_by: automatic-extraction

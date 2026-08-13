@@ -24,5 +24,4 @@ key_metric: 'Pearson correlation with overall misalignment: gender 0.87, age 0.6
   0.45, number 0.44, species 0.30 (all p < 0.001)'
 caveat: The analysis assumes that human preference distributions can be represented as points in a 6-dimensional
   space, which may oversimplify the complexity of moral judgments.
-review_status: draft
 extracted_by: automatic-extraction

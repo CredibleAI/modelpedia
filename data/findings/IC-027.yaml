@@ -59,5 +59,4 @@ key_metric: 'Average BERTScore on HUST-OBS: GPT-4o 0.3687, Gemini 1.5 Pro 0.3730
 caveat: Decipherment is subjective and BERTScore is an approximation of semantic similarity, not definitive
   accuracy. The evaluation is limited to 140 characters and only uses English descriptions, potentially
   missing nuances of interpretation in other languages or from historical context.
-review_status: draft
 extracted_by: automatic-extraction

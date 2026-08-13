@@ -40,5 +40,4 @@ key_metric: 'misalignment scores: 0.55 (Llama 3.1 70B), 0.56 (Llama 3 70B), 0.57
 caveat: The Moral Machine dataset is a descriptive measure of human responses, not a prescriptive moral
   standard, and trolley problems may be too narrow or unrealistic to capture the full complexity of
   moral reasoning.
-review_status: draft
 extracted_by: automatic-extraction

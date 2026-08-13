@@ -75,5 +75,4 @@ key_metric: For OOD detection on ImageNet-1K with ResNet, SPADE achieves AUROC/F
 caveat: The theoretical guarantees for adversarial robustness depend on the Lipschitz constant of the
   teacher model, which can lead to trivial bounds. The authors mitigate this with a local Lipschitz
   constant analysis.
-review_status: draft
 extracted_by: automatic-extraction

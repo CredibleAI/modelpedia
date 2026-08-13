@@ -1,3 +1,5 @@
+import hashlib
+import json
 import re
 from typing import NamedTuple
 
@@ -101,6 +103,8 @@ TERM_TYPES = (graph_json.METHOD, graph_json.MODEL, graph_json.CONCEPT,
 
 MIN_REGISTRY_TERM = 5
 
+UNKNOWN_VERSION = "unknown"
+
 
 def word_pattern(words):
     joined = "|".join(sorted((re.escape(word) for word in words), key=len, reverse=True))
@@ -108,6 +112,18 @@ def word_pattern(words):
 
 
 PATTERNS = {name: word_pattern(group.words) for name, group in GROUPS.items() if group.words}
+
+VERSION_LENGTH = 12
+
+
+def fingerprint(groups, knobs):
+    tuned = {
+        "groups": {name: [group.weight, sorted(group.stems), sorted(group.words)]
+                   for name, group in groups.items()},
+        "knobs": dict(knobs),
+    }
+    packed = json.dumps(tuned, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(packed.encode("utf-8")).hexdigest()[:VERSION_LENGTH]
 
 
 def registry_terms(entities):
@@ -142,6 +158,12 @@ def tier_of(score):
     if score >= POSSIBLE_AT:
         return POSSIBLE
     return WEAK
+
+
+RULES_VERSION = fingerprint(GROUPS, {"strong_at": STRONG_AT, "possible_at": POSSIBLE_AT,
+                                     "per_group": PER_GROUP,
+                                     "registry_weight": REGISTRY_WEIGHT,
+                                     "min_registry_term": MIN_REGISTRY_TERM})
 
 
 def screen(title, abstract, keywords=(), terms=frozenset()):

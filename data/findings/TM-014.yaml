@@ -1,5 +1,4 @@
 id: TM-014
-review_status: draft
 extracted_by: automatic-extraction
 title: Per-edge latent distance along shortest paths spikes at physical barriers
 description: >

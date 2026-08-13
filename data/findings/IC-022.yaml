@@ -34,5 +34,4 @@ key_metric: 'cosine similarity in safety layers ~0.5; text-only ASR at final che
   fine-tuning) vs 41.3% (SPPFT)'
 caveat: Correlational analysis of layer similarity does not prove causal effect; SPPFT only partially
   recovers safety, and gains are stronger for text-only than multimodal safety.
-review_status: draft
 extracted_by: automatic-extraction

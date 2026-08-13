@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 
+from modelpedia import atomic
 from modelpedia import graph as graph_json
-from modelpedia import paths
 
 
 def load_graph(path: Path):
@@ -17,7 +17,4 @@ def load_graph(path: Path):
 
 def dump_graph(graph, path: Path):
     path.parent.mkdir(parents=True, exist_ok=True)
-    document = json.dumps(graph, indent=2, ensure_ascii=False)
-    partial = path.with_suffix(path.suffix + paths.PARTIAL)
-    partial.write_text(document, encoding="utf-8")
-    partial.replace(path)
+    atomic.write_text(path, json.dumps(graph, indent=2, ensure_ascii=False))

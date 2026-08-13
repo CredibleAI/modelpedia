@@ -34,5 +34,4 @@ key_metric: 'On the AHA dataset (test), GPT-4o-ICL achieves ROUGE-L 0.226, cosin
 caveat: The paper notes that AHA was fine-tuned specifically for this failure reasoning task, while
   GPT-4o is a general-purpose VLM evaluated in a zero-shot or few-shot setting, which may not be its
   optimal use case.
-review_status: draft
 extracted_by: automatic-extraction

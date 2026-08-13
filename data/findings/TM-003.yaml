@@ -1,5 +1,4 @@
 id: TM-003
-review_status: verified
 extracted_by: manual-extraction
 title: Optical-to-SAR generation errors cluster spatially, but only five regions survive FDR control
 description: >

@@ -103,6 +103,17 @@ def validated(document):
     return document
 
 
+def concepts_of(finding):
+    for item in finding.get("concepts") or []:
+        written = item if isinstance(item, str) else None
+        if written is None and isinstance(item, dict):
+            written = item.get("concept") or item.get("id") or item.get("name")
+        value = str(written or "").strip()
+        if not value:
+            continue
+        yield (value if value.startswith("concept:") else "concept:%s" % value), item
+
+
 def named_in(document):
     marks = set()
     for entry in entries_of(document, CONSIDERED):

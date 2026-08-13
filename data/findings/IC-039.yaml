@@ -28,5 +28,4 @@ evidence_type: correlational
 key_metric: 'No clear correlation found; medium-to-strong correlations between object and attribute
   performance (Kendall’s τ: 39.0 to 78.1).'
 caveat: The metric Moad is a new measure and its relationship to other forms of bias is not fully explored.
-review_status: draft
 extracted_by: automatic-extraction

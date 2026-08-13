@@ -3,9 +3,6 @@ finding:
     - observational
     - correlational
     - interventional
-  review_status:
-    - draft
-    - verified
   extracted_by:
     - manual-extraction
     - automatic-extraction

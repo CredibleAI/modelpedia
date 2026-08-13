@@ -31,5 +31,4 @@ key_metric: 'Win rate of extended method vs baseline after 4 DPO epochs: 0.6928 
 caveat: The method is evaluated on a single dataset (Anthropic-HH) and model size (Qwen1.5-1.8B); results
   may not generalise to other settings. The win-rate evaluation is conducted by LLM judges, which may
   have their own biases.
-review_status: draft
 extracted_by: automatic-extraction

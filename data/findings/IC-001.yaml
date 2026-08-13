@@ -43,5 +43,4 @@ key_metric: Human accuracy 83-85%; Gemini-1.5-Pro 51%, GPT-4-Vision 46%, GPT-4o 
   49% in separate-images triplet setup; Dumb pixel baseline 50%
 caveat: The benchmark is new and synthetic, which may not fully reflect real-world visual reasoning;
   performance varies significantly with input strategy and model version.
-review_status: draft
 extracted_by: automatic-extraction

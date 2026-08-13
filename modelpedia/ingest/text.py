@@ -1,19 +1,16 @@
 import re
-import shutil
-import subprocess
 import unicodedata
+from importlib.metadata import PackageNotFoundError, version
 from typing import NamedTuple
 
-TOOL = "pdftotext"
+TOOL = "pypdfium2"
 PAGE_BREAK = "\f"
-TIMEOUT = 120
 
-SOFT_HYPHEN = "\u00ad"
-HYPHENATED = re.compile(r"(\w)[\u00ad\-][ \t]*\n[ \t]*(\w)")
+SOFT_HYPHEN = "­"
+HYPHENATED = re.compile(r"(\w)[­\-][ \t]*\n[ \t]*(\w)")
 SPACED_CAPS = re.compile(r"(?<![A-Za-z])([A-Z])[ \t]+([A-Z]{2,})(?![a-z])")
 WHITESPACE = re.compile(r"\s+")
 NOT_ALNUM = re.compile(r"[^a-z0-9]+")
-
 
 class MissingTool(Exception):
     pass
@@ -47,18 +44,37 @@ def flatten(value):
     return NOT_ALNUM.sub("", fold(join_hyphens(value)))
 
 
-def read_pdf(path):
-    if shutil.which(TOOL) is None:
-        raise MissingTool("%s is not on PATH; install poppler-utils" % TOOL)
+def library():
     try:
-        finished = subprocess.run([TOOL, "-layout", str(path), "-"],
-                                  capture_output=True, check=False, timeout=TIMEOUT)
-    except subprocess.TimeoutExpired:
-        raise MissingTool("%s timed out after %ds on %s" % (TOOL, TIMEOUT, path))
-    if finished.returncode != 0:
-        raise MissingTool("%s failed on %s: %s"
-                          % (TOOL, path, finished.stderr.decode("utf-8", "replace").strip()))
-    return finished.stdout.decode("utf-8", "replace")
+        import pypdfium2
+    except ImportError:
+        raise MissingTool("%s is not installed; .venv/bin/pip install %s" % (TOOL, TOOL))
+    return pypdfium2
+
+
+def available():
+    try:
+        library()
+        return TOOL
+    except MissingTool:
+        return None
+
+
+def installed_version():
+    try:
+        return version(TOOL)
+    except PackageNotFoundError:
+        return "installed"
+
+
+def read_pdf(path):
+    pdfium = library()
+    try:
+        document = pdfium.PdfDocument(str(path))
+        pages = [page.get_textpage().get_text_range() for page in document]
+    except Exception as error:
+        raise MissingTool("%s failed on %s: %s" % (TOOL, path, error))
+    return PAGE_BREAK.join(page.replace(PAGE_BREAK, " ") for page in pages)
 
 
 def document(path):

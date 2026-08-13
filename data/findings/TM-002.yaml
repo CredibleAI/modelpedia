@@ -1,5 +1,4 @@
 id: TM-002
-review_status: draft
 extracted_by: automatic-extraction
 title: The mean-difference concept vector scores higher than trained classifiers under cosine similarity
 description: >

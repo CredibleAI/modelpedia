@@ -1,5 +1,4 @@
 id: SY-002
-review_status: draft
 extracted_by: automatic-extraction
 title: Sybil responds more weakly to nodules near the pleura, where adenocarcinoma tends to appear
 description: >
@@ -12,7 +11,6 @@ description: >
 evidence_type: interventional
 concepts:
   - ref: concept:positional-bias
-  - ref: concept:failure-mode
 key_metric: >
   about 200,000 insertions; upper versus middle and lower lobes p <= 0.009; distance to pleura
   p < 0.001

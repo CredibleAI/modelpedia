@@ -32,5 +32,4 @@ key_metric: Human explanation validity 95%; Claude-Sonnet-3.5 separate images 50
   23%, GPT-4-Vision 39%, Gemini-1.5-Pro 38%
 caveat: Explanation evaluation is subjective and uses a binary validity judgment; the reference explanations
   may not cover all possible valid reasoning paths.
-review_status: draft
 extracted_by: automatic-extraction

@@ -22,5 +22,4 @@ key_metric: Refusal rates and preference decomposition scores for uncensored ver
   (reported in radar plots in Appendix F)
 caveat: Jailbreaking does not eliminate all refusals, and the approach is limited to a specific uncensoring
   technique; findings may not generalize to other jailbreaking methods or other models.
-review_status: draft
 extracted_by: automatic-extraction

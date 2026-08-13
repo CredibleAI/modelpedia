@@ -37,5 +37,4 @@ key_metric: Local scaling (ψ), local rank (ν), local complexity (δ); Vendi sc
   in text for memorization)
 caveat: The method relies on approximations for large models (randomized SVD, first-order Taylor for
   non-CPWL activations) and computational complexity is a limitation.
-review_status: draft
 extracted_by: automatic-extraction

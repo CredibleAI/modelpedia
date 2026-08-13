@@ -155,17 +155,6 @@ class Chosen(NamedTuple):
     written: str
 
 
-def chosen_concepts(finding):
-    for item in finding.get("concepts") or []:
-        written = item if isinstance(item, str) else None
-        if written is None and isinstance(item, dict):
-            written = item.get("concept") or item.get("id") or item.get("name")
-        value = str(written or "").strip()
-        if not value:
-            continue
-        yield value if value.startswith("concept:") else "concept:%s" % value, item
-
-
 def untagged(document):
     return [" ".join(str(finding.get("title") or "").split())
             for finding in answers.entries_of(document, answers.FINDINGS)
@@ -177,7 +166,7 @@ def off_list(documents, known):
     for paper, document in sorted(documents.items()):
         for finding in answers.entries_of(document, answers.FINDINGS):
             title = " ".join(str(finding.get("title") or "").split())
-            for value, written in chosen_concepts(finding):
+            for value, written in answers.concepts_of(finding):
                 if value not in known:
                     unknown.append(Chosen(paper, title, value, repr(written)))
                 elif not isinstance(written, str) or not written.startswith("concept:"):

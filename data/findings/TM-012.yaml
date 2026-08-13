@@ -1,5 +1,4 @@
 id: TM-012
-review_status: draft
 extracted_by: automatic-extraction
 title: Longitude and time-of-year planes become circular in deeper encoder blocks
 description: >

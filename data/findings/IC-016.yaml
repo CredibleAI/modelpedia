@@ -18,5 +18,4 @@ related_work: []
 evidence_type: correlational
 key_metric: Average probability ratio of 'spain' over 'the' improves from 0.16x to 11.3x at 14k steps.
 caveat: The paper notes that better prompting could avoid the need for LASER in this case.
-review_status: draft
 extracted_by: automatic-extraction

@@ -10,7 +10,7 @@ EDGE_FILE = "edges.csv"
 
 EDGE_COLUMNS = ["source", "target", "type", "role"]
 
-COLUMN_ORDER = ["id", "label", "name", "title", "review_status", "extracted_by",
+COLUMN_ORDER = ["id", "label", "name", "title", "extracted_by",
                 "evidence_type", "key_metric", "caveat", "developer", "authors", "venue",
                 "date", "modality", "domain", "task", "parent", "variants",
                 "models", "concepts", "sources", "datasets", "methods", "related_work",

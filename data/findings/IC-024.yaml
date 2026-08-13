@@ -38,5 +38,4 @@ key_metric: Change in Vendi score, change in average local scaling, change in RA
 caveat: Training a reward model on local scaling requires computing descriptors for a large dataset;
   the approach is demonstrated only for Stable Diffusion; the human preference model (RAHF) is trained
   on synthetic images and may be less reliable for real images.
-review_status: draft
 extracted_by: automatic-extraction

@@ -12,7 +12,8 @@ models:
 - ref: model:llava-1-5
 - ref: model:llava-phi
   variant: variant:llava-phi-3
-concepts: []
+concepts:
+- ref: concept:depth-dependent-structure
 sources:
 - ref: source:interpreting-visual-information-processing-vision-language
 datasets:
@@ -30,5 +31,4 @@ key_metric: Relative performance on the correct token drops to 0.88 (accuracy) a
   when blocking attention from object tokens to the last token position in mid-late layers.
 caveat: The analysis focuses on a simple object identification task and may not generalize to more complex
   reasoning tasks.
-review_status: draft
 extracted_by: automatic-extraction

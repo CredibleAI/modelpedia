@@ -2,7 +2,7 @@ import importlib
 import traceback
 
 TEST_MODULES = ("tests.test_build", "tests.test_outputs", "tests.test_pipeline",
-                "tests.test_verification")
+                "tests.test_extract", "tests.test_verification")
 
 
 def tests_in(module):

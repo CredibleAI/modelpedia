@@ -39,5 +39,4 @@ caveat: The benchmark uses multiple-choice questions which may not reflect real-
   agents are exposed to others' answers before providing their own. Conformity is measured as a necessary
   but not sufficient test. Lack of public training details limits conclusions about causes of varying
   conformity across architectures.
-review_status: draft
 extracted_by: automatic-extraction

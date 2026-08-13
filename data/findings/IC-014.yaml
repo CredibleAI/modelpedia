@@ -31,5 +31,4 @@ key_metric: 'Top latent for Gemma 2 2b: 73.2% AUROC, F1 score 72%. The t-statist
 caveat: This analysis excludes instances where the model refuses to answer. The relationship is correlational;
   the study does not intervene on these directions to demonstrate causality. Results are based on a
   specific set of entity types.
-review_status: draft
 extracted_by: automatic-extraction

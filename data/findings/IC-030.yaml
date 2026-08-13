@@ -33,5 +33,4 @@ key_metric: 'Independence rates: Qwen2-7B 19.6%, Qwen2-72B 57.6%; Llama3.1-405B 
   CRD=73.5%.'
 caveat: The precise causes of differences across model sizes and families remain unclear due to limited
   public information on training processes and alignment strategies.
-review_status: draft
 extracted_by: automatic-extraction

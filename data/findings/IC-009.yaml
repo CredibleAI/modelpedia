@@ -38,5 +38,4 @@ key_metric: 'Language sensitivity scores: 14.7 (Phi-3.5 MoE), 14.9 (Llama 3 8B),
   9B); correlation with speaker count near 0 across models'
 caveat: Language-to-country mapping is approximated by weighted averaging based on speaker counts, which
   does not account for dialectal variation (e.g., US English vs. UK English).
-review_status: draft
 extracted_by: automatic-extraction

@@ -31,5 +31,4 @@ key_metric: IKE on LLaVA-1.5 achieves t-rel 63.49, i-rel 59.98, i-gen 59.98 for 
   visual semantic portability.
 caveat: The results are contingent on the specific benchmark design and the choice of models and editing
   methods; they may not generalize to all LMMs or editing scenarios.
-review_status: draft
 extracted_by: automatic-extraction

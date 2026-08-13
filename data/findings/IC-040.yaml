@@ -24,5 +24,4 @@ key_metric: Modality gap (l2m & rmg) and object bias (MOAD) decrease as informat
   performance (accuracy and r@1) improves.
 caveat: Experiments were conducted on small- to medium-scale datasets (MAD, CC3M, CC12M) and may not
   fully represent the dynamics on larger datasets like LAION.
-review_status: draft
 extracted_by: automatic-extraction

@@ -4,10 +4,10 @@ from typing import NamedTuple
 
 from modelpedia import graph as graph_json
 from modelpedia import record_keys as keys
-from modelpedia import schema
 from modelpedia.ingest import answers
 from modelpedia.ingest import citations
 from modelpedia.ingest import link
+from modelpedia.ingest import openreview
 from modelpedia.ingest import text as textutil
 
 SLUG_WORDS = 6
@@ -16,7 +16,6 @@ STOP = frozenset({"a", "an", "the", "of", "for", "and", "or", "in", "on", "to", 
 WORD = re.compile(r"[a-z0-9]+")
 BARE_CITATION = re.compile(r"et al\.|&\s|\(\s*\d{4}[a-z]?\s*\)")
 
-DRAFT = "draft"
 AUTOMATIC = "automatic-extraction"
 
 FIELDS = (("models", graph_json.MODEL), ("datasets", graph_json.DATASET),
@@ -49,18 +48,13 @@ def date_from(stamp):
     return moment.date().isoformat()
 
 
-def value_of(content, key):
-    found = (content or {}).get(key)
-    return found.get("value") if isinstance(found, dict) else found
-
-
 def source_entry(meta):
-    content = meta.get("content") or {}
-    title = str(value_of(content, "title") or "").strip()
+    content = openreview.flat_content(meta.get("content"))
+    title = str(content.get("title") or "").strip()
     return slug_from(title), {
-        keys.AUTHORS: list(value_of(content, "authors") or []),
+        keys.AUTHORS: list(content.get("authors") or []),
         "title": title,
-        "venue": str(value_of(content, "venue") or "").strip() or None,
+        "venue": str(content.get("venue") or "").strip() or None,
         "date": date_from(meta.get("pdate")),
         keys.ANCHOR: "https://openreview.net/forum?id=%s" % meta.get("id"),
         keys.ARTIFACT: None,
@@ -79,19 +73,11 @@ def anchors_in(document):
 
 def concept_refs(finding, known):
     kept = []
-    for value, _ in _chosen(finding):
+    for value, _ in answers.concepts_of(finding):
         entry = {keys.REF: value}
         if value in known and entry not in kept:
             kept.append(entry)
     return kept
-
-
-def _chosen(finding):
-    for item in finding.get("concepts") or []:
-        written = item if isinstance(item, str) else (item or {}).get("concept")
-        value = str(written or "").strip()
-        if value:
-            yield (value if value.startswith("concept:") else "concept:%s" % value), item
 
 
 def named(item):
@@ -182,7 +168,6 @@ def record_for(finding, source_ref, links, concepts, related):
         "evidence_type": str(finding.get("evidence_type") or "").strip() or None,
         "key_metric": " ".join(str(finding.get("key_metric") or "").split()),
         "caveat": " ".join(str(finding.get("caveat") or "").split()),
-        "review_status": DRAFT,
         "extracted_by": AUTOMATIC,
     }
     return {key: value for key, value in record.items() if value not in ("", None) or key == "concepts"}

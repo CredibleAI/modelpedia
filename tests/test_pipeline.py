@@ -1,18 +1,23 @@
 import copy
+import json
 import os
 import tempfile
 from pathlib import Path
 
 import check
 import harvest
+from modelpedia import atomic
 from modelpedia.build import database
 from modelpedia import paths
 from modelpedia import graph as graph_json
 from modelpedia.ingest import answers
+from modelpedia.ingest import manifest as store
 from modelpedia.ingest import citations
 from modelpedia.ingest import link
+from modelpedia.ingest import openreview
 from modelpedia.ingest import prompt
 from modelpedia.ingest import proposals
+from modelpedia.ingest import report
 from modelpedia.ingest import split as splitter
 from modelpedia.ingest import tagging
 from modelpedia.build import validate
@@ -22,7 +27,6 @@ from tests.test_build import sample_db
 
 CANDIDATE = {
     "id": "XX-999",
-    "review_status": "draft",
     "extracted_by": "automatic-extraction",
     "title": "A candidate",
     "description": "A description.",
@@ -41,6 +45,12 @@ def candidate(**changes):
     record = copy.deepcopy(CANDIDATE)
     record.update(changes)
     return record
+
+
+def manifest_line(paper_id, tier, **extra):
+    row = {"id": paper_id, "tier": tier, "venue": "V/2026"}
+    row.update(extra)
+    return json.dumps(row) + "\n"
 
 
 def index_of(node_type=None, **changes):
@@ -139,7 +149,7 @@ def test_a_hyphenated_name_matches_with_or_without_the_hyphen():
     assert text.contains(doc, "Köppen-Geiger")
 
 
-def test_a_small_caps_heading_split_by_pdftotext_is_rejoined():
+def test_a_small_caps_heading_split_by_the_extractor_is_rejoined():
     doc = text.from_text("t", "A BSTRACT\nwe study I NTRODUCTION and the NL-E YE benchmark")
     assert text.contains(doc, "abstract")
     assert text.contains(doc, "introduction")
@@ -306,19 +316,23 @@ def test_gram_blocking_matches_an_exhaustive_scan():
         assert scanned == blocked, query
 
 
-def test_harvest_unwraps_the_value_envelope_of_api_v2():
-    assert harvest.value_of({"value": "a title"}) == "a title"
-    assert harvest.value_of("a title") == "a title"
+def test_openreview_unwraps_the_value_envelope_of_api_v2():
+    assert openreview.value_of({"value": "a title"}) == "a title"
+    assert openreview.value_of("a title") == "a title"
+    assert openreview.flat_content({"title": {"value": "t"}, "plain": "p"}) == \
+        {"title": "t", "plain": "p"}
+    assert openreview.flat_content(None) == {}
+
+
+def screened_row(paper_id="aBcD"):
+    content = openreview.flat_content(
+        {"title": {"value": AUDIT[0]}, "abstract": {"value": AUDIT[1]}})
+    return store.row_for(paper_id, content, "V/2026", screen.screen(*AUDIT),
+                         screen.RULES_VERSION, openreview.pdf_url(paper_id))
 
 
 def test_harvest_manifest_row_carries_the_screening():
-    screening = screen.screen(*AUDIT)
-
-    class Note:
-        id = "aBcD"
-        content = {"title": {"value": AUDIT[0]}, "abstract": {"value": AUDIT[1]}}
-
-    row = harvest.row_for(Note(), harvest.flatten_content(Note()), "V/2026", screening)
+    row = screened_row()
     assert row["id"] == "aBcD"
     assert row["tier"] == screen.STRONG
     assert row["pdf"].endswith("aBcD")
@@ -331,13 +345,163 @@ def test_harvest_downloads_only_tiers_it_was_asked_for():
     assert screen.STRONG in harvest.DOWNLOAD_TIERS
 
 
+def proposal_of(name, papers=("p1",), state="confirmed", candidates=()):
+    return proposals.Proposal(name, "methods", tuple(papers), "method", "", state, "",
+                              tuple(candidates))
+
+
+def concept_answers(**changes):
+    fields = {"proposals": (), "refusals": (), "silent": (), "without_concept": 0, "stray": 0}
+    fields.update(changes)
+    return proposals.ConceptAnswers(**fields)
+
+
+def proposed_report(**changes):
+    fields = {"found": (proposal_of("Probe"),), "kept": (proposal_of("Probe"),),
+              "families": (), "concepts": concept_answers(), "unknown": (), "misshapen": (),
+              "papers": 1, "least": 1}
+    fields.update(changes)
+    return report.for_proposals(report.Proposed(**fields))
+
+
+def test_a_report_section_with_nothing_to_say_leaves_no_trace():
+    quiet = proposed_report()
+    assert "close to something" not in quiet
+    assert "proposed concepts" not in quiet
+    assert "did not fire" not in quiet
+    assert not quiet.startswith("\n") and not quiet.endswith("\n")
+    assert "\n\n\n" not in quiet
+
+
+def test_report_blocks_are_separated_by_exactly_one_blank_line():
+    assert report.render([["a"], [], ["b", "c"], []]) == "a\n\nb\nc"
+    assert report.render([[], ["only"]]) == "only"
+    assert report.render([[], []]) == ""
+
+
+def test_a_candidate_close_to_a_registry_entry_is_named_for_a_human_to_decide():
+    close = proposal_of("Linear probing", candidates=("method:probe",))
+    shown = proposed_report(found=(close,), kept=(close,))
+    assert "close to something already in a registry, a human decides:" in shown
+    assert "Linear probing" in shown and "method:probe" in shown
+
+
+def test_the_citation_report_derives_its_total_and_names_the_rejected_state():
+    tally = {"confirmed": 3, "partial": 1, "rejected": 2, "absent": 4}
+    lines = report.for_citations(tally, tuple(tally), "rejected", "out.jsonl").split("\n")
+    assert lines[-1] == "10 entities, 2 rejected, report in out.jsonl"
+    assert lines[0].split() == ["confirmed", "3", "30%"]
+    assert [line.split()[0] for line in lines[:4]] == list(tally)
+
+
+def test_the_manifest_store_takes_its_path_so_a_second_venue_can_have_its_own():
+    with tempfile.TemporaryDirectory() as directory:
+        first = Path(directory) / "iclr.jsonl"
+        second = Path(directory) / "icml.jsonl"
+        first.write_text(manifest_line("a", "strong"), encoding="utf-8")
+        second.write_text(manifest_line("b", "weak"), encoding="utf-8")
+        assert [row["id"] for row in store.load(first).rows] == ["a"]
+        assert [row["id"] for row in store.load(second).rows] == ["b"]
+        assert store.load(Path(directory) / "absent.jsonl").rows == ()
+
+
+def test_the_store_reports_damage_instead_of_printing_it():
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / "manifest.jsonl"
+        path.write_text('{"id": "a", "tier": "strong"}\n'
+                        + manifest_line("b", "weak")
+                        + manifest_line("b", "strong"), encoding="utf-8")
+        held = store.load(path)
+        assert [row["id"] for row in held.rows] == ["b"]
+        assert held.repeated == 1
+        assert len(held.complaints) == 1 and "lacks venue" in held.complaints[0]
+
+
+def test_counting_seen_ids_never_builds_the_rows_it_throws_away():
+    with tempfile.TemporaryDirectory() as directory:
+        path = Path(directory) / "manifest.jsonl"
+        path.write_text(manifest_line("a", "strong")
+                        + '{"id": "damaged", "tier": "strong"}\n'
+                        + manifest_line("c", "weak"), encoding="utf-8")
+        assert store.ids_in(path) == {"a", "c"}
+
+
+def test_an_atomic_write_stages_beside_the_target_without_losing_its_extension():
+    with tempfile.TemporaryDirectory() as directory:
+        target = Path(directory) / "paper.pdf"
+        assert atomic.staging_path(target).name == "paper.pdf.part"
+        atomic.write_text(Path(directory) / "paper.txt", "body")
+        assert atomic.staging_path(Path(directory) / "paper.txt").name == "paper.txt.part"
+        assert list(Path(directory).glob("*" + paths.PARTIAL)) == []
+
+
+def test_the_api_module_signals_rather_than_exiting_so_the_entry_point_decides():
+    kept = {name: os.environ.pop(name, None)
+            for name in (openreview.USERNAME_ENV, openreview.PASSWORD_ENV)}
+    try:
+        try:
+            openreview.credentials()
+            raise AssertionError("missing credentials were accepted")
+        except openreview.Unavailable as error:
+            assert openreview.USERNAME_ENV in str(error)
+    finally:
+        for name, value in kept.items():
+            if value is not None:
+                os.environ[name] = value
+
+
+def test_a_manifest_row_is_rejected_at_read_time_when_a_consumer_would_crash_on_it():
+    assert store.row_complaint({"id": "aaa", "tier": "weak", "venue": "V/2026"}) is None
+    assert "lacks venue" in store.row_complaint({"id": "aaa", "tier": "weak"})
+    assert "lacks id and tier" in store.row_complaint({"venue": "V/2026"})
+    assert "is not a record" in store.row_complaint([1, 2])
+    assert "cannot become a filename" in store.row_complaint(
+        {"id": "../../etc/passwd", "tier": "weak", "venue": "V/2026"})
+
+
+def test_a_row_a_consumer_would_crash_on_never_reaches_the_consumer():
+    original = harvest.MANIFEST
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            harvest.MANIFEST = Path(directory) / "manifest.jsonl"
+            harvest.MANIFEST.write_text(
+                '{"id": "../../etc/passwd", "tier": "strong", "venue": "V/2026"}\n'
+                '{"id": "novenue", "tier": "strong"}\n'
+                '{"id": "good", "tier": "strong", "venue": "V/2026"}\n',
+                encoding="utf-8")
+            assert [row["id"] for row in harvest.manifest_rows()] == ["good"]
+            assert harvest.show_stats() == 0
+            assert harvest.harvest_pdfs(ids=["../../etc/passwd"]) == 1
+    finally:
+        harvest.MANIFEST = original
+
+
+def test_the_screening_rules_version_changes_only_when_a_tuning_knob_changes():
+    knobs = {"strong_at": 4.0}
+    first = screen.fingerprint(screen.GROUPS, knobs)
+    assert first == screen.fingerprint(screen.GROUPS, dict(knobs))
+    assert first != screen.fingerprint(screen.GROUPS, {"strong_at": 3.5})
+    widened = dict(screen.GROUPS)
+    widened["xai"] = screen.Group(2.0, screen.XAI.stems + ("newly added term",), screen.XAI.words)
+    assert first != screen.fingerprint(widened, knobs)
+    assert len(screen.RULES_VERSION) == screen.VERSION_LENGTH
+
+
+def test_every_harvested_row_records_which_rules_screened_it():
+    screening = screen.screen(*AUDIT)
+
+    row = screened_row()
+    assert row["rules_version"] == screen.RULES_VERSION
+    assert store.row_complaint(row) is None
+
+
 def test_an_explicit_id_list_selects_rows_and_reports_the_ones_it_cannot_find():
     original = harvest.MANIFEST
     try:
         with tempfile.TemporaryDirectory() as directory:
             harvest.MANIFEST = Path(directory) / "manifest.jsonl"
             harvest.MANIFEST.write_text(
-                '{"id": "aaa", "tier": "weak"}\n{"id": "bbb", "tier": "strong"}\n',
+                manifest_line("aaa", "weak") + manifest_line("bbb", "strong"),
                 encoding="utf-8")
             assert [row["id"] for row in harvest.selected_rows((), ["bbb", "aaa"])] == ["bbb", "aaa"]
             assert [row["id"] for row in harvest.selected_rows((), ["bbb", "ccc"])] == ["bbb"]
@@ -350,15 +514,95 @@ def test_an_id_file_rejects_anything_that_is_not_an_identifier():
     with tempfile.TemporaryDirectory() as directory:
         good = Path(directory) / "good.txt"
         good.write_text("# comment\naaa\n\nbbb\naaa\n", encoding="utf-8")
-        assert harvest.read_ids(good) == ["aaa", "bbb"]
+        assert store.read_ids(good) == ["aaa", "bbb"]
         hostile = Path(directory) / "hostile.txt"
         hostile.write_text("aaa\n../../etc/passwd\n", encoding="utf-8")
         try:
-            harvest.read_ids(hostile)
+            store.read_ids(hostile)
             raise AssertionError("accepted a path as an identifier")
         except ValueError:
             pass
     assert harvest.main(["harvest.py", "pdfs", "--ids", str(hostile)]) == 1
+
+
+class Note:
+    def __init__(self, paper_id, title, abstract="", keywords=()):
+        self.id = paper_id
+        self.content = {"title": {"value": title},
+                        "abstract": {"value": abstract},
+                        "keywords": {"value": list(keywords)}}
+
+    def to_json(self):
+        return {"id": self.id, "content": self.content}
+
+
+def harvested(notes, already="", venue_id="V/2026"):
+    kept = (harvest.MANIFEST, harvest.META, harvest.connect)
+
+    class Connection:
+        def get_all_notes(self, **query):
+            return notes
+
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            harvest.MANIFEST = Path(directory) / "manifest.jsonl"
+            harvest.META = Path(directory) / "meta"
+            if already:
+                harvest.MANIFEST.write_text(already, encoding="utf-8")
+            harvest.connect = lambda: Connection()
+            code = harvest.harvest_meta(venue_id)
+            return (code, list(store.load(harvest.MANIFEST).rows),
+                    sorted(path.name for path in harvest.META.glob("*.json")))
+    finally:
+        harvest.MANIFEST, harvest.META, harvest.connect = kept
+
+
+def test_harvesting_metadata_screens_each_note_and_writes_one_row_per_paper():
+    code, rows, metas = harvested([Note("aaa", *AUDIT), Note("bbb", *OPTIMISER)])
+    assert code == 0
+    assert [row["id"] for row in rows] == ["aaa", "bbb"]
+    assert rows[0]["tier"] == screen.STRONG
+    assert metas == ["aaa.json", "bbb.json"]
+    assert all(row["venue"] == "V/2026" for row in rows)
+    assert all(row["pdf"].endswith(row["id"]) for row in rows)
+
+
+def test_harvesting_screens_against_the_registries_so_a_named_entity_lifts_a_tier():
+    terms = screen.registry_terms(database.load_registries())
+    assert screen.screen(*OPTIMISER).tier == screen.WEAK
+    assert screen.screen(*OPTIMISER, terms=terms).tier == screen.POSSIBLE
+    _, rows, _ = harvested([Note("bbb", *OPTIMISER)])
+    assert rows[0]["tier"] == screen.POSSIBLE
+    assert any(signal.startswith("registry:") for signal in rows[0]["signals"])
+
+
+def test_harvesting_records_the_rules_that_screened_each_row():
+    _, rows, _ = harvested([Note("aaa", *AUDIT)])
+    assert rows[0]["rules_version"] == screen.RULES_VERSION
+    assert store.row_complaint(rows[0]) is None
+
+
+def test_harvesting_skips_papers_the_manifest_already_holds():
+    _, rows, metas = harvested([Note("aaa", *AUDIT), Note("bbb", *AUDIT)],
+                               already=manifest_line("aaa", "weak"))
+    assert [row["id"] for row in rows] == ["aaa", "bbb"]
+    assert rows[0]["tier"] == "weak"
+    assert metas == ["bbb.json"]
+
+
+def test_one_unusable_identifier_from_the_api_does_not_end_the_whole_harvest():
+    code, rows, metas = harvested([Note("aaa", *AUDIT),
+                                   Note("../../etc/passwd", *AUDIT),
+                                   Note("bbb", *AUDIT)])
+    assert [row["id"] for row in rows] == ["aaa", "bbb"]
+    assert metas == ["aaa.json", "bbb.json"]
+    assert code == 1
+
+
+def test_harvesting_closes_an_interrupted_last_line_before_appending_to_it():
+    _, rows, _ = harvested([Note("bbb", *AUDIT)],
+                           already='{"id": "aaa", "tier": "weak", "venue": "V/2026"}')
+    assert [row["id"] for row in rows] == ["aaa", "bbb"]
 
 
 def test_accepted_only_harvest_never_needs_the_submission_invitation():
@@ -369,14 +613,14 @@ def test_accepted_only_harvest_never_needs_the_submission_invitation():
         def get_group(self, venue_id):
             raise AssertionError("accepted-only reached the invitation lookup")
 
-    assert harvest.submissions(Connection(), "V/2026") == ["content"]
+    assert openreview.submissions(Connection(), "V/2026") == ["content"]
 
 
 def test_a_paper_identifier_is_never_used_as_a_path():
-    assert harvest.safe_id("aBcD3f") == "aBcD3f"
+    assert store.safe_id("aBcD3f") == "aBcD3f"
     for hostile in ("../../etc/passwd", "a/b", "", None, "x" * 70):
         try:
-            harvest.safe_id(hostile)
+            store.safe_id(hostile)
             raise AssertionError("accepted %r" % (hostile,))
         except ValueError:
             pass
@@ -388,11 +632,11 @@ def test_an_interrupted_manifest_line_does_not_swallow_the_next_row():
         with tempfile.TemporaryDirectory() as directory:
             harvest.MANIFEST = Path(directory) / "manifest.jsonl"
             harvest.MANIFEST.write_text(
-                '{"id": "kept", "tier": "weak"}\n{"id": "interrupted", "tier"',
+                manifest_line("kept", "weak") + '{"id": "interrupted", "tier"',
                 encoding="utf-8")
-            assert harvest.close_unterminated_line()
+            assert store.close_unterminated_line(harvest.MANIFEST)
             with harvest.MANIFEST.open("a", encoding="utf-8") as log:
-                log.write('{"id": "next", "tier": "weak"}\n')
+                log.write(manifest_line("next", "weak"))
             assert [row["id"] for row in harvest.manifest_rows()] == ["kept", "next"]
     finally:
         harvest.MANIFEST = original
@@ -403,10 +647,9 @@ def test_a_manifest_that_already_ends_cleanly_is_left_alone():
     try:
         with tempfile.TemporaryDirectory() as directory:
             harvest.MANIFEST = Path(directory) / "manifest.jsonl"
-            harvest.MANIFEST.write_text('{"id": "kept", "tier": "weak"}\n', encoding="utf-8")
-            assert not harvest.close_unterminated_line()
-            assert harvest.MANIFEST.read_text(encoding="utf-8") == \
-                '{"id": "kept", "tier": "weak"}\n'
+            harvest.MANIFEST.write_text(manifest_line("kept", "weak"), encoding="utf-8")
+            assert not store.close_unterminated_line(harvest.MANIFEST)
+            assert harvest.MANIFEST.read_text(encoding="utf-8") == manifest_line("kept", "weak")
     finally:
         harvest.MANIFEST = original
 
@@ -420,11 +663,11 @@ def test_only_a_real_pdf_is_accepted_as_one():
 
 def test_credentials_use_the_documented_environment_names():
     previous = {name: os.environ.get(name)
-                for name in (harvest.USERNAME_ENV, harvest.PASSWORD_ENV)}
-    os.environ[harvest.USERNAME_ENV] = "user@example.org"
-    os.environ[harvest.PASSWORD_ENV] = "secret"
+                for name in (openreview.USERNAME_ENV, openreview.PASSWORD_ENV)}
+    os.environ[openreview.USERNAME_ENV] = "user@example.org"
+    os.environ[openreview.PASSWORD_ENV] = "secret"
     try:
-        assert harvest.credentials() == ("user@example.org", "secret")
+        assert openreview.credentials() == ("user@example.org", "secret")
     finally:
         for name, value in previous.items():
             if value is None:
@@ -443,7 +686,7 @@ def test_openreview_client_contract_names_every_api_method_the_harvester_uses():
     class Package:
         api = Api
 
-    assert harvest.client_contract(Package) == ()
+    assert openreview.missing_methods(Package) == ()
 
 
 def test_pdf_download_uses_the_documented_attachment_endpoint():
@@ -454,7 +697,6 @@ def test_pdf_download_uses_the_documented_attachment_endpoint():
             self.calls.append(arguments)
             return b"%PDF-1.7 body"
 
-    import tempfile
     with tempfile.TemporaryDirectory() as folder:
         target = Path(folder) / "paper.pdf"
         connection = Connection()
@@ -466,8 +708,8 @@ def test_pdf_download_uses_the_documented_attachment_endpoint():
 def test_only_transient_openreview_failures_are_retried():
     transient = Exception({"status": 429})
     permanent = Exception({"status": 403})
-    assert harvest.retryable(transient)
-    assert not harvest.retryable(permanent)
+    assert openreview.retryable(transient)
+    assert not openreview.retryable(permanent)
 
 
 def test_pdf_download_retries_a_transient_failure():
@@ -480,7 +722,6 @@ def test_pdf_download_retries_a_transient_failure():
                 raise Exception({"status": 503})
             return b"%PDF-1.7 body"
 
-    import tempfile
     with tempfile.TemporaryDirectory() as folder:
         target = Path(folder) / "paper.pdf"
         connection = Connection()
@@ -488,36 +729,33 @@ def test_pdf_download_retries_a_transient_failure():
         assert connection.attempts == 2
 
 
-def test_a_pdf_is_written_atomically(tmp=None):
-    import tempfile
+def test_a_pdf_is_written_atomically():
     with tempfile.TemporaryDirectory() as folder:
         target = Path(folder) / "paper.pdf"
-        harvest.save_bytes(b"%PDF-1.7 body", target)
+        atomic.write_bytes(target, b"%PDF-1.7 body")
         assert target.read_bytes() == b"%PDF-1.7 body"
         assert list(Path(folder).glob("*" + paths.PARTIAL)) == []
 
 
 def test_an_interrupted_write_is_cleared_before_the_next_run():
-    import tempfile
     with tempfile.TemporaryDirectory() as folder:
         leftover = Path(folder) / ("half" + paths.PARTIAL)
         leftover.write_bytes(b"%PDF truncated")
-        harvest.clear_partials(Path(folder))
+        atomic.clear_partials(Path(folder))
         assert not leftover.exists()
 
 
 def test_one_damaged_manifest_line_does_not_lose_the_rest(monkeypatch=None):
-    import tempfile
     with tempfile.TemporaryDirectory() as folder:
         manifest = Path(folder) / "manifest.jsonl"
-        manifest.write_text('{"id": "a", "tier": "strong"}\n'
-                            '{"id": "b", "tier": "wea\n'
-                            '{"id": "c", "tier": "weak"}\n', encoding="utf-8")
+        manifest.write_text(manifest_line("a", "strong")
+                            + '{"id": "b", "tier": "wea\n'
+                            + manifest_line("c", "weak"), encoding="utf-8")
         original = harvest.MANIFEST
         harvest.MANIFEST = manifest
         try:
             assert {row["id"] for row in harvest.manifest_rows()} == {"a", "c"}
-            assert harvest.seen_ids() == {"a", "c"}
+            assert store.ids_in(manifest) == {"a", "c"}
         finally:
             harvest.MANIFEST = original
 
@@ -543,14 +781,14 @@ class FakeConnection:
 
 def test_submission_invitation_reads_the_name_from_the_venue_group():
     connection = FakeConnection({"submission_name": {"value": "Blind_Submission"}})
-    assert harvest.submission_invitation(connection, "ICML.cc/2026/Conference") == \
+    assert openreview.submission_invitation(connection, "ICML.cc/2026/Conference") == \
         "ICML.cc/2026/Conference/-/Blind_Submission"
 
 
 def test_submission_invitation_falls_back_when_the_group_does_not_name_it():
     for content in ({}, None, {"submission_name": None}):
         connection = FakeConnection(content)
-        assert harvest.submission_invitation(connection, "V/2026").endswith("/-/Submission")
+        assert openreview.submission_invitation(connection, "V/2026").endswith("/-/Submission")
 
 
 ANSWER = """considered:
@@ -707,7 +945,7 @@ def test_the_default_tiers_are_still_used_when_no_option_is_given():
 
 
 def test_a_manifest_row_of_the_wrong_shape_is_skipped_not_crashed_on():
-    rows = '42\n"text"\n{"id": "a"}\n{"id": "b", "tier": "strong"}\n'
+    rows = '42\n"text"\n{"id": "a"}\n' + manifest_line("b", "strong")
     kept, weak = with_manifest(
         lambda: (harvest.manifest_rows(), harvest.selected_rows(("weak",), None)), rows)
     assert [row["id"] for row in kept] == ["b"]
@@ -715,13 +953,13 @@ def test_a_manifest_row_of_the_wrong_shape_is_skipped_not_crashed_on():
 
 
 def test_a_repeated_manifest_id_is_collapsed_to_its_last_row():
-    rows = ('{"id": "a", "tier": "weak"}\n{"id": "a", "tier": "strong"}\n')
+    rows = manifest_line("a", "weak") + manifest_line("a", "strong")
     kept = with_manifest(lambda: harvest.manifest_rows(), rows)
     assert len(kept) == 1 and kept[0]["tier"] == "strong"
 
 
 def test_requesting_only_ids_the_manifest_does_not_hold_is_a_failure():
-    rows = '{"id": "real", "tier": "strong"}\n'
+    rows = manifest_line("real", "strong")
     assert with_manifest(lambda: harvest.harvest_pdfs(ids=["ghost"]), rows) == 1
     assert with_manifest(lambda: harvest.selected_rows((), ["real", "ghost"]), rows) != []
 
@@ -1090,10 +1328,9 @@ def test_an_author_citation_that_does_carry_an_anchor_is_kept_because_it_is_clic
     assert kept[0].record["related_work"][0]["anchor"] == "https://arxiv.org/abs/2203.14680"
 
 
-def test_every_written_record_is_a_draft_from_automatic_extraction():
+def test_every_written_record_is_from_automatic_extraction():
     kept, _, _ = split_of([{"title": "A claim", "description": "d",
                             "models": [{"name": "Llama 2"}]}])
-    assert kept[0].record["review_status"] == "draft"
     assert kept[0].record["extracted_by"] == "automatic-extraction"
     assert kept[0].identifier == "IC-001"
 
@@ -1103,6 +1340,25 @@ def test_a_concept_outside_the_closed_list_never_reaches_the_record():
                             "models": [{"name": "Llama 2"}],
                             "concepts": ["concept:shortcut", "concept:vibes"]}])
     assert kept[0].record["concepts"] == [{"ref": "concept:shortcut"}]
+
+
+def test_one_concept_parser_reads_every_shape_the_model_has_produced():
+    finding = {"concepts": ["concept:shortcut", "shortcut", {"concept": "shortcut"},
+                            {"id": "concept:shortcut"}, {"name": "shortcut"}, "", {}, None]}
+    values = [value for value, _ in answers.concepts_of(finding)]
+    assert values == ["concept:shortcut"] * 5
+
+
+def test_the_splitter_and_the_propose_report_agree_on_misshapen_concepts():
+    kept, _, _ = split_of([{"title": "A claim", "description": "d",
+                            "models": [{"name": "Llama 2"}],
+                            "concepts": [{"id": "concept:shortcut"}]}])
+    assert kept[0].record["concepts"] == [{"ref": "concept:shortcut"}]
+    _, misshapen = proposals.off_list(
+        {"p1": {"findings": [{"title": "A claim",
+                              "concepts": [{"id": "concept:shortcut"}]}]}},
+        {"concept:shortcut"})
+    assert len(misshapen) == 1
 
 
 def test_a_finding_with_no_source_for_its_paper_is_refused():

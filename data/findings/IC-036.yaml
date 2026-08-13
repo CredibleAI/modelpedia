@@ -23,5 +23,4 @@ key_metric: 'CIFAR-100 fine-tuning: ViT-t/2 (85.7% acc@1) vs. ViT-t/1 (86.0%); V
   (87.7%).'
 caveat: The study is limited to CIFAR-100 due to its inherent 32x32 size, which allows for a full exploration
   of pixels as tokens.
-review_status: draft
 extracted_by: automatic-extraction

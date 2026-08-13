@@ -29,5 +29,4 @@ related_work:
 evidence_type: observational
 key_metric: Two dimensions suffice to perfectly separate the modalities.
 caveat: The finding is based on analysis of the embedding geometry, not on downstream task performance.
-review_status: draft
 extracted_by: automatic-extraction

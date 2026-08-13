@@ -47,5 +47,4 @@ key_metric: 'YOLOv9 with VLM initialization: 53.36% mAP (↑1.37%), 70.55% mAP@.
 caveat: The results for YOLOv7 and YOLOv9 are slightly lower than originally reported in their respective
   papers, which the authors attribute to differences in the number of GPUs used and the reduced effectiveness
   of batch normalization with smaller batch sizes.
-review_status: draft
 extracted_by: automatic-extraction

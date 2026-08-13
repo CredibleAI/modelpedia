@@ -22,5 +22,4 @@ key_metric: 75.9% samples consistent across >=4/5 paraphrases; pairwise F1 78%; 
   Fleiss' kappa 0.56
 caveat: Only tested on 14 languages and two models due to computational cost, and results may not generalize
   to all models or languages.
-review_status: draft
 extracted_by: automatic-extraction

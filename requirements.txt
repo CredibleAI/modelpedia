@@ -1,2 +1,3 @@
 PyYAML>=6.0
 openreview-py>=2.4.0
+pypdfium2>=4.30

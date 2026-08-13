@@ -1,5 +1,4 @@
 id: FX-002
-review_status: draft
 extracted_by: automatic-extraction
 title: FIXLIP gives SigLIP-2 higher pointing-game recognition than CLIP at ViT-B/32 and ViT-B/16
 description: >
@@ -10,7 +9,6 @@ description: >
 evidence_type: correlational
 concepts:
   - ref: concept:explanation-faithfulness
-  - ref: concept:scale-dependent-behaviour
 key_metric: >
   pointing game recognition for 1 to 4 objects, ViT-B/32: SigLIP-2 0.90 / 0.90 / 0.89 / 0.89
   against CLIP 0.83 / 0.81 / 0.82 / 0.85; ViT-B/16: SigLIP-2 0.86 / 0.88 / 0.87 / 0.87

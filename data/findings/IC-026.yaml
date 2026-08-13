@@ -46,5 +46,4 @@ key_metric: 'acc@10: GPT-4o 78.47%, Gemini 1.5 Pro 76.67%; acc@1: GPT-4o 29.13%,
 caveat: Performance is significantly better with 'how' queries (probabilistic output) than 'yes-or-no'
   queries, suggesting that the format of the answer greatly influences the results. Open-source models
   remain far from practical utility.
-review_status: draft
 extracted_by: automatic-extraction

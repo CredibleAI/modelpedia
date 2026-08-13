@@ -25,5 +25,4 @@ evidence_type: correlational
 key_metric: Phi-3 1-shot accuracy improves from 56.0% to 66.1% with LASER. Llama-3.1-8B 1-shot accuracy
   improves from 44.7% to 46.1% with LASER.
 caveat: In the standard 8-shot setting, performance is worse with LASER.
-review_status: draft
 extracted_by: automatic-extraction

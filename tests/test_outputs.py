@@ -46,8 +46,8 @@ def test_header_counts_findings_nodes_and_edges():
         graph_json.FORMAT_VERSION, len(audit.graph["nodes"]), len(audit.graph["edges"]))
 
 
-def test_record_status_counts_each_pair():
-    assert "1" in line_for(report.record_status(audit_of()), "verified / manual-extraction")
+def test_record_status_counts_each_status():
+    assert "1" in line_for(report.record_status(audit_of()), "manual-extraction")
 
 
 def test_concept_use_counts_the_findings_that_tag_it():
@@ -383,23 +383,6 @@ def test_a_variant_recorded_as_not_specified_produces_no_link():
     assert render.model_row(view, view.nodes["XX-001"]["data"]).count("<a href=") == 1
 
 
-def test_review_status_is_not_rendered_in_a_finding():
-    def draft(findings):
-        findings["XX-001"]["review_status"] = "draft"
-    view = view_of(findings=draft)
-    body = render.finding_body(view, view.nodes["XX-001"])
-    assert "draft" not in body
-    assert "verified" not in body
-
-
-def test_review_status_is_not_rendered_in_finding_lists():
-    def draft(findings):
-        findings["XX-001"]["review_status"] = "draft"
-    pages = render.render_site(graph_of(findings=draft))
-    for path in (render.HOME, "findings/index.html", "findings/XX-001/index.html"):
-        assert "not verified" not in pages[path], path
-
-
 def test_every_finding_states_its_extraction_method_only():
     view = view_of()
     body = render.finding_body(view, view.nodes["XX-001"])
@@ -428,14 +411,6 @@ def test_authors_are_collected_from_the_sources_without_repeating_anyone():
                                          {"ref": "source:the-paper"}]
     view = view_of(findings=twice)
     assert render.finding_authors(view, view.nodes["XX-001"]["data"]) == ["Ada Lovelace"]
-
-
-def test_the_footer_does_not_expose_review_status():
-    def draft(findings):
-        findings["XX-001"]["review_status"] = "draft"
-    footer = render.footer(view_of(findings=draft))
-    assert footer.startswith("1 findings.")
-    assert "verified" not in footer
 
 
 def test_the_navigation_marks_the_section_the_page_belongs_to():

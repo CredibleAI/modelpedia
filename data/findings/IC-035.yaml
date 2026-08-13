@@ -31,5 +31,4 @@ key_metric: 'CIFAR-100: ViT-t/2 (83.6% acc@1) vs. ViT-t/1 (85.1%); ViT-s/2 (83.7
   NYU-v2 RMSE: ViT-s/2 (0.80) vs. ViT-s/1 (0.72).'
 caveat: The paper notes that the pixel-based transformer is computationally expensive due to the quadratic
   complexity of self-attention, making it 'more of an approach for investigation, and less for applications.'
-review_status: draft
 extracted_by: automatic-extraction

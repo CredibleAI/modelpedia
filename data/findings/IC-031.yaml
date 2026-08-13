@@ -29,5 +29,4 @@ caveat: Effectiveness depends on carefully calibrated prompts and may vary acros
   prompts are challenging to design. Reflection increased conformity for Qwen2-72B on trust protocol,
   indicating potential backfire. Strategies' generalizability across diverse LLM characteristics remains
   a challenge.
-review_status: draft
 extracted_by: automatic-extraction

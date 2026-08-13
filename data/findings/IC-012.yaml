@@ -45,5 +45,4 @@ key_metric: 'Refusal rates on 100 unknown entity queries: Gemma 2 2b original ~2
 caveat: Results are shown for a specific set of entity types (players, movies, cities, songs) and may
   not generalize to all forms of knowledge. The effect of steering with the known entity latent was
   less pronounced in Llama 3.1 8b.
-review_status: draft
 extracted_by: automatic-extraction

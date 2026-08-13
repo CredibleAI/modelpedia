@@ -20,10 +20,8 @@ def header(audit):
 
 
 def record_status(audit):
-    counts = Counter((finding.get("review_status"), finding.get("extracted_by"))
-                     for finding in audit.findings.values())
-    return ["record status"] + [entry("%s / %s" % pair, count)
-                                for pair, count in sorted(counts.items())]
+    counts = Counter(finding.get("extracted_by") for finding in audit.findings.values())
+    return ["record status"] + [entry(status, count) for status, count in sorted(counts.items())]
 
 
 def concept_use(audit):

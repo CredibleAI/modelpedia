@@ -21,5 +21,4 @@ related_work: []
 evidence_type: correlational
 key_metric: Average probability ratio of [io] over 'the' improves from 2.3x to 12.3x at 14k steps.
 caveat: The analysis is performed on a specific set of 100 generated IOI sentences.
-review_status: draft
 extracted_by: automatic-extraction

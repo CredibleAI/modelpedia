@@ -55,5 +55,4 @@ key_metric: 'mIoU: Gemini 1.5 Pro 0.1126 (O2BR) / 0.0586 (Yinqiwenyuandetection)
 caveat: Gemini 1.5 Pro's superior performance is attributed to its exclusive coordinate return function,
   which is not a standard capability of other models. Performance is far from human-level, indicating
   the task remains a significant challenge.
-review_status: draft
 extracted_by: automatic-extraction

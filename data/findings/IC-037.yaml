@@ -24,5 +24,4 @@ key_metric: 'FID (↓): DiT-l/2 (4.16) vs. DiT-l/1 (4.05); sFID (↓): DiT-l/2 (
   IS (↑): DiT-l/2 (210.18) vs. DiT-l/1 (232.95).'
 caveat: The extended training results (1400 epochs) show a larger gap, but the main comparison is at
   400 epochs. The paper notes the high computational cost of the pixel-based approach.
-review_status: draft
 extracted_by: automatic-extraction

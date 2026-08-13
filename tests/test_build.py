@@ -16,7 +16,6 @@ import yaml
 VOCABULARIES = {
     graph_json.FINDING: {
         "evidence_type": ["observational", "correlational", "interventional"],
-        "review_status": ["draft", "verified"],
         "extracted_by": ["manual-extraction", "automatic-extraction"],
     },
     graph_json.MODEL: {
@@ -45,7 +44,6 @@ ENTITIES = {
 
 FINDING = {
     "id": "XX-001",
-    "review_status": "verified",
     "extracted_by": "manual-extraction",
     "title": "A title",
     "description": "A description.",
@@ -152,8 +150,8 @@ def test_vocabulary_terms_must_be_kebab_case():
 
 def test_required_field_must_be_present():
     def drop(findings):
-        findings["XX-001"]["review_status"] = None
-    assert "missing review_status" in only_error(sample_db(findings=drop))
+        findings["XX-001"]["extracted_by"] = None
+    assert "missing extracted_by" in only_error(sample_db(findings=drop))
 
 
 def test_concepts_may_be_an_explicit_empty_list():

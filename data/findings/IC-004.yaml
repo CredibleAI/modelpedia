@@ -29,8 +29,7 @@ models:
 - ref: model:qwen-1-5
   variant: variant:qwen-1-5-14b-chat
 - ref: model:jamba
-concepts:
-- ref: concept:failure-mode
+concepts: []
 sources:
 - ref: source:retrieval-head-mechanistically-explains-long-context
 datasets:
@@ -53,5 +52,4 @@ key_metric: Accuracy drops from 94.7% (20 random heads masked) to 63.6% (top 20 
 caveat: The retrieval score threshold of 0.1 and the focus on copy-paste behavior for detection may
   not capture all retrieval functions; tasks heavily reliant on parametric knowledge (e.g., MMLU without
   CoT) are less affected.
-review_status: draft
 extracted_by: automatic-extraction

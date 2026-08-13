@@ -42,5 +42,4 @@ key_metric: Change in attention scores from attribute extraction heads to entity
 caveat: The effect of steering with the unknown entity latent on attention in Gemma 2 9b was less consistent
   than for other models. Attention score changes are measured on specific attribute extraction heads
   identified via activation patching.
-review_status: draft
 extracted_by: automatic-extraction

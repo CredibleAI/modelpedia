@@ -7,7 +7,7 @@ MAX_PAPER_CHARS = 160000
 OMITTED = "\n\n[... middle of the paper omitted ...]\n\n"
 CONCEPT_SUMMARY = 340
 
-DROPPED_FROM_EXAMPLES = ("id", "review_status", "extracted_by", "related_findings", "sources")
+DROPPED_FROM_EXAMPLES = ("id", "extracted_by", "related_findings", "sources")
 FREE_TEXT = ("description", "key_metric", "caveat")
 LINKED = ("models", "methods", "datasets", "related_work", "concepts")
 
