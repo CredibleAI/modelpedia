@@ -1,16 +1,15 @@
 # Modelpedia
 
-Structured, citable database of third-party findings about how specific machine learning models
-behave. Built for explainability research.
+A database of **findings** about machine learning models: third-party claims about how a specific
+model behaves, made after the fact. The YAML files under `data/` are the only source of truth;
+the graph, the site and the CSV exports are all derived from them and can be deleted and rebuilt
+at any time.
 
-One record is one **finding**: a claim about the behaviour of a specific model, made by someone
-other than the model's authors, after the fact. Findings link to a shared set of entities - models,
-concepts, methods, datasets, sources, people - so that claims about different models meet on the
-mechanisms they describe.
+This README is a manual. What every command does, in the order you would normally run them.
 
-## Quick start
+---
 
-Requires Python 3.10 or newer.
+## Setup
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
@@ -20,178 +19,163 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 source .venv/bin/activate
 ```
 
-Activate once per shell; every command below then works as written. `PyYAML` is all the build
-needs — `openreview-py` is used only by `harvest.py`, the one script that talks to the network.
-Without activation `harvest.py` will tell you so and print the interpreter to use.
+Activate once per shell and every command below works as written. `PyYAML` is all the build and
+the site need. `pypdfium2` is used to read PDFs and `openreview-py` only by `harvest.py`, which is
+the one script that touches the network.
+
+---
+
+## Everyday commands
+
+You will run these most often. None of them touches the network.
+
+| Command | What it does |
+|---|---|
+| `python3 run_tests.py` | Runs all 308 tests across five suites. No arguments. |
+| `python3 build.py` | Validates `data/`, writes `out/graph.json`, prints an audit. **Exits non-zero and writes nothing if validation fails, so run it before every commit.** |
+| `python3 render.py` | Builds the static site into `site/` from `out/graph.json`. |
+| `python3 export.py` | Writes one CSV per node type plus `edges.csv` into `out/csv/`. |
+
+The usual loop after editing any YAML file:
 
 ```bash
-python3 build.py
+python3 build.py && python3 render.py
 ```
 
-```bash
-python3 render.py
-```
+Then open `site/index.html` by double-clicking it. Links are relative, so no server is needed and
+the whole folder can be zipped and sent as one thing.
 
-```bash
-python3 export.py
-```
+### What the audit tells you
 
-```bash
-python3 check.py path/to/candidate.yaml
-```
+`build.py` prints more than a pass or a fail. It lists how many records came from manual versus
+automatic extraction, how many findings and how many models each concept reaches, which entities
+more than one finding reaches, which findings have no dataset link, which no concept covers,
+which registry entries lack an anchor, and which registry entries nothing reaches at all.
 
-```bash
-python3 verify.py data/findings/TM-006.yaml path/to/source.pdf
-```
+---
 
-`verify.py` is a read-only verification aid. It locates numeric claims, linked entity names,
-stable arXiv/DOI/OpenReview identifiers and the page that shares most of the caveat's vocabulary.
-Missing items are suspicions for a human reviewer, not automatic corrections, and the command
-changes nothing on disk. It exits 1 when any check is blocking, or when the record had nothing to
-check at all — an empty or near-empty finding must not report `0 blocking` and look like a pass.
+## Checking one record
 
-```bash
-python3 harvest.py doctor
-```
+| Command | What it does |
+|---|---|
+| `python3 check.py path/to/candidate.yaml` | Schema errors and link resolution for a candidate finding that is not in `data/` yet. Blames only the candidate, never the existing registries. |
+| `python3 verify.py data/findings/ID.yaml source.pdf` | Locates the record's numbers, linked entity names and stable identifiers in the PDF, and finds the page sharing most of the caveat's vocabulary. |
 
-This offline check needs no OpenReview account. It verifies the installed client methods and
-`pypdfium2`. Once the account is active and the two credential variables are set, run:
+`verify.py` changes nothing on disk. Missing items are suspicions for a human, not corrections.
+It exits 1 when a check is blocking **or when the record offered nothing to check at all** — an
+empty finding must not report `0 blocking` and look like a pass.
 
-```bash
-python3 harvest.py preflight ICML.cc/2026/Conference
-```
+---
 
-```bash
-python3 run_tests.py
-```
+## Gathering papers
 
-308 tests. PyYAML is the only dependency of the build; `harvest.py` additionally needs `openreview-py` and is the one place that talks to the network. `test_build.py` covers every branch of the validator plus a
-case asserting that the real `data/` still validates; `test_outputs.py` covers the three consumers
-of `out/graph.json`; `test_pipeline.py` covers the ingestion core; `test_extract.py` covers the
-`extract.py` command line. The repository does not depend on pytest; install it separately if you
-prefer it to the bundled runner.
+`harvest.py` is the only script that talks to the network. Run it with `.venv/bin/python`, because
+`openreview-py` lives there. `OPENREVIEW_USERNAME` and `OPENREVIEW_PASSWORD` must be set in the
+environment — never in the repository.
 
-`build.py` validates `data/`, writes `out/graph.json` and prints an audit of record status,
-concept usage, shared nodes, findings whose source names no dataset, findings no concept covers,
-missing anchors and unused registry entries. It exits non-zero and writes nothing if validation
-fails, so run it before every commit. The work itself is in `modelpedia/`: `database.load()` reads
-the YAML, `validate.errors()` returns the problems, `assemble.graph_from()` builds the artifact.
+| Command | What it does |
+|---|---|
+| `harvest.py doctor` | Offline. Checks the interpreter, the installed packages and that the API client still has the methods we call. No account needed. |
+| `harvest.py preflight [venue_id]` | Everything `doctor` does, plus a real login. With a venue id it also checks the group, the submission invitation and a sample paper's fields. **Run this once before harvesting a new conference.** |
+| `harvest.py venues [substring]` | Lists venue identifiers, e.g. `harvest.py venues ICML`. |
+| `harvest.py meta <venue_id> [--all]` | Fetches metadata only — no PDFs — screens each paper and appends a row per paper to `corpus/manifest.jsonl`. Resumable: papers already in the manifest are skipped. `--all` includes rejected submissions. |
+| `harvest.py stats` | Tier breakdown of the manifest, how many PDFs and texts are on disk, and which screening rules produced each row. |
+| `harvest.py pdfs [--tier a,b] [--limit N] [--ids FILE]` | Downloads PDFs for the chosen tiers into `corpus/pdf/`. Defaults to `strong,possible`. `--ids` takes a file with one identifier per line and overrides `--tier`. |
+| `harvest.py text` | Extracts text from every PDF into `corpus/text/`, skipping files already done. |
 
-Validation also checks filename/id consistency for findings and variant-to-model consistency on
-model links. Two kinds of duplicate identifier are rejected at load time: the same key in two
-different registry files, and the same key twice inside one file. The second one matters more than
-it sounds - YAML itself keeps only the last of two identical keys, so without the check a repeated
-entry silently replaces the earlier definition and the count never moves.
+Screening never rejects a paper, it only sorts it into `strong`, `possible` or `weak`. Downloading
+is a separate step so a bad screening rule costs nothing but a rerun.
 
-`render.py` writes a static site into `site/`: a home page, one index per registry, and one page
-per finding and per entity. `export.py` writes one CSV per node type plus `edges.csv` into
-`out/csv/`. Both read `out/graph.json` and neither reads the YAML, so the build artifact is the
-only contract between the data and its consumers.
+---
 
-`export.py` fails rather than writing a partial export if a core node type has no rows, on the
-grounds that an empty table is far more likely to mean a broken build than an intended one.
+## Turning papers into findings
 
-Every artifact in this repository is replaced in one step or not at all. `build.py` writes
-`out/graph.json` to `out/graph.json.part` and renames it into position. `render.py` and `export.py`
-build their whole output in `site.part/` and `out/csv.part/` and swap only once it is complete.
-So a corrupt `graph.json`, a crash half way through 146 pages, or a disk that fills up on the third
-CSV all leave the last good output exactly where it was. Nothing survives from a build that no
-longer produces it, and nothing half-written survives at all.
+`extract.py` drives the extraction pipeline. Everything here reads `corpus/text/`, never the PDFs.
 
-Open `site/index.html` by double-clicking it. The links are relative, so the site needs no server,
-and the whole folder can be zipped and sent as one thing. The directory layout is the path scheme
-the API will serve, so `site/findings/TM-003/` is the page for what will be `GET /findings/TM-003`.
+| Command | What it does |
+|---|---|
+| `extract.py prompts [paper,paper]` | Builds one extraction prompt per paper from `corpus/text/` into `corpus/prompts/`. With no argument, every paper. |
+| `extract.py collect <directory>` | Reads model answers from a directory, repairs common YAML damage, matches each answer to its paper by content and saves it into `corpus/answers/`. Add `file.txt=<paper>` to assign an answer that cannot be matched. |
+| `extract.py verify` | Checks every citation the model wrote against the text of its own paper and writes `corpus/entities.jsonl`. Exits 1 if any citation is rejected. |
+| `extract.py propose [N]` | Lists entities the answers name that no registry holds, reaching N papers or more. Also reports which concepts the model refused, proposed or silently skipped. Writes `corpus/proposed.jsonl`. |
+| `extract.py tags [all]` | Writes one small tagging prompt per finding that carries no concept. `all` re-tags every finding instead. |
+| `extract.py split [--write] [--force]` | Turns collected answers into records under `data/findings/`. **Reports only by default.** `--write` creates files but never overwrites; `--force` overwrites. |
+
+A candidate from the entity linker is **never** accepted automatically. It is a suggestion for a
+human: on four real suggestions, two were wrong.
+
+---
 
 ## Layout
 
 ```
 build.py         YAML -> validate -> assemble -> out/graph.json, then the audit
-render.py        out/graph.json -> site/, one page per finding and per entity
+render.py        out/graph.json -> site/
 export.py        out/graph.json -> out/csv/*.csv
 check.py         a candidate finding -> schema errors plus link resolution
-verify.py        an existing finding + PDF -> evidence locations and suspicions
-harvest.py       OpenReview -> corpus/, resumable; metadata and screening before any download
+verify.py        a finding + its PDF -> evidence locations and suspicions
+harvest.py       OpenReview -> corpus/; the only script that uses the network
+extract.py       corpus/ -> prompts, answers, proposals, data/findings/
 run_tests.py     runs all five suites
 
-modelpedia/      the library, imported and never run
-  graph.py       node and edge type names, the NODE_TYPES table, how to query out/graph.json
-  schema.py      the finding schema: link fields, field lists, vocabulary scopes, regexes
-  record_keys.py shared string constants for keys inside records (ref, role, authors, ...)
+modelpedia/      the library; imported, never run
+  graph.py       node and edge types, the NODE_TYPES table
+  schema.py      the finding schema: link fields, vocabularies, regexes
+  paths.py       every filesystem location; the only file that derives the root
   graph_io.py    load/dump out/graph.json with the format_version guard
-  atomic.py      write-to-partial-then-rename; the single .part convention for files
-  paths.py       every filesystem location in the repository
-  console.py     console output primitives; the terminal twin of html_bits.py
+  atomic.py      write-then-rename; the single .part convention
+  record_keys.py string constants for keys inside records
+  console.py     console output primitives
 
   build/         data/*.yaml -> out/graph.json
-    database.py  the only YAML reader; -> Database(vocabularies, entities, findings)
-    validate.py  Database -> list of error strings; creates nothing
-    assemble.py  Database -> the out/graph.json dict; validates nothing
-    report.py    the console audit that build.py prints
+    database.py  the only YAML reader
+    validate.py  Database -> error strings; creates nothing
+    assemble.py  Database -> the graph dict; validates nothing
+    report.py    the audit build.py prints
 
   site/          out/graph.json -> HTML
-    site_paths.py  URL/path and slug logic for the static site
-    html_bits.py   low-level HTML templating helpers
-
   ingest/        papers -> candidate findings
     text.py        PDF -> normalised searchable text
-    link.py        entity name -> hit / candidates / miss, against the registries
-    screen.py      title/abstract -> relevance score and tier, plus RULES_VERSION
-    manifest.py    corpus/manifest.jsonl: row validation, reading, tier selection
-    openreview.py  everything that knows the OpenReview API; signals, never exits
-    report.py      console reports for extract.py; returns strings, prints nothing
-    verification.py deterministic evidence checks used by verify.py
+    link.py        entity name -> hit / candidates / miss
+    screen.py      title and abstract -> score and tier
+    manifest.py    the corpus manifest: validation, reading, selection
+    openreview.py  everything that knows the OpenReview API
+    report.py      console reports for extract.py
+    verification.py the evidence checks verify.py runs
 
-tests/           test_build.py (data -> graph), test_outputs.py (graph -> outputs),
-                 test_pipeline.py (ingestion), test_extract.py (extract.py CLI),
-                 test_verification.py (verification head)
 data/            vocabularies.yaml, registries/*.yaml, findings/*.yaml
-assets/style.css stylesheet for the static site, loaded at render time
+corpus/          harvested papers and model answers; not tracked
+out/, site/      build artifacts; not tracked, delete and rebuild freely
 ```
 
-The eight runnable scripts sit at the root and match the documented commands; everything imported
-lives in `modelpedia/`, and nothing in `modelpedia/` imports a runnable script. `build.py` is 29
-lines: it loads, validates, assembles, writes and prints, and every one of those verbs is a call
-into the library. `harvest.py` follows the same shape since 2026-08-12 — the manifest store, the
-OpenReview client and the atomic write all moved into the library, leaving orchestration behind.
+---
 
-Inside `modelpedia/`, depth is a permission. Top-level modules may be imported from anywhere;
-`build/`, `site/` and `ingest/` are imported only by their own area's entry points and by their own
-siblings. No subpackage imports another subpackage.
+## Rules worth knowing before you edit anything
 
-Three tables are defined once and imported everywhere else. `modelpedia/graph.py` holds
-`NODE_TYPES` — one row per kind of node, carrying its label, its YAML registry file, its site
-directory, its CSV file, whether it is expected to have an anchor and whether the export requires
-it to have rows. `modelpedia/schema.py` holds the finding schema. `modelpedia/paths.py` holds every
-filesystem location, and is the only file that derives the repository root from its own location.
-Adding a registry is one row and one YAML file.
+**Never search a PDF except through `modelpedia/ingest/text.py`.** Extracted text breaks words
+across lines, splits small-capital headings and mangles ligatures. A plain `grep` misses them and
+reports absence that is not real. This has already cost the project one wrongly deleted citation.
 
-`out/` and `site/` are build artifacts and are not tracked. Delete them and rebuild at any time.
+**Identity lives on the node, role lives on the edge.** `dataset:terramesh` is the same entity
+whether one paper trained on it and another evaluated on it; `[train]` or `[eval]` belongs on the
+link, never in the registry.
 
-`render.py` can stream page generation through `iter_pages()` to avoid keeping the whole site in
-memory when scaling to larger datasets.
+**Gaps are stated, not guessed.** Where a source names no dataset or prints no URL, the field
+stays empty and `build.py` lists it in the audit. A visible gap beats false precision.
 
-## Data model
+**Every artifact is replaced in one step or not at all.** Each writer stages its output beside the
+target and renames it into place, so a crash or a full disk leaves the last good output untouched.
 
-The YAML files are the only source of truth; everything else is derived. The central rule is that
-**identity lives on the node and role lives on the edge**: `dataset:terramesh` is the same entity
-whether one paper trained on it and another evaluated on it, and `[train]` or `[eval]` sits on the
-link rather than in the registry.
-
+---
 
 ## Current state
 
-62 findings across 5 registries; 388 nodes and 756 edges. Nine were written by hand
-(`extracted_by: manual-extraction`); the other 53 were admitted from ICLR 2025 by automatic
-extraction and have not been read against their sources.
+62 findings across 5 registries; 388 nodes and 755 edges. Nine were written by hand
+(`extracted_by: manual-extraction`); the other 53 came from ICLR 2025 through automatic extraction
+and **have not been read against their sources**.
 
-Every finding carries one record field, `extracted_by` — `manual-extraction` or
-`automatic-extraction` — and records how the entry was produced, nothing more. An earlier
-`review_status` field (`draft`/`verified`) was removed: reading the sources found errors in 5 of
-the 7 records that already carried `verified`, so the label recorded that someone had checked, not
-that the check was good. There is no default requirement that a human check a record before it
-counts. Consumers of the site or the export must not read a record's presence in the database as
-evidence that anyone has verified it against the source.
-
-Gaps in the data are stated rather than guessed. Where a source names no dataset or prints no URL,
-the field is empty and `build.py` lists it in the audit.
-
+`extracted_by` is the only record-level field and it states origin, nothing more. An earlier
+`review_status` field was removed because reading the sources found errors in 5 of the 7 records
+that carried `verified` — the label recorded that someone had checked, not that the check was
+good. **A record's presence in this database is not evidence that anyone verified it against its
+source.**
