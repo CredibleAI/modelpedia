@@ -386,8 +386,46 @@ def test_a_variant_recorded_as_not_specified_produces_no_link():
 def test_every_finding_states_its_extraction_method_only():
     view = view_of()
     body = render.finding_body(view, view.nodes["XX-001"])
-    assert "<dt>Extraction</dt><dd>manual-extraction</dd>" in body
+    assert ('<dt>Extraction</dt><dd><span class="badge manual-extraction">'
+            'manual-extraction</span></dd>') in body
     assert "<dt>Record</dt>" not in body
+
+
+def test_evidence_renders_as_a_badge_carrying_its_value_as_a_class():
+    view = view_of()
+    body = render.finding_body(view, view.nodes["XX-001"])
+    assert '<dt>Evidence</dt><dd><span class="badge observational">observational</span></dd>' in body
+
+
+def test_the_source_is_labelled_on_its_own_line_under_the_authors():
+    view = view_of()
+    body = render.finding_body(view, view.nodes["XX-001"])
+    authors = body.index('<p class="byline">')
+    source = body.index('<p class="source">')
+    assert authors < source < body.index("<p>")
+    line = body[source:body.index("</p>", source)]
+    assert '<span class="source-label">Source</span>' in line
+    assert 'href="sources/the-paper/index.html"' in line
+    assert "Ada Lovelace" not in line
+    assert "<dt>Source</dt>" not in body
+
+
+def test_a_finding_whose_source_carries_no_authors_still_labels_its_source():
+    def anonymous(entities):
+        entities["source:the-paper"]["authors"] = []
+    view = view_of(entities=anonymous)
+    body = render.finding_body(view, view.nodes["XX-001"])
+    assert '<p class="byline">' not in body
+    assert body.count('<p class="source">') == 1
+    assert '<span class="source-label">Source</span>' in body
+
+
+def test_outside_links_open_in_a_new_tab_and_internal_links_do_not():
+    view = view_of()
+    body = render.finding_body(view, view.nodes["XX-001"])
+    assert ('<a href="https://example.org/earlier" target="_blank" '
+            'rel="external noopener">Earlier work</a>') in body
+    assert 'index.html" target' not in body
 
 
 def test_a_note_on_an_entity_with_an_anchor_qualifies_it_and_is_shown():
@@ -421,6 +459,22 @@ def test_the_navigation_marks_the_section_the_page_belongs_to():
 
 def test_the_navigation_marks_nothing_on_the_home_page():
     assert 'aria-current' not in render.navigation(view_of())
+
+
+def test_the_navigation_carries_the_theme_toggle():
+    nav = render.navigation(view_of())
+    assert 'class="theme-toggle"' in nav
+    assert nav.count("<button") == 1
+
+
+def test_every_page_ships_the_theme_init_and_toggle_scripts():
+    pages = render.render_site(graph_of())
+    documents = [doc for path, doc in pages.items() if path != render.STYLESHEET]
+    assert documents
+    for document in documents:
+        assert "localStorage.getItem('theme')" in document
+        assert 'class="theme-toggle"' in document
+        assert document.index(render.THEME_INIT) < document.index("<title>")
 
 
 def test_a_shared_concept_bridges_two_models():

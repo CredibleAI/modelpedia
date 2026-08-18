@@ -12,9 +12,30 @@ from modelpedia.site import site_paths
 
 HOME = site_paths.INDEX
 STYLESHEET = "style.css"
+EXTERNAL = ' target="_blank" rel="external noopener"'
+
+THEME_INIT = ("<script>(function(){try{var t=localStorage.getItem('theme');"
+              "if(t==='light'||t==='dark')"
+              "document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>")
+
+THEME_SCRIPT = ("<script>(function(){var b=document.querySelector('.theme-toggle');if(!b)return;"
+                "var m=window.matchMedia('(prefers-color-scheme: dark)');"
+                "function cur(){var t=document.documentElement.getAttribute('data-theme');"
+                "return t||(m.matches?'dark':'light');}"
+                "function sync(){b.setAttribute('aria-pressed',String(cur()==='dark'));}"
+                "sync();b.addEventListener('click',function(){"
+                "var n=cur()==='dark'?'light':'dark';"
+                "document.documentElement.setAttribute('data-theme',n);"
+                "try{localStorage.setItem('theme',n);}catch(e){}sync();});"
+                "m.addEventListener('change',sync);})();</script>")
+
+THEME_TOGGLE = ('<button type="button" class="theme-toggle"'
+                ' aria-label="Switch between light and dark theme"'
+                ' title="Switch light / dark theme">'
+                '<span class="on-light">Light</span>'
+                '<span class="on-dark">Dark</span></button>')
 
 TEXT_ROWS = (
-    ("evidence_type", "Evidence"),
     ("key_metric", "Key metric"),
     ("caveat", "Caveat"),
 )
@@ -22,7 +43,6 @@ TEXT_ROWS = (
 LINK_ROWS = (
     ("models", "Model"),
     ("concepts", "Concepts"),
-    ("sources", "Source"),
     ("datasets", "Datasets"),
     ("methods", "Methods"),
     ("related_work", "Related work"),
@@ -63,6 +83,10 @@ def role_marker(role):
     return ' <span class="role">[%s]</span>' % escape(role) if role else ""
 
 
+def badge(value):
+    return '<span class="badge %s">%s</span>' % (escape(value), escape(value))
+
+
 def has_page(node_type):
     return bool(graph_json.NODE_TYPE_BY_NAME[node_type].url_segment) \
         or node_type == graph_json.VARIANT
@@ -75,7 +99,7 @@ def link(view, node_id, label=None, role=None):
         body = anchor(site_paths.href(view.here, site_paths.target_of(node_id, view.nodes)), text)
     else:
         target = (node.get("data") or {}).get(keys.ANCHOR)
-        body = anchor(target, text, ' rel="external"') if target else text
+        body = anchor(target, text, EXTERNAL) if target else text
     return body + role_marker(role)
 
 
@@ -91,7 +115,18 @@ def finding_authors(view, data):
 def outside_link(item):
     text = escape(str(item.get(keys.NAME) or ""))
     target = item.get(keys.ANCHOR)
-    return anchor(target, text, ' rel="external"') if target else text
+    return anchor(target, text, EXTERNAL) if target else text
+
+
+def byline(view, data):
+    out = []
+    authors = ", ".join(escape(name) for name in finding_authors(view, data))
+    if authors:
+        out.append(paragraph(authors, "byline"))
+    sources = ", ".join(link_items(view, data, "sources"))
+    if sources:
+        out.append(paragraph('<span class="source-label">Source</span>%s' % sources, "source"))
+    return "".join(out)
 
 
 def link_items(view, data, field):
@@ -187,7 +222,7 @@ def entity_meta(view, node):
         if data.get(field):
             value = escape(join_values(data[field]))
             parts.append('<span class="nowrap">%s</span>' % value if field == "date" else value)
-    parts += [anchor(data[field], field)
+    parts += [anchor(data[field], field, EXTERNAL)
               for field in (keys.ANCHOR, keys.ARTIFACT) if data.get(field)]
     return paragraph(" · ".join(parts), "meta") if parts else ""
 
@@ -214,7 +249,7 @@ def navigation(view):
         items.append("<li>%s</li>" % anchor(
             site_paths.href(view.here, site_paths.registry_page(node_type.name)),
             escape(node_type.label), current))
-    return "<nav><ul>%s</ul></nav>" % "".join(items)
+    return "<nav><ul>%s</ul>%s</nav>" % ("".join(items), THEME_TOGGLE)
 
 
 def footer(view):
@@ -230,13 +265,16 @@ def page(view, title, body, body_class=""):
     return "".join([
         '<!doctype html><html lang="en"><head><meta charset="utf-8">',
         '<meta name="viewport" content="width=device-width, initial-scale=1">',
+        THEME_INIT,
         "<title>%s</title>" % escape(title),
         '<link rel="stylesheet" href="%s">' % escape(site_paths.href(view.here, STYLESHEET)),
         "</head>",
         "<body%s>" % (' class="%s"' % body_class if body_class else ""),
         navigation(view),
         body,
-        "<footer>%s</footer></body></html>" % footer(view),
+        "<footer>%s</footer>" % footer(view),
+        THEME_SCRIPT,
+        "</body></html>",
     ])
 
 
@@ -275,20 +313,20 @@ def registry_body(view, node_type, title):
 
 def finding_body(view, node):
     data = node["data"]
-    rows = [(term, escape(data[field].strip()) if data.get(field) else "")
-            for field, term in TEXT_ROWS]
+    rows = [("Evidence", badge(data["evidence_type"]) if data.get("evidence_type") else "")]
+    rows += [(term, escape(data[field].strip()) if data.get(field) else "")
+             for field, term in TEXT_ROWS]
     rows += [(term, model_row(view, data) if field == "models"
               else ", ".join(link_items(view, data, field)))
              for field, term in LINK_ROWS]
     rows.append(("Related findings",
                  ", ".join(link(view, fid, label=fid)
                            for fid in data.get(schema.RELATED_FINDINGS_FIELD) or [])))
-    rows.append(("Extraction", escape(data["extracted_by"])))
-    authors = finding_authors(view, data)
+    rows.append(("Extraction", badge(data["extracted_by"])))
     return "".join([
         '<header><h1><span class="ident">%s</span>%s</h1></header>'
         % (escape(node["id"]), escape(data["title"])),
-        paragraph(", ".join(escape(name) for name in authors), "byline") if authors else "",
+        byline(view, data),
         paragraph(escape(data["description"].strip())),
         definition_list(rows),
     ])
