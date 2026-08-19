@@ -8,6 +8,8 @@ import yaml
 import verify
 from modelpedia.build import database
 from modelpedia import graph as graph_json
+from modelpedia.ingest import anchors
+from modelpedia.ingest import citations
 from modelpedia.ingest import text
 from modelpedia.ingest import verification
 
@@ -216,3 +218,84 @@ def test_repeated_model_variants_check_the_model_once_and_each_variant_once():
         "model:thing", "variant:small", "variant:large", "dataset:pile",
         "method:probe", "rw:earlier",
     ]
+
+
+def test_a_url_split_across_a_line_break_is_rejoined():
+    assert list(text.urls_in("meta. llama 3.1. https://ai.meta.com/ blog/meta-llama-3-1/ (2024)")) \
+        == ["https://ai.meta.com/blog/meta-llama-3-1/"]
+    assert list(text.urls_in("bavishi et al. 2023. url https://www.adept. ai/blog/fuyu-8b")) \
+        == ["https://www.adept.ai/blog/fuyu-8b"]
+
+
+def test_prose_after_a_finished_url_is_not_swallowed_into_it():
+    assert list(text.urls_in("google. gemini pro vision. https://ai.google.dev. multimodal model.")) \
+        == ["https://ai.google.dev"]
+
+
+def test_a_url_the_extractor_cut_short_is_not_usable():
+    assert text.usable_url("https://openreview.net/forum?id=") == ""
+    assert text.usable_url("https://openreview.net/forum?id=F76bwRSLeK") \
+        == "https://openreview.net/forum?id=F76bwRSLeK"
+
+
+def test_a_path_gets_its_case_back_from_the_untouched_source_text():
+    packed = text.squeezed("see https://www.alignmentforum.org/posts/AcKRB8wDpdaN6v6ru/logit-lens")
+    assert text.with_source_case(
+        "https://www.alignmentforum.org/posts/ackrb8wdpdan6v6ru/logit-lens", packed) \
+        == "https://www.alignmentforum.org/posts/AcKRB8wDpdaN6v6ru/logit-lens"
+
+
+def test_case_recovery_leaves_a_url_the_source_does_not_carry_alone():
+    assert text.with_source_case("https://example.org/nope", text.squeezed("nothing here")) \
+        == "https://example.org/nope"
+
+
+def test_an_identifier_still_wins_over_a_bare_url_in_the_same_citation():
+    citation = "A. Author. A paper. arXiv:2301.00001, 2023. url https://example.org/blog/a-paper"
+    assert citations.anchor_from(citation) == "https://arxiv.org/abs/2301.00001"
+
+
+def test_a_citation_with_no_identifier_falls_back_to_its_own_url():
+    citation = "meta. introducing llama 3, 2024. url https://ai.meta.com/blog/meta-llama-3/."
+    assert citations.anchor_from(citation) == "https://ai.meta.com/blog/meta-llama-3/"
+
+
+def test_a_citation_with_neither_yields_no_anchor():
+    assert citations.anchor_from("ian goodfellow. explaining adversarial examples. iclr, 2015.") == ""
+
+
+def test_the_title_guess_may_be_sloppy_because_the_score_is_what_decides():
+    citation = ("shaoqing ren, kaiming he, and jian sun. faster r-cnn: towards real-time object"
+                " detection. in neurips, 2015.")
+    assert anchors.queries(citation)[0].startswith("faster r-cnn")
+    assert anchors.match_score("Faster R-CNN: Towards Real-Time Object Detection", citation) == 1.0
+    assert anchors.match_score("Attention Is All You Need Somewhere", citation) \
+        < anchors.DBLP_MATCH_AT
+
+
+def test_a_title_too_thin_to_say_anything_scores_zero_rather_than_one():
+    citation = ("geoffrey hinton, oriol vinyals, and jeff dean. distilling the knowledge"
+                " in a neural network. nips workshop, 2015.")
+    assert anchors.match_score("Geoffrey E. Hinton", citation) == 0.0
+    assert anchors.match_score("Distilling the Knowledge in a Neural Network", citation) == 1.0
+
+
+def test_a_doi_is_preferred_over_a_preprint_when_both_are_offered():
+    assert anchors.url_from(["http://arxiv.org/abs/1506.01497",
+                             "https://doi.org/10.1109/TPAMI.2016.2577031"]) \
+        == "https://doi.org/10.1109/TPAMI.2016.2577031"
+    assert anchors.url_from(["http://arxiv.org/abs/1506.01497"]) == "https://arxiv.org/abs/1506.01497"
+    assert anchors.url_from([]) == ""
+
+
+def test_crossref_is_asked_with_the_whole_reference_not_a_title_guess():
+    citation = ("edmond awad, sohan dsouza, and iyad rahwan. the moral machine experiment."
+                " nature, 563(7729):59, 2018.")
+    query = anchors.bibliographic(citation)
+    assert "awad" in query and "moral machine experiment" in query and "nature" in query
+
+
+def test_a_doi_becomes_a_resolver_url_and_an_empty_one_stays_empty():
+    assert anchors.doi_url("10.1038/s41586-018-0637-6") == "https://doi.org/10.1038/s41586-018-0637-6"
+    assert anchors.doi_url("") == ""
+    assert anchors.doi_url(None) == ""

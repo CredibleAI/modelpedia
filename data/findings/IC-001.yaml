@@ -34,10 +34,6 @@ related_work:
 - name: SNLI-VE
   anchor: https://arxiv.org/abs/1901.06706
   role: context
-- name: Sherlock
-  role: context
-- name: Whoops!
-  role: context
 evidence_type: correlational
 key_metric: Human accuracy 83-85%; Gemini-1.5-Pro 51%, GPT-4-Vision 46%, GPT-4o 16%, Claude-Sonnet-3.5
   49% in separate-images triplet setup; Dumb pixel baseline 50%

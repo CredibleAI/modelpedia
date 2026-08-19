@@ -16,11 +16,7 @@ datasets:
 - ref: dataset:benchform
   role: eval
 methods: []
-related_work:
-- name: Reflexion
-  role: context
-- name: Self-Refine
-  role: context
+related_work: []
 evidence_type: interventional
 key_metric: 'Llama3-70B: IR from 28.6% to 40.0% (empowered persona) and to 68.5% (reflection). Qwen2-72B:
   IR from 57.6% to 68.6% (empowered persona); CRT increases from 30.5% to 45.0% under reflection while

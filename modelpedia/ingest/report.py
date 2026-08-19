@@ -136,7 +136,7 @@ def split_summary(result):
            plural(len(result.refused), "finding")),
         "  source entries needed: %d of %d papers; %s yielded no finding"
         % (result.used, result.entries, plural(result.entries - result.used, "paper")),
-        "  links dropped because nothing resolved: %d" % len(result.dropped),
+        "  links dropped, unresolved or unlinkable: %d" % len(result.dropped),
     ]
 
 

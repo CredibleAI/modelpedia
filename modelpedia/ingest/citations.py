@@ -1,5 +1,6 @@
 from typing import NamedTuple
 
+from modelpedia.ingest import text as textutil
 from modelpedia.ingest import verification
 
 CONFIRMED = "confirmed"
@@ -51,5 +52,12 @@ def identifier_in(citation):
     return "%s:%s" % found if found else ""
 
 
-def anchor_from(citation):
-    return verification.anchor_url(verification.anchor_identifier(citation))
+def anchor_from(citation, packed=""):
+    found = verification.anchor_identifier(citation)
+    if found:
+        return verification.anchor_url(found)
+    for url in textutil.urls_in(citation):
+        usable = textutil.usable_url(textutil.with_source_case(url, packed))
+        if usable:
+            return usable
+    return ""

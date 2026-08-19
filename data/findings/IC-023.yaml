@@ -24,11 +24,7 @@ methods:
   role: eval
 - ref: method:vendi-score
   role: eval
-related_work:
-- name: MAGNet
-  role: builds-on
-- name: SplineCAM
-  role: builds-on
+related_work: []
 evidence_type: correlational
 key_metric: Local scaling (ψ), local rank (ν), local complexity (δ); Vendi score diversity and RAHF
   human preference scores reported for bins of local scaling; statistical significance (t-test) of differences

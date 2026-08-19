@@ -37,8 +37,6 @@ related_work:
   role: builds-on
 - ref: model:clip
   role: context
-- name: GPT
-  role: context
 evidence_type: correlational
 key_metric: 'YOLOv9 with VLM initialization: 53.36% mAP (↑1.37%), 70.55% mAP@.5 (↑1.43%); YOLOv7 with
   VLM initialization: 51.75% mAP (↑3.42%), 70.12% mAP@.5 (↑2.15%); Faster R-CNN with VLM initialization:

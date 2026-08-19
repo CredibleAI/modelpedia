@@ -1,11 +1,18 @@
+import http.client
 import json
 import sys
 import time
+import urllib.error
+import urllib.parse
+import urllib.request
 from pathlib import Path
 
 from modelpedia import atomic
 from modelpedia import paths
 from modelpedia.build import database
+from modelpedia.ingest import anchors as anchorlib
+from modelpedia.ingest import citations
+from modelpedia.ingest import link
 from modelpedia.ingest import manifest as store
 from modelpedia.ingest import openreview as api
 from modelpedia.ingest import screen
@@ -353,6 +360,175 @@ def list_venues(needle=None):
     return 0
 
 
+DBLP = "https://dblp.org/search/publ/api"
+DBLP_ROWS = 6
+DBLP_DELAY = 3.0
+DBLP_RETRIES = 5
+DBLP_AGENT = "modelpedia-anchor-lookup"
+
+CROSSREF = "https://api.crossref.org/works"
+CROSSREF_ROWS = 3
+CROSSREF_DELAY = 1.0
+NETWORK = (urllib.error.HTTPError, urllib.error.URLError, http.client.HTTPException,
+           ConnectionError, TimeoutError, ValueError, OSError)
+
+ENTITIES = paths.CORPUS / "entities.jsonl"
+PROPOSALS = paths.CORPUS / "anchor_proposals.jsonl"
+
+
+class LookupFailed(Exception):
+    pass
+
+
+def ask_dblp(query, rows=DBLP_ROWS):
+    """Raises rather than returning nothing: a failed request must never read as 'no match'."""
+    address = "%s?%s" % (DBLP, urllib.parse.urlencode(
+        {"q": query, "format": "json", "h": rows}))
+    request = urllib.request.Request(address, headers={"User-Agent": DBLP_AGENT})
+    last = None
+    for attempt in range(DBLP_RETRIES):
+        time.sleep(DBLP_DELAY if attempt == 0 else 2 ** attempt * DBLP_DELAY)
+        try:
+            with urllib.request.urlopen(request, timeout=40) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+            hits = payload.get("result", {}).get("hits", {}).get("hit", [])
+            return [hit.get("info", {}) for hit in hits if isinstance(hit, dict)]
+        except NETWORK as error:
+            last = error
+    raise LookupFailed("%s: %s" % (query[:48], last))
+
+
+def ask_crossref(citation, rows=CROSSREF_ROWS):
+    """Crossref matches a whole reference string; DBLP does not index anything but computing."""
+    address = "%s?%s" % (CROSSREF, urllib.parse.urlencode(
+        {"query.bibliographic": anchorlib.bibliographic(citation), "rows": rows,
+         "select": "DOI,title"}))
+    request = urllib.request.Request(address, headers={"User-Agent": DBLP_AGENT})
+    last = None
+    for attempt in range(DBLP_RETRIES):
+        time.sleep(CROSSREF_DELAY if attempt == 0 else 2 ** attempt * CROSSREF_DELAY)
+        try:
+            with urllib.request.urlopen(request, timeout=40) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+            return payload.get("message", {}).get("items", [])
+        except NETWORK as error:
+            last = error
+    raise LookupFailed("crossref: %s" % last)
+
+
+def crossref_match(citation):
+    best = (0.0, "", "")
+    for item in ask_crossref(citation):
+        title = " ".join(item.get("title") or [])
+        score = anchorlib.match_score(title, citation)
+        if score > best[0]:
+            best = (score, title, anchorlib.doi_url(item.get("DOI")))
+    return best
+
+
+def links_of(record):
+    found = record.get("ee")
+    if isinstance(found, list):
+        return [str(item) for item in found]
+    return [str(found)] if found else []
+
+
+def dblp_match(citation):
+    best, answered = (0.0, "", ""), False
+    for query in anchorlib.queries(citation):
+        try:
+            records = ask_dblp(query)
+            answered = True
+        except LookupFailed:
+            continue
+        for record in records:
+            title = str(record.get("title") or "")
+            score = anchorlib.match_score(title, citation)
+            if score > best[0]:
+                best = (score, title, anchorlib.url_from(links_of(record)))
+    if not answered:
+        raise LookupFailed("every query for this citation failed")
+    return best
+
+
+def resolved(citation):
+    """(index, score, title, url). DBLP first; Crossref covers what it does not index."""
+    failures = []
+    try:
+        score, title, url = dblp_match(citation)
+        if url and score >= anchorlib.DBLP_MATCH_AT:
+            return "dblp", score, title, url
+    except LookupFailed as error:
+        failures.append(str(error))
+        score, title, url = 0.0, "", ""
+    try:
+        other, other_title, other_url = crossref_match(citation)
+        if other_url and other >= anchorlib.CROSSREF_MATCH_AT:
+            return "crossref", other, other_title, other_url
+    except LookupFailed as error:
+        failures.append(str(error))
+        other, other_title, other_url = 0.0, "", ""
+    if len(failures) == 2:
+        raise LookupFailed("; ".join(failures))
+    if other > score:
+        return "crossref", other, other_title, other_url
+    return "dblp", score, title, url
+
+
+def confirmed_citations(entities, wanted):
+    found = {}
+    if not ENTITIES.exists():
+        return found
+    index = link.index_of(entities)
+    for line in ENTITIES.read_text(encoding="utf-8").splitlines():
+        row = json.loads(line)
+        if row.get("state") != citations.CONFIRMED or not (row.get("citation") or "").strip():
+            continue
+        hit = link.resolve(str(row.get("name") or ""), index)
+        if hit.kind != link.HIT or hit.slug not in wanted:
+            continue
+        if len(row["citation"]) > len(found.get(hit.slug, "")):
+            found[hit.slug] = row["citation"]
+    return found
+
+
+def propose_anchors():
+    db = database.load()
+    wanted = set(anchorlib.missing_anchor(db.entities))
+    citations_by_key = confirmed_citations(db.entities, wanted)
+    print("%d entities have no anchor, %d of them carry a confirmed citation"
+          % (len(wanted), len(citations_by_key)))
+    if not citations_by_key:
+        return 0
+
+    taken, weak, silent, failed = [], 0, 0, 0
+    for key in sorted(citations_by_key):
+        citation = citations_by_key[key]
+        try:
+            index, score, title, url = resolved(citation)
+        except LookupFailed as error:
+            failed += 1
+            print("  request failed  %-42s %s" % (key, error))
+            continue
+        if not url:
+            silent += 1
+            continue
+        if score < min(anchorlib.DBLP_MATCH_AT, anchorlib.CROSSREF_MATCH_AT):
+            weak += 1
+            continue
+        taken.append({"key": key, "anchor": url, "score": round(score, 3),
+                      "title": title, "index": index})
+        print("  %-42s %.2f %-9s %s" % (key, score, index, url))
+
+    atomic.write_text(PROPOSALS, "".join(json.dumps(row) + "\n" for row in taken))
+    print("\n%d proposed, %d below threshold, %d with no hit, %d requests failed"
+          % (len(taken), weak, silent, failed))
+    print("written to %s -- these are candidates, not results: a matched title proves the URL fits"
+          % PROPOSALS)
+    print("the citation, not that the citation belongs to the entity. Review before writing.")
+    return 1 if failed else 0
+
+
 USAGE = """usage: run these with .venv/bin/python -- openreview-py lives there, not in system python
 
   .venv/bin/python harvest.py doctor                 offline dependency and API contract checks
@@ -363,6 +539,8 @@ USAGE = """usage: run these with .venv/bin/python -- openreview-py lives there, 
   .venv/bin/python harvest.py pdfs [--tier a,b] [--limit N] [--ids FILE]
                                                      --ids overrides --tier; one id per line
   .venv/bin/python harvest.py text                   pypdfium2 over downloaded pdfs
+  .venv/bin/python harvest.py anchors                DBLP lookup for entities with no anchor,
+                                                     proposals only, never writes a registry
 
   OPENREVIEW_USERNAME and OPENREVIEW_PASSWORD must be set in the environment."""
 
@@ -396,6 +574,8 @@ def main(argv):
         return harvest_pdfs(tiers, limit, ids=ids)
     if command == "text":
         return harvest_text()
+    if command == "anchors":
+        return propose_anchors()
 
     print(USAGE)
     return 2

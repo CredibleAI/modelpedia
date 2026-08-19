@@ -20,11 +20,7 @@ methods:
 - ref: method:mend
 - ref: method:serac
 - ref: method:in-context-knowledge-editing
-related_work:
-- name: MMEdit
-- name: MIKE
-- name: MC-MKE
-- name: VLKEB
+related_work: []
 evidence_type: correlational
 key_metric: IKE on LLaVA-1.5 achieves t-rel 63.49, i-rel 59.98, i-gen 59.98 for visual entity editing;
   SERAC achieves t-loc 99.87 and i-loc 99.26; KE achieves port 48.77. All methods fall below 52% on

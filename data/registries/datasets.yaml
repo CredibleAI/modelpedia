@@ -100,11 +100,8 @@ dataset:places365:
 
 dataset:inaturalist:
   name: iNaturalist
-  anchor: null
+  anchor: http://openaccess.thecvf.com/content_cvpr_2018/html/Van_Horn_The_INaturalist_Species_CVPR_2018_paper.html
   artifact: null
-  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
-    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
-    than in the source'
 
 dataset:imagewoof:
   name: ImageWoof
@@ -116,27 +113,18 @@ dataset:imagewoof:
 
 dataset:oxford-102-flowers:
   name: Oxford-102-Flowers
-  anchor: null
+  anchor: https://doi.org/10.1109/ICVGIP.2008.47
   artifact: null
-  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
-    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
-    than in the source'
 
 dataset:textures:
   name: Textures
-  anchor: null
+  anchor: https://doi.org/10.1109/CVPR.2014.461
   artifact: null
-  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
-    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
-    than in the source'
 
 dataset:openimages-o:
   name: OpenImages-O
-  anchor: null
+  anchor: https://doi.org/10.1109/cvpr52688.2022.00487
   artifact: null
-  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
-    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
-    than in the source'
 
 dataset:ninco:
   name: NINCO
@@ -156,27 +144,18 @@ dataset:ssb-hard:
 
 dataset:nyu-v2:
   name: NYU-v2
-  anchor: null
+  anchor: https://doi.org/10.1007/978-3-642-33715-4_54
   artifact: null
-  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
-    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
-    than in the source'
 
 dataset:mit-states:
   name: MIT-States
-  anchor: null
+  anchor: https://doi.org/10.1109/CVPR.2015.7298744
   artifact: null
-  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
-    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
-    than in the source'
 
 dataset:ut-zappos:
   name: UT-Zappos
-  anchor: null
+  anchor: https://doi.org/10.1109/CVPR.2014.32
   artifact: null
-  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
-    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
-    than in the source'
 
 dataset:cc3m:
   name: Conceptual 3M / CC3M
@@ -215,11 +194,11 @@ dataset:wikitext-103:
 
 dataset:wikidata:
   name: Wikidata
-  anchor: null
+  anchor: https://cacm.acm.org/research/wikidata/
   artifact: https://www.wikidata.org
   note: a live knowledge base rather than a fixed release, so what a study drew from it is defined by
-    the study and not by a version; the artifact is the base itself. The citing paper does give a reference
-    entry for it
+    the study and not by a version; the artifact is the base itself and the anchor is the paper describing
+    it
 
 dataset:squad:
   name: SQuAD
@@ -269,11 +248,8 @@ dataset:wizard-of-wikipedia:
 
 dataset:t-rex:
   name: T-REx
-  anchor: null
+  anchor: http://www.lrec-conf.org/proceedings/lrec2018/summaries/632.html
   artifact: null
-  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
-    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
-    than in the source'
 
 dataset:codexglue:
   name: CodeXGLUE
@@ -285,11 +261,10 @@ dataset:codexglue:
 
 dataset:needle-in-a-haystack:
   name: Needle-in-a-haystack
-  anchor: null
+  anchor: https://github.com/gkamradt/LLMTest_NeedleInAHaystack
   artifact: null
-  note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
-    reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
-    than in the source'
+  note: a test harness released as a repository rather than a paper, so the anchor and the artifact are
+    the same URL and only the anchor is recorded
 
 dataset:anthropic-hh:
   name: Anthropic-HH

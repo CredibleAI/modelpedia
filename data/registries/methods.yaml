@@ -327,21 +327,21 @@ method:activation-patching:
 
 method:activation-steering:
   name: Activation steering
-  anchor: null
+  anchor: https://doi.org/10.48550/arXiv.2308.10248
   artifact: null
   description: Add a direction to the residual stream at inference time to push the model's behaviour,
     used both to test whether a direction is causal and to control output.
 
 method:attention-knockout:
   name: Attention knockout
-  anchor: null
+  anchor: https://doi.org/10.18653/v1/2023.emnlp-main.751
   artifact: null
   description: Block attention from one set of positions to another and measure the loss of information
     flow, used to locate which positions a prediction depends on.
 
 method:logit-lens:
   name: Logit lens
-  anchor: null
+  anchor: https://www.alignmentforum.org/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens
   artifact: null
   description: Decode intermediate activations through the model's output head to read what the model
     would predict at that depth.
@@ -365,14 +365,14 @@ method:head-masking:
 
 method:distributed-alignment-search:
   name: Distributed Alignment Search / DAS
-  anchor: null
+  anchor: https://proceedings.mlr.press/v236/geiger24a.html
   artifact: null
   description: Search for a linear subspace of activations that aligns with a causal variable in a hypothesised
     high-level model, then intervene on that subspace to test the alignment.
 
 method:multi-task-distributed-alignment-search:
   name: Multi-task Distributed Alignment Search / MDAS
-  anchor: null
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/f6a8b109d4d4fd64c75e94aaf85d9697-Abstract-Conference.html
   artifact: null
   description: Distributed Alignment Search fitted across several tasks at once, so the subspace found
     has to account for more than one behaviour.
@@ -389,12 +389,10 @@ method:hyperdas:
 
 method:weight-orthogonalization:
   name: Weight orthogonalization
-  anchor: null
+  anchor: http://papers.nips.cc/paper_files/paper/2024/hash/f545448535dfde4f9786555403ab7c49-Abstract-Conference.html
   artifact: null
   description: Remove a direction from a model's weights so the behaviour it mediates cannot be expressed,
     used in the corpus to suppress refusal.
-  note: 'no anchor recorded: the identifier first written here could not be found in any citing paper''s
-    bibliography, so it was not taken from the source and has been removed'
 
 method:layer-selective-rank-reduction:
   name: Layer-Selective Rank Reduction / LASER
@@ -422,27 +420,27 @@ method:direct-preference-optimization:
 
 method:chain-of-thought-prompting:
   name: Chain-of-Thought prompting / Chain-of-Thought (CoT) prompting / CoT prompting
-  anchor: null
+  anchor: http://papers.nips.cc/paper_files/paper/2022/hash/9d5609613524ecf4f15af0f7b31abca4-Abstract-Conference.html
   artifact: null
   description: Prompt the model to produce intermediate reasoning steps before its answer.
 
 method:in-context-knowledge-editing:
   name: In-Context Knowledge Editing / IKE
-  anchor: null
+  anchor: https://doi.org/10.18653/v1/2023.emnlp-main.296
   artifact: null
   description: Change a model's factual output by placing the corrected fact in context rather than
     by editing weights.
 
 method:knowledge-editor:
   name: Knowledge Editor / KE
-  anchor: null
+  anchor: https://doi.org/10.18653/v1/2021.emnlp-main.522
   artifact: null
   description: Train a hypernetwork that predicts the weight update needed to change one fact while
     leaving the rest of the model alone.
 
 method:mend:
   name: MEND
-  anchor: null
+  anchor: https://openreview.net/forum?id=0DcZxeWfOPt
   artifact: null
   description: Model editing by decomposing the fine-tuning gradient into a low-rank update that a learned
     network transforms.
@@ -473,16 +471,14 @@ method:crag:
 
 method:info-rag:
   name: Info-RAG
-  anchor: null
+  anchor: https://doi.org/10.18653/v1/2024.acl-long.9
   artifact: null
   description: Unsupervised training that teaches a model to use retrieved passages as information rather
     than as answers to copy.
-  note: 'no anchor recorded: the identifier first written here could not be found in any citing paper''s
-    bibliography, so it was not taken from the source and has been removed'
 
 method:retrobust:
   name: Retrobust
-  anchor: null
+  anchor: https://openreview.net/forum?id=ZS4m74kZpH
   artifact: null
   description: Retrieval-augmented generation made robust to irrelevant retrieved context by training
     on deliberately noisy retrievals.
@@ -499,7 +495,7 @@ method:tok-rag:
 
 method:ralf:
   name: RALF
-  anchor: null
+  anchor: https://doi.org/10.1109/cvpr52733.2024.01650
   artifact: null
   description: Retrieval-augmented method cited in the corpus as a comparison point for token-level
     retrieval control.
@@ -516,7 +512,7 @@ method:retriever-dictionary:
 
 method:fgsm:
   name: FGSM (Fast Gradient Sign Method)
-  anchor: null
+  anchor: https://arxiv.org/abs/1412.6572
   artifact: null
   description: Single-step adversarial attack that perturbs the input along the sign of the loss gradient.
 
@@ -532,40 +528,40 @@ method:pgd:
 
 method:autoattack:
   name: AutoAttack
-  anchor: null
+  anchor: http://proceedings.mlr.press/v119/croce20b.html
   artifact: null
   description: Parameter-free ensemble of adversarial attacks used as a standard robustness benchmark.
 
 method:msp:
   name: MSP (Maximum Softmax Probability)
-  anchor: null
+  anchor: https://openreview.net/forum?id=Hkg4TI9xl
   artifact: null
   description: Out-of-distribution score taking the largest softmax probability as a confidence estimate.
 
 method:odin:
   name: ODIN
-  anchor: null
+  anchor: https://openreview.net/forum?id=H1VGkIxRZ
   artifact: null
   description: Out-of-distribution detection combining temperature scaling with small input perturbations
     to separate in- and out-of-distribution inputs.
 
 method:mahalanobis-distance-score:
   name: MDS (Mahalanobis Distance-based Score)
-  anchor: null
+  anchor: https://proceedings.neurips.cc/paper/2018/hash/abdeb6f575ac5c6676b747bca8d09cc2-Abstract.html
   artifact: null
   description: Out-of-distribution score measuring the Mahalanobis distance of a feature vector from
     the class-conditional training distribution.
 
 method:cider:
   name: CIDER (Compactness and Dispersion for OOD detection)
-  anchor: null
+  anchor: https://openreview.net/forum?id=aEFaE0W5pAd
   artifact: null
   description: Representation learning objective for out-of-distribution detection that makes classes
     compact and pushes their centres apart.
 
 method:spade:
   name: SPADE (Sample-efficient Probabilistic Detection)
-  anchor: null
+  anchor: https://openreview.net/forum?id=kwCHcaeHrf
   artifact: null
   description: Abstaining classifier that declines to predict when its probabilistic estimate is not
     confident enough.
@@ -586,7 +582,7 @@ method:universal-guidance:
 
 method:empirical-ntk:
   name: Empirical Neural Tangent Kernel
-  anchor: null
+  anchor: https://proceedings.neurips.cc/paper/2018/hash/5a4be1fa34e62bb8a6ec6b91d2462f5a-Abstract.html
   artifact: null
   description: Kernel formed from the gradients of a trained network's outputs with respect to its parameters,
     used to characterise how it generalises.
@@ -636,7 +632,7 @@ method:vendi-score:
 
 method:rahf-score:
   name: RAHF (Rich Human Feedback) score
-  anchor: null
+  anchor: https://doi.org/10.1109/CVPR52733.2024.01835
   artifact: null
   description: Score predicting fine-grained human feedback on generated images, used in the corpus
     as a reward signal for evaluation.

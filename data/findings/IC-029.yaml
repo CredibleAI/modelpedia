@@ -27,9 +27,7 @@ datasets:
 - ref: dataset:big-bench-hard
   role: source
 methods: []
-related_work:
-- name: Asch conformity experiments
-  role: context
+related_work: []
 evidence_type: correlational
 key_metric: 'Conformity rates: for five representative LLMs average CRW=23.5%, CRT=31.3%, CRD=47.2%.
   Accuracy drops: ∆C=24.1% (Gemma2-27B) to 1.0% (Llama3.1-405B); ∆W=22.8% (Gemma2-27B) to 2.2% (Llama3-70B);

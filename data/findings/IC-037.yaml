@@ -17,8 +17,6 @@ methods: []
 related_work:
 - ref: model:dit
   role: builds-on
-- name: VQGAN
-  role: builds-on
 evidence_type: correlational
 key_metric: 'FID (↓): DiT-l/2 (4.16) vs. DiT-l/1 (4.05); sFID (↓): DiT-l/2 (4.97) vs. DiT-l/1 (4.66);
   IS (↑): DiT-l/2 (210.18) vs. DiT-l/1 (232.95).'

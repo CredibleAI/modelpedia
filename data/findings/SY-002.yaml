@@ -39,9 +39,5 @@ methods:
     role: primary
   - ref: method:totalsegmentator
     role: supporting
-related_work:
-  - name: "Mind the pad: CNNs can develop blind spots"
-    note: >
-      the source finding cites this work by title only, without a URL or identifier, so the anchor is left empty rather than guessed
-    role: context
+related_work: []
 related_findings: []

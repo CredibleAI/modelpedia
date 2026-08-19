@@ -29,9 +29,7 @@ datasets:
 - ref: dataset:moral-machine
   role: source
 methods: []
-related_work:
-- name: Moral Machine experiment
-  role: builds-on
+related_work: []
 evidence_type: correlational
 key_metric: 'misalignment scores: 0.55 (Llama 3.1 70B), 0.56 (Llama 3 70B), 0.57 (Llama 3 8B), 0.64
   (GPT-3), 0.75 (Llama 3.1 8B), 0.77 (Qwen 2 7B), 0.80 (Mistral 7B), 0.81 (GPT-4), 0.83 (Llama 2 7B),

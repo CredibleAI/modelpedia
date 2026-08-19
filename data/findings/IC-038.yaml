@@ -23,9 +23,7 @@ datasets:
 methods:
 - ref: method:kendall-tau-distance
   role: supporting
-related_work:
-- name: 'Mind the gap: Understanding the modality gap in multi-modal contrastive representation learning'
-  role: builds-on
+related_work: []
 evidence_type: observational
 key_metric: Two dimensions suffice to perfectly separate the modalities.
 caveat: The finding is based on analysis of the embedding geometry, not on downstream task performance.

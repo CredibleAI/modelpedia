@@ -47,8 +47,6 @@ related_work:
 - name: In-context learning as Bayesian inference
   anchor: https://arxiv.org/abs/2111.02080
   role: builds-on
-- name: In-context learning as gradient descent
-  role: builds-on
 evidence_type: correlational
 key_metric: 'Accuracy on TriviaQA: 85.7 (0% hard negatives), 53.5 (100% hard negatives) with llama-2-7b;
   AUC on benefit-detriment classification: 81.89 for llama-2-7b, 68.64 for opt-6.7b, 75.85 for mistral-7b

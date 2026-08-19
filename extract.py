@@ -36,6 +36,12 @@ def texts():
     return {path.stem: path for path in sorted(TEXTS.glob("*.txt"))}
 
 
+def raw_texts(papers):
+    found = texts()
+    return {paper: found[paper].read_text(encoding="utf-8")
+            for paper in papers if paper in found}
+
+
 def pages_of(paper):
     cached = TEXTS / ("%s.txt" % paper)
     if cached.exists():
@@ -262,7 +268,8 @@ def split(write=False, force=False):
              if entity.get("type") == graph_json.CONCEPT}
     kept, dropped, refused = splitter.split(documents, db.entities, by_paper,
                                             FINDING_PREFIX, known,
-                                            db.vocabularies[schema.ROLE_SCOPE])
+                                            db.vocabularies[schema.ROLE_SCOPE],
+                                            texts=raw_texts(documents))
 
     used = {link[keys.REF] for candidate in kept
             for link in candidate.record.get("sources") or []}

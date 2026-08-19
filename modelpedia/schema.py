@@ -50,3 +50,4 @@ VOCABULARY_SCOPES = {
 
 SLUG = re.compile(r"[a-z][a-z0-9-]*")
 ISO_DATE = re.compile(r"[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?")
+ANCHOR_URL = re.compile(r"https?://\S+")

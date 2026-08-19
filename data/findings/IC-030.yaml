@@ -23,6 +23,7 @@ datasets:
 methods: []
 related_work:
 - name: Meta Llama 3.1 technical report
+  anchor: https://ai.meta.com/blog/meta-llama-3-1/
   role: context
 - name: Qwen technical report
   anchor: https://arxiv.org/abs/2309.16609

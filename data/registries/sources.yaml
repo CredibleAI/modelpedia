@@ -7,8 +7,11 @@ source:terramind-concept-vectors:
   venue: Explainable Machine Learning 2025/2026, University of Warsaw
   date: null
   anchor: null
-  artifact: https://github.com/JanUrbanek/xai_terramind_project
-  note: course report, no public URL and no date printed on the document
+  artifact: null
+  note: 'course report, no public URL and no date printed on the document. The report names
+    https://github.com/JanUrbanek/xai_terramind_project as its code, but that repository answered 404
+    on 2026-08-18 while the account itself answers 200, so it was removed, renamed or made private;
+    the address is kept here rather than as a link the reader would click into nothing'
 
 source:terramind-optical-sar-failure:
   authors:

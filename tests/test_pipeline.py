@@ -1311,13 +1311,40 @@ def test_related_work_is_written_inline_with_the_anchor_from_its_citation():
         {"name": "Earlier work", "anchor": "https://arxiv.org/abs/2301.00001", "role": "builds-on"}]
 
 
-def test_related_work_that_is_only_an_author_citation_with_no_anchor_is_dropped():
-    kept, _, _ = split_of([{"title": "A claim", "description": "d",
-                            "models": [{"name": "Llama 2"}],
-                            "related_work": [{"name": "Geva et al. (2022)"},
-                                             {"name": "Nostalgebraist (2020)"},
-                                             {"name": "A real title about registers"}]}])
-    assert [r["name"] for r in kept[0].record["related_work"]] == ["A real title about registers"]
+def test_related_work_with_no_anchor_is_dropped_and_the_drop_is_reported():
+    kept, dropped, _ = split_of([{"title": "A claim", "description": "d",
+                                  "models": [{"name": "Llama 2"}],
+                                  "related_work": [{"name": "Geva et al. (2022)"},
+                                                   {"name": "A real title about registers"}]}])
+    assert kept[0].record["related_work"] == []
+    assert [(item.field, item.name) for item in dropped] == [
+        ("related_work", "Geva et al. (2022)"),
+        ("related_work", "A real title about registers")]
+
+
+def test_related_work_takes_a_bare_url_from_its_citation_when_there_is_no_identifier():
+    kept, _, _ = split_of(
+        [{"title": "A claim", "description": "d", "models": [{"name": "Llama 2"}],
+          "related_work": [{"name": "Meta Llama 3 announcement", "role": "context"}]}],
+        entities=[{"name": "Meta Llama 3 announcement",
+                   "citation": "meta. introducing llama 3, 2024. url https://ai.meta.com/ blog/meta-llama-3/."}])
+    assert kept[0].record["related_work"] == [
+        {"name": "Meta Llama 3 announcement", "anchor": "https://ai.meta.com/blog/meta-llama-3/",
+         "role": "context"}]
+
+
+def test_an_anchor_gets_its_case_back_from_the_paper_text_the_citation_lowercased():
+    documents = {"p1": {"findings": [{"title": "A claim", "description": "d",
+                                      "models": [{"name": "Llama 2"}],
+                                      "related_work": [{"name": "Logit lens"}]}],
+                        "entities": [{"name": "Logit lens",
+                                      "citation": "nostalgebraist. the logit lens. https://www.alignmentforum.org/posts/ackrb8wdpdan6v6ru/x"}]}}
+    kept, _, _ = splitter.split(
+        documents, SPLIT_ENTITIES, {"p1": "source:the-paper"}, "IC", {"concept:shortcut"},
+        SPLIT_ROLES,
+        texts={"p1": "as shown in https://www.alignmentforum.org/posts/AcKRB8wDpdaN6v6ru/x"})
+    assert kept[0].record["related_work"][0]["anchor"] \
+        == "https://www.alignmentforum.org/posts/AcKRB8wDpdaN6v6ru/x"
 
 
 def test_an_author_citation_that_does_carry_an_anchor_is_kept_because_it_is_clickable():

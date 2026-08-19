@@ -158,11 +158,12 @@ model:llama-3:
   domain: null
   task:
   - generative
-  anchor: null
+  anchor: https://ai.meta.com/blog/meta-llama-3/
   artifact: https://huggingface.co/meta-llama/Meta-Llama-3-8B
   description: Second-generation open-weight Llama family, cited in the corpus in its 8B and 70B sizes.
-  note: 'no citable paper: the citing papers reference a Meta announcement post. The artifact is the
-    official Hugging Face release, whose card states the 8B and 70B sizes carried here'
+  note: 'the anchor is Meta''s announcement post, not a paper: this family has none, and the post is
+    what the citing papers reference. The artifact is the official Hugging Face release, whose card
+    states the 8B and 70B sizes carried here'
   variants:
     variant:llama-3-8b:
       name: Llama 3 8B
@@ -916,12 +917,13 @@ model:fuyu:
   domain: null
   task:
   - generative
-  anchor: null
+  anchor: https://www.adept.ai/blog/fuyu-8b
   artifact: null
   description: Vision-language model that feeds image patches straight into the language model without
     a separate vision encoder.
-  note: the citing paper gives an author list with no arXiv id or DOI in the entry, so no anchor is
-    recorded
+  note: 'the anchor is the release post the citing paper cites, not a paper: this model has none. The
+    URL came out of the citation split across a line break and was rejoined; it answers 403 to an
+    automated request, so it was not confirmed by fetching'
 
 model:jamba:
   name: Jamba
@@ -1041,11 +1043,9 @@ model:faster-r-cnn:
   domain: null
   task:
   - discriminative
-  anchor: null
+  anchor: https://doi.org/10.1109/TPAMI.2016.2577031
   artifact: null
   description: Two-stage object detector with a learned region proposal network.
-  note: the citing paper gives an author list with no arXiv id or DOI in the entry, so no anchor is
-    recorded
 
 model:deformable-detr:
   name: Deformable DETR
@@ -1056,12 +1056,10 @@ model:deformable-detr:
   domain: null
   task:
   - discriminative
-  anchor: null
+  anchor: https://openreview.net/forum?id=gZ9hCDWe6ke
   artifact: null
   description: Transformer object detector using sparse deformable attention over a small set of sampling
     points.
-  note: the citing paper gives an author list with no arXiv id or DOI in the entry, so no anchor is
-    recorded
 
 model:yolov7:
   name: YOLOv7

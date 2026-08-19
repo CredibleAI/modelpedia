@@ -26,11 +26,7 @@ methods:
   role: eval
 - ref: method:vendi-score
   role: eval
-related_work:
-- name: Universal Guidance for Diffusion Models
-  role: builds-on
-- name: MAGNet
-  role: context
+related_work: []
 evidence_type: interventional
 key_metric: Change in Vendi score, change in average local scaling, change in RAHF aesthetic score for
   increasing pre-guidance local scaling level sets; results shown for reward models trained on 50k,

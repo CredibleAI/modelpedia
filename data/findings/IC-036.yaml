@@ -15,9 +15,7 @@ datasets:
 - ref: dataset:cifar-100
   role: eval
 methods: []
-related_work:
-- name: MAE
-  role: builds-on
+related_work: []
 evidence_type: correlational
 key_metric: 'CIFAR-100 fine-tuning: ViT-t/2 (85.7% acc@1) vs. ViT-t/1 (86.0%); ViT-s/2 (87.4%) vs. ViT-s/1
   (87.7%).'

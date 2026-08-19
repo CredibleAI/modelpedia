@@ -16,9 +16,7 @@ datasets:
 - ref: dataset:cc3m
   role: train
 methods: []
-related_work:
-- name: Partial multi-label learning
-  role: context
+related_work: []
 evidence_type: interventional
 key_metric: Modality gap (l2m & rmg) and object bias (MOAD) decrease as information imbalance is reduced;
   performance (accuracy and r@1) improves.

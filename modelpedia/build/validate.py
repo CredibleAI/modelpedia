@@ -121,6 +121,10 @@ def check_finding_links(fid, finding, database):
                 if not isinstance(ref, str) or not ref.strip():
                     yield "%s: %s has an entry with no name" % (fid, field)
                     continue
+                anchor = link.get(keys.ANCHOR)
+                if not isinstance(anchor, str) or not schema.ANCHOR_URL.fullmatch(anchor):
+                    yield "%s: %s has an entry the reader cannot follow: %s" % (fid, field, ref)
+                    continue
             else:
                 ref = link[keys.REF]
                 error = reference_error(field, spec, ref, database.entities)

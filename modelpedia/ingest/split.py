@@ -14,7 +14,6 @@ SLUG_WORDS = 6
 STOP = frozenset({"a", "an", "the", "of", "for", "and", "or", "in", "on", "to", "with",
                   "is", "are", "can", "do", "does", "how", "what", "why", "towards"})
 WORD = re.compile(r"[a-z0-9]+")
-BARE_CITATION = re.compile(r"et al\.|&\s|\(\s*\d{4}[a-z]?\s*\)")
 
 AUTOMATIC = "automatic-extraction"
 
@@ -62,12 +61,12 @@ def source_entry(meta):
     }
 
 
-def anchors_in(document):
+def anchors_in(document, packed=""):
     found = {}
     for entity in answers.entries_of(document, answers.ENTITIES):
         name = textutil.flatten(str(entity.get("name") or ""))
         if name:
-            found[name] = citations.anchor_from(str(entity.get("citation") or ""))
+            found[name] = citations.anchor_from(str(entity.get("citation") or ""), packed)
     return found
 
 
@@ -118,7 +117,7 @@ def without_bare_duplicates(links):
             if link.get(keys.VARIANT) or link[keys.REF] not in named]
 
 
-def related_work_of(finding, anchors, allowed, everything):
+def related_work_of(finding, anchors, allowed, everything, paper, title, dropped):
     kept = []
     for item in finding.get("related_work") or []:
         name, role = named(item)
@@ -133,11 +132,11 @@ def related_work_of(finding, anchors, allowed, everything):
                 kept.append(entry)
             continue
         anchor = anchors.get(textutil.flatten(name))
-        if not anchor and BARE_CITATION.search(name):
+        if not anchor:
+            dropped.append(Dropped(paper, title, "related_work", name,
+                                   "no node and no anchor, the reader could not follow it"))
             continue
-        entry = {keys.NAME: name}
-        if anchor:
-            entry[keys.ANCHOR] = anchor
+        entry = {keys.NAME: name, keys.ANCHOR: anchor}
         if role and role in allowed:
             entry[keys.ROLE] = role
         kept.append(entry)
@@ -173,8 +172,9 @@ def record_for(finding, source_ref, links, concepts, related):
     return {key: value for key, value in record.items() if value not in ("", None) or key == "concepts"}
 
 
-def split(documents, entities, sources, prefix, known_concepts, roles=None):
+def split(documents, entities, sources, prefix, known_concepts, roles=None, texts=None):
     roles = roles or {}
+    texts = texts or {}
     indexes = {field: link.index_of(entities, node_type) for field, node_type in FIELDS}
     everything = link.index_of(entities)
     variants = link.index_of(entities, graph_json.VARIANT)
@@ -183,7 +183,7 @@ def split(documents, entities, sources, prefix, known_concepts, roles=None):
     kept, dropped, refused = [], [], []
     number = 0
     for paper, document in sorted(documents.items()):
-        anchors = anchors_in(document)
+        anchors = anchors_in(document, textutil.squeezed(texts.get(paper, "")))
         source_ref = sources.get(paper)
         for finding in answers.entries_of(document, answers.FINDINGS):
             title = " ".join(str(finding.get("title") or "").split())
@@ -202,11 +202,11 @@ def split(documents, entities, sources, prefix, known_concepts, roles=None):
             if not source_ref:
                 refused.append(Dropped(paper, title, "sources", "", "no source entry for the paper"))
                 continue
+            related = related_work_of(finding, anchors, roles.get("related_work", ()),
+                                      everything, paper, title, dropped)
             number += 1
             kept.append(Candidate("%s-%03d" % (prefix, number), paper,
                                   record_for(finding, source_ref, links,
                                              concept_refs(finding, known_concepts),
-                                             related_work_of(finding, anchors,
-                                                             roles.get("related_work", ()),
-                                                             everything))))
+                                             related)))
     return kept, dropped, refused

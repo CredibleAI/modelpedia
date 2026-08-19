@@ -27,6 +27,7 @@ methods:
   role: primary
 related_work:
 - name: 'Fact finding: Attempting to reverse-engineer factual recall on the neuron level'
+  anchor: https://www.alignmentforum.org/posts/iGuwZTHWb6DFY3sKB/fact-finding-attempting-to-reverse-engineer-factual-recall
   role: builds-on
 - name: 'Attention satisfies: a constraint-satisfaction lens on factual errors of language models'
   anchor: https://openreview.net/forum?id=gffvatffpd

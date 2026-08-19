@@ -252,6 +252,18 @@ def test_related_work_accepts_any_registry():
     assert validate.errors(sample_db(findings=any_registry)) == []
 
 
+def test_an_inline_related_work_without_an_anchor_is_rejected():
+    def unlinkable(findings):
+        findings["XX-001"]["related_work"] = [{"name": "Earlier work", "role": "builds-on"}]
+    assert "cannot follow" in only_error(sample_db(findings=unlinkable))
+
+
+def test_an_inline_anchor_that_is_not_a_url_is_rejected():
+    def not_a_url(findings):
+        findings["XX-001"]["related_work"] = [{"name": "Earlier work", "anchor": "Smith, 2019"}]
+    assert "cannot follow" in only_error(sample_db(findings=not_a_url))
+
+
 def test_variant_must_be_known():
     def invented(findings):
         findings["XX-001"]["models"] = [{"ref": "model:thing", "variant": "variant:huge"}]
