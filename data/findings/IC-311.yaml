@@ -1,0 +1,40 @@
+id: IC-311
+title: On siltuximab GRAVY reduction, Lambo-2 achieves the best concept shift while ESM2 produces the
+  most naturalness-disrupted designs
+description: The paper evaluates several released protein design models on the task of reducing the
+  GRAVY (hydropathy) index of the FDA-approved antibody siltuximab, constrained to edit distance at
+  most 5 from the original sequence. Lambo-2, a classifier-guided discrete diffusion model, achieves
+  the largest shift in the GRAVY distribution among all models tested. WJS and the authors' CB-PLM produce
+  designs with the least disruption to protein naturalness (as measured by TAP scores), whereas ESM2
+  and a non-deep-learning hydrophilic resample baseline produce the most disrupted designs. The authors
+  note that their general-purpose CB-PLM, trained on over 700 concepts, delivers results comparable
+  to single-concept-optimized state-of-the-art models.
+models:
+- ref: model:lambo-2
+- ref: model:esm-2
+- ref: model:wjs
+concepts: []
+sources:
+- ref: source:concept-bottleneck-language-models-protein-design
+datasets: []
+methods:
+- ref: method:tap-therapeutic-antibody-profiler
+  role: eval
+related_work:
+- ref: model:lambo-2
+  role: compared-to
+- name: PROPEN
+  anchor: https://arxiv.org/abs/2405.18075
+  role: compared-to
+- ref: model:wjs
+  role: compared-to
+- ref: model:esm-2
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Edit distance constraint of 5 from siltuximab; qualitative ranking: Lambo-2 best GRAVY
+  shift, CB-PLM second; WJS and CB-PLM least TAP disruption, ESM2 and hydrophilic resample most TAP
+  disruption'
+caveat: Results are for a single protein (siltuximab) and a single property (GRAVY); specific GRAVY
+  values and TAP scores are reported only in figures, not in the text. The comparison involves models
+  trained on different datasets and with different objectives.
+extracted_by: automatic-extraction

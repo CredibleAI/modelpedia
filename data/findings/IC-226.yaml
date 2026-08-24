@@ -1,0 +1,28 @@
+id: IC-226
+title: ESM3 (pre-trained, without fine-tuning) shows significantly degraded conformation generation
+  validity at low sampling temperatures (t < 0.5)
+description: The paper examines the effect of sampling temperature on ESM3's zero-shot conformation
+  generation for BPTI (n=100). At low temperatures (t=0.25), ESM3's validity drops substantially compared
+  to t=1.0, indicating the pre-trained model produces more clash-free structures at higher temperatures.
+  After fine-tuning (ESMdiff), this degradation is resolved. The paper notes that ESM3 and ESMdiff maintain
+  high validity as temperature increases beyond 1.0, with minimal diversity improvement, suggesting
+  limited sensitivity to high temperatures.
+models:
+- ref: model:esm3
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:structure-language-models-protein-conformation-generation
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: ESM3 validity drops at t=0.25 compared to t=1.0 on BPTI (n=100); after fine-tuning, validity
+  improves significantly without compromising diversity
+caveat: Measured only on BPTI with n=100 samples; the paper does not report exact validity values at
+  each temperature in the text (shown in Figure S1).
+extracted_by: automatic-extraction
+related_findings:
+- IC-225
+- IC-227
+- IC-228

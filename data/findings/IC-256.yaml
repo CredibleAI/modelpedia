@@ -1,0 +1,28 @@
+id: IC-256
+title: GPT-2 small's attention product functions p_i^T k^T q p_j are approximately translation-invariant
+  across all 144 heads
+description: 'The paper computes the product p_i^T k^T q p_j for every head in GPT-2 small (12 layers,
+  12 heads per layer) and measures the offset variance along each sub-diagonal. Most heads show near-constant
+  products (offset variance close to 0), which are trivially translation-invariant. A few heads show
+  higher variance (66.0, 87.9, 142.1) but still exhibit approximately offset-invariant post-softmax
+  attention: the weights from query position j are focused on key positions i with small j-i, consistently
+  across offsets 0, 100, 200, 300, 400. The authors note this invariance is not enforced in training
+  or initialization, suggesting it emerges from the offset-invariant nature of the language modeling
+  task.'
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-small
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:formal-framework-understanding-length-generalization-transformers
+datasets: []
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: offset variance (var_offset) ranges from ~0 (near-constant heads) to 142.1 (maximum); post-softmax
+  attention at all offsets o=0,100,200,300,400 shows focus on small j-i distances
+caveat: The authors had to fix the layer norm variance term to its average value over ~400k tokens to
+  make the analysis linear; the invariance is approximate, not exact, and the head with variance 142.1
+  is not perfectly translation-invariant near boundaries
+extracted_by: automatic-extraction

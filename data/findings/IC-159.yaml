@@ -1,0 +1,28 @@
+id: IC-159
+title: GPT-4o achieves 55.6% accuracy on creation, 74.8% on math, and 68.1% on code as a preference
+  judge, and is outperformed by domain-specific 7B models on those tasks
+description: The paper evaluates GPT-4o as a generative judge on three self-built commercial preference
+  datasets (creation, math, code) and four public benchmarks. On the domain-specific datasets, GPT-4o
+  scores below both the scalar model and the authors' CON-J. On public benchmarks, GPT-4o achieves competitive
+  performance (e.g., 95.3 on infinity-preference reasoning, 87.6 on pku-saferlhf) but is surpassed by
+  CON-J on infinity-preference and ultrafeedback. The paper concludes that small models trained on domain-specific
+  data can effectively predict domain-related preferences, outperforming a general-purpose frontier
+  model.
+models:
+- ref: model:gpt-4o
+concepts: []
+sources:
+- ref: source:learning-llm-as-judge-preference-alignment
+datasets:
+- ref: dataset:ultrafeedback
+  role: eval
+- ref: dataset:pku-saferlhf
+  role: eval
+- ref: dataset:rewardbench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Self-built: creation 55.6, math 74.8, code 68.1. Public: infinity-preference chat 75.0,
+  chat-h 72.2, safety 69.6, reasoning 95.3; ultrafeedback 74.3; pku-saferlhf 87.6; reward-bench 86.9'
+extracted_by: automatic-extraction

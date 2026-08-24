@@ -1,0 +1,27 @@
+id: IC-345
+title: GPT-4o's table2latex outputs lose 63% of the time in human evaluation, with inconsistent formatting
+  (lines, borders, margins) as the primary failure
+description: In a human evaluation with 28 evaluators providing 1,900 annotations, GPT-4o's LaTeX table
+  outputs were compared against phi3.5-vision+bigdocs. GPT-4o loses 63% of the time with 31% draws and
+  6% both bad. The authors note that GPT-4o 'often struggles to maintain consistent formatting despite
+  capturing content accurately.' On screenshot2html, GPT-4o performs more competitively, with phi3.5+bigdocs
+  winning only 36% and GPT-4o winning 48%.
+models:
+- ref: model:gpt-4o
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:bigdocs-open-dataset-training-multimodal-models
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'table2latex: phi3.5 bigdocs win 63%, draw 31%, both bad 6%; screenshot2html: phi3.5 bigdocs
+  win 36%, loss 48%, draw 7%, both bad 9%'
+caveat: The comparison is against the authors' own BigDocs-trained model, which may be optimised for
+  this specific task. The 8192-token context limit may affect GPT-4o's ability to generate complete
+  HTML.
+extracted_by: automatic-extraction
+related_findings:
+- IC-343
+- IC-344

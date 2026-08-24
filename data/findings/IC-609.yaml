@@ -1,0 +1,28 @@
+id: IC-609
+title: The last transformer layer of Mistral 7B, Llama 3.2 1B, and Llama 3.2 3B shows anomalous trajectory
+  statistics inconsistent with the linear drift-plus-noise pattern of intermediate layers
+description: When the same trajectory analysis is applied to Mistral 7B (32 layers), Llama 3.2 1B (16
+  layers), and Llama 3.2 3B (28 layers), the linear drift-plus-Gaussian-noise model holds for all intermediate
+  layers but breaks down at the final layer. In Mistral 7B, the last layer (32) is misaligned such that
+  linear extrapolation produces an error much larger than expected. In Llama 3.2 1B and 3B, the last
+  layer shows out-of-distribution mean and variance of the residuals δx. The authors conjecture this
+  may be an effect of re-alignment or fine-tuning, since the first and last layers are most exposed
+  to perturbations that do not propagate deep into the stack. All models also show minor deviations
+  in the very first layers.
+models:
+- ref: model:mistral-7b
+- ref: model:llama-3-2
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:lines-thought-large-language-models
+datasets: []
+methods: []
+related_work: []
+evidence_type: observational
+caveat: The reason for the anomaly is not identified; the authors state it is 'not immediately evident'
+  and 'perhaps worth investigating further.' The effect is described qualitatively (larger variance,
+  misalignment) without a single quantitative threshold.
+extracted_by: automatic-extraction
+related_findings:
+- IC-608

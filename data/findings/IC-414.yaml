@@ -1,0 +1,52 @@
+id: IC-414
+title: LLaVA-1.5-7B and LLaVA-1.5-13B exhibit severe performance degradation when H2O KV cache compression
+  is applied in multimodal settings
+description: The paper applies the H2O KV cache compression method (retaining 50% of KV cache per layer)
+  to LLaVA-1.5-7B and LLaVA-1.5-13B and evaluates on 11 vision understanding benchmarks. H2O's strategy
+  of discarding historical KV cache entries based on attention scores causes massive performance drops,
+  particularly on compositional and multi-faceted benchmarks. MMBench drops from 64.3 to 1.4 (7B) and
+  67.7 to 4.7 (13B), and Seed drops from 66.1 to 26.8 (7B) and 68.2 to 32.3 (13B). The authors attribute
+  this to H2O's attention-score-based discarding being incompatible with the mixed vision-language token
+  structure, where vision tokens and text tokens have different attention patterns.
+models:
+- ref: model:llava-1-5
+  variant: variant:llava-1-5-7b
+- ref: model:llava-1-5
+  variant: variant:llava-1-5-13b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:dynamic-llava-efficient-multimodal-large-language
+datasets:
+- ref: dataset:mmbench
+  role: eval
+- ref: dataset:vqav2
+  role: eval
+- ref: dataset:gqa
+  role: eval
+- ref: dataset:sciq
+  role: eval
+- ref: dataset:textvqa
+  role: eval
+- ref: dataset:pope
+  role: eval
+- ref: dataset:mme
+  role: eval
+- ref: dataset:mmvp
+  role: eval
+- ref: dataset:cvbench-2d
+  role: eval
+methods:
+- ref: method:h2o
+  role: primary
+related_work:
+- ref: method:h2o
+  role: compared-to
+evidence_type: correlational
+key_metric: 'LLaVA-1.5-7B+H2O r=0.5: MMBench 1.4 (-62.9), Seed 26.8 (-39.3), MMVP 0 (-29.3), SciQA 41.9
+  (-16.3); LLaVA-1.5-13B+H2O r=0.5: MMBench 4.7 (-59.6), Seed 32.3 (-35.9), MMVP 0 (-30.7), SciQA 48.5
+  (-23.1)'
+caveat: The authors note that modifying H2O's layer configuration (skipping compression in the first
+  10 layers) partially recovers performance, suggesting the failure is most acute in early layers where
+  vision tokens are processed.
+extracted_by: automatic-extraction

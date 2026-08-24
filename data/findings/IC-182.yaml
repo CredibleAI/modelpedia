@@ -1,0 +1,51 @@
+id: IC-182
+title: Truthfulness encoding in Mistral-7B, Mistral-7B-Instruct, Llama3-8B, and Llama3-8B-Instruct is
+  skill-specific rather than universal; probing classifiers do not meaningfully generalize across different
+  task types beyond logit-based baselines
+description: The paper trains probing classifiers on one dataset and tests them on nine others, covering
+  factual retrieval, common-sense reasoning, bias, arithmetic, and sentiment. While raw AUC values above
+  0.5 suggest some cross-task generalization, subtracting the performance of the strongest logit-based
+  baseline (logit-min-exact) reveals that most of the apparent generalization is already captured by
+  output logits alone. Meaningful probe-specific generalization is limited to tasks requiring similar
+  skills (e.g., TriviaQA to HotpotQA, Winobias to Winogrande). This challenges the hypothesis of a single
+  universal truthfulness direction in LLM representations.
+models:
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:llms-know-more-than-they-show
+datasets:
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:hotpotqa
+  role: eval
+- ref: dataset:natural-questions
+  role: eval
+- ref: dataset:winobias
+  role: eval
+- ref: dataset:winogrande
+  role: eval
+- ref: dataset:imdb
+  role: eval
+methods:
+- ref: method:probing-classifiers
+  role: primary
+related_work:
+- name: Marks & Tegmark 2023
+  anchor: https://arxiv.org/abs/2310.06824
+  role: compared-to
+evidence_type: correlational
+caveat: The generalization results are presented in heatmaps (Figures 3, 7, 8, 9) rather than tabulated
+  numbers. The paper notes some unexplained patterns, such as asymmetric generalization from TriviaQA
+  to Math tasks.
+extracted_by: automatic-extraction
+related_findings:
+- IC-181
+- IC-183
+- IC-184

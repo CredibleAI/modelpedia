@@ -1,0 +1,43 @@
+id: IC-077
+title: VGG-16's loss landscape barrier height distinguishes adversarial from real inputs, enabling a
+  detection method that outperforms baselines on DeepFool and C&W attacks
+description: 'Using VGG-16 on CIFAR-10/100, the authors compute loss curves along linear interpolant
+  paths between each test image and a class reference image, concatenate these with sorted logits, and
+  train a KNN classifier. The method exploits the fact that real-adversarial pairs exhibit higher and
+  more complex loss barriers than real-real pairs. On CIFAR-10, the method achieves 91.4/96.9 (accuracy/AUC)
+  on DeepFool and 93.7/98.3 on C&W, outperforming the best baselines (LayerPFS: 86.1/92.2 and 86.8/93.3).
+  However, it underperforms on simpler attacks (FGSM: 69.8/76.8 vs LayerMFS 99.6/100) because those
+  attacks do not create the distinct loss barrier the method relies on.'
+models:
+- ref: model:vgg
+  variant: variant:vgg-16
+concepts: []
+sources:
+- ref: source:input-space-mode-connectivity-deep-neural
+datasets:
+- ref: dataset:cifar-10
+  role: eval
+- ref: dataset:cifar-100
+  role: eval
+methods:
+- ref: method:deepfool
+  role: eval
+- ref: method:c-w
+  role: eval
+- ref: method:fgsm
+  role: eval
+- ref: method:pgd
+  role: eval
+related_work:
+- name: SpectralDefense (Harder et al. 2021)
+  anchor: https://doi.org/10.1109/ijcnn52387.2021.9533442
+  role: compared-to
+evidence_type: correlational
+key_metric: 'CIFAR-10: DeepFool 91.4/96.9, C&W 93.7/98.3 (mode connectivity) vs LayerPFS 86.1/92.2,
+  86.8/93.3. CIFAR-100: DeepFool 86.8/94.0, C&W 92.9/97.3. FGSM: 69.8/76.8 (underperforms LayerMFS 99.6/100).'
+caveat: The method does not require access to feature maps but may fail against adaptive attacks, which
+  were not tested due to the non-differentiability of the current detection algorithm. Underperforms
+  on simpler attacks (FGSM, BIM, PGD) that do not produce a distinct loss barrier.
+extracted_by: automatic-extraction
+related_findings:
+- IC-076

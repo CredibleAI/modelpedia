@@ -1,0 +1,57 @@
+id: IC-441
+title: Skill-level improvements between model releases are highly uneven, with Claude 3.5 Sonnet gaining
+  ~50% over Claude 3 Opus on law skills while Gemini improved most in math and science
+description: The paper compares the last two releases in each of the GPT, Gemini, and Claude families
+  on skill-slices. For all families, some skills show improvement more than twice the average while
+  others show no improvement at all. The GPT and Claude families saw their largest gains in legal skills,
+  with Claude 3.5 Sonnet improving over Claude 3 Opus by approximately 50% on numerous law skill-slices.
+  Gemini 1.5 Pro improved most in math and science skills relative to Gemini 1.0 Pro.
+models:
+- ref: model:gpt-4o
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:gemini-1-0-pro
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+concepts: []
+sources:
+- ref: source:unearthing-skill-level-insights-understanding-trade
+datasets:
+- ref: dataset:mmlu-pro
+  role: eval
+- ref: dataset:mmmu
+  role: eval
+- ref: dataset:mathvista
+  role: eval
+- ref: dataset:mmc
+  role: eval
+- ref: dataset:mmvp
+  role: eval
+- ref: dataset:mmbench
+  role: eval
+- ref: dataset:mmt-bench
+  role: eval
+- ref: dataset:mme
+  role: eval
+- ref: dataset:mm-vet
+  role: eval
+- ref: dataset:seed-bench
+  role: eval
+- ref: dataset:vibe-eval
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: claude 3.5 sonnet improving over claude opus 3.0 by a staggering ~50% along numerous law
+  skill-slices
+caveat: Gemini 1.0 Pro is not multimodal, so results for Gemini are presented on 12k language-only evaluation
+  instances rather than the full multimodal corpus.
+extracted_by: automatic-extraction
+related_findings:
+- IC-440
+- IC-442
+- IC-443

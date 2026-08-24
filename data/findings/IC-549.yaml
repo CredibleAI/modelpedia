@@ -1,0 +1,65 @@
+id: IC-549
+title: All 18 evaluated LLMs show a 15-20% performance gap between linear (node chain) and graph (workflow)
+  planning on WorfBench
+description: 'The paper evaluates 18 released LLMs on WorfBench, measuring both F1_chain (linear subtask
+  ordering) and F1_graph (full DAG structure with parallel edges). Every model scores significantly
+  lower on F1_graph than F1_chain. The largest average gap is 20.05% for GLM-4-9B, and the smallest
+  is 15.01% for Llama-3.1-70B. GPT-4 achieves 67.32% F1_chain but only 52.47% F1_graph. Error analysis
+  of GPT-4 identifies four recurring error types: granularity, explicitness, graph structure, and format,
+  all attributed to insufficient environmental knowledge.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+- ref: model:o1
+- ref: model:claude-3-5
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:vicuna
+  variant: variant:vicuna-13b
+- ref: model:wizardlm
+  variant: variant:wizardlm-13b
+- ref: model:wizardlm
+  variant: variant:wizardlm-70b
+- ref: model:qwen-2
+  variant: variant:qwen-2-7b
+- ref: model:qwen-2
+  variant: variant:qwen-2-72b
+- ref: model:qwen-1-5
+  variant: variant:qwen-1-5-14b
+- ref: model:mistral-7b
+- ref: model:mixtral-8x7b
+- ref: model:phi-3
+  variant: variant:phi-3-small
+- ref: model:phi-3
+  variant: variant:phi-3-medium
+- ref: model:glm-4
+  variant: variant:glm-4-9b
+- ref: model:internlm-2-5-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:benchmarking-agentic-workflow-generation
+datasets: []
+methods:
+- ref: method:sentence-bert
+  role: supporting
+related_work:
+- ref: dataset:t-eval
+  role: compared-to
+- ref: dataset:planbench
+  role: compared-to
+evidence_type: correlational
+key_metric: 'GPT-4: F1_chain 67.32%, F1_graph 52.47%; GLM-4-9B average gap 20.05%; Llama-3.1-70B average
+  gap 15.01%; Claude-3.5: F1_chain 66.70%, F1_graph 52.53%'
+caveat: The benchmark's gold workflows were synthesized by GPT-4, so the evaluation may partially reflect
+  GPT-4's own generation biases. The paper acknowledges that some queries may have quality issues despite
+  filtering.
+extracted_by: automatic-extraction
+related_findings:
+- IC-550
+- IC-551
+- IC-552

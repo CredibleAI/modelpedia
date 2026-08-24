@@ -1,0 +1,50 @@
+id: IC-561
+title: 'A linear direction in the residual stream at layer 16 of Llama3-8B-Instruct is causally necessary
+  and sufficient for self-authorship claims: steering with it achieves 100% control over authorship
+  assertions, and projecting it out reduces claims by 50-60%.'
+description: 'Using the contrastive pairs method, the authors isolate a unit vector from the mean difference
+  in residual stream activations between self- and other-written texts. Steering with this vector at
+  multipliers 3-6 on layers 14-16 causes the model to claim authorship of any text (including human-written)
+  at 100% rate, or deny authorship of any text at 100% rate. Projecting the vector out of the residual
+  stream at layer 16 during generation reduces self-authorship claims by 50-60% across three datasets.
+  The effect is specific: steering on a dummy named-entity-recognition task has no effect at layer 16,
+  ruling out a generic agreement mechanism.'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:inspection-control-self-generated-text-recognition
+datasets:
+- ref: dataset:sad
+  role: eval
+methods:
+- ref: method:contrastive-pairs-method
+  role: primary
+- ref: method:activation-steering
+  role: primary
+- ref: method:tuned-lens
+  role: validation
+related_work:
+- name: Turner et al. 2024 (Activation Addition)
+  anchor: https://arxiv.org/abs/2308.10248
+  role: builds-on
+- name: Zou et al. 2023 (Representation Engineering)
+  anchor: https://arxiv.org/abs/2310.01405
+  role: builds-on
+evidence_type: interventional
+key_metric: 'Steering: 100% effectiveness at multipliers 3-6, layers 14-16. Positive steering multiplier
+  10, layer 16: model claims authorship of non-self text ~80% of the time vs ~35% unsteered. Ablation:
+  zeroing out vector at layer 16 reduces self-authorship claims from ~50% to under 30% (50-60% decrease)
+  across three datasets.'
+caveat: The vector was derived from 290 contrastive pairs, a relatively small sample. The authors note
+  that high multipliers in early layers produce degenerate output. The vector's effect on a dummy task
+  is not entirely absent (modest negative-direction effects at high multipliers), which the authors
+  attribute to overlap with negation concepts.
+extracted_by: automatic-extraction
+related_findings:
+- IC-560
+- IC-562
+- IC-563

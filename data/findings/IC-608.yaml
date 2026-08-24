@@ -1,0 +1,37 @@
+id: IC-608
+title: Token trajectories in GPT-2, Llama 2 7B, Mistral 7B, and Llama 3.2 models cluster on a low-dimensional
+  manifold and follow a linear drift plus Gaussian noise dynamics
+description: 'The paper tracks the hidden-state trajectory of the last (pilot) token as it passes through
+  each transformer layer, for ensembles of 50-token pseudo-sentences drawn from Walden. In GPT-2 (1024-dim
+  latent space, 24 layers), the trajectories cluster on a manifold of roughly 256 dimensions: truncating
+  to 256 principal components leaves the KL divergence between the reduced and true output distributions
+  at only about 10% of the uncorrelated baseline. The ensemble dynamics are well approximated by a rotation-and-stretch
+  linear map with additive Gaussian noise whose variance scales as exp(t+τ); fitted parameters are α
+  ≃ 0.64, λ ≃ 0.18 for GPT-2 and α ≃ −5.4, λ ≃ 0.27 for Llama 2 7B. The same pattern is confirmed for
+  Mistral 7B and Llama 3.2 1B/3B. A linear classifier cannot separate true from extrapolated positions
+  (accuracy 50–60%), and the pattern collapses for an untrained (reinitialized) GPT-2, confirming it
+  is a product of training.'
+models:
+- ref: model:gpt-2
+- ref: model:llama-2
+- ref: model:mistral-7b
+- ref: model:llama-3-2
+concepts: []
+sources:
+- ref: source:lines-thought-large-language-models
+datasets: []
+methods: []
+related_work:
+- name: Aubry et al. 2024 (Transformer alignment in LLMs)
+  anchor: https://arxiv.org/abs/2407.07810
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-2: k0 = 256 (25% of 1024 dims), KL divergence ≈ 10% of uncorrelated baseline; α ≃ 0.64,
+  λ ≃ 0.18. Llama 2 7B: α ≃ −5.4, λ ≃ 0.27. Linear classifier accuracy separating true vs. extrapolated
+  positions: 50%–60%.'
+caveat: The method is limited to open-source models requiring hidden-state extraction. Fine-tuned or
+  heavily re-aligned models might exhibit different patterns. The stochastic model is a first-order
+  approximation that ignores some variability across times and dimensions.
+extracted_by: automatic-extraction
+related_findings:
+- IC-609

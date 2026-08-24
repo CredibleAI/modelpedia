@@ -4,6 +4,7 @@ from typing import NamedTuple
 
 from modelpedia import graph as graph_json
 from modelpedia import record_keys as keys
+from modelpedia import schema
 from modelpedia.ingest import answers
 from modelpedia.ingest import citations
 from modelpedia.ingest import link
@@ -37,7 +38,7 @@ class Candidate(NamedTuple):
 
 def slug_from(title):
     words = [word for word in WORD.findall(textutil.fold(title)) if word not in STOP]
-    return "-".join(words[:SLUG_WORDS]) or "untitled"
+    return link.valid_slug("-".join(words[:SLUG_WORDS])) or "untitled"
 
 
 def date_from(stamp):
@@ -172,7 +173,8 @@ def record_for(finding, source_ref, links, concepts, related):
     return {key: value for key, value in record.items() if value not in ("", None) or key == "concepts"}
 
 
-def split(documents, entities, sources, prefix, known_concepts, roles=None, texts=None):
+def split(documents, entities, sources, prefix, known_concepts, roles=None, texts=None,
+          start=0):
     roles = roles or {}
     texts = texts or {}
     indexes = {field: link.index_of(entities, node_type) for field, node_type in FIELDS}
@@ -181,7 +183,7 @@ def split(documents, entities, sources, prefix, known_concepts, roles=None, text
     parents = link.parents_of(entities)
 
     kept, dropped, refused = [], [], []
-    number = 0
+    number = start
     for paper, document in sorted(documents.items()):
         anchors = anchors_in(document, textutil.squeezed(texts.get(paper, "")))
         source_ref = sources.get(paper)
@@ -209,4 +211,24 @@ def split(documents, entities, sources, prefix, known_concepts, roles=None, text
                                   record_for(finding, source_ref, links,
                                              concept_refs(finding, known_concepts),
                                              related)))
-    return kept, dropped, refused
+    return cross_linked(kept), dropped, refused
+
+
+def cross_linked(kept):
+    """Two findings out of one paper are about the same study, so each names the others. The
+    methodology states this and the splitter did not do it: 0 of the 42 records written on
+    2026-08-10 carried `related_findings`."""
+    by_paper = {}
+    for candidate in kept:
+        by_paper.setdefault(candidate.paper, []).append(candidate.identifier)
+    linked = []
+    for candidate in kept:
+        siblings = [other for other in by_paper[candidate.paper]
+                    if other != candidate.identifier]
+        if not siblings:
+            linked.append(candidate)
+            continue
+        record = dict(candidate.record)
+        record[schema.RELATED_FINDINGS_FIELD] = siblings
+        linked.append(candidate._replace(record=record))
+    return linked

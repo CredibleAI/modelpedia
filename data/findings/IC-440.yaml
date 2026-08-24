@@ -1,0 +1,54 @@
+id: IC-440
+title: GPT-4o, Gemini 1.5 Pro, and Claude 3.5 Sonnet show up to 25% skill-level accuracy gaps despite
+  overall accuracies within 0.4% of each other
+description: 'The paper evaluates three frontier models on 46k instances across 12 benchmarks, grouping
+  instances into skill-slices (sets sharing a relevant skill). While aggregate accuracy is nearly identical,
+  per-slice accuracy reveals stark trade-offs: Gemini 1.5 Pro is 18% more accurate at computing molar
+  mass but 19% less accurate at applying constitutional law; GPT-4o is 16.7% more accurate at traffic
+  signal identification. GPT-4o''s relative strengths are visual skills, Gemini 1.5 Pro''s are math
+  and science, and Claude 3.5 Sonnet''s are legal reasoning.'
+models:
+- ref: model:gpt-4o
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+concepts: []
+sources:
+- ref: source:unearthing-skill-level-insights-understanding-trade
+datasets:
+- ref: dataset:mmlu-pro
+  role: eval
+- ref: dataset:mmmu
+  role: eval
+- ref: dataset:mathvista
+  role: eval
+- ref: dataset:mmc
+  role: eval
+- ref: dataset:mmvp
+  role: eval
+- ref: dataset:mmbench
+  role: eval
+- ref: dataset:mmt-bench
+  role: eval
+- ref: dataset:mme
+  role: eval
+- ref: dataset:mm-vet
+  role: eval
+- ref: dataset:seed-bench
+  role: eval
+- ref: dataset:vibe-eval
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: overall accuracies within 0.4%; differences as high as 25% for certain skills; gemini 1.5
+  pro 18% more accurate in computing molar mass, 19% less accurate in applying constitutional law; gpt-4o
+  16.7% more accurate in traffic signal identification
+caveat: The authors note they cannot offer explanations for the strengths and weaknesses observed, as
+  they have limited visibility into the training data and processes of these private models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-441
+- IC-442
+- IC-443

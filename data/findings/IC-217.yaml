@@ -1,0 +1,31 @@
+id: IC-217
+title: AnyLoc's VLAD aggregation, learned unsupervised on the gallery, fails to generalise to out-of-distribution
+  queries with large time gaps or seasonal changes
+description: The paper reports that AnyLoc, which uses VLAD pooling learned in an unsupervised manner
+  on the gallery, shows a significant performance drop on challenging VPR benchmarks. On Tokyo24/7 (day/night/sunset
+  queries) AnyLoc achieves only 60.6 R@1, and on Nordland (seasonal changes) it drops to 16.1 R@1, well
+  below DINOv2's zero-shot [cls] token (62.2 and 33.0 respectively). The authors attribute this to the
+  VLAD dictionary overfitting to the gallery distribution and failing on out-of-distribution queries.
+models:
+- ref: model:anyloc
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:effovpr-effective-foundation-model-utilization-visual
+datasets:
+- ref: dataset:pitts30k
+  role: eval
+- ref: dataset:tokyo24-7
+  role: eval
+- ref: dataset:nordland
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'AnyLoc R@1: Pitts30k 87.7, Tokyo24/7 60.6, MSLs-val 68.7, Nordland 16.1'
+caveat: The paper notes it implemented an online clustering scheme to handle AnyLoc's memory requirements,
+  which may affect the exact numbers compared to the original publication.
+extracted_by: automatic-extraction
+related_findings:
+- IC-215
+- IC-216

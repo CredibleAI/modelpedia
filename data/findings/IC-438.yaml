@@ -1,0 +1,47 @@
+id: IC-438
+title: All 10 LLM-based agents perform poorly at recognizing when they need to request input from the
+  system or user, with overall accuracy between 30.55% and 55.18%
+description: The paper evaluates whether agents can identify parameters that require input from the
+  system (clipboard, file, current date) or from the user (ask). Across all 10 LLMs and 4 difficulty
+  levels, recognition accuracy is low. The best overall accuracy is 55.18% (DeepSeek-2-Coder) and the
+  worst is 30.55% (GPT-3.5-turbo). Performance does not improve consistently with model size or intelligence
+  level, and accuracy generally declines as task difficulty increases for most models. This indicates
+  a substantial lack of awareness in existing agents regarding when to request necessary input.
+models:
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-flash
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:qwen-2
+  variant: variant:qwen-2-72b
+- ref: model:qwen2-5
+  variant: variant:qwen-2-5-7b
+- ref: model:deepseek-2-chat
+- ref: model:deepseek-2-coder
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:glm-4
+  variant: variant:chatglm-4-air
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:shortcutsbench-large-scale-real-world-benchmark
+datasets: []
+methods:
+- ref: method:react
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: overall accuracy ranging between 30.55% (gpt-3.5-turbo) and 55.18% (deepseek-2-coder); at
+  the hardest level (15,30], accuracy drops to 8.11% (qwen-2-57b) and 17.14% (gpt-4o-mini)
+caveat: Evaluation is limited to the specific parameter types defined in Apple Shortcuts (clipboard,
+  extensioninput, currentdate, ask); the metric measures proportion of correctly identified parameters
+extracted_by: automatic-extraction
+related_findings:
+- IC-436
+- IC-437
+- IC-439

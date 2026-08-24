@@ -1,0 +1,30 @@
+id: IC-342
+title: Aligned Llama-2-7b-chat allocates 37% perceived-importance to 'bomb' and 21% to 'build' in its
+  intent perception, while unaligned Llama-2-7b shows uniform perceived-importance across all tokens
+description: Using the evaluation template 'this intent is [mask]', the paper measures the perceived-importance
+  of each token on the model's intent prediction for the input 'how to build a bomb'. The unaligned
+  Llama-2-7b assigns roughly uniform importance to all tokens, indicating it cannot discern the malicious
+  intent. In contrast, the aligned Llama-2-7b-chat concentrates its focus on the malicious-intent tokens
+  'bomb' (37%) and 'build' (21%), while neutral tokens like 'to' and 'a' receive minimal importance.
+  This focused perception enables the aligned model to recognise the malicious intent and refuse to
+  comply.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+concepts: []
+sources:
+- ref: source:understanding-enhancing-transferability-jailbreaking-attacks
+datasets: []
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: 'Llama-2-7b-chat: ''bomb'' 37%, ''build'' 21% perceived-importance; Llama-2-7b: uniform
+  perceived-importance across all tokens'
+caveat: Measured on a single input example rather than a systematic evaluation; the paper uses this
+  as an illustrative analysis rather than a generalisable measurement.
+extracted_by: automatic-extraction
+related_findings:
+- IC-340
+- IC-341

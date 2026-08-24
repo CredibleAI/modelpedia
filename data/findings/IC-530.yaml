@@ -1,0 +1,36 @@
+id: IC-530
+title: The attention module in GPT-2, Llama2-7B, and Llama3-8B plays a selective role in knowledge expression
+  by activating specific knowledge neurons for a given query, as demonstrated by suppressing or enhancing
+  attention scores at knowledge synapse positions
+description: The authors identify high-attention-score positions (knowledge synapses) and intervene
+  by suppressing or enhancing the attention scores at those positions. Suppressing knowledge synapses
+  significantly decreases the activation values of the target knowledge neurons and reduces the model's
+  answer probability, while neighbor KNs and randomly selected non-KNs show minimal change. Enhancing
+  knowledge synapses has a smaller effect than suppressing, suggesting the attention module is already
+  performing selection and further enhancement leads to saturation. This shows the attention module
+  acts as a selector of which KNs to activate for a given query, rather than a storage site.
+models:
+- ref: model:gpt-2
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts: []
+sources:
+- ref: source:knowledge-localization-mission-not-accomplished-enter
+datasets:
+- ref: dataset:pararel
+  role: eval
+methods: []
+related_work:
+- name: Dissecting Recall of Factual Associations in Auto-Regressive Language Models
+  anchor: https://openreview.net/forum?id=F1G7y94K02
+  role: context
+evidence_type: interventional
+caveat: The specific magnitudes of Δvalue and Δprob are shown in Figure 6 without tabulated values in
+  the text. The knowledge synapse threshold (α=0.3) is a hyperparameter. The saturation effect under
+  enhancement is noted qualitatively.
+extracted_by: automatic-extraction
+related_findings:
+- IC-528
+- IC-529

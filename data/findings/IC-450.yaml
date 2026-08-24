@@ -1,0 +1,39 @@
+id: IC-450
+title: LLaVA with the original CLIP encoder produces noisy, non-sparse attention maps that poorly localize
+  to the objects described in generated text
+description: The paper evaluates the visual interpretability of LLaVA by examining the composite attention
+  maps (integrating LLM and ViT attention weights) over the input image for tokens in the generated
+  sentence. Using the original CLIP encoder, LLaVA's attention maps are noisy and fail to sparsely highlight
+  the relevant objects. Quantitatively, on 144 overlapping images between ImageNetette and ImageNet-Segmentation,
+  the original CLIP encoder yields a Gini index of 25.29, pointing game of 5.56, and mask-IoU of 4.13.
+  The paper also shows qualitatively (Figure 7) that attention maps with the original CLIP are diffuse,
+  while AFT-CLIP produces cleaner, more object-focused maps.
+models:
+- ref: model:llava
+concepts: []
+sources:
+- ref: source:boosting-visual-interpretability-clip-via-adversarial
+datasets:
+- ref: dataset:imagenetette
+  role: eval
+- ref: dataset:imagenet-segmentation
+  role: eval
+- ref: dataset:mscoco
+  role: eval
+methods:
+- ref: method:pointing-game
+  role: eval
+- ref: method:gini-index
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: Gini 25.29, PG 5.56, PG-energy 19.71, pixel acc. 69.62, AP 28.77, mask-IoU 4.13 (original
+  CLIP encoder in LLaVA, 144 images)
+caveat: The authors note that ViT attention maps frequently contain high-norm tokens in low-informative
+  background areas (a well-documented issue), which significantly impacts the proposed metrics and is
+  not fully mitigated by AFT.
+extracted_by: automatic-extraction
+related_findings:
+- IC-447
+- IC-448
+- IC-449

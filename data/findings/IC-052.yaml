@@ -1,0 +1,44 @@
+id: IC-052
+title: GPT-2 small's IOI circuit activations are linearly decomposable into features for the io, s,
+  and pos attributes, with the l10h0 name mover's attention decomposing into sparse pairwise feature
+  interactions
+description: 'The paper computes supervised mean feature dictionaries for the io, s, and pos attributes
+  at every cross-section of the IOI circuit in GPT-2 small and tests whether the reconstructions are
+  sufficient and necessary for the task via activation patching. Both tests pass at high levels for
+  the supervised dictionaries. Additionally, the attention scores of the l10h0 name mover head decompose
+  into pairwise dot products between query and key features, with most interactions near zero and only
+  three significant ones: s-query with s-key, pos-query with pos-key, and a negative io-query with io-key
+  interaction, indicating the head inhibits both names and relies on position to distinguish them.'
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-small
+concepts:
+- ref: concept:linear-representation
+- ref: concept:feature-interaction
+sources:
+- ref: source:principled-evaluations-sparse-autoencoders-interpretability-control
+datasets:
+- ref: dataset:ioi
+  role: eval
+- ref: dataset:openwebtext
+  role: source
+methods:
+- ref: method:activation-patching
+  role: primary
+related_work:
+- name: Wang et al. 2022 (IOI circuit)
+  anchor: https://openreview.net/forum?id=npsvsn6o4ul
+  role: builds-on
+- name: Bricken et al. 2023 (SAE)
+  anchor: https://transformer-circuits.pub/2023/monosemantic-features/index.html
+  role: context
+evidence_type: interventional
+key_metric: GPT-2 small achieves accuracy of ≈ 91% on the IOI test set; average logit difference ≈ 3.3;
+  correct name has higher logit in ≈ 99% of examples. On the greater-than task, exchanging 2 SAE latents
+  matched next-token predictions 90% of the time (vs 38% for no intervention).
+caveat: The evaluation is restricted to the IOI circuit cross-sections identified by Wang et al. (2022)
+  and to three specific attributes (io, s, pos); the authors note the tasks are 'somewhat contrived/templatic'
+  and that the choice of attributes is a crucial modeling decision.
+extracted_by: automatic-extraction
+related_findings:
+- IC-053

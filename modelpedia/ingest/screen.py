@@ -1,26 +1,35 @@
+import collections
 import hashlib
 import json
+import math
 import re
 from typing import NamedTuple
 
-from modelpedia import graph as graph_json
-from modelpedia.ingest import link
 from modelpedia.ingest import text as textutil
 
 STRONG = "strong"
 POSSIBLE = "possible"
 WEAK = "weak"
 
-STRONG_AT = 4.0
-POSSIBLE_AT = 1.5
+STRONG_AT = 8.0
+POSSIBLE_AT = 4.0
 
-PER_GROUP = 2
+CONSENSUS = 0.5
+
+UNKNOWN_VERSION = "unknown"
 
 
 class Group(NamedTuple):
     weight: float
+    cap: int
     stems: tuple
     words: tuple
+
+
+class Rules(NamedTuple):
+    name: str
+    groups: dict
+    patterns: dict
 
 
 class Signal(NamedTuple):
@@ -32,12 +41,16 @@ class Screening(NamedTuple):
     score: float
     tier: str
     signals: tuple
+    subscores: tuple
 
     def groups(self):
         return tuple(dict.fromkeys(signal.group for signal in self.signals))
 
+    def points(self, group):
+        return dict(self.subscores).get(group, 0.0)
 
-XAI = Group(2.0, (
+
+XAI = Group(2.0, 2, (
     "explain", "explanat", "interpret", "attribution", "salien", "faithful",
     "transparen", "understandab", "counterfactual", "shapley", "banzhaf",
     "probing", "mechanistic", "feature importance", "feature visualiz",
@@ -53,7 +66,7 @@ XAI = Group(2.0, (
 ), ("xai", "lime", "tcav", "cam", "shap", "lrp", "ig", "sae", "probe", "probes",
     "neuron", "neurons", "circuit", "circuits", "grad-cam", "gradcam"))
 
-BEHAVIOUR = Group(1.0, (
+BEHAVIOUR = Group(1.0, 2, (
     "failure mode", "failure case", "shortcut", "clever hans", "spurious",
     "stereotyp", "memoriz", "memoris", "hallucinat", "sycophan", "jailbreak",
     "backdoor", "trojan", "confound", "contaminat", "leakage", "brittle",
@@ -63,7 +76,7 @@ BEHAVIOUR = Group(1.0, (
     "unintended", "undesirab", "misclassif", "blind spot", "corner case",
 ), ("bias", "biased", "biases", "fairness", "capability", "capabilities"))
 
-FINDING = Group(1.0, (
+FINDING = Group(1.0, 2, (
     "we find", "we show that", "we demonstrate that", "we observe", "we reveal",
     "we analyz", "we analys", "we investigate", "we examine", "we audit",
     "we characteriz", "we quantify", "we uncover", "we discover", "we probe",
@@ -73,13 +86,13 @@ FINDING = Group(1.0, (
     "we test whether", "we evaluate whether", "diagnos",
 ), ("audit", "audits", "understanding"))
 
-METHOD = Group(-0.5, (
+METHOD = Group(-0.5, 2, (
     "we propose", "we introduce", "we present a novel", "we develop",
     "our method", "our approach", "our framework", "novel framework",
     "state-of-the-art", "outperforms", "we design a", "new architecture",
 ), ("sota",))
 
-MODEL = Group(2.0, (
+MODEL = Group(2.0, 2, (
     "segment anything", "stable diffusion", "vision transformer",
     "masked autoencoder",
 ), (
@@ -93,17 +106,31 @@ MODEL = Group(2.0, (
     "sora", "flamingo", "alphafold", "prithvi", "terramind", "sybil", "u-net",
 ))
 
-GROUPS = {"xai": XAI, "behaviour": BEHAVIOUR, "finding": FINDING,
-          "method": METHOD, "model": MODEL}
+ANALYSIS = Group(1.0, 4, (
+    "analyz", "investigat", "empirical stud", "systematic stud",
+    "case stud", "audit", "characteriz", "characteris", "quantif",
+    "understand how", "understand why", "understand the",
+    "reveals that", "reveal that", "finds that", "find that", "shows that",
+    "observes that", "demonstrates that", "surprising", "counterintuitive",
+    "contrary to", "diagnos", "probe", "probing", "dissect", "inspect",
+    "behaviour of", "behavior of", "properties of", "geometry of", "structure of",
+    "emerges", "emergent", "does not", "fails to", "cannot", "is not",
+    "revisit", "rethink", "re-examine", "myth", "illusion", "pitfall",
+), ())
 
-REGISTRY_WEIGHT = 2.5
+PROPOSES = Group(-2.0, 3, (
+    "the proposed", "proposed method", "proposed approach", "proposed framework",
+    "proposed model", "proposed algorithm", "propose a", "proposes a", "propose an",
+    "proposes an", "introduce a", "introduces a", "present a novel", "presents a novel",
+    "novel method", "novel approach", "novel framework", "novel architecture",
+    "new method", "new approach", "new framework", "new architecture", "new algorithm",
+    "outperform", "state-of-the-art", "sota", "achieves better", "improves over",
+    "our method", "we propose",
+), ())
 
-TERM_TYPES = (graph_json.METHOD, graph_json.MODEL, graph_json.CONCEPT,
-              graph_json.DATASET)
-
-MIN_REGISTRY_TERM = 5
-
-UNKNOWN_VERSION = "unknown"
+STOPTERMS = ("generaliz", "limitation", "robustness", "outperforms",
+             "state-of-the-art", "capability", "capabilities", "bias",
+             "biased", "biases")
 
 
 def word_pattern(words):
@@ -111,31 +138,54 @@ def word_pattern(words):
     return re.compile(r"(?<![a-z0-9])(?:%s)(?![a-z0-9])" % joined)
 
 
-PATTERNS = {name: word_pattern(group.words) for name, group in GROUPS.items() if group.words}
+def retuned(group, weight, cap, dropped=()):
+    """The same vocabulary read in a different voice. Reviewers say `robustness` and `limitation`
+    about every paper, so those terms separate nothing in review text even though they separate
+    a great deal in an abstract."""
+    return Group(weight, cap,
+                 tuple(stem for stem in group.stems if stem not in dropped),
+                 tuple(word for word in group.words if word not in dropped))
+
+
+def ruleset(name, groups):
+    return Rules(name, groups,
+                 {key: word_pattern(group.words)
+                  for key, group in groups.items() if group.words})
+
+
+ABSTRACT = ruleset("abstract", {
+    "xai": XAI,
+    "behaviour": BEHAVIOUR,
+    "finding": FINDING,
+    "method": METHOD,
+    "model": MODEL,
+})
+
+REVIEW = ruleset("review", {
+    "r-xai": retuned(XAI, 2.0, 3, STOPTERMS),
+    "r-behaviour": retuned(BEHAVIOUR, 1.0, 2, STOPTERMS),
+    "r-analysis": ANALYSIS,
+    "r-proposes": PROPOSES,
+    "r-model": retuned(MODEL, 1.5, 2),
+})
+
+RULESETS = (ABSTRACT, REVIEW)
 
 VERSION_LENGTH = 12
 
 
-def fingerprint(groups, knobs):
-    tuned = {
-        "groups": {name: [group.weight, sorted(group.stems), sorted(group.words)]
-                   for name, group in groups.items()},
-        "knobs": dict(knobs),
-    }
-    packed = json.dumps(tuned, sort_keys=True, ensure_ascii=False)
+def fingerprint(rulesets, knobs):
+    tuned = {rules.name: {name: [group.weight, group.cap,
+                                 sorted(group.stems), sorted(group.words)]
+                          for name, group in rules.groups.items()}
+             for rules in rulesets}
+    packed = json.dumps({"rules": tuned, "knobs": dict(knobs)},
+                        sort_keys=True, ensure_ascii=False)
     return hashlib.sha256(packed.encode("utf-8")).hexdigest()[:VERSION_LENGTH]
 
 
-def registry_terms(entities):
-    terms = set()
-    for key, entity in (entities or {}).items():
-        if entity.get("type") not in TERM_TYPES:
-            continue
-        for alias in link.aliases(entity.get("name") or ""):
-            candidate = textutil.flatten(alias)
-            if len(candidate) >= MIN_REGISTRY_TERM:
-                terms.add(candidate)
-    return frozenset(terms)
+RULES_VERSION = fingerprint(RULESETS, {"strong_at": STRONG_AT, "possible_at": POSSIBLE_AT,
+                                       "consensus": CONSENSUS})
 
 
 def haystack(title, abstract, keywords=()):
@@ -144,12 +194,23 @@ def haystack(title, abstract, keywords=()):
     return textutil.normalise(" \n ".join(parts))
 
 
-def hits_in(field, group, name):
+def terms_in(field, group, pattern):
     found = [stem for stem in group.stems if stem in field]
-    pattern = PATTERNS.get(name)
     if pattern:
         found += sorted(set(pattern.findall(field)))
-    return [Signal(name, term) for term in dict.fromkeys(found)]
+    return dict.fromkeys(found)
+
+
+def agreed(fields, group, pattern, consensus):
+    """A term counts once at least `consensus` of the fields carry it. A single field is the
+    degenerate case, which is what an abstract is: one voice agrees with itself. Four independent
+    descriptions of the same paper are the one advantage reviews have over an abstract, and the
+    gate is also what stops the counter saturating on long text without tuning any weight."""
+    seen = [terms_in(field, group, pattern) for field in fields]
+    counted = collections.Counter(term for found in seen for term in found)
+    need = max(1, math.ceil(consensus * len(fields)))
+    ordered = list(group.stems) + sorted(set(counted) - set(group.stems))
+    return [term for term in ordered if counted[term] >= need]
 
 
 def tier_of(score):
@@ -160,24 +221,37 @@ def tier_of(score):
     return WEAK
 
 
-RULES_VERSION = fingerprint(GROUPS, {"strong_at": STRONG_AT, "possible_at": POSSIBLE_AT,
-                                     "per_group": PER_GROUP,
-                                     "registry_weight": REGISTRY_WEIGHT,
-                                     "min_registry_term": MIN_REGISTRY_TERM})
+def assess(rules, fields, consensus=CONSENSUS):
+    signals, subscores, score = [], [], 0.0
+    for name, group in rules.groups.items():
+        found = agreed(fields, group, rules.patterns.get(name), consensus)
+        signals += [Signal(name, term) for term in found]
+        points = group.weight * min(len(found), group.cap)
+        subscores.append((name, round(points + 0.0, 2)))
+        score += points
+    return Screening(round(score, 2), tier_of(score), tuple(signals), tuple(subscores))
 
 
-def screen(title, abstract, keywords=(), terms=frozenset()):
-    field = haystack(title, abstract, keywords)
-    signals, score = [], 0.0
+def screen(title, abstract, keywords=()):
+    return assess(ABSTRACT, [haystack(title, abstract, keywords)])
 
-    for name, group in GROUPS.items():
-        found = hits_in(field, group, name)
-        signals += found
-        score += group.weight * min(len(found), PER_GROUP)
 
-    packed = textutil.flatten(field)
-    known = [term for term in terms if term in packed]
-    signals += [Signal("registry", term) for term in sorted(known)]
-    score += REGISTRY_WEIGHT * min(len(known), PER_GROUP)
+def review_screen(texts):
+    return assess(REVIEW, [textutil.normalise(text) for text in texts if str(text or "").strip()])
 
-    return Screening(score=round(score, 2), tier=tier_of(score), signals=tuple(signals))
+
+def side_score(subscores, rules):
+    """What one rule set contributed to a total. The rule set owns the list of its own groups, so
+    a reader never has to keep a second table of which column came from which side."""
+    return round(sum(points for name, points in dict(subscores).items()
+                     if name in rules.groups), 2)
+
+
+def combine(*screenings):
+    """Every score is in the same currency, so the total is their sum and nothing is rescaled.
+    Group names are unique across rule sets, so the subscores of both sides survive side by side
+    instead of being merged into an axis nobody can read back."""
+    score = round(sum(one.score for one in screenings), 2)
+    return Screening(score, tier_of(score),
+                     tuple(signal for one in screenings for signal in one.signals),
+                     tuple(pair for one in screenings for pair in one.subscores))

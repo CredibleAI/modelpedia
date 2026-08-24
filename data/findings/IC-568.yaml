@@ -1,0 +1,31 @@
+id: IC-568
+title: In Phi-3, word-exclusion steering vectors computed via difference-in-means project onto the vocabulary
+  space with high logits for the excluded word, making them counterproductive
+description: When the paper computes steering vectors for word-exclusion instructions (difference in
+  activations between 'include word w' and 'do not include word w' inputs) and projects them onto the
+  vocabulary space via the unembedding matrix, the top tokens are the excluded word itself (e.g., 'books'
+  → 'books, books, books, book'; 'congress' → 'congress, parlament, legisl'). Adding these vectors to
+  the residual stream increases rather than decreases the probability of generating the excluded word.
+  The paper confirms this by showing that subtracting the word-inclusion vector consistently yields
+  higher accuracy and a better accuracy-to-low-perplexity trade-off than adding the word-exclusion vector
+  (Figure 19). The authors adopt subtraction of inclusion vectors as the effective approach for word
+  exclusion.
+models:
+- ref: model:phi-3
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:improving-instruction-following-language-models-through
+datasets:
+- ref: dataset:ifeval
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+caveat: The effect does not occur in all cases (e.g., for words like 'adult' and 'hypothesis' the excluded
+  word does not appear in the top tokens). The analysis is performed at layer 30 of Phi-3.
+extracted_by: automatic-extraction
+related_findings:
+- IC-565
+- IC-566
+- IC-567

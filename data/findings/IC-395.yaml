@@ -1,0 +1,65 @@
+id: IC-395
+title: Most mainstream LLMs exhibit positive ADCE across five tasks, indicating reliance on deep structure
+  for problem-solving, with ADCE strongly correlated with accuracy (r² > 0.7)
+description: The paper measures the Approximated Direct Causal Effect (ADCE) of deep structure on model
+  outputs for 12 released LLMs across five tasks (2-digit multiplication, GSM8K, word unscrambling,
+  analytic entailment, CommonsenseQA). ADCE is positive for most models, in contrast to the zero ADCE
+  of a random-weights baseline, indicating that intervening on core semantics causes previously correct
+  answers to become incorrect. A strong linear correlation exists between accuracy and ADCE across all
+  tasks, with r² values ranging from 0.784 to 0.977, suggesting that higher-accuracy models depend more
+  on deep structure.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:mistral-7b
+- ref: model:mixtral-8x7b
+- ref: model:mixtral
+  variant: variant:mixtral-8x22b
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4o
+- ref: model:claude-3
+  variant: variant:claude-3-sonnet
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+concepts: []
+sources:
+- ref: source:beyond-surface-structure-causal-assessment-llms
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:analytic-entailment
+  role: eval
+- ref: dataset:commonsenseqa
+  role: eval
+methods:
+- ref: method:causal-mediation-analysis
+  role: primary
+related_work:
+- name: Stolfo et al. 2022
+  anchor: https://arxiv.org/abs/2210.12023
+  role: builds-on
+- name: Gonzalez & Nori 2024
+  anchor: https://arxiv.org/abs/2408.08210
+  role: context
+- name: Jiang et al. 2024b
+  anchor: https://arxiv.org/abs/2406.11050
+  role: context
+evidence_type: correlational
+key_metric: r² = 0.859 (2-digit multiplication, y=0.54x+0.43), r² = 0.784 (GSM8K, y=0.81x+0.19), r²
+  = 0.846 (word unscrambling, y=0.60x+0.13), r² = 0.862 (analytic entailment, y=1.64x-0.61), r² = 0.977
+  (CommonsenseQA, y=0.93x+0.03)
+caveat: ADCE is an approximation of the true direct causal effect; the approximation relies on intervention
+  strategies that minimize but do not eliminate the gap between the true ICE and AICE. Some model-task
+  pairs (e.g., Llama-3-8B on analytic entailment) show negative ADCE.
+extracted_by: automatic-extraction
+related_findings:
+- IC-396

@@ -1,0 +1,40 @@
+id: IC-209
+title: LLM judges (GPT-3.5-turbo-1106, GPT-4o-mini, GPT-4o, Claude-3-5-sonnet) implicitly prioritize
+  style over factuality and safety when scoring pairwise preferences
+description: 'When prompted with explicit criteria (completeness, conciseness, style, safety, correctness),
+  all four judge models in the panel assign a style score that correlates almost perfectly with their
+  overall preference judgment (Pearson r = 0.999), while safety (r = 0.727) and conciseness (r = 0.114)
+  are far weaker predictors. When systematic violations are introduced into model responses, the judge
+  penalizes stylistic changes (sarcasm: 96% score loss, conciseness: 63%) far more heavily than factual
+  errors (13%) or blandness (8%). This asymmetry is consistent across all four judges and is not explained
+  by the explicit instructions given to the judge.'
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-1106
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini-2024-07-18
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-2024-08-06
+concepts:
+- ref: concept:shortcut
+- ref: concept:failure-mode
+sources:
+- ref: source:style-outweighs-substance-failure-modes-llm
+datasets:
+- ref: dataset:arena-hard-auto
+  role: eval
+methods:
+- ref: method:arena-hard-auto
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'style Pearson r = 0.999 (std 0), completeness r = 0.963, correctness r = 0.881, safety
+  r = 0.727, conciseness r = 0.114 (Table 2); violation losses: bland 08%, wrong 13%, concise 63%, sarcastic
+  96% (Table 3)'
+caveat: The authors note that factors are not necessarily independent and that the analysis is limited
+  to arena-hard-auto; they also acknowledge that varying components in the llm-judge pipeline could
+  alter behavior substantially, so results should not be treated as evidence that all llm-judge benchmarks
+  follow the same inductive bias.
+extracted_by: automatic-extraction
+related_findings:
+- IC-210

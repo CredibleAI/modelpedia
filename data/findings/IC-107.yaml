@@ -1,0 +1,44 @@
+id: IC-107
+title: Linear orthogonalization of LLaVA and InstructBLIP image features against text embeddings removes
+  hallucinated objects at 83-86% individual rate versus 7-16% for correctly detected objects
+description: The paper introduces ProjectAway, which subtracts a scaled text embedding from each image
+  patch embedding to orthogonalize them with respect to a target object. Applied to 5000 COCO 2014 images,
+  this linear edit removes hallucinated objects at individual rates of 83.3% (InstructBLIP) and 86.0%
+  (LLaVA), while correctly detected objects are removed at only 16.2% and 6.9% respectively. In the
+  full hallucination reduction pipeline (thresholding internal confidence to detect hallucinations,
+  then mass-removing), the raw count of hallucinated objects drops by 25.7% for InstructBLIP and 23.8%
+  for LLaVA compared to beam search, while recall is preserved. The differential removal rate suggests
+  hallucinated objects are more weakly encoded in the image representations.
+models:
+- ref: model:llava-1-5
+- ref: model:instructblip
+- ref: model:llava-next
+- ref: model:cambrian-1
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:interpreting-editing-vision-language-representations-mitigate
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods:
+- ref: method:logit-lens
+  role: supporting
+- ref: method:chair
+  role: eval
+related_work:
+- name: OPERA
+  anchor: https://arxiv.org/abs/2311.17911
+  role: compared-to
+evidence_type: interventional
+key_metric: 'Individual RR: 83.3% (InstructBLIP hallucinations), 86.0% (LLaVA hallucinations), 16.2%
+  (InstructBLIP CD), 6.9% (LLaVA CD); Mass RR: 74.3%, 72.8%, 15.0%, 8.3%; Raw hallucinated object count
+  reduction: 25.7% (InstructBLIP, 564 to 419), 23.8% (LLaVA, 583 to 444); CHAIR_s: 14.6 to 12.5 (InstructBLIP),
+  15.0 to 12.2 (LLaVA)'
+caveat: The method simplifies multi-token objects by using the last token's embedding or averaging constituent
+  tokens, which the authors note can introduce approximation. At high weight factors, captions become
+  nonsensical with complete loss of both CD and hallucinated objects.
+extracted_by: automatic-extraction
+related_findings:
+- IC-106
+- IC-108

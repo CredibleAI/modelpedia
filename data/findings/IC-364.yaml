@@ -1,0 +1,31 @@
+id: IC-364
+title: Llama-3-8B hidden states are zero-mean unimodal, with gaussian-like distributions before attention
+  and MLP blocks and laplacian-like distributions in intermediate states
+description: The paper collects activations from Llama-3-8B sampled from C4 at four hidden states within
+  transformer blocks 8, 16, and 24. The hidden states preceding the attention and MLP layers exhibit
+  gaussian-like shapes, while the intermediate states within those blocks exhibit laplacian-like shapes.
+  All distributions are zero-mean and unimodal, with the concentration around zero motivating magnitude-based
+  pruning. The authors note that some activations are heavy-tailed and contain outliers, consistent
+  with prior work.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts: []
+sources:
+- ref: source:training-free-activation-sparsity-large-language
+datasets:
+- ref: dataset:c4
+  role: source
+methods: []
+related_work:
+- name: DejaVu
+  anchor: https://arxiv.org/abs/2310.17157
+  role: context
+evidence_type: observational
+caveat: The authors explicitly state they do not attempt to explain why these distributions are shaped
+  this way, nor give theoretical underpinnings for why activation sparsity works.
+extracted_by: automatic-extraction
+related_findings:
+- IC-365
+- IC-366
+- IC-367

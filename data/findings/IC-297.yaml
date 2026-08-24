@@ -1,0 +1,34 @@
+id: IC-297
+title: Applying tuned-lens transformations to the residual stream decreases the apparent multi-layer
+  SAE feature activity from 54–88% to 37–41% of total variance
+description: The authors relax the assumption that the residual stream basis is the same at every layer
+  by applying pre-trained tuned-lens transformations (Belrose et al., 2023) to the activation vectors
+  before passing them to the MLSAE encoder. Contrary to the expectation that aligning the basis would
+  increase multi-layer activity, the tuned-lens approach decreases the fraction of total variance explained
+  by individual latents, keeping it approximately constant between 37% and 41% as the expansion factor
+  increases. Conversely, the single-token variance ratio increases, meaning the single-prompt heatmaps
+  become more spread out. This indicates that part of the observed multi-layer structure in the standard
+  setting is attributable to the basis change across layers rather than to genuinely shared features.
+models:
+- ref: model:pythia
+concepts: []
+sources:
+- ref: source:residual-stream-analysis-multi-layer-saes
+datasets:
+- ref: dataset:the-pile
+  role: source
+methods:
+- ref: method:tuned-lens
+  role: primary
+related_work:
+- name: Eliciting Latent Predictions from Transformers with the Tuned Lens
+  anchor: https://arxiv.org/abs/2303.08112
+  role: builds-on
+evidence_type: correlational
+key_metric: 'tuned-lens fraction of total variance explained by individual latents: between 37% and
+  41% (vs. 54–88% standard); ratio remains approximately constant as expansion factor increases'
+caveat: Pre-trained tuned lenses were only available for Pythia-70m, Pythia-160m, and Pythia-410m; no
+  tuned lens existed for Pythia-1b at the time of writing, so results are limited to three model sizes.
+extracted_by: automatic-extraction
+related_findings:
+- IC-296

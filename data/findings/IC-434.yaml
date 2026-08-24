@@ -1,0 +1,66 @@
+id: IC-434
+title: The critical complexity at which LLMs over-rely on memorization shifts to higher task difficulty
+  as model size increases
+description: Within model families, larger variants reach their peak ID-OOD gap (critical complexity)
+  at higher algorithmic complexity levels than smaller variants. For example, Qwen 1.5 shifts from O(n)
+  at 1.8B to O([n³, n⁴]) at 110B; Llama 3.1 shifts from O([n, n²]) at 8B to O([n³, n⁴]) at 405B; Gemma
+  2 shifts from O([n², n³]) at 2B to O([n³, n⁴]) at 27B. Among closed-source models, Claude 3 Sonnet
+  reaches O([n³, n⁴]) while Haiku reaches O([n², n³]). Notably, GPT-4o-mini (smaller than GPT-4o) exhibits
+  a higher critical complexity of O(2^n), deviating from the size-based trend. O1-mini also reaches
+  O(2^n), the highest observed.
+models:
+- ref: model:qwen-1-5
+  variant: variant:qwen-1-5-1-8b
+- ref: model:qwen-1-5
+  variant: variant:qwen1-5-4b
+- ref: model:qwen-1-5
+  variant: variant:qwen1-5-7b
+- ref: model:qwen-1-5
+  variant: variant:qwen-1-5-14b
+- ref: model:qwen-1-5
+  variant: variant:qwen1-5-32b
+- ref: model:qwen-1-5
+  variant: variant:qwen1-5-72b
+- ref: model:qwen-1-5
+  variant: variant:qwen1-5-110b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-405b
+- ref: model:gemma-2
+  variant: variant:gemma-2-2b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+- ref: model:gemma-2
+  variant: variant:gemma-2-27b
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:claude-3
+  variant: variant:claude-3-sonnet
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:o1
+  variant: variant:o1-mini
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:quantifying-generalization-complexity-large-language-models
+datasets: []
+methods:
+- ref: method:zero-shot-chain-of-thought
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: Qwen1.5-1.8b critical complexity O(n) vs Qwen1.5-110b O([n³, n⁴]); Llama-3.1-8b O([n, n²])
+  vs Llama-3.1-405b O([n³, n⁴]); Gemma-2-2b O([n², n³]) vs Gemma-2-27b O([n³, n⁴]); Claude-3-Haiku O([n²,
+  n³]) vs Claude-3-Sonnet O([n³, n⁴]); GPT-4o-mini O(2^n) vs GPT-4o O([n³, n⁴]); O1-mini O(2^n).
+caveat: GPT-4o-mini deviates from the expected size-based trend, exhibiting a higher critical complexity
+  than the larger GPT-4o. The authors hypothesize this is due to more aggressive training on high-quality
+  data. Even the largest models eventually reach critical complexity, so scaling delays but does not
+  eliminate over-reliance on memorization.
+extracted_by: automatic-extraction
+related_findings:
+- IC-433
+- IC-435

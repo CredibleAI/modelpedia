@@ -1,0 +1,54 @@
+id: IC-206
+title: GPT-4o-0513 achieves the highest wb-reward mix score (35.7) on WildBench, with a clear three-tier
+  structure among 40 evaluated LLMs
+description: 'The paper evaluates 40 released LLMs on 1,024 challenging real-world user queries from
+  WildChat. Using the wb-reward metric (pairwise comparison against three baselines: GPT-4-turbo-0429,
+  Claude-3-Haiku, and Llama-2-70B-Chat), GPT-4o-0513 scores 35.7, followed by GPT-4-turbo-0409 at 34.6
+  and GPT-4-turbo-0125 at 29.9. The three baselines naturally partition models into three tiers: tier
+  1 outperforms Claude-3-Haiku, tier 2 outperforms Llama-2-70B-Chat but not Claude-3-Haiku, and tier
+  3 is below Llama-2-70B-Chat. The wb-score metric (individual 1-10 scoring by GPT-4-turbo) gives GPT-4o-0513
+  a score of 59.3.'
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-0513
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo-0409
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo-0125
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:llama-3
+  variant: variant:llama-3-70b-inst
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:llama-2
+  variant: variant:llama-2-70b-chat
+concepts: []
+sources:
+- ref: source:wildbench-benchmarking-llms-challenging-tasks-from
+datasets:
+- ref: dataset:wildbench
+  role: eval
+- ref: dataset:wildchat
+  role: source
+methods: []
+related_work:
+- ref: dataset:alpacaeval
+  role: compared-to
+- name: Arena-Hard
+  anchor: https://lmsys.org/blog/2024-04-19-arena-hard/
+  role: compared-to
+- ref: dataset:mt-bench
+  role: compared-to
+evidence_type: correlational
+key_metric: 'wb-reward mix: GPT-4o-0513 35.7, GPT-4-turbo-0409 34.6, GPT-4-turbo-0125 29.9, Gemini-1.5-Pro
+  27.8, Llama-3-70B-Inst 21, Claude 3 Opus 20.1; wb-score: GPT-4o-0513 59.3, GPT-4-turbo-0409 58.4,
+  Llama-3-70B-Inst 50.2, Claude 3 Opus 46.3'
+caveat: Results are from a single benchmark version (v2, 1,024 tasks) and a single judge (GPT-4-turbo);
+  the paper notes the benchmark is periodically updated and results may shift.
+extracted_by: automatic-extraction
+related_findings:
+- IC-207
+- IC-208

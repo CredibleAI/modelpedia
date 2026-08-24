@@ -1,0 +1,33 @@
+id: IC-299
+title: Instruction tuning preserves the weight-matrix structure of LLMs, with DOCS scores exceeding
+  0.7 across all matrices
+description: 'The paper compares weight matrices of base and instruction-tuned models in the Yi-1.5,
+  Llama-3.1, and Gemma-2 families using the DOCS index. All DOCS scores between corresponding layers
+  of the base and instruct variants exceed 0.7, indicating that instruction fine-tuning largely retains
+  the foundational weight structure. Additionally, the weight matrices cluster into three functional
+  groups based on their DOCS score trends: MLP-up with MLP-down, Wq with Wk, and Wv with Wo.'
+models:
+- ref: model:yi
+  variant: variant:yi-1-5-9b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+concepts: []
+sources:
+- ref: source:docs-quantifying-weight-similarity-deeper-insights
+datasets: []
+methods: []
+related_work:
+- name: Ouyang et al. 2022 (instruction tuning)
+  anchor: https://arxiv.org/abs/2203.02155
+  role: context
+evidence_type: correlational
+key_metric: all docs scores are notably high, with values exceeding 0.7 for every matrix evaluated
+extracted_by: automatic-extraction
+related_findings:
+- IC-298
+- IC-300
+- IC-301

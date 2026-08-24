@@ -1,0 +1,54 @@
+id: IC-481
+title: Llama-3.1-8B and four other released LLMs reorganize their internal representations to reflect
+  in-context graph structure in a sudden two-phase transition as context length increases
+description: 'The paper inputs traces of random walks on predefined graphs (square grid, ring, hexagonal
+  lattice) into five released LLMs and measures the Dirichlet energy of the models'' mean token representations
+  with respect to the ground-truth graph. As context length scales from roughly 10 to 1000 tokens, the
+  energy decreases and rule-following accuracy increases in a two-phase pattern: a slow initial rise
+  followed by a sudden steep ascent. The transition point scales as a power-law with graph size. Simple
+  memorization baselines (1-shot and 2-shot) cannot account for the observed accuracy curves. The same
+  energy-decrease-then-accuracy-rise pattern is observed across Llama-3.1-8B, Llama-3.2-1B, Llama-3.1-8B-Instruct,
+  Gemma-2-2B, and Gemma-2-9B on all three graph topologies.'
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-2-3b
+  variant: variant:llama-3-2-1b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:gemma-2
+  variant: variant:gemma-2-2b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:iclr-context-learning-representations
+datasets: []
+methods:
+- ref: method:pca
+  role: primary
+- ref: method:nnsight-ndif
+  role: supporting
+related_work:
+- name: Akyurek et al. 2023 (What learning algorithm is in-context learning?)
+  anchor: https://arxiv.org/abs/2211.15661
+  role: builds-on
+- name: Todd et al. 2023 (Function vectors in large language models)
+  anchor: https://arxiv.org/abs/2310.15213
+  role: context
+- name: Hendel et al. 2023 (In-context learning creates task vectors)
+  anchor: https://doi.org/10.18653/v1/2023.findings-emnlp.624
+  role: context
+evidence_type: correlational
+key_metric: 'Cosine similarity between model PCs and spectral embeddings (Table 2): grid 0.950/0.954,
+  ring 0.942/0.930, hex 0.745/0.755. Memorization baselines (1-shot, 2-shot) fail to explain the accuracy
+  curve on both ring (50 nodes) and grid (25 nodes) graphs.'
+caveat: The authors note that PCA visualizations can be misleading, and that graph sizes are relatively
+  small, likely causing significant finite-size effects. The percolation analogy is described as 'still
+  loose' and would require graphs with at least 2 orders-of-magnitude difference in size to corroborate.
+extracted_by: automatic-extraction
+related_findings:
+- IC-482
+- IC-483
+- IC-484

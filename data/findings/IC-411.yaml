@@ -1,0 +1,44 @@
+id: IC-411
+title: Llama2-7B, Llama3-8B, and Mistral-v0.3-7B do not reason with edited knowledge in multi-hop questions,
+  as editing methods mostly underperform pre-edit portability scores
+description: Portability is measured by whether the model can answer multi-hop questions (2-6 hops)
+  that depend on the edited single-hop fact. The paper finds that except for ICE which may bring marginal
+  improvement, all other editing techniques underperform the pre-edit portability scores. There is a
+  sharp decrease from single-hop to multi-hop for all methods. The authors hypothesize that the LLMs
+  directly memorize answers to multi-hop questions rather than reasoning from the single-hop knowledge,
+  which is why editing the single-hop fact does not propagate.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:mistral-7b
+  variant: variant:mistral-v0-3-7b
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:knowledge-editing-really-correct-hallucinations
+datasets: []
+methods:
+- ref: method:rome
+  role: primary
+- ref: method:memit
+  role: primary
+- ref: method:lora
+  role: primary
+- ref: method:ice
+  role: primary
+- ref: method:grace
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: except that ice may bring marginal improvement to the pre-edit performance, the other knowledge
+  editing techniques even mostly underperform pre-edit portability scores; a sharp decrease for all
+  the editing methods from single-hop to multi-hop
+caveat: The memorization hypothesis is stated as a hypothesis, not a confirmed mechanism; pre-edit portability
+  scores are not zero for 2-6 hops.
+extracted_by: automatic-extraction
+related_findings:
+- IC-409
+- IC-410
+- IC-412

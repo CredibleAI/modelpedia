@@ -1,0 +1,43 @@
+id: IC-161
+title: Linear probes on Pythia-70m and Gemma-2-2b trained on the ambiguous Bias in Bios set rely on
+  gender as a spurious feature, with gender accuracy far exceeding profession accuracy
+description: The authors train linear classification heads on Pythia-70m and Gemma-2-2b to classify
+  profession from biographies, using only the ambiguous training set where gender is perfectly predictive
+  of the label. On the balanced test set, the original probes achieve much higher gender accuracy than
+  profession accuracy (87.4% vs. 61.9% for Pythia; 81.9% vs. 67.7% for Gemma), indicating the models'
+  representations encode gender in a way that dominates profession classification. After applying SHIFT
+  (ablating human-identified gender-related SAE features) and retraining the probe, gender accuracy
+  drops to near chance (52.0%, 52.4%) while profession accuracy rises to 93.1% and 95.0%.
+models:
+- ref: model:pythia
+  variant: variant:pythia-70m
+- ref: model:gemma-2
+  variant: variant:gemma-2-2b
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:sparse-feature-circuits-discovering-editing-interpretable
+datasets:
+- ref: dataset:bias-in-bios
+  role: eval
+methods:
+- ref: method:linear-probing
+  role: primary
+related_work:
+- name: De-Arteaga et al. 2019
+  anchor: https://doi.org/10.1145/3287560.3287572
+  role: context
+- name: Yan et al. 2023
+  anchor: https://arxiv.org/abs/2310.03182
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Original: Pythia profession 61.9%, gender 87.4%, worst group 24.4%; Gemma profession 67.7%,
+  gender 81.9%, worst group 18.2%. After SHIFT+retrain: Pythia profession 93.1%, gender 52.0%, worst
+  group 89.0%; Gemma profession 95.0%, gender 52.4%, worst group 92.9%.'
+caveat: The interpretability step (identifying which features to ablate) uses additional unlabeled data
+  and human judgement; feature labels may vary across annotators. For Gemma, the feature ablations initially
+  damage model performance, which is restored by retraining the linear head.
+extracted_by: automatic-extraction
+related_findings:
+- IC-160
+- IC-162

@@ -1,0 +1,45 @@
+id: IC-453
+title: Hidden representation trajectories in trained LLMs exhibit considerable linearity (mean LSS 4.25)
+  compared to 6.54 at initialization, and linearity increases with training
+description: The line-shape score (LSS) measures how close a token's trajectory through the layers is
+  to a straight line. Across 1,200 prompts from the Open LLM Leaderboard datasets, trained LLMs show
+  a mean LSS of 4.25, compared to 6.54 for randomly initialized models. The low variation across benchmark
+  prompts indicates robustness. In Pythia 12B, LSS decreases (linearity increases) as a function of
+  training checkpoint, and this improvement is visible at multiple depths (layers 5, 15, 30). The paper
+  notes this aligns with behaviour previously observed in ResNets.
+models:
+- ref: model:llama-3
+- ref: model:llama-2
+- ref: model:pythia
+- ref: model:gpt-2
+- ref: model:gemma
+- ref: model:mpt
+- ref: model:phi-2
+concepts: []
+sources:
+- ref: source:transformer-block-coupling-its-correlation-generalization
+datasets:
+- ref: dataset:arc
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:truthfulqa
+  role: eval
+- ref: dataset:winogrande
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: mean LSS 4.25 (trained) vs 6.54 (initialization), computed on 1,200 prompts; LSS decreases
+  with training checkpoints in Pythia 12B
+caveat: LSS values for LLMs (4.25) are higher than for ResNets (2.0-3.0), attributed to varying trajectory
+  length and hidden dimension; the comparison across architectures is not directly comparable.
+extracted_by: automatic-extraction
+related_findings:
+- IC-451
+- IC-452
+- IC-454

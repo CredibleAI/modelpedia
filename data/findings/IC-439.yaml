@@ -1,0 +1,55 @@
+id: IC-439
+title: Agent-specialized fine-tuned models (XLAM) significantly improve API selection over base models,
+  but code-fine-tuned models (AgentLM) degrade performance, and no fine-tuning approach improves input
+  recognition
+description: The paper evaluates 6 fine-tuned agent models (AgentLM-7B/13B/70B, XLAM-7B-R/8x7B-R, Lemur-70B-Chat-V1)
+  against their base models (Llama-2-7B/13B/70B, Mistral-7B, Mixtral-8x7B) on ShortcutsBench. XLAM-7B-R
+  achieves 70.56% API selection accuracy versus 17.03% for its base Mistral-7B, a large improvement.
+  However, AgentLM-7B scores 24.95% versus 32.75% for Llama-2-7B, showing degradation. For parameter
+  filling, XLAM shows improvement but accuracy drops sharply with context length. For input recognition,
+  none of the fine-tuned models show any improvement over their base models, with most scoring 0-12%.
+models:
+- ref: model:agentlm
+  variant: variant:agentlm-7b
+- ref: model:agentlm
+  variant: variant:agentlm-13b
+- ref: model:agentlm
+  variant: variant:agentlm-70b
+- ref: model:xlam-r
+  variant: variant:xlam-7b-r
+- ref: model:xlam-r
+  variant: variant:xlam-8x7b-r
+- ref: model:lemur-70b-chat-v1
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:mistral-7b
+- ref: model:mixtral-8x7b
+concepts: []
+sources:
+- ref: source:shortcutsbench-large-scale-real-world-benchmark
+datasets: []
+methods:
+- ref: method:react
+  role: primary
+related_work:
+- name: AgentTuning
+  anchor: https://doi.org/10.18653/v1/2024.findings-acl.181
+  role: compared-to
+- name: XLAM
+  anchor: https://arxiv.org/abs/2409.03215
+  role: compared-to
+evidence_type: correlational
+key_metric: XLAM-7B-R API selection 70.56% vs Mistral-7B base 17.03%; AgentLM-7B API selection 24.95%
+  vs Llama-2-7B base 32.75%; XLAM-8x7B-R API selection 85.29% vs Mixtral-8x7B base 70.21%; input recognition
+  for all fine-tuned models at or below 12%
+caveat: Context length limited to 4k tokens for most models and 32k for XLAM series; results reported
+  only for first 3 difficulty levels; outputs processed using GPT-4o-mini for format conversion
+extracted_by: automatic-extraction
+related_findings:
+- IC-436
+- IC-437
+- IC-438

@@ -1,0 +1,43 @@
+id: IC-136
+title: LRE quality metrics from OLMo-7B predict pretraining term frequencies in GPT-J (trained on different
+  data) with approximately 70% within-magnitude accuracy for object frequencies, outperforming log-probability-only
+  features by about 30%
+description: The authors fit a random forest regression on OLMo-7B LRE features (faithfulness, causality,
+  hard causality, faith probability) plus log-probability and accuracy features to predict how often
+  terms appear in the pretraining corpus. When the regression is trained on OLMo-7B and evaluated on
+  LRE features extracted from GPT-J (which was trained on The Pile, a different corpus), it achieves
+  0.65 within-magnitude accuracy for object frequency predictions versus 0.42 for log-probability-only
+  features. Hard causality is the most important single feature, contributing about 15% accuracy in
+  permutation tests. The signal is much stronger for object frequencies than for subject-object co-occurrences.
+models:
+- ref: model:olmo
+- ref: model:gpt-j
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:linear-representations-pretraining-data-frequency-language
+datasets:
+- ref: dataset:dolma
+  role: source
+- ref: dataset:the-pile
+  role: source
+- ref: dataset:relations-dataset
+  role: eval
+methods:
+- ref: method:random-forest-regression
+  role: primary
+related_work:
+- name: Hernandez et al. 2024 (Linearity of Relation Decoding)
+  anchor: https://openreview.net/forum?id=w7lu2s14ke
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Within-magnitude accuracy (object occs, eval on GPT-J): LRE 0.65±0.12 vs logprob 0.42±0.10
+  vs mean baseline 0.31±0.15; MAE in log space: 2.1 (LRE) vs 4.2 (LM-only) for object, 1.9 (LRE) vs
+  2.3 (LM-only) for subj-obj; hard causality permutation importance ~15% accuracy; faithfulness ~5%'
+caveat: The authors note the method is 'relatively worse at predicting subject-object co-occurrences
+  than object occurrences' and 'fails to account for the harder task.' They caution against 'drawing
+  strong conclusions without additional information' and state they 'are not able to make any guarantees
+  on its efficacy in settings not shown here.' Only two models are tested for cross-model transfer.
+extracted_by: automatic-extraction
+related_findings:
+- IC-135

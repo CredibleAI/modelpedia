@@ -1,0 +1,30 @@
+id: IC-542
+title: The PyTorch pretrained ResNet50 on ImageNet is vulnerable to (1, y)-ACE calibration attacks that
+  increase ECE from 3.70% to 47.23% while preserving accuracy
+description: The authors introduce a family of parameterised attacks, (η, ω)-ACE, that perturb the input
+  to alter the model's confidence without changing its predicted label. Applied to the standard PyTorch
+  pretrained ResNet50 on ImageNet, a (1, y)-ACE attack with ε=2/255 increases the ECE from 3.70% to
+  47.23%, and a (1, ŷ)-ACE attack increases it to 25.17%. The attack preserves the predicted class,
+  so accuracy is unchanged, yet the model's confidence becomes severely miscalibrated. This demonstrates
+  that a released model can be robust to label-flipping attacks while remaining vulnerable to calibration-specific
+  adversaries.
+models:
+- ref: model:resnet
+  variant: variant:resnet50
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:certification-uncertainty-calibration-under-adversarial-attacks
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:pgd
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: 'ResNet50 on ImageNet, standard training: unattacked ECE 3.70%; (1,y)-ACE ε=2/255 ECE 47.23%;
+  (1,ŷ)-ACE ε=2/255 ECE 25.17%; (−1,y)-ACE ε=2/255 ECE 1.06%; (−1,ŷ)-ACE ε=2/255 ECE 11.87%'
+caveat: The attack is evaluated on the validation set only; the paper does not report results on the
+  full test set for this specific model. The attack requires access to the model's gradients (white-box).
+extracted_by: automatic-extraction

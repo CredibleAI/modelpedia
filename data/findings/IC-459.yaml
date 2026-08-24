@@ -1,0 +1,28 @@
+id: IC-459
+title: Qwen-2.5 models show that the privacy-utility tradeoff for differentially private steering improves
+  with model size
+description: The paper evaluates PSA and non-private mean steering across four Qwen-2.5 sizes (0.5B,
+  1.5B, 3B, 7B) on the refusal alignment task, tracking alignment MCQ accuracy, GPT-4 text-generation
+  scores, and MMLU. As model size increases, the gap between PSA and non-private mean steering narrows
+  in all three metrics. The authors hypothesise that larger instruction-tuned models already contain
+  sufficient alignment knowledge, making them less sensitive to the information in the private demonstrations.
+models:
+- ref: model:qwen2-5
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:differentially-private-steering-large-language-model
+datasets:
+- ref: dataset:mmlu
+  role: eval
+methods:
+- ref: method:activation-steering
+  role: compared-to
+related_work: []
+evidence_type: correlational
+caveat: Only the refusal dataset is used for the scaling experiment; results on the other six behaviors
+  at intermediate sizes are not reported.
+extracted_by: automatic-extraction
+related_findings:
+- IC-460
+- IC-461

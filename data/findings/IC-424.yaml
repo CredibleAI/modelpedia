@@ -1,0 +1,31 @@
+id: IC-424
+title: Structural in-context learning is transient in MultiBERTs and Pythia-1.4B, disappearing after
+  early training
+description: The paper measures whether released language model checkpoints can determine part-of-speech
+  (MultiBERTs) or complete a syllogism (Pythia-1.4B) when the query token is replaced by a randomly
+  initialized embedding, i.e. when no in-weight information is available. In both model families, probe
+  accuracy on these unseen-token evaluations spikes early in training and then decays to chance or below-chance
+  levels by the end of training. This means the ability to generalize to truly novel tokens is an early,
+  transient inductive bias that is overwritten as the model memorizes token identities into its embeddings.
+models:
+- ref: model:multiberts
+- ref: model:pythia
+  variant: variant:pythia-1-4b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:dual-process-learning-controlling-use-context
+datasets: []
+methods: []
+related_work:
+- name: Singh et al. 2023 (transient ICL)
+  anchor: https://openreview.net/forum?id=Of0GBzow8P
+  role: builds-on
+evidence_type: observational
+caveat: The MultiBERTs results are on a POS probing task with templatic sentences; the Pythia-1.4B results
+  are on a simple syllogism task. Both are simplified evaluations of structural ICL rather than open-ended
+  generation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-425
+- IC-426

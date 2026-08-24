@@ -1,0 +1,42 @@
+id: IC-501
+title: Linear probes on middle-layer attention heads of Llama-2-7B-Chat, Mistral-7B-Instruct-v0.1, and
+  Vicuna-7B-v1.5 predict US lawmakers' DW-Nominate ideology scores with Spearman correlations around
+  0.85
+description: The authors prompt three 7B open LLMs to generate statements in the style of each of 552
+  members of the 116th US Congress, record activations of every attention head, and train ridge-regression
+  linear probes to predict each lawmaker's first-dimension DW-Nominate score. The most predictive heads
+  are concentrated in middle layers (roughly 10–20), with peak single-head Spearman correlations of
+  0.854 (Llama-2, layer 15 head 18), 0.846 (Mistral, layer 16 head 3), and 0.861 (Vicuna, layer 24 head
+  8). Ensembling the top 32 heads yields 0.870, 0.864, and 0.885 respectively. Non-linear MLP probes
+  do not substantially outperform the linear ones, supporting the linearity of the representation.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-1
+- ref: model:vicuna
+  variant: variant:vicuna-7b-v1-5
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:linear-representations-political-perspective-emerge-large
+datasets: []
+methods:
+- ref: method:linear-probing
+  role: primary
+- ref: method:mlp
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: 'Spearman ρ_cv: 0.854 (Llama-2-7B-Chat, layer 15 head 18), 0.846 (Mistral-7B-Instruct, layer
+  16 head 3), 0.861 (Vicuna-7B, layer 24 head 8); ensemble k=32: 0.870, 0.864, 0.885'
+caveat: Findings are based on relatively smaller 7B models and may not generalize to larger or untested
+  models. The representation is US-centric; cross-national generalization to 411 non-US parties yields
+  only ρ=0.531 for Llama-2-7B-Chat. The authors note this is an initial demonstration rather than an
+  exhaustive analysis.
+extracted_by: automatic-extraction
+related_findings:
+- IC-502
+- IC-503
+- IC-504

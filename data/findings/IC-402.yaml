@@ -1,0 +1,43 @@
+id: IC-402
+title: In LLaMA3-8B, LLaMA2-13B, and Mistral-7B, soft-prompt information flow peaks in shallow layers
+  (2–10) and reasoning correctness depends on whether deeper layers redirect attention away from soft
+  prompts to earlier reasoning steps
+description: 'Using saliency score analysis (Hadamard product of attention and gradient), the paper
+  measures layer-by-layer information flow from soft prompt tokens to question and rationale tokens
+  in three released LLMs. A strong prompt-to-question and prompt-to-rationale flow is concentrated in
+  layers 2 through 10. In correct-answer cases, deeper layers shift attention from soft prompts to earlier
+  rationale steps and the question; in incorrect cases, the latter reasoning steps in deep layers maintain
+  strong attention to soft prompts. This pattern was validated on 100 randomly sampled instances, and
+  the relationship between the last-layer prompt-to-rationale flow intensity (sif_p) and correctness
+  was confirmed on 50 correct and 50 incorrect examples. The practical consequence is that vanilla prompt
+  tuning yields only marginal gains on complex reasoning (e.g., LLaMA3-8B GSM8K: 64.9% pretrained to
+  65.5% with PT, a 0.6% increase).'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:mistral-7b
+concepts:
+- ref: concept:depth-dependent-structure
+- ref: concept:failure-mode
+sources:
+- ref: source:improving-complex-reasoning-dynamic-prompt-corruption
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:aqua
+  role: eval
+methods:
+- ref: method:prompt-tuning
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: 'Saliency peaks between layer 2 and layer 10; 100 randomly sampled instances for correlation
+  validation; 50 correct + 50 incorrect for sif_p analysis; LLaMA3-8B GSM8K: pretrained 64.9%, prompt
+  tuning 65.5% (0.6% gain); LLaMA2-13B GSM8K: pretrained 29.5%, PT 38.1%; Mistral-7B GSM8K: pretrained
+  37.9%, PT 49.5%'
+caveat: The analysis is limited to three decoder-only LLMs and three math-reasoning datasets; the authors
+  note that the inference cost of identifying erroneous information flow patterns requires a complete
+  reasoning pass, limiting practical applicability.
+extracted_by: automatic-extraction

@@ -1,0 +1,44 @@
+id: IC-192
+title: CLIP's contrastive image-text training objective hinders its ability to rank or order images,
+  yielding near-chance performance on ranking tasks in both zero-shot and fine-tuned settings
+description: 'The paper measures CLIP (ConvNeXt-L, LAION-5B) on four ranking tasks: facial age estimation,
+  historical image dating, object count sorting, and image quality/aesthetics assessment. In zero-shot
+  mode, CLIP achieves only 43.3% accuracy (MAE 0.80) on ADIENCE age estimation, 26.1% accuracy (MAE
+  1.48) on HCI dating, and PLCC 0.026 / SRCC 0.001 on object count sorting. Even after fine-tuning with
+  standard contrastive objectives, CLIP reaches only PLCC 0.251 / SRCC 0.422 on object counting and
+  PLCC 0.245 / SRCC 0.216 on KONIQ-10k. The paper attributes this failure to CLIP''s training objective,
+  which matches image content to sentences and captures global information but does not learn cross-image
+  relational structure needed for ordering.'
+models:
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:ranking-aware-adapter-text-driven-image
+datasets:
+- ref: dataset:adience
+  role: eval
+- ref: dataset:hci-historical-colored-images
+  role: eval
+- ref: dataset:coco-rem
+  role: eval
+- ref: dataset:koniq-10k
+  role: eval
+- ref: dataset:ava
+  role: eval
+methods:
+- ref: method:openclip
+  role: eval
+related_work:
+- ref: method:ordinalclip
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Zero-shot CLIP: ADIENCE accuracy 43.3 (3.6)%, MAE 0.80 (0.02); HCI accuracy 26.1 (0.6)%,
+  MAE 1.48 (0.03); object count PLCC 0.026, SRCC 0.001; KONIQ-10k PLCC 0.245, SRCC 0.216; AVA PLCC 0.162,
+  SRCC 0.160. Fine-tuned CLIP: object count PLCC 0.251, SRCC 0.422; KONIQ-10k PLCC 0.245, SRCC 0.216;
+  AVA PLCC 0.162, SRCC 0.160.'
+caveat: The paper does not ablate the training objective in isolation to confirm causality; the attribution
+  to the contrastive objective is stated as motivation rather than tested experimentally. The fine-tuned
+  CLIP baseline uses the same contrastive objective, so it is unclear whether a different fine-tuning
+  objective would close the gap.
+extracted_by: automatic-extraction

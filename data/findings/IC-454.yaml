@@ -1,0 +1,39 @@
+id: IC-454
+title: Most hidden trajectories in trained LLMs exhibit exponential growth in norm as a function of
+  depth, a property that emerges with training
+description: The paper measures expodistance, the coefficient of variation of the per-layer log-growth
+  rate of embedding norms. In trained LLMs, most trajectories show low expodistance, indicating approximately
+  constant per-layer growth (exponential in depth). At initialization, trajectories show equally-spaced
+  (linear) rather than exponentially-spaced norms. In Pythia 12B, expodistance decreases (exponentiality
+  increases) as a function of training checkpoint, and the transition from log-like to exponential-like
+  growth is visible through layers 5-20. The low coefficient of variation across prompts indicates robustness
+  across diverse tasks.
+models:
+- ref: model:llama-3
+- ref: model:llama-2
+- ref: model:pythia
+- ref: model:gpt-2
+- ref: model:gemma
+- ref: model:mpt
+- ref: model:phi-2
+concepts: []
+sources:
+- ref: source:transformer-block-coupling-its-correlation-generalization
+datasets:
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:wikitext-2
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: Low coefficient of variation of per-layer growth rate in trained models; at initialization,
+  equally (rather than exponentially) distanced trajectories; transition from log-like to exponential-like
+  growth through layers 5-20 in Pythia 12B
+caveat: The exponential growth is measured on 100 MMLU prompts for the expodistance plots; the property
+  is described as holding for 'most' trajectories, not all.
+extracted_by: automatic-extraction
+related_findings:
+- IC-451
+- IC-452
+- IC-453

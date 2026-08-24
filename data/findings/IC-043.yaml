@@ -1,0 +1,62 @@
+id: IC-043
+title: Five ~7B decoder-only LLMs develop a high-intrinsic-dimensionality phase in intermediate layers
+  that marks the transition from surface-form to abstract linguistic processing, with earlier onset
+  predicting better next-token prediction
+description: The paper estimates the intrinsic dimension (ID) of last-token hidden representations at
+  every layer of five ~7B LMs (OPT-6.7B, Llama-3-8B, Pythia-6.9B, OLMo-7B, Mistral-7B) using the GRIDE
+  estimator on three corpora. All models exhibit a distinct ID peak in intermediate layers (roughly
+  layers 6–20, later for OPT at 17–23), which is absent when processing shuffled text and in untrained
+  Pythia checkpoints. MLP probes show that surface-form information (sentence length, word content)
+  is lost at the ID peak while syntactic and semantic tasks (bigram shift, coordination inversion, odd
+  man out) reach asymptotic accuracy within the peak. Cross-model information imbalance (Δ) is lowest
+  at the intersection of ID peaks, indicating shared representation geometry across architectures. The
+  onset of the ID peak correlates with lower surprisal (ρ = 0.65, p = 0.01), and ID-peak layers are
+  the first to support viable linear transfer to sentiment and toxicity classification.
+models:
+- ref: model:opt
+  variant: variant:opt-6-7b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:pythia
+  variant: variant:pythia-6-9b
+- ref: model:olmo
+  variant: variant:olmo-7b
+- ref: model:mistral-7b
+- ref: model:pythia
+  variant: variant:pythia-2-8b
+- ref: model:pythia
+  variant: variant:pythia-12b
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:emergence-high-dimensional-abstraction-phase-language
+datasets:
+- ref: dataset:bookcorpus
+  role: eval
+- ref: dataset:the-pile
+  role: eval
+- ref: dataset:wikitext-103
+  role: eval
+- ref: dataset:conneau-et-al-probing-tasks
+  role: eval
+- ref: dataset:imdb
+  role: eval
+methods:
+- ref: method:gride
+  role: primary
+- ref: method:information-imbalance
+  role: primary
+- ref: method:probing-classifiers
+  role: primary
+- ref: method:linear-cka
+  role: validation
+related_work: []
+evidence_type: correlational
+key_metric: 'ID peak at layers ~6–20 (most models), 17–23 (OPT); ID magnitude O(10) vs hidden dim 4096;
+  surprisal vs max ID: Spearman ρ = −0.46, p = 0.09; surprisal vs relative ID peak onset: ρ = 0.65,
+  p = 0.01; cross-model Δ at peak intersections in range [0, 0.03]–[0.05, 0.07]'
+caveat: The correlation between maximum ID and surprisal is only marginal (p = 0.09). The authors note
+  that low-Δ values can also occur outside peak intersections, suggesting high ID might be a sufficient
+  rather than necessary condition for cross-model similarity. All models are in a narrow size range
+  (6.5–8B parameters, 32 layers, hidden dim 4096), limiting generalisability to other scales.
+extracted_by: automatic-extraction

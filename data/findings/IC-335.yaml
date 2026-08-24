@@ -1,0 +1,38 @@
+id: IC-335
+title: GPT-4's detection performance as a scoring model is highly sensitive to the prompt, varying from
+  0.7289 to 0.9682 AUROC, far more than GPT-3.5 or Babbage
+description: The paper ablates five manually drafted prompts (from empty to complex) and measures the
+  AUROC of fast-detectgpt when using different scoring models. GPT-4 shows the largest variation, with
+  detection accuracy ranging from 0.7289 (empty prompt) to 0.9682 (prompt4), a spread of nearly 0.24.
+  GPT-3.5 is less sensitive, ranging from 0.9071 to 0.9589, and Babbage is the least affected, ranging
+  from 0.8921 to 0.9299. This indicates that GPT-4's predictive distributions shift substantially with
+  the input context, making it the most prompt-dependent scoring model among those tested.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+- ref: model:gpt-3
+  variant: variant:babbage
+concepts: []
+sources:
+- ref: source:glimpse-enabling-white-box-methods-use
+datasets:
+- ref: dataset:xsum
+  role: eval
+- ref: dataset:pubmedqa
+  role: eval
+methods:
+- ref: method:fast-detectgpt
+  role: primary
+related_work:
+- name: Taguchi et al. 2024
+  anchor: https://arxiv.org/abs/2403.20127
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4 fast-detect AUROC: 0.7289 (prompt0), 0.8239 (prompt1), 0.8775 (prompt2), 0.9341 (prompt3),
+  0.9682 (prompt4); GPT-3.5: 0.9071 to 0.9589; Babbage: 0.8921 to 0.9299'
+caveat: Only five manually drafted prompts were tested; the authors note they leave a systematic exploration
+  of prompts for future work.
+extracted_by: automatic-extraction
+related_findings:
+- IC-336
+- IC-337

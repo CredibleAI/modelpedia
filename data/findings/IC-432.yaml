@@ -1,0 +1,58 @@
+id: IC-432
+title: 56 LLMs from 19 families exhibit u-shaped scaling on hard questions and inverted-U scaling on
+  easy questions, with the opposing trends explaining emergent ability stagnation
+description: 'The authors evaluate 56 released LLMs across 19 model families on 6 multiple-choice benchmarks
+  (MMLU, Arithmetic, Persian-QA, Hindu Knowledge, Conceptual Combinations, Analogical Similarity), grouping
+  questions by difficulty level using a target-conditioned Brier score. Performance on the hardest question
+  group shows a U-shaped curve: it first worsens with scale (models are distracted by surface patterns
+  such as negations) before improving past the emergence threshold. Performance on the easiest group
+  shows an inverted-U followed by steady improvement, consistent with deep double descent. Because the
+  two trends offset each other when aggregated, overall accuracy stagnates until the easy-question curve
+  reverts to standard scaling, at which point both groups improve and overall performance soars. The
+  pattern is absent on non-emergent tasks (ARC, HellaSwag, Abstract Narrative Understanding), where
+  performance improves monotonically.'
+models:
+- ref: model:gemma
+- ref: model:llama-2
+- ref: model:redpajama-incite
+- ref: model:yi
+- ref: model:stablelm
+- ref: model:mpt
+- ref: model:falcon
+- ref: model:pythia
+- ref: model:qwen
+- ref: model:qwen-1-5
+- ref: model:bloom
+- ref: model:deepseekmoe
+- ref: model:opt
+- ref: model:gpt-neo
+- ref: model:codegen
+- ref: model:xglm
+- ref: model:openllama
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:u-shaped-inverted-u-scaling-behind
+datasets:
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:big-bench
+  role: eval
+- ref: dataset:arc
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+methods:
+- ref: method:lm-evaluation-harness
+  role: eval
+- ref: method:polynomial-regression
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: '56 LLMs, 6 datasets, g=10 difficulty groups; emergence thresholds t = 1.5 (MMLU), 1.8 (Arithmetic),
+  2.3 (Persian-QA); TC Brier score vs accuracy Pearson correlation: 0.99 (MMLU), 1.00 (Arithmetic),
+  0.88 (Persian-QA)'
+caveat: The authors note that emergent phenomena are common across LLM benchmarks and it might be hard
+  to claim all of them show clear u-shaped vs. inverted-u scaling. The focus is on multiple-choice tasks;
+  applying the method to string-matching tasks requires identifying a suitable continuous metric.
+extracted_by: automatic-extraction

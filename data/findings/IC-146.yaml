@@ -1,0 +1,32 @@
+id: IC-146
+title: Pythia models show increasing robustness to off-policy RLHF data as policy size scales from 410M
+  to 2.8B
+description: 'The paper tests how Pythia models of three sizes (410M, 1B, 2.8B) perform under varying
+  levels of off-policy data during RLHF training on TLDR summarization. By generating n mini-batches
+  before each update (n=1 to 64), the authors create a spectrum from fully on-policy to highly off-policy
+  training. They find that larger models maintain performance better under off-policy conditions: the
+  410M model has two points (n=16, 32) far from the optimal win-rate/KL tradeoff with wide spread, whereas
+  the 2.8B model''s worst point (n=64) remains close to optimal. This indicates that model capacity
+  is a key factor in tolerating stale training data during RLHF.'
+models:
+- ref: model:pythia
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:asynchronous-rlhf-faster-more-efficient-off
+datasets:
+- ref: dataset:tl-dr
+  role: eval
+methods:
+- ref: method:online-dpo
+  role: primary
+- ref: method:rloo
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: 410m has two points (n = 16, 32) far from the optimal area and a wide spread, whereas 2.8b's
+  worst point (n = 64) is still quite close to optimal
+caveat: Models are SFT-fine-tuned before RLHF, so the finding is about the Pythia family's property
+  as initialized by standard SFT on TLDR. The specific win-rate and KL values for each n are shown only
+  in Figure 5 (left) and not printed as numbers in the text.
+extracted_by: automatic-extraction

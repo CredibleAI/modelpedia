@@ -1,0 +1,46 @@
+id: IC-330
+title: Low local intrinsic dimension (LIDθ) of the learned manifold predicts memorization in Stable
+  Diffusion v1.5, IDDPM, and StyleGAN2-ADA
+description: 'The paper validates the Manifold Memorization Hypothesis by showing that estimates of
+  the local intrinsic dimension of the model''s learned manifold are lower for memorized images than
+  for non-memorized ones. For Stable Diffusion v1.5, FLIPD estimates of LIDθ (both unconditional and
+  conditional) and the CFG vector norm all assign smaller values to 86 memorized LAION images compared
+  to 4251 non-memorized images. For CIFAR-10, the Normal Bundle estimator (IDDPM) and Jacobian rank
+  (StyleGAN2-ADA) show the same pattern: memorized samples have lower LIDθ, and exact memorization corresponds
+  to low LID* in the training data (data-driven memorization), while reconstructive memorization shows
+  low LIDθ despite comparable LID* (overfitting-driven memorization).'
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v1-5
+- ref: model:iddpm
+- ref: model:stylegan2-ada
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:geometric-framework-understanding-memorization-generative-models
+datasets:
+- ref: dataset:cifar-10
+  role: eval
+- ref: dataset:mscoco
+  role: eval
+- ref: dataset:tuxemon
+  role: eval
+methods:
+- ref: method:flipd
+  role: primary
+- ref: method:sscd
+  role: eval
+related_work:
+- name: Webster (2023)
+  anchor: https://arxiv.org/abs/2305.08694
+  role: context
+evidence_type: correlational
+key_metric: 86 memorized images vs 2000 LAION aesthetics 6.5+ / 2000 COCO / 251 Tuxemon non-memorized
+  images for Stable Diffusion; 50,000 images generated per model on CIFAR-10; CFG analysis at λ = 7.5
+  and t = 0.02 on 20 memorized and 20 non-memorized images
+caveat: 'Image complexity confounds LIDθ estimates: simpler images tend to have lower LIDθ regardless
+  of memorization, causing overlap between memorized and non-memorized samples. The authors partially
+  address this with PNG compression normalization, which slightly improves separation.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-331

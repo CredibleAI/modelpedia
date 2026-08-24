@@ -1,0 +1,27 @@
+id: IC-185
+title: In Pythia-1B and Amber-7B, the probability of memorizing a training sequence scales log-linearly
+  with both the number of repetitions in the corpus and the z-complexity of the sequence
+description: The paper measures KL-Levenshtein distance (KL-LD) between the model's greedy continuation
+  and the true continuation for sequences of varying repetition count and z-complexity (ratio of compressed
+  to original length). For both Pythia-1B and Amber-7B, sequences with more repetitions and lower z-complexity
+  are more easily memorized, and the relationship is log-linear in both factors. Lower-complexity strings
+  require fewer repeats to reach the same memorization level.
+models:
+- ref: model:pythia
+  variant: variant:pythia-1b
+- ref: model:amber-7b
+concepts: []
+sources:
+- ref: source:uncovering-latent-memories-large-language-models
+datasets:
+- ref: dataset:the-pile
+  role: source
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The paper notes this extends prior work (Carlini et al. 2020) and the specific quantitative
+  curves are shown in figures rather than tabulated in the text.
+extracted_by: automatic-extraction
+related_findings:
+- IC-186
+- IC-187

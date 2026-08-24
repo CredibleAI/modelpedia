@@ -1,0 +1,41 @@
+id: IC-332
+title: Llama-3-70B exhibits a friendlier, funnier, and less ethics-focused style than GPT-4 and Claude-3-Opus
+  on Chatbot Arena, and these vibes predict model identity at 80% and user preference at 59% accuracy
+description: Using pairwise battles from Chatbot Arena, VibeCheck discovers qualitative axes (vibes)
+  along which Llama-3-70B differs from GPT-4 and Claude-3-Opus. The top vibes include Llama's use of
+  typographic emphasis (sep 0.64), humor (sep 0.62), examples (sep 0.61), and lower ethical consideration
+  (sep 0.53). Llama uses personal pronouns ('I', 'we', 'you') 3x more than GPT/Claude. A logistic regression
+  over these vibes achieves 80.34% model-matching accuracy and 59.34% preference-prediction accuracy
+  overall, with higher accuracy on writing prompts (77.19% MM, 62.04% PP) than STEM (68.71% MM, 57.31%
+  PP).
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:gpt-4
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+concepts: []
+sources:
+- ref: source:vibecheck-discover-quantify-qualitative-differences-large
+datasets:
+- ref: dataset:chatbot-arena
+  role: eval
+methods:
+- ref: method:logistic-regression
+  role: eval
+- ref: method:cohen-s-kappa
+  role: eval
+related_work:
+- ref: dataset:chatbot-arena
+  role: context
+evidence_type: correlational
+key_metric: 'Model matching accuracy 80.34% (overall), 68.71% (STEM), 77.19% (writing); preference prediction
+  accuracy 59.34% (overall), 57.31% (STEM), 62.04% (writing); Cohen''s kappa 0.46; separability scores:
+  typographic emphasis 0.64, humor 0.62, examples 0.61, ethical consideration 0.53'
+caveat: The paper notes that LLM judges (GPT-4o-mini, Llama-3-70B) are often incorrect in their predictions
+  and have biases like favoring their own outputs. Running VibeCheck multiple times can lead to different
+  vibes and results, making exact reproduction difficult.
+extracted_by: automatic-extraction
+related_findings:
+- IC-333
+- IC-334

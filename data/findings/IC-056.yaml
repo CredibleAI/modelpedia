@@ -1,0 +1,39 @@
+id: IC-056
+title: Influence scores of pretraining documents correlate across reasoning queries of the same type,
+  indicating Command R 7B and 35B rely on shared procedural knowledge rather than retrieving specific
+  answers
+description: Using EK-FAC influence functions, the authors rank 5 million pretraining documents by their
+  influence on model completions for 40 reasoning and 40 factual queries. For reasoning queries of the
+  same mathematical type (e.g., calculating slope between different point pairs), the influence scores
+  of all 5 million documents show a strongly significant positive Pearson correlation (p < 4e-8), while
+  factual queries show no such correlation (p ~ 4e-3). Qualitative inspection confirms the top influential
+  documents for slope queries contain code or math implementing the slope formula, appearing in the
+  top 100 documents for 16/20 queries (7B) and all 20 queries (35B). Control queries that are superficially
+  similar but require no reasoning show no such correlation.
+models:
+- ref: model:cohere-command-r
+  variant: variant:cohere-command-r-7b
+- ref: model:cohere-command-r
+  variant: variant:cohere-command-r-35b
+concepts: []
+sources:
+- ref: source:procedural-knowledge-pretraining-drives-reasoning-large
+datasets: []
+methods:
+- ref: method:ek-fac-influence-functions
+  role: primary
+- ref: method:pearson-correlation
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: Pearson's r p-values all below 4e-8 for same-type reasoning queries; p-values all around
+  4e-3 for factual queries; slope procedure documents in top 100 for 16/20 queries (7B, 38 times) and
+  all 20 queries (35B, 51 times); 7 unique code documents and 13 math documents implementing slope found
+caveat: Influence is computed over a 2.5B token sample of pretraining data, not the full training set;
+  only MLP parameters are considered (attention treated as fixed); the authors note an alternative explanation
+  that the truly influential documents for reasoning may be too infrequent to appear in the sample
+extracted_by: automatic-extraction
+related_findings:
+- IC-057
+- IC-058
+- IC-059

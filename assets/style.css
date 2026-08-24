@@ -10,6 +10,7 @@
   --ev-int-bg: #e0eee3; --ev-int-fg: #1e6a3c;
   --ex-man-bg: #e8e5f6; --ex-man-fg: #4b3fa0;
   --ex-aut-bg: #dbeff0; --ex-aut-fg: #0f646c;
+  --wip-bg: #fbf4e2; --wip-fg: #7a5f16; --wip-line: #e0d0a2;
   --sans: ui-sans-serif, system-ui, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
@@ -25,6 +26,7 @@
     --ev-int-bg: #163020; --ev-int-fg: #7fc89d;
     --ex-man-bg: #282344; --ex-man-fg: #b5aaed;
     --ex-aut-bg: #0f3135; --ex-aut-fg: #72c5cd;
+    --wip-bg: #332a10; --wip-fg: #d9bb66; --wip-line: #4f4119;
   }
 }
 :root[data-theme="dark"] {
@@ -38,6 +40,7 @@
   --ev-int-bg: #163020; --ev-int-fg: #7fc89d;
   --ex-man-bg: #282344; --ex-man-fg: #b5aaed;
   --ex-aut-bg: #0f3135; --ex-aut-fg: #72c5cd;
+  --wip-bg: #332a10; --wip-fg: #d9bb66; --wip-line: #4f4119;
 }
 * { box-sizing: border-box; }
 body { margin: 0 auto; padding: 3rem 1.5rem 5rem; max-width: 50rem; background: var(--bg);
@@ -70,6 +73,12 @@ nav a:hover, nav a[aria-current] { border-bottom-color: var(--ink); }
   :root:not([data-theme]) .theme-toggle .on-dark { display: inline; }
   :root:not([data-theme]) .theme-toggle .on-light { display: none; }
 }
+.wip { display: inline-block; margin-left: .6rem; font-family: var(--mono); font-size: .58rem;
+  font-weight: 500; text-transform: uppercase; letter-spacing: .12em; line-height: 1.4;
+  padding: .16rem .45rem .12rem; border: 1px solid var(--wip-line); border-radius: 2px;
+  background: var(--wip-bg); color: var(--wip-fg); white-space: nowrap;
+  vertical-align: middle; }
+h1 .wip { font-size: .68rem; margin-left: .85rem; vertical-align: .45em; }
 h2 { margin: 3rem 0 0; padding-bottom: .5rem; border-bottom: 1px solid var(--ink);
   font-family: var(--mono); font-size: .7rem; font-weight: 500; text-transform: uppercase;
   letter-spacing: .18em; }

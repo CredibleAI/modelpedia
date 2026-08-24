@@ -1,0 +1,28 @@
+id: IC-598
+title: GPT-4o's synthetic image detection accuracy drops sharply on specialized domains (satellite 45.0%,
+  medical 54.3%) compared to common image types (object 84.4%, person 84.4%)
+description: Breaking down GPT-4o's image judgment accuracy by subcategory reveals a stark gap between
+  common and specialized image types. On objects and persons, GPT-4o exceeds 84%, but on satellite imagery
+  it falls to 45.0% and on medical images to 54.3%. The paper attributes this to a lack of expert domain
+  knowledge in current LMMs, noting that performance on less-trained types like documents (60.1%) is
+  also below the overall average of 63.4%.
+models:
+- ref: model:gpt-4o
+- ref: model:qwen-2-vl
+  variant: variant:qwen2-vl-72b
+concepts: []
+sources:
+- ref: source:loki-comprehensive-synthetic-data-detection-benchmark
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4o judgment accuracy by image subcategory: overall 63.4%, scene 70.1%, animal 69.7%,
+  person 84.4%, object 84.4%, medicine 54.3%, doc 60.1%, satellite 45.0% (Table 10)'
+caveat: The paper notes that qwen2-vl-72b surpasses GPT-4o in some specialized image categories, suggesting
+  the gap is model-specific rather than universal.
+extracted_by: automatic-extraction
+related_findings:
+- IC-597
+- IC-599
+- IC-600

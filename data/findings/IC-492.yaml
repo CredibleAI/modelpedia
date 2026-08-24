@@ -1,0 +1,37 @@
+id: IC-492
+title: Least-to-most prompting consistently improves MLLM accuracy on the relationship application step
+  compared to direct answering, with GPT-4o improving from 0.9% to 6.44% on VOILA-WD
+description: Three models were compared on the third step (applying relationship) using L2M prompting
+  versus direct zero-shot answering. L2M prompting, which decomposes the task into sequential sub-problems
+  with the previous answer appended to the next, consistently outperforms direct answering across all
+  models and both datasets. The improvement is most pronounced for GPT-4o on VOILA-WD (6.44% vs. 0.9%)
+  and VOILA-ND (29.03% vs. 16.94%). A supplementary experiment shows that L2M with detailed instructions
+  slightly outperforms chain-of-thought with two examples (6.44% vs. 5.96%) for GPT-4o on the same step.
+models:
+- ref: model:gpt-4o
+- ref: model:cogvlm-2
+  variant: variant:cogvlm2-19b
+- ref: model:seed-llama-8b
+concepts: []
+sources:
+- ref: source:voila-evaluation-mllms-perceptual-understanding-analogical
+datasets: []
+methods:
+- ref: method:least-to-most-prompting
+  role: primary
+- ref: method:chain-of-thought-prompting
+  role: compared-to
+related_work:
+- ref: method:least-to-most-prompting
+  role: builds-on
+evidence_type: correlational
+key_metric: 'GPT-4o (3i): 6.44% (L2M) vs. 0.9% (direct) on VOILA-WD; 29.03% vs. 16.94% on VOILA-ND;
+  CogVLM2 (IC): 0.41% vs. 0.18% (VOILA-WD); 6.39% vs. 3.57% (VOILA-ND); Seed-LLaMA (3i): 2.99% vs. 1.35%
+  (VOILA-WD)'
+caveat: Only three models were tested in this comparison; the absolute accuracies remain very low even
+  with L2M prompting.
+extracted_by: automatic-extraction
+related_findings:
+- IC-489
+- IC-490
+- IC-491

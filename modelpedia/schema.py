@@ -21,6 +21,7 @@ LINK_FIELDS = {
     "related_work": LinkField(ANY_REGISTRY, graph_json.EDGE_CITES, inline=True),
 }
 
+CONCEPTS_FIELD = "concepts"
 MODELS_FIELD = "models"
 
 RELATED_FINDINGS_FIELD = "related_findings"

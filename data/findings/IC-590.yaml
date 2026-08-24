@@ -1,0 +1,42 @@
+id: IC-590
+title: Tuning only the identified safety neurons (SN-Tune) reduces harmful scores of instruction-tuned
+  and base models by over 90 points while preserving general capability.
+description: The authors fine-tune only the identified safety neurons (setting gradients of all other
+  parameters to zero) on 50 safety documents for 1 epoch at learning rate 1e-6. For instruction-tuned
+  models, this reduces average harmful scores from 93.5 to 3.0 (Vicuna-13b-v1.5), 65.5 to 2.0 (Llama3-8b-instruction),
+  and 70.8 to 4.5 (Mistral-7b-instruct-v0.2). For base models, it reduces scores from 98.8 to 5.3 (Llama2-7b-base),
+  100.0 to 13.5 (Llama3-8b-base), and 100.0 to 13.8 (Mistral-7b-v0.1). General capability (MMLU, ARC-C,
+  GSM8K) is largely preserved or slightly improved. Training takes only 2-4 minutes versus 23-43 minutes
+  for the Circ-Break baseline.
+models:
+- ref: model:vicuna
+  variant: variant:vicuna-13b-v1-5
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+- ref: model:llama-2
+  variant: variant:llama2-7b-base
+- ref: model:llama-3
+  variant: variant:llama-3-8b-base
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-v0-1
+concepts: []
+sources:
+- ref: source:understanding-enhancing-safety-mechanisms-llms-via
+datasets:
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:arc-challenge
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+methods: []
+related_work: []
+evidence_type: interventional
+key_metric: harmful score 93.5→3.0 (Vicuna-13b-v1.5), 65.5→2.0 (Llama3-8b-instruction), 70.8→4.5 (Mistral-7b-instruct-v0.2);
+  98.8→5.3 (Llama2-7b-base), 100.0→13.5 (Llama3-8b-base), 100.0→13.8 (Mistral-7b-v0.1); training cost
+  2-4 min vs 23-43 min for circ-break
+caveat: Evaluation uses attack success rate on Harmful Behavior testset with 4 attack methods; the safety
+  corpus is only 50 documents from Zou et al. (2024).
+extracted_by: automatic-extraction
+related_findings:
+- IC-591

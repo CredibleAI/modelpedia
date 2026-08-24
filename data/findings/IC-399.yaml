@@ -1,0 +1,35 @@
+id: IC-399
+title: Safety attention heads overlap significantly between Llama-2-7b-chat and Vicuna-7b-v1.5, indicating
+  that pre-training shapes safety capability
+description: The paper compares the top-10 safety heads identified by generalized SHIPS in Llama-2-7b-chat
+  and Vicuna-7b-v1.5, both fine-tuned from the same Llama-2-7b base. Figure 5b shows significant overlap
+  in the identified safety heads regardless of ablation method. Additionally, loading attention parameters
+  from the base model into the aligned model (a 'concatenated' model) retains safety capability close
+  to the fully aligned model, supporting that the attention mechanism's safety role derives primarily
+  from pre-training rather than alignment fine-tuning.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:vicuna
+  variant: variant:vicuna-7b-v1-5
+concepts: []
+sources:
+- ref: source:role-attention-heads-large-language-model
+datasets:
+- ref: dataset:maliciousinstruct
+  role: eval
+- ref: dataset:jailbreakbench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: Significant overlap of top-10 safety heads between Llama-2-7b-chat and Vicuna-7b-v1.5 (Figure
+  5b); concatenated model (base attention + aligned other params) retains safety close to aligned model
+  (Figure 6a)
+caveat: Both models are fine-tuned from the same base (Llama-2-7b), so overlap is expected to some degree.
+  The comparison is limited to two models from one base.
+extracted_by: automatic-extraction
+related_findings:
+- IC-398
+- IC-400
+- IC-401

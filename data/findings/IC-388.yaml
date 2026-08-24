@@ -1,0 +1,46 @@
+id: IC-388
+title: CS-Bench scores correlate strongly (p > 0.9) with math and code benchmark scores across 12 models
+description: The paper measures Pearson correlation between CS-Bench overall scores and scores on math
+  benchmarks (GSM8K, MATH) and code benchmarks (HumanEval, MBPP) for 12 models ranging from Qwen1.5-0.5b
+  to GPT-4. All four math/code correlations exceed 0.9 (GSM8K p=0.93, MATH p=0.94, HumanEval p=0.91,
+  MBPP p=0.96), while correlations with non-math/code benchmarks (GPQA, C-Eval, Tool-Use-Eval) are lower
+  (p < 0.8). This indicates that CS proficiency in LLMs is closely tied to mathematical and programming
+  abilities rather than being an independent capability.
+models:
+- ref: model:qwen-1-5
+- ref: model:llama-2
+- ref: model:mixtral-8x7b
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:cs-bench-comprehensive-benchmark-large-language
+datasets:
+- ref: dataset:cs-bench
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:humaneval
+  role: eval
+- ref: dataset:mbpp
+  role: eval
+- ref: dataset:gpqa
+  role: eval
+- ref: dataset:c-eval
+  role: eval
+- ref: dataset:chatbot-arena
+  role: eval
+methods:
+- ref: method:pearson-correlation-coefficient
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Pearson p: GSM8K 0.93, MATH 0.94, HumanEval 0.91, MBPP 0.96; non-CS benchmarks: GPQA 0.7175,
+  C-Eval 0.7983, Tool-Use-Eval 0.4019, T-Eval 0.5282'
+caveat: Correlation is measured across only 12 models, limiting statistical power. The paper notes that
+  some models (e.g., Qwen1.5-7b vs Llama2-70b) show inconsistent patterns between math/code and CS,
+  suggesting the correlation is not absolute.
+extracted_by: automatic-extraction
+related_findings:
+- IC-386
+- IC-387
+- IC-389

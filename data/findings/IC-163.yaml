@@ -1,0 +1,47 @@
+id: IC-163
+title: LLaVA-1.5, LLaVA-Next, and GPT-4V show near-zero accuracy on GUI grounding benchmarks while achieving
+  50-85 on general image grounding (RefCOCO+), indicating a failure mode specific to GUI grounding scenarios
+description: The paper evaluates multiple released MLLMs on both general image grounding (RefCOCO+)
+  and GUI-specific grounding (element grounding and action grounding on VisualWebBench, ScreenSpot,
+  RefExp). LLaVA-1.5-7B scores 50.0 on RefCOCO+ but only 0.7 on element grounding and 0.6 on ScreenSpot.
+  LLaVA-next-34B scores 84.8 on RefCOCO+ but only 1.7 on element grounding and 2.8 on ScreenSpot. GPT-4V
+  scores 16.2 on ScreenSpot and 0.2 on element grounding. The authors explicitly state that 'current
+  mllms fail to handle grounding tasks in complex gui scenarios,' identifying a reproducible condition
+  (GUI grounding in web/app interfaces) under which these models produce severely degraded output relative
+  to their general grounding capability.
+models:
+- ref: model:llava-1-5
+  variant: variant:llava-1-5-7b
+- ref: model:llava-1-5
+  variant: variant:llava-1-5-13b
+- ref: model:llava-next
+  variant: variant:llava-next-7b
+- ref: model:llava-next
+  variant: variant:llava-next-13b
+- ref: model:llava-next
+  variant: variant:llava-next-34b
+- ref: model:llava-next
+  variant: variant:llava-next-8b
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:harnessing-webpage-uis-text-rich-visual
+datasets:
+- ref: dataset:visualwebbench
+  role: eval
+- ref: dataset:screenspot
+  role: eval
+- ref: dataset:refcoco
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'LLaVA-1.5-7B: RefCOCO+ 50.0, ScreenSpot 0.6, VWB Ele-G 0.7, VWB Act-G 0.0; LLaVA-next-34B:
+  RefCOCO+ 84.8, ScreenSpot 2.8, VWB Ele-G 1.7, VWB Act-G 3.0; GPT-4V: ScreenSpot 16.2, VWB Ele-G 0.2,
+  VWB Act-G 0'
+caveat: The paper does not isolate whether the failure is due to the visual layout of GUIs, the small
+  size of target elements, or the domain shift from natural images to screenshots; it attributes the
+  gap to the models lacking GUI-specific training data.
+extracted_by: automatic-extraction

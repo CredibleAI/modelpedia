@@ -1,0 +1,43 @@
+id: IC-225
+title: ESM3 (1.4B) performs zero-shot protein conformation generation with competitive quality across
+  BPTI dynamics, conformation changing pairs, and intrinsically disordered proteins
+description: The paper evaluates the pre-trained ESM3 1.4B model in zero-shot mode (no fine-tuning)
+  for protein conformation generation using iterative decoding. On BPTI, ESM3 achieves JS-PWD 0.406,
+  JS-TIC 0.445, validity 0.800, and TM-ens 0.842, competitive with diffusion-based baselines. On conformation
+  changing pairs, it achieves global residue flexibility correlation of 0.312 (apo/holo) and 0.388 (fold-switch).
+  On 114 IDP targets from PED, it achieves MAE of 6.606/4.301 (pairwise distance) and 0.249/0.174 (contact
+  map), the best among all methods tested.
+models:
+- ref: model:esm3
+concepts: []
+sources:
+- ref: source:structure-language-models-protein-conformation-generation
+datasets:
+- ref: dataset:apo-holo-pairs
+  role: eval
+- ref: dataset:fold-switching-chakravarty-porter-2022
+  role: eval
+- ref: dataset:ped
+  role: eval
+methods: []
+related_work:
+- ref: model:alphaflow
+  role: compared-to
+- ref: model:eigenfold
+  role: compared-to
+- ref: model:str2str
+  role: compared-to
+- ref: model:esmflow
+  role: compared-to
+evidence_type: correlational
+key_metric: 'BPTI: JS-PWD 0.406, JS-TIC 0.445, JS-RG 0.561, validity 0.800, TM-ens 0.842, RMSD-ens 1.450;
+  Apo/holo: resflex r (gl.) 0.312, TM-ens 0.839/0.876; Fold-switch: resflex r (gl.) 0.388, TM-ens 0.627/0.717;
+  IDP: pairwise distance MAE 6.606/4.301, radius of gyration 4.346/2.329, contact map 0.249/0.174'
+caveat: ESM3 uses the DVAE structure tokenizer from Hayes et al. (2024) which has non-negligible reconstruction
+  error (RMSD > 0.5A) for a fraction of fold-switching and IDP targets, limiting the quality of the
+  latent representation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-226
+- IC-227
+- IC-228

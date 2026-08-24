@@ -1,0 +1,46 @@
+id: IC-310
+title: Prefilling model responses with 'sure, here is' increases safety fulfillment by 19-58%, and missing
+  prompt template tokens increases fulfillment by 8-30% for Llama-2 and Gemma but not Llama-3
+description: 'The paper ablates evaluation configuration settings on 5 models. Adding a safe or helpful
+  system prompt consistently reduces fulfillment by 2-16% across all models. Removing prompt formatting
+  tokens (e.g., [inst] for Llama-2, <start_of_turn> for Gemma) increases fulfillment by 8-30% for Llama-2-7B-chat
+  (+30%) and Gemma-7B-it (+8%), while Llama-3 models remain robust (0-2% change). Prefilling the model
+  response with ''sure, here is'' universally increases fulfillment: Llama-3-8B-instruct from 0.22 to
+  0.76 (+54%), Llama-3-70B-instruct from 0.35 to 0.84 (+48%), Llama-2-7B-chat from 0.14 to 0.62 (+48%),
+  Llama-2-70B-chat from 0.12 to 0.70 (+58%), and Gemma-7B-it from 0.18 to 0.37 (+19%).'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-70b-instruct
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-70b-chat
+- ref: model:gemma
+  variant: variant:gemma-7b-it
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:sorry-bench-systematically-evaluating-large-language
+datasets:
+- ref: dataset:sorrybench
+  role: eval
+methods:
+- ref: method:cohen-s-kappa
+  role: eval
+related_work:
+- name: Rainbow Teaming
+  anchor: https://arxiv.org/abs/2402.16822
+  role: context
+evidence_type: correlational
+key_metric: 'prefilling ''sure, here is'': Llama-3-8B-instruct 0.22→0.76, Llama-3-70B-instruct 0.35→0.84,
+  Llama-2-7B-chat 0.14→0.62, Llama-2-70B-chat 0.12→0.70, Gemma-7B-it 0.18→0.37; incorrect template:
+  Llama-2-7B-chat 0.14→0.44, Gemma-7B-it 0.18→0.26'
+caveat: Only 5 models were tested for evaluation configuration ablations. The prefilling experiment
+  uses a single affirmative prefix; other prefilling strategies may have different effects.
+extracted_by: automatic-extraction
+related_findings:
+- IC-307
+- IC-308
+- IC-309

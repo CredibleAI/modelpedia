@@ -1,0 +1,32 @@
+id: IC-367
+title: Sparsifying initial tokens of the prefill phase causes disproportionate degradation in Llama-3-8B
+  due to attention sink behavior
+description: When varying the proportion of prefill tokens sparsified along the sequence dimension,
+  the paper finds that sparsifying the second half of prefill is nearly identical to sparsifying 99%
+  of prefill (all tokens except the initial ones). However, including the initial tokens in sparsification
+  causes substantially more perplexity degradation. The authors attribute this to the attention sink
+  phenomenon, where initial tokens receive outsized attention due to the softmax operation, making their
+  keys and values disproportionately important to the model's output.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:training-free-activation-sparsity-large-language
+datasets:
+- ref: dataset:wikitext
+  role: eval
+methods: []
+related_work:
+- name: Attention sinks (Xiao et al., 2024)
+  anchor: https://arxiv.org/abs/2309.17453
+  role: context
+evidence_type: correlational
+caveat: TEAL is primarily a decoding solution, so this is a caveat for evaluation on log-likelihood-based
+  tasks rather than a limitation in the intended use case.
+extracted_by: automatic-extraction
+related_findings:
+- IC-364
+- IC-365
+- IC-366

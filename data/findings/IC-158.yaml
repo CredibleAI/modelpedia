@@ -1,0 +1,30 @@
+id: IC-158
+title: Fine-tuning LLaVA-Med on MediConfusion training pairs cannot achieve 100% training accuracy,
+  indicating the vision encoder's embeddings are fundamentally ambiguous for the confusing pairs
+description: The authors fine-tune LLaVA-Med (language model and multimodal adapter, vision encoder
+  frozen) on 84 training pairs from MediConfusion for up to 1000 epochs. The model fails to reach 100%
+  set accuracy on the training set even after extensive training, which the authors interpret as evidence
+  that the BiomedCLIP vision encoder produces embeddings too similar for the confusing pairs to be distinguished
+  by any language model. On the held-out test split, set accuracy improves from 0% to approximately
+  20%, but this is still well below the 25% random baseline, showing the learned format does not generalize.
+  The authors conclude that MediConfusion can only be solved by improving the vision encoder directly.
+models:
+- ref: model:llava-med
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:mediconfusion-you-trust-your-ai-radiologist
+datasets: []
+methods: []
+related_work: []
+evidence_type: interventional
+key_metric: Training set accuracy does not reach 100% even after 1000 epochs. Test set accuracy increases
+  from 0% to ~20% (below 25% random baseline).
+caveat: Only LLaVA-Med was fine-tuned; the result may not generalize to other MLLMs with different vision
+  encoders. The vision encoder was kept frozen, so the experiment specifically isolates the encoder's
+  limitation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-155
+- IC-156
+- IC-157

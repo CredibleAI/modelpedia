@@ -1,0 +1,26 @@
+id: IC-321
+title: GPT-4o selects evaluation dimensions with high precision but low recall, indicating a selective
+  rather than comprehensive strategy
+description: On the dimension selection task (choosing relevant dimensions from a fixed set of 42 for
+  a given scenario), GPT-4o achieves 63.42% precision but only 38.10% recall on the in-domain MD-Eval
+  set. The authors describe this as 'a more selective (and less comprehensive) subset of dimensions.'
+  On the out-of-domain AutoJ Eval set, GPT-4o's win rate against SAMER is 48.15%, below 50%. Most other
+  baselines fail to exceed 50% precision and 40% recall, but GPT-4o's particular precision-recall profile
+  is singled out.
+models:
+- ref: model:gpt-4o
+concepts: []
+sources:
+- ref: source:samer-scenario-aware-multi-dimensional-evaluator
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: precision 63.42%, recall 38.10% (ID, MD-Eval); win rate 48.15% (OOD, AutoJ Eval) on dimension
+  selection task
+caveat: The 42-dimension taxonomy is defined by the authors for their own framework; GPT-4o is being
+  asked to select from a non-standard set of dimensions. The task is specific to this paper's evaluation
+  paradigm.
+extracted_by: automatic-extraction
+related_findings:
+- IC-320

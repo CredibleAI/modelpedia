@@ -1,0 +1,39 @@
+id: IC-359
+title: Mistral 7B and Llama 3 8B causally use circular subspaces to compute modular arithmetic on days
+  of the week and months of the year
+description: 'Using a custom subspace patching technique, the authors intervene on the circular subspace
+  of the hidden state at the α token (the day or month being added to). Across all layers, early-layer
+  interventions on the circular subspace achieve almost the same logit-difference effect as patching
+  the entire layer, and outperform patching only the top 5 PCA dimensions. The SAE-discovered plane
+  is more robust to layer shifts: using the layer-8 SAE probe on layer 6 gives an average logit difference
+  of -2.32, versus 0.029 for a manually trained layer-8 circular probe. Off-distribution grid interventions
+  confirm the angle encodes α.'
+models:
+- ref: model:mistral-7b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts:
+- ref: concept:circular-representation
+sources:
+- ref: source:not-all-language-model-features-one
+datasets: []
+methods:
+- ref: method:activation-patching
+  role: primary
+- ref: method:sparse-autoencoder
+  role: supporting
+related_work:
+- name: 'Towards best practices of activation patching in language models: metrics and methods'
+  anchor: https://arxiv.org/abs/2309.16042
+  role: builds-on
+evidence_type: interventional
+key_metric: 'Llama 3 8B: 29/49 weekdays, 143/144 months; Mistral 7B: 31/49 weekdays, 125/144 months;
+  SAE probe on layer 8: -2.01 avg logit diff vs circular probe: -2.58; SAE probe on layer 6: -2.32 vs
+  circular probe on layer 6: 0.029'
+caveat: Interventions drop off at layers 15-17 where α is copied to the final token. The authors note
+  the circular probe was trained on a specific prompt distribution.
+extracted_by: automatic-extraction
+related_findings:
+- IC-358
+- IC-360
+- IC-361

@@ -1,0 +1,38 @@
+id: IC-593
+title: The L2 norms of attention heads in Mistral-7B-Instruct and LLaMA-2-7B correlate with truthfulness,
+  spiking by up to 83% at token positions of factual proposition completions and pertinent factual associations,
+  and this correlation is specific to multi-headed attention representations rather than query, key,
+  value, output, or FFN norms.
+description: 'The paper measures the L2 norm of each attention head at the final sequence position and
+  finds that certain heads (voters) show reliable norm increases of up to 83% when the sequence contains
+  a true factual proposition, even in the presence of misleading context. Two functional types emerge:
+  type-1 voters attend to structural elements (periods, end tokens) and type-2 voters attend to token-level
+  factual associations. A comparison of L2 norms from different hidden states (query, key, value, output
+  projection, FFN1, FFN2) on Mistral-7B-Instruct shows that multi-headed attention head norms outperform
+  all other representations, with head norms scoring 78.09 on TruthfulQA versus 64.38 for value norms
+  and 47.25 for FFN1 norms. The paper attributes this to the output projection fusing truth-encoding
+  and non-truth heads, and to the 32x higher dimensionality of post-projection representations.'
+models:
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:novo-norm-voting-off-hallucinations-attention
+datasets:
+- ref: dataset:truthfulqa
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Norm spike up to 83% at factual proposition positions; TruthfulQA accuracy by hidden state
+  on Mistral-7B-Instruct: head 78.09, query 71.60, key 66.46, value 64.38, out 60.47, ffn1 47.25, ffn2
+  48.10'
+caveat: The correlation direction (higher norm = more true, or vice versa) varies per head and must
+  be determined empirically. The L2 norm is unbounded and the correlation is not assumed a priori.
+extracted_by: automatic-extraction
+related_findings:
+- IC-592
+- IC-594

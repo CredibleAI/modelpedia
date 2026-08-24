@@ -1,0 +1,37 @@
+id: IC-525
+title: GPT-2 small's residual stream at layer 8 decomposes into two sub-spaces of approximately 25%
+  and 75% of the dimensionality
+description: By training a sparse autoencoder on GPT-2 small's layer 8 post-MLP residual stream and
+  performing SVD on the learned encoding matrix, the authors find that the residual stream is composed
+  of two distinct linear sub-spaces. Approximately 25% of the autoencoder latents project primarily
+  onto a sub-space spanning 25% of the dimensions, while the remaining 75% project onto the complementary
+  75%. Latents in the smaller sub-space have larger encoder norms and activate on fewer vocabulary tokens
+  (less than 100 effective tokens) compared to the larger sub-space (up to 1000 effective tokens). The
+  separation is revealed by ordering singular vectors via a 1D UMAP embedding of pairwise distances
+  between normalized left singular vectors.
+models:
+- ref: model:gpt-2
+concepts: []
+sources:
+- ref: source:scaling-evaluating-sparse-autoencoders
+datasets: []
+methods:
+- ref: method:umap
+  role: primary
+- ref: method:sparse-autoencoder
+  role: supporting
+related_work:
+- name: Elhage et al. 2022 (Toy models of superposition)
+  anchor: https://arxiv.org/abs/2209.10652
+  role: context
+evidence_type: observational
+key_metric: '"about 25% of latents mostly project on a sub-space using 25% of dimensions"; smaller cluster
+  activates on "less than 100" effective vocabulary tokens, larger cluster "up to 1000"'
+caveat: The sub-space separation is 'fuzzily' defined; the authors note that the difference in encoder
+  norm between clusters 'can significantly guide the svd to separate these two sub-spaces,' suggesting
+  the separation may be partly an artefact of the SVD decomposition rather than a hard boundary in the
+  model.
+extracted_by: automatic-extraction
+related_findings:
+- IC-526
+- IC-527

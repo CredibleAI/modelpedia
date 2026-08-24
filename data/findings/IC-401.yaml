@@ -1,0 +1,56 @@
+id: IC-401
+title: Ablating safety attention heads minimally degrades helpfulness on zero-shot tasks and also impairs
+  course-correction capability in Llama-2-7b-chat
+description: After ablating safety heads, the paper evaluates Llama-2-7b-chat on five zero-shot tasks
+  (BoolQ, RTE, Winogrande, ARC Challenge, OpenBookQA) using lm-eval. Zero-shot task scores remain comparable
+  to or higher than those after SparseGPT or Wanda pruning, indicating safety is separable from general
+  helpfulness. Additionally, Table 7 shows that ablating safety heads increases ASR even when using
+  an affirmative jailbreak prefix ('sure, here is'), with ASR rising from 0.35 to 0.68 (AdvBench), 0.47
+  to 0.76 (JailbreakBench), and 0.35 to 0.75 (Malicious Instruct) under undifferentiated attention,
+  suggesting these heads also mediate the model's course-correction ability.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+concepts: []
+sources:
+- ref: source:role-attention-heads-large-language-model
+datasets:
+- ref: dataset:boolq
+  role: eval
+- ref: dataset:rte
+  role: eval
+- ref: dataset:winogrande
+  role: eval
+- ref: dataset:arc-challenge
+  role: eval
+- ref: dataset:openbookqa
+  role: eval
+- ref: dataset:advbench
+  role: eval
+- ref: dataset:jailbreakbench
+  role: eval
+- ref: dataset:maliciousinstruct
+  role: eval
+methods:
+- ref: method:lm-eval
+  role: eval
+- ref: method:sparsegpt
+  role: compared-to
+- ref: method:wanda
+  role: compared-to
+related_work:
+- ref: method:sparsegpt
+  role: compared-to
+- ref: method:wanda
+  role: compared-to
+evidence_type: interventional
+key_metric: 'Course-correction ASR (undifferentiated attention): 0.35 to 0.68 (AdvBench), 0.47 to 0.76
+  (JailbreakBench), 0.35 to 0.75 (Malicious Instruct); zero-shot scores after ablation comparable to
+  SparseGPT/Wanda pruning (Figure 6b)'
+caveat: Helpfulness evaluation uses only five zero-shot tasks. The course-correction evaluation uses
+  a specific affirmative prefix ('sure, here is') as a simple jailbreak method.
+extracted_by: automatic-extraction
+related_findings:
+- IC-398
+- IC-399
+- IC-400

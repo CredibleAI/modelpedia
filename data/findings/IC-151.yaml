@@ -1,0 +1,41 @@
+id: IC-151
+title: Each CLIP neuron's second-order effect is approximately a single linear direction in the joint
+  text-image space, significant for fewer than 2% of images
+description: 'The paper shows that the second-order effect of any individual neuron can be well approximated
+  by one direction vector in CLIP''s shared text-image representation space, scaled by an image-dependent
+  coefficient. Replacing each neuron''s full second-order contribution with this rank-1 approximation
+  causes negligible accuracy loss on ImageNet. The effect is also highly selective: for each neuron,
+  the contribution is large in norm for only about 2% of validation images; ablating the effect on the
+  remaining 98% of images has no measurable impact. Sparse coding of the direction into text representations
+  recovers the neuron''s function with 128 descriptions.'
+models:
+- ref: model:clip
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:interpreting-second-order-effects-neurons-clip
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:imagenet-r
+  role: eval
+methods:
+- ref: method:mean-ablation
+  role: primary
+- ref: method:orthogonal-matching-pursuit
+  role: primary
+related_work:
+- name: Gandelsman et al. 2024 (TextSpan)
+  anchor: https://openreview.net/forum?id=5ca9sszudp
+  role: builds-on
+evidence_type: interventional
+key_metric: 'Second-order effect significant for < 2% of images. First PC explains 48.2% of variance
+  (Table 1). Reconstruction from PC #1 yields negligible accuracy drop from baseline (Figure 3). 128
+  text descriptions per neuron approach original classification accuracy (Figure 4).'
+caveat: The rank-1 approximation is computed from ~5000 ImageNet training images; the paper notes the
+  same behavior holds for ViT-L/14 and ImageNet-R but does not quantify the approximation error beyond
+  the accuracy drop.
+extracted_by: automatic-extraction
+related_findings:
+- IC-150
+- IC-152

@@ -1,0 +1,49 @@
+id: IC-074
+title: Released LLMs achieve F1 plan scores between 42.7 and 86.7 on the T-Eval plan task
+description: 'The paper reports F1 scores on the T-Eval plan task for a range of released models to
+  contextualise WorkflowLlama''s out-of-distribution generalisation. Proprietary models lead: GPT-4
+  scores 86.7, GPT-3.5 scores 86.6, Claude 2 scores 84.9. Open-source models range from Qwen-72B at
+  73.4 down to WizardLM-70B at 42.7. Llama-3.1-8B scores 68.2, Llama-2-70B scores 63.1, and Mistral-7B
+  scores 64.9.'
+models:
+- ref: model:gpt-3-5
+- ref: model:gpt-4
+- ref: model:qwen
+  variant: variant:qwen-7b
+- ref: model:mistral-7b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:qwen
+  variant: variant:qwen-14b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:vicuna
+  variant: variant:vicuna-13b
+- ref: model:baichuan2-13b
+- ref: model:wizardlm
+  variant: variant:wizardlm-70b
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:qwen-1-5
+  variant: variant:qwen-72b
+concepts: []
+sources:
+- ref: source:workflowllm-enhancing-workflow-orchestration-capability-large
+datasets:
+- ref: dataset:t-eval
+  role: eval
+methods:
+- ref: method:f1-score
+  role: eval
+related_work:
+- ref: dataset:t-eval
+  role: context
+evidence_type: correlational
+key_metric: 'F1: GPT-4 86.7, GPT-3.5 86.6, Claude 2 84.9, Qwen-72B 73.4, Llama-3.1-8B 68.2, Llama-2-70B
+  63.1, Mistral-7B 64.9, WizardLM-70B 42.7'
+caveat: Scores for baseline models may be taken from the original T-Eval paper rather than re-run by
+  the authors; only WorkflowLlama was retrained and re-evaluated on the transformed T-Eval format.
+extracted_by: automatic-extraction
+related_findings:
+- IC-073
+- IC-075

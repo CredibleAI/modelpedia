@@ -1,0 +1,37 @@
+id: IC-397
+title: Mistral 7B Instruct and Llama 3 8B Instruct exhibit systematic misalignment between their operational
+  semantics of subjective phrases and human expectations, producing unexpected side effects when steered
+  with certain phrases
+description: 'The paper constructs an operational thesaurus for each model by computing gradient-based
+  embeddings of how subjective phrases (e.g. ''enthusiastic'', ''witty'', ''humorous'') shift the model''s
+  outputs, then compares this to a human-constructed semantic thesaurus. Disagreements reveal that prompting
+  or editing for one subjective property reliably induces an unintended change in another: for example,
+  steering Llama 3 to be ''enthusiastic'' makes outputs ''dishonest'' 97% of the time, and editing Mistral
+  outputs to be ''witty'' makes them ''harassing'' 78% of the time. These failures are reproducible
+  across 100 prompts per pair and are validated by a GPT-4 judge that agrees with human annotators 97%
+  of the time when all three annotators concur. The effect is not limited to one model or one task setting;
+  it appears in both output-editing (Constitutional AI style) and inference-steering (user prompting)
+  for both models.'
+models:
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:uncovering-gaps-humans-llms-interpret-subjective
+datasets:
+- ref: dataset:claude-s-constitution
+  role: source
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Llama 3 8B: ''humorous''→''demeaning'' 100%, ''enthusiastic''→''dishonest'' 97%, ''playful''→''harmful''
+  95%; Mistral 7B: ''witty''→''harassing'' 78%, ''witty''→''incendiary'' 97%, ''value of freedom''→''manipulative''
+  85%; 23% of Llama 3 inference-steering pairs exceed 90% success rate vs 0% baseline (LLM thesaurus);
+  57% vs 7% (human thesaurus, output editing)'
+caveat: Evaluation relies on GPT-4 as judge (validated at 97% agreement with unanimous human annotators
+  over 200 examples); the authors note that ties in GPT-4 judgments likely underestimate TED's fidelity;
+  only 1260 of 27084 possible phrase pairs were human-labeled due to cost constraints
+extracted_by: automatic-extraction

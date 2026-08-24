@@ -1,0 +1,43 @@
+id: IC-601
+title: Lightweight LLMs exhibit high judgment uncertainty (disagreement ratio exceeding 50% for Qwen2-1.5B)
+  when making repeated binary checklist evaluations, with uncertainty increasing as model size decreases
+description: The paper measures the ratio of disagreement across repeated samplings of binary yes/no
+  judgments on WildBench checklist items for five released LLMs. When asked to judge whether a response
+  satisfies a specific criterion, the models produce inconsistent answers across samplings. Qwen2-1.5B
+  shows a disagreement ratio exceeding 50% across 3 sampling results, while larger models like Llama-3-70B
+  show much lower disagreement. The paper identifies a clear correlation between model size and consistency,
+  with smaller models tending to produce higher inconsistency. This high uncertainty is identified as
+  a primary reason why lightweight LLMs fail as reliable judges in chain-of-thought evaluation settings.
+models:
+- ref: model:qwen-2
+  variant: variant:qwen2-1-5b
+- ref: model:qwen-2
+  variant: variant:qwen-2-7b
+- ref: model:qwen-2
+  variant: variant:qwen-2-72b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+concepts:
+- ref: concept:failure-mode
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:rocketeval-efficient-automated-llm-evaluation-via
+datasets:
+- ref: dataset:wildbench
+  role: eval
+methods: []
+related_work:
+- ref: dataset:mt-bench
+  role: context
+- ref: dataset:wildbench
+  role: context
+evidence_type: correlational
+key_metric: Qwen2-1.5B disagreement ratio exceeding 50% across 3 sampling results; Llama-3-70B shows
+  lowest disagreement across 7 samplings
+caveat: Measured only on WildBench checklist items (binary yes/no questions); the paper does not quantify
+  the exact disagreement ratio for each model in the text, only describing the trend in Figure 4.
+extracted_by: automatic-extraction
+related_findings:
+- IC-602

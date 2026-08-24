@@ -1,0 +1,52 @@
+id: IC-348
+title: Sequential parameter-modifying editing causes progressive degradation of general abilities in
+  GPT-2 XL, Llama-2 7B, and Llama-3 8B, driven by growth in the condition number of the edited matrix
+description: The paper applies rome, memit, and mend sequentially (up to 300 edits) to three released
+  LLMs and measures downstream task performance (reasoning, summarization, open-domain QA, NLI) and
+  editing metrics (efficacy, generalization, locality) after each batch of edits. The condition number
+  of the edited MLP matrix grows rapidly with edit count, and this growth tracks the decline in general
+  abilities. MEND degrades after only ~20 edits, while rome and memit degrade after ~100+ edits. The
+  maximum singular value of the cumulative edit update matrix grows from 7.25 to 57.61 (rome) and 7.46
+  to 935 (memit) over 200 edits.
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl
+- ref: model:llama-2
+- ref: model:llama-3
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:perturbation-restrained-sequential-model-editing
+datasets:
+- ref: dataset:zsre
+  role: eval
+- ref: dataset:counterfact
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:samsum
+  role: eval
+- ref: dataset:natural-questions
+  role: eval
+- ref: dataset:rte
+  role: eval
+methods:
+- ref: method:rome
+  role: primary
+- ref: method:memit
+  role: primary
+- ref: method:mend
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Max singular value of sum of edit update matrices (Table 1): rome 7.25 (10 edits) to 57.61
+  (200 edits); memit 7.46 to 935; mend 14.08 to 191.04. ''with 300 edits, memit''s performance on gpt2-xl
+  remained largely unchanged, whereas it dwindled to nearly 0 on llama-2 and llama-3''. ''the mend method
+  exhibited significant performance degradation after just 20 sequential edits''.'
+caveat: The paper focuses on single-fact-at-a-time editing; batch editing is left as future work. Experiments
+  on ZSRE were conducted only on Llama-2 due to compute limitations. The condition number analysis assumes
+  a single layer is modified.
+extracted_by: automatic-extraction
+related_findings:
+- IC-349
+- IC-350

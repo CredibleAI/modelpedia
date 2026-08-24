@@ -1,0 +1,44 @@
+id: IC-410
+title: Knowledge editing can degrade generalization performance below pre-edit levels in Llama2-7B,
+  Llama3-8B, and Mistral-v0.3-7B
+description: 'After applying knowledge editing, the models'' ability to answer different formulations
+  of the same question (rephrased, yes/no, multi-choice, reversed) can actually drop below the pre-edit
+  level. GRACE degrades generalization across all question types, and FT-L and LoRA degrade on some
+  types. Higher efficacy scores do not correlate with higher generalization scores: GRACE nearly tops
+  efficacy but largely degrades generalization. All editing methods except ICE only slightly improve
+  or negatively impact generalization.'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:mistral-7b
+  variant: variant:mistral-v0-3-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:knowledge-editing-really-correct-hallucinations
+datasets: []
+methods:
+- ref: method:rome
+  role: primary
+- ref: method:memit
+  role: primary
+- ref: method:lora
+  role: primary
+- ref: method:ice
+  role: primary
+- ref: method:grace
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: post-edit generalization scores could even be lower than pre-edit scores for the same llm
+  and question type; grace degrades across all question types; all editing methods except ice only slightly
+  improve or negatively impact generalization
+caveat: The manifestation of hallucination depends on question design; pre-edit generalization scores
+  are not 0% for each question type.
+extracted_by: automatic-extraction
+related_findings:
+- IC-409
+- IC-411
+- IC-412

@@ -1,0 +1,55 @@
+id: IC-443
+title: Model inconsistency on probing questions negatively correlates with skill-slice accuracy (r =
+  -0.675), with models contradicting themselves more often on skills where they perform poorly
+description: The paper generates 20 probing questions per skill targeting a single skill in isolation,
+  obtains 5 responses per probe per model, and measures the rate of self-contradiction. Across three
+  sets of 20 skills (lowest, median, highest slice accuracy), models contradict themselves at significantly
+  higher rates for low-accuracy skills. The overall Pearson correlation between probe inconsistency
+  rate and skill-slice accuracy is r = -0.675. Skills where all models contradict themselves more often
+  than not include musical note identification, eye direction analysis, and enumerating objects.
+models:
+- ref: model:gpt-4o
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+concepts: []
+sources:
+- ref: source:unearthing-skill-level-insights-understanding-trade
+datasets:
+- ref: dataset:mmlu-pro
+  role: eval
+- ref: dataset:mmmu
+  role: eval
+- ref: dataset:mathvista
+  role: eval
+- ref: dataset:mmc
+  role: eval
+- ref: dataset:mmvp
+  role: eval
+- ref: dataset:mmbench
+  role: eval
+- ref: dataset:mmt-bench
+  role: eval
+- ref: dataset:mme
+  role: eval
+- ref: dataset:mm-vet
+  role: eval
+- ref: dataset:seed-bench
+  role: eval
+- ref: dataset:vibe-eval
+  role: eval
+methods: []
+related_work:
+- name: Wang et al. 2023 (self-consistency)
+  anchor: https://openreview.net/forum?id=1pl1nimmrw
+  role: builds-on
+evidence_type: correlational
+key_metric: r = -0.675 correlation between probe inconsistency rate and skill-slice accuracy
+caveat: Probe inconsistency rate can only be a factor of 0.05 since the implementation checks 20 claims
+  per probed skill, limiting the resolution of the correlation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-440
+- IC-441
+- IC-442

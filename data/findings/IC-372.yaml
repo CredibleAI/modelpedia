@@ -1,0 +1,45 @@
+id: IC-372
+title: Language models universally decompose retrieval tasks into request processing in middle layers
+  and entity retrieval in late layers at the last token position
+description: 'Using residual stream patching (a single-input interchange intervention on the residual
+  stream at the last token position), the authors show that across 18 open-source LMs from 125M to 70B
+  parameters and 6 task domains, patching the residual stream at middle layers causes the model to output
+  the request from one input applied to the context of another (request-patching). This reveals a modular
+  decomposition: early layers are undisturbed, middle layers encode the request, and late layers perform
+  the retrieval. The phenomenon is robust across model families, task types, and prompt templates, with
+  98 of 106 model-task pairs showing at least 70% normalized probability of the cross-combined label
+  token.'
+models:
+- ref: model:gpt-2
+- ref: model:pythia
+- ref: model:falcon
+- ref: model:llama-2
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:look-before-you-leap-universal-emergent
+datasets:
+- ref: dataset:orion
+  role: eval
+methods:
+- ref: method:residual-stream-patching
+  role: primary
+- ref: method:interchange-intervention
+  role: supporting
+related_work:
+- name: Geva et al. (factual recall)
+  anchor: https://arxiv.org/abs/2304.14767
+  role: compared-to
+- name: Olsson et al. (induction heads)
+  anchor: https://arxiv.org/abs/2209.11895
+  role: compared-to
+evidence_type: interventional
+key_metric: 98 out of 106 pairs of tasks and models demonstrate request-patching with at least 70% normalized
+  probability of r1(c2); l2 (peak request-patching layer) in middle layers; for Llama 2 70B, l2 concentrated
+  in layers 39-43 across all tasks; normalized IIA > 85% in 91 out of 106 settings
+caveat: The phenomenon is absent in the abstract induction task on large models, hypothesised to be
+  due to increased model width and task simplicity. The 80% threshold for defining l1 and l3 is arbitrary.
+extracted_by: automatic-extraction
+related_findings:
+- IC-373
+- IC-374

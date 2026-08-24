@@ -1,0 +1,34 @@
+id: IC-187
+title: Latent memorized sequences in Pythia-1B and Amber-7B can be recovered by adding random Gaussian
+  noise of magnitude 2×10⁻³ to model weights, while un-memorized and unseen sequences cannot
+description: For sequences that were un-memorized (KL-LD > 50) at checkpoint 10k but memorized (KL-LD
+  < 10) at a later checkpoint, the authors add Gaussian noise (magnitude 2×10⁻³) to each weight parameter
+  and repeat 200 times, selecting the perturbation yielding the lowest KL-LD. This recovers the latent
+  memories, and the resulting distribution matches that of the later checkpoint. In contrast, sequences
+  never memorized and sequences not yet seen by the model cannot be recovered by perturbation. As a
+  control, sampling at four different temperatures (200 samples each) fails to recover the latent memories.
+  Additionally, latent memorized sequences exhibit significantly lower cross-entropy loss than un-memorized
+  or unseen sequences, providing a diagnostic.
+models:
+- ref: model:pythia
+  variant: variant:pythia-1b
+- ref: model:amber-7b
+concepts: []
+sources:
+- ref: source:uncovering-latent-memories-large-language-models
+datasets:
+- ref: dataset:the-pile
+  role: source
+methods: []
+related_work: []
+evidence_type: interventional
+key_metric: Gaussian noise magnitude 2 × 10⁻³, 200 perturbations; latent sequences un-memorized at 10k
+  (KL-LD > 50) but memorized at 19k (KL-LD < 10) are recovered; sampling at 4 temperatures with 200
+  samples each fails to recover
+caveat: The perturbation magnitude (2×10⁻³) was chosen by the authors; the paper notes further testing
+  across other frontier models is required and the mechanistic explanation for why training acts as
+  random noise with respect to memorized sequences requires further study.
+extracted_by: automatic-extraction
+related_findings:
+- IC-185
+- IC-186

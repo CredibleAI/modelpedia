@@ -1,0 +1,33 @@
+id: IC-333
+title: Llama-3-405B overexplains math solutions with structured markdown headings and conversational
+  tone compared to GPT-4o's concise formal notation, achieving 97% model-matching accuracy
+description: On the MATH dataset with chain-of-thought prompting, VibeCheck compares GPT-4o and Llama-3-405B
+  on questions where both answered correctly. Llama-3-405B organizes responses under markdown headings
+  (e.g., '## Step 1'), adopts a conversational tone, and includes overly detailed step-by-step explanations
+  with repetition. GPT-4o uses flowing narrative, formal tone, and frequent LaTeX/MathML notation. The
+  top vibes (explanation detail sep 0.90, structural formatting sep 0.70, conciseness sep 0.51) achieve
+  97.09% model-matching accuracy and 72.79% preference-prediction accuracy. GPT-4o is favored in 76%
+  of conversations.
+models:
+- ref: model:gpt-4o
+- ref: model:llama-3
+  variant: variant:llama-3-405b
+concepts: []
+sources:
+- ref: source:vibecheck-discover-quantify-qualitative-differences-large
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: 'Model matching accuracy 97.09%; preference prediction accuracy 72.79%; GPT-4o win rate
+  76%; separability scores: explanation and step-by-step detail 0.90, structural formatting 0.70, conciseness
+  0.51, efficiency of steps 0.42, mathematical notation use 0.33'
+caveat: VibeCheck was run only on questions where both models answered correctly to reduce variance
+  from incorrect examples. Only 5 vibes were found because the reduction step identified only 5 distinct
+  vibes that could almost perfectly separate model outputs.
+extracted_by: automatic-extraction
+related_findings:
+- IC-332
+- IC-334

@@ -1,0 +1,33 @@
+id: IC-393
+title: GPT-4-turbo, Llama-3.1-8B-Instruct, and OpenAI Moderation show declining hate speech detection
+  accuracy as sentence implicitness increases, with very low success rates in the highest implicitness
+  ranges
+description: The authors divided samples from three hate speech datasets (Toxigen, DGSHD, Adversarial)
+  into eight bins by impscore implicitness score and evaluated three released systems in a zero-shot
+  binary classification task. Detection accuracy drops consistently as implicitness increases across
+  all three systems on Toxigen and DGSHD. On the Adversarial dataset, GPT-4-turbo and Llama-3.1-8B-Instruct
+  show a partial recovery in the top bin [1.75, 2], which the authors attribute to very similar samples
+  reducing diversity. The authors note this degradation is 'statistically undiscovered in the past and
+  also overlooked by the high average benchmark performances.'
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:openai-moderation
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:impscore-learnable-metric-quantifying-implicitness-level
+datasets:
+- ref: dataset:toxigen
+  role: eval
+- ref: dataset:dgshd
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: Implicitness levels are determined by the authors' own impscore metric; on the Adversarial dataset
+  the top-bin recovery for GPT-4-turbo and Llama-3.1-8B-Instruct is attributed to sample similarity
+  rather than genuine capability, potentially biasing results.
+extracted_by: automatic-extraction

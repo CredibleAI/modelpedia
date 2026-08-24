@@ -1,0 +1,34 @@
+id: IC-268
+title: ESM-2 and ProGen-2 zero-shot fitness prediction follows an inverted U-shape as a function of
+  wild type sequence likelihood, with both under- and over-preferred sequences degrading performance
+description: Across 217 deep mutational scan studies from ProteinGym, the pseudo log likelihood (PLL)
+  of the wild type sequence predicts the Spearman correlation of zero-shot mutation effect predictions
+  for both ESM-2 and ProGen-2 at multiple scales. Performance improves as likelihood increases from
+  very low values, but degrades again at very high likelihoods, producing a concave-down parabola. This
+  effect is most pronounced in larger models (ESM-2 15B, ProGen-2 XL), where sequences with probabilities
+  near 1 show the greatest degradation. Additionally, the explanatory power of likelihood for performance
+  decreases as model size increases, an inverse scaling law.
+models:
+- ref: model:esm-2
+- ref: model:progen-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:protein-language-model-fitness-matter-preference
+datasets:
+- ref: dataset:proteingym
+  role: eval
+methods:
+- ref: method:spearman-correlation
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: Second-order polynomial regression on PLL vs DMS Spearman yields concave-down parabola for
+  all model sizes; ESM-2 performance degrades past 650M parameters on ProteinGym task averages; effect
+  magnified for sequences with probabilities near 1 (log scale 0) in ESM-2 15B and ProGen-2 XL
+caveat: The linear additivity assumption of the log-odds-ratio fitness metric cannot model epistatic
+  interactions, and mutants must be identical in length to the wild type.
+extracted_by: automatic-extraction
+related_findings:
+- IC-269
+- IC-270

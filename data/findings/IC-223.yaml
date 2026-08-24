@@ -1,0 +1,34 @@
+id: IC-223
+title: GPT-4o ReAct shows poor recovery from failures in asynchronous settings, with 58.6% of failed
+  runs making little to no progress toward the goal and significantly higher repeated transitions than
+  in synchronous settings
+description: The paper measures the normalised steps-to-go at the end of failed GPT-4o ReAct runs. In
+  the asynchronous dataset, 58.6% of failures fall in the (0.5, 1.0] bucket, meaning the agent made
+  little to no progress toward the goal before running out of steps. In the synchronous dataset, 41.5%
+  fall in the same bucket, while 45.3% fall in (1.0, ∞), meaning the agent moved away from the goal.
+  The histogram of repeated transitions shows that the lower and upper quartiles for async failures
+  are 103.1% and 55.8% larger than for sync failures, indicating the agent gets stuck in loops more
+  often in the async setting. A recovery annotation shows only 40.4% of async transition failures recover,
+  versus 58.8% in sync.
+models:
+- ref: model:gpt-4o
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:robotouille-asynchronous-planning-benchmark-llm-agents
+datasets: []
+methods:
+- ref: method:react
+  role: primary
+related_work: []
+evidence_type: observational
+key_metric: '58.6% of async failures in (0.5, 1.0] steps-to-go bucket; 41.5% sync in same bucket; 45.3%
+  sync in (1.0, ∞); async quartiles 103.1% and 55.8% larger than sync; recovery rate: 40.4% async vs
+  58.8% sync'
+caveat: Repeated transitions are used as a proxy for recovery effectiveness; the step limit is 1.5×
+  optimal, so some 'failures' may be near-misses.
+extracted_by: automatic-extraction
+related_findings:
+- IC-221
+- IC-222
+- IC-224

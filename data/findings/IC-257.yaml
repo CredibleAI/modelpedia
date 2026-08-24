@@ -1,0 +1,41 @@
+id: IC-257
+title: 327 DNNs approach or exceed human accuracy on object depth order but are near chance on VPT-basic,
+  while humans show the opposite pattern
+description: 'The paper linearly probed or text-prompted 327 released DNNs on the 3D-PC benchmark. On
+  the depth order task, 15 DNNs fell within the human accuracy confidence interval and 3 outperformed
+  humans (74.73%). On VPT-basic, the best DNN (BEiT trained on ImageNet-21k) reached only 53.82% accuracy,
+  while humans scored 86.82%. Commercial VLMs were at chance: ChatGPT4 52%, Gemini 52%, Claude 3 50%.
+  The pattern is inverted relative to humans, for whom VPT-basic is easier than depth order.'
+models:
+- ref: model:beit
+- ref: model:gpt-4
+- ref: model:gemini
+- ref: model:claude-3
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-2-0
+- ref: model:mae
+- ref: model:dinov2
+- ref: model:sam
+- ref: model:midas
+- ref: model:depth-anything
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:pc-benchmark-visual-perspective-taking-3d
+datasets:
+- ref: dataset:co3d
+  role: source
+methods:
+- ref: method:linear-probing
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: Human depth order 74.73%, human VPT-basic 86.82%; best DNN VPT-basic (BEiT ImageNet-21k)
+  53.82%; ChatGPT4 52%, Gemini 52%, Claude 3 50% on VPT-basic; 15 DNNs within human CI on depth order,
+  3 outperformed humans
+caveat: The paper notes it could not isolate the precise monocular depth cues used by humans versus
+  DNNs on the depth order task, so the strategies may differ even where accuracy matches.
+extracted_by: automatic-extraction
+related_findings:
+- IC-258
+- IC-259

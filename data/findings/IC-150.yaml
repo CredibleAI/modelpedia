@@ -1,0 +1,36 @@
+id: IC-150
+title: Second-order effects of CLIP's MLP neurons are concentrated in late layers (8–10 of 12 in ViT-B/32)
+description: The paper introduces a 'second-order lens' that traces each neuron's contribution through
+  subsequent attention heads to the output. Mean-ablating all second-order effects in a given layer
+  and measuring zero-shot ImageNet accuracy shows that layers 8–10 produce the largest accuracy drop,
+  while early layers have negligible effect. The same trend holds for the larger ViT-L/14 model, where
+  the drop is smaller but still concentrated in later layers. This contrasts with the first-order (direct)
+  effects of attention heads, which are significant in layers 9–11.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:interpreting-second-order-effects-neurons-clip
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:imagenet-r
+  role: eval
+methods:
+- ref: method:mean-ablation
+  role: primary
+related_work:
+- name: Gandelsman et al. 2024 (TextSpan)
+  anchor: https://openreview.net/forum?id=5ca9sszudp
+  role: builds-on
+evidence_type: interventional
+key_metric: Mean-ablating second-order effects in layer 9 (ViT-B/32) drops ImageNet accuracy to 29.6%
+  (Table 1); ablating indirect effects in the same layer drops it only to 52.3%. First PC of second-order
+  effects explains 48.2% of variance vs 11.0% for indirect effects.
+caveat: The paper notes it ignored the effect of neurons on consecutive queries and keys in the attention
+  mechanism, and did not analyze mutual effects between neurons in the same or different layers.
+extracted_by: automatic-extraction
+related_findings:
+- IC-151
+- IC-152

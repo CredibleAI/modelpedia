@@ -1,0 +1,30 @@
+id: IC-305
+title: Mistral-instruct-7b's susceptibility to prompt-injected data extraction follows a U-shaped curve
+  depending on the position of the adversarial prompt within the context window
+description: The paper injects the adversarial prompt at 15 different positions between 16 retrieved
+  chunks and measures how much context is reconstructed. The reconstruction length is highest when the
+  prompt is near the beginning or end of the context and lowest in the middle, forming a U-shaped curve.
+  The minimum occurs near the right end, indicating that a prompt near the beginning reconstructs more
+  data. The authors attribute this to RoPE's recency bias and causal attention's left-to-right information
+  flow.
+models:
+- ref: model:mistral-7b
+  variant: variant:mistral-instruct-7b
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:follow-my-instruction-spill-beans-scalable
+datasets:
+- ref: dataset:wikipedia
+  role: eval
+- ref: dataset:wikiqa
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The authors note this is a simplified proof-of-concept setting not adopted by current RAG systems,
+  where user queries are typically appended at the end.
+extracted_by: automatic-extraction
+related_findings:
+- IC-304
+- IC-306

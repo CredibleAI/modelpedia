@@ -1,0 +1,36 @@
+id: IC-228
+title: ESM3 (1.4B) fails to capture MD ensemble statistics on the ATLAS benchmark, achieving pairwise
+  RMSD correlation of only 0.08
+description: 'On the ATLAS MD ensemble test set (100ns all-atom simulations, 1390 monomeric targets),
+  ESM3 in iterative decoding mode achieves very low correlations with ground-truth MD statistics: pairwise
+  RMSD r=0.08, global RMSF r=0.19, per-target RMSF r=0.67, RMWD 7.27, and PC similarity 22%. The authors
+  attribute this to ATLAS''s short 100ns timescale rarely capturing substantial conformational changes,
+  and to the categorical nature of structure tokens making it difficult to represent subtle structural
+  changes. AlphaFlow-MD achieves substantially higher correlations (pairwise RMSD r=0.48, global RMSF
+  r=0.60).'
+models:
+- ref: model:esm3
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:structure-language-models-protein-conformation-generation
+datasets:
+- ref: dataset:atlas
+  role: eval
+methods: []
+related_work:
+- ref: model:alphaflow
+  role: compared-to
+evidence_type: correlational
+key_metric: 'ESM3 (id): pairwise RMSD r 0.08, global RMSF r 0.19, per-target RMSF r 0.67, RMWD 7.27,
+  RMWD trans 5.22, RMWD var 4.35, MD PCA W2 2.06, joint PCA W2 5.97, PC sim 0.5% 22, weak contacts J
+  0.45, transient contacts J 0.26; AlphaFlow-MD: pairwise RMSD r 0.48, global RMSF r 0.60, per-target
+  RMSF r 0.85'
+caveat: The authors note the 100ns simulation timescale rarely captures slower, substantial conformational
+  changes, which particularly challenges tokenized structure approaches; this may be a limitation of
+  the benchmark rather than the model.
+extracted_by: automatic-extraction
+related_findings:
+- IC-225
+- IC-226
+- IC-227

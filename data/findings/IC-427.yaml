@@ -1,0 +1,66 @@
+id: IC-427
+title: Newer base models (post-November 2023) outperform older ones by 7.3 points on MMLU and 19.1 points
+  on GSM8K controlling for pretraining compute, but this gap vanishes after fine-tuning all models on
+  the same task-relevant data
+description: The paper evaluates 56 base models (70M–70B parameters) on MMLU and GSM8K, splitting them
+  into those trained before and after November 2023. Controlling for pretraining compute via a log-linear
+  regression, newer models show a statistically significant advantage of 0.073 on MMLU and 0.191 on
+  GSM8K. After fine-tuning all models on the same task-specific data (MMLU auxiliary set for MCQA, MetaMathQA+Orca-Math
+  for math), the estimated difference drops to 0.005 for both benchmarks and is no longer statistically
+  significant. The same pattern appears when ARC and HellaSwag are reformulated as multiple-choice questions
+  (differences of 0.120 and 0.114 unadjusted, 0.014 and 0.009 adjusted), indicating the confound is
+  about task format rather than data contamination.
+models:
+- ref: model:pythia
+- ref: model:llama-2
+- ref: model:llama-3
+- ref: model:qwen-1-5
+- ref: model:gemma
+- ref: model:olmo
+- ref: model:stablelm
+- ref: model:falcon
+- ref: model:gpt-j
+  variant: variant:gpt-j-6b
+- ref: model:internlm
+- ref: model:openllama
+- ref: model:redpajama
+- ref: model:baichuan
+- ref: model:skywork
+- ref: model:yi
+- ref: model:ziya2
+- ref: model:map-neo
+- ref: model:qwen-2
+concepts: []
+sources:
+- ref: source:training-test-task-confounds-evaluation-emergence
+datasets:
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:arc-challenge
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+- ref: dataset:metamathqa
+  role: train
+- ref: dataset:orca-math
+  role: train
+methods:
+- ref: method:lm-evaluation-harness
+  role: eval
+related_work:
+- name: Wei et al. 2022b (Emergent Abilities of Large Language Models)
+  anchor: https://arxiv.org/abs/2206.07682
+  role: context
+evidence_type: interventional
+key_metric: 'MMLU: difference = 0.073 (unadjusted, R²=0.943) vs 0.005 (adjusted, R²=0.989); GSM8K: difference
+  = 0.191 (unadjusted, R²=0.901) vs 0.005 (adjusted, R²=0.958); ARC MCQA: 0.120 vs 0.014; HellaSwag
+  MCQA: 0.114 vs 0.009'
+caveat: The fine-tuning uses a fixed set of hyperparameters; the authors verify robustness by giving
+  newer models a learning-rate search advantage, which does not change the conclusion. The causal interpretation
+  assumes test task training saturates with sufficient fine-tuning data.
+extracted_by: automatic-extraction
+related_findings:
+- IC-428
+- IC-429

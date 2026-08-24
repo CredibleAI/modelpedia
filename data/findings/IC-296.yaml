@@ -1,0 +1,47 @@
+id: IC-296
+title: The degree to which SAE features are active at multiple residual-stream layers increases with
+  model size in Pythia, Gemma 2, Llama 3.2, and GPT-2
+description: Using a multi-layer SAE trained on the residual stream activations of each model, the authors
+  measure how SAE latents are distributed across layers. When aggregating over 10 million tokens, the
+  fraction of total variance explained by individual latents (i.e., the degree of multi-layer activity)
+  ranges from 54% to 88% and broadly increases with model size. In contrast, for a single token the
+  fraction of variance explained by individual tokens is only 1–10%, meaning that for a given prompt
+  most latents fire at a single layer. This is consistent with the mean cosine similarity between adjacent-layer
+  residual stream vectors increasing with model size (Figure 1), indicating that the residual stream
+  preserves information more faithfully across layers in larger models.
+models:
+- ref: model:pythia
+- ref: model:gemma-2
+- ref: model:llama-3-2
+- ref: model:gpt-2
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:residual-stream-analysis-multi-layer-saes
+datasets:
+- ref: dataset:the-pile
+  role: source
+methods:
+- ref: method:sparse-autoencoder
+  role: supporting
+related_work:
+- name: Toward Monosemanticity
+  anchor: https://transformer-circuits.pu
+  role: builds-on
+- ref: method:sparse-autoencoder
+  role: builds-on
+- name: A Mathematical Framework for Transformer Circuits
+  anchor: https://transformer-circuits.pub/2021/framework/index.html
+  role: context
+evidence_type: correlational
+key_metric: 'fraction of total variance explained by individual latents (eq. 11): between 54 and 88%,
+  increasing with model size; fraction of variance for an individual latent explained by individual
+  tokens (eq. 12): on the order of 1 to 10%; variance of layer distributions about two orders of magnitude
+  greater when aggregating over tokens vs. a single token'
+caveat: The multi-layer SAE is a new instrument introduced by this paper; the observed multi-layer structure
+  depends on the SAE's hyperparameters (expansion factor r=64, sparsity k=32) and on the choice of residual
+  stream basis (no tuned lens applied). The authors note that the last-layer activations are excluded
+  from the analysis.
+extracted_by: automatic-extraction
+related_findings:
+- IC-297

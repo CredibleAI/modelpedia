@@ -1,0 +1,34 @@
+id: IC-237
+title: A zero-shot Llama 3 8B, when prompted to select the best bounding box from VLM candidates without
+  fine-tuning, produces results nearly identical to the VLM alone
+description: The paper evaluates Llama 3 8B Instruct in a zero-shot setting (no LoRA fine-tuning) where
+  it is asked to pick the best box index from a list of VLM candidates. Across all four VLMs (GD, GD-REC,
+  GD-1.5, FLO2) and all datasets, the zero-shot LLM adds negligible or slightly negative value. For
+  example, on RefCOCOg val, GD goes from 60.09 to 58.05 p@1, and FLO2 goes from 67.91 to 67.69. The
+  authors attribute this to LLMs lacking off-the-shelf reasoning for this structured selection task
+  despite their extensive general knowledge.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:grounding-dino
+- ref: model:florence-2
+concepts: []
+sources:
+- ref: source:llm-wrapper-black-box-semantic-aware
+datasets:
+- ref: dataset:refcoco
+  role: eval
+- ref: dataset:refcocog
+  role: eval
+- ref: dataset:talk2car
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'RefCOCOg val: GD 60.09→58.05, GD-REC 67.61→67.48, FLO2 67.91→67.69. RefCOCOg test: GD 59.32→58.47,
+  GD-REC 68.37→68.17, FLO2 66.16→66.44.'
+caveat: Only one LLM (Llama 3 8B) is tested in the zero-shot setting; the result may not generalise
+  to all LLMs or to different prompt formulations.
+extracted_by: automatic-extraction
+related_findings:
+- IC-236

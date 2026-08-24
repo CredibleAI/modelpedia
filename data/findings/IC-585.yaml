@@ -1,0 +1,32 @@
+id: IC-585
+title: MLLMs effectively capture count-related and recognition-related visual concepts with distinct
+  brain alignment patterns, but produce similar alignment patterns for color, positional understanding,
+  and general scene understanding
+description: 'Grouping the 10 instructions into five visual concept categories, the paper finds that
+  count-related instructions (iu2, iu3, vq2) and recognition-related instructions (vq1, vq2) produce
+  distinct brain alignment patterns: vq2 shows higher alignment in high-level visual regions for counting,
+  while iu2 and iu3 show higher alignment in early visual regions. Recognition instructions show distributed
+  alignment across both high-level and early regions. In contrast, instructions for color (iu1), positional
+  understanding (vq3), and general scene understanding (cr) produce similar brain alignment patterns
+  regardless of the specific concept, indicating MLLMs do not differentiate these visual concepts in
+  their representations.'
+models:
+- ref: model:instructblip
+- ref: model:mplug-owl
+- ref: model:idefics
+concepts: []
+sources:
+- ref: source:correlating-instruction-tuning-multimodal-models-vision
+datasets:
+- ref: dataset:nsd
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: Further improvements may be needed for MLLMs to achieve better specificity in processing a broader
+  range of visual concepts
+extracted_by: automatic-extraction
+related_findings:
+- IC-582
+- IC-583
+- IC-584

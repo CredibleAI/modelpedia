@@ -1,0 +1,42 @@
+id: IC-336
+title: Larger proprietary LLMs (GPT-3.5 175B) are more effective universal text detectors than smaller
+  models (Babbage 1.3B, GPT-Neo-2.7B), contradicting prior findings that smaller models are better
+description: The paper compares the average AUROC of fast-detectgpt across five source models (ChatGPT,
+  GPT-4, Claude-3 Sonnet, Claude-3 Opus, Gemini-1.5 Pro) when using scoring models of different sizes.
+  GPT-3.5 (175B) achieves an average AUROC of about 0.95, outperforming Babbage (1.3B) by about 43%
+  and GPT-Neo-2.7B (2.7B) by about 51% relative to the remaining space. This directly contradicts Mireshghallah
+  et al. (2023), who reported that smaller LLMs are more efficient universal detectors. The result suggests
+  that with the right technique (Glimpse), larger models' sharper predictive distributions make them
+  stronger detectors.
+models:
+- ref: model:gpt-3-5
+- ref: model:gpt-3
+  variant: variant:babbage
+- ref: model:gpt-neo
+  variant: variant:gpt-neo-2-7b
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:glimpse-enabling-white-box-methods-use
+datasets:
+- ref: dataset:xsum
+  role: eval
+- ref: dataset:pubmedqa
+  role: eval
+methods:
+- ref: method:fast-detectgpt
+  role: primary
+related_work:
+- name: Mireshghallah et al. 2023
+  anchor: https://arxiv.org/abs/2305.09859
+  role: compared-to
+evidence_type: correlational
+key_metric: GPT-3.5 (175B) avg AUROC ~0.95, outperforming Babbage (1.3B) by ~43% and Neo-2.7B (2.7B)
+  by ~51% relative to remaining space; fast-detect (gpt-3.5) avg 0.9537 vs fast-detect (babbage) 0.9191
+  vs fast-detect (gpt-j/neo-2.7) 0.9057
+caveat: The comparison is confounded by proprietary vs open-source access; the paper does not isolate
+  size from architecture or training data differences.
+extracted_by: automatic-extraction
+related_findings:
+- IC-335
+- IC-337

@@ -1,0 +1,38 @@
+id: IC-461
+title: Adding calibrated Gaussian noise to steering vectors (PSA) preserves alignment performance comparable
+  to non-private mean steering across Llama-2-7B, Mistral-7B, Gemma-2-2B, and Qwen-2.5-7B
+description: Across seven behavioral alignment tasks (sycophancy, hallucination, refusal, myopic reward,
+  survival instinct, AI coordination, corrigibility), PSA achieves MCQ accuracy close to non-private
+  mean steering and consistently outperforms zero-shot for Llama-2, Mistral, and Qwen-2.5. GPT-4-evaluated
+  text generation quality and MMLU scores also show minimal degradation. In some cases (refusal, corrigibility)
+  PSA slightly outperforms non-private steering, which the authors attribute to the noise occasionally
+  aligning the activation perturbation in a more effective direction.
+models:
+- ref: model:llama-2
+- ref: model:mistral-7b
+- ref: model:gemma
+- ref: model:qwen2-5
+concepts: []
+sources:
+- ref: source:differentially-private-steering-large-language-model
+datasets:
+- ref: dataset:mmlu
+  role: eval
+methods:
+- ref: method:activation-steering
+  role: compared-to
+related_work: []
+evidence_type: interventional
+key_metric: 'MMLU (Llama-2-7B chat, multiplier +1): sycophancy PCA 63.5 / Mean 64.0 / PSA 63.0; hallucination
+  62.2 / 64.0 / 63.2; refusal 57.9 / 59.5 / 58.3; survival instinct 64.1 / 64.9 / 64.4 (zero-shot 63.6);
+  myopic reward 66.0 / 65.2 / 64.9; AI coordination 60.3 / 61.8 / 61.1; corrigibility 62.7 / 64.1 /
+  63.7. GPT-4 eval (Llama-2-chat 7B): sycophancy 1.41/1.57/1.47/1.45; hallucination 3.88/4.04/3.94/3.92;
+  refusal 7.90/7.98/7.88/7.86; survival instinct 5.10/6.50/5.92/6.12; myopic reward 1.50/2.22/3.56/1.86;
+  AI coordination 0.15/0.18/0.16/0.12; corrigibility 4.12/4.94/5.42/4.74.'
+caveat: The paper notes that non-private PCA steering is generally less effective than mean steering,
+  and that the objective is to minimise the privacy cost rather than to outperform non-private methods.
+  Results are for positive steering (lambda=1) only; negative steering is deferred to the appendix.
+extracted_by: automatic-extraction
+related_findings:
+- IC-459
+- IC-460

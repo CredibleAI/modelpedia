@@ -1,0 +1,36 @@
+id: IC-474
+title: GPT-4, GPT-4o, and Llama-3.1-405B fail at knowledge classification and comparison without chain-of-thought
+description: 'The paper tests whether released language models can perform simple logical operations
+  on stored factual knowledge. GPT-4 is asked to classify whether a celebrity was born in an even month
+  (binary) and to compare two people''s birth dates. Without explicitly generating the intermediate
+  value (the month or the year) first, GPT-4 performs at or near chance level. The same failure is confirmed
+  for GPT-4o and Llama-3.1-405B as of October 1, 2024. The paper''s controlled synthetic experiments
+  show this is not a training-data issue: even with 25,000 QA samples (far exceeding the theoretical
+  minimum) the model cannot learn the classification without CoT.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-4o
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-405b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:physics-language-models-part-3-2
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: compared-to
+related_work:
+- ref: method:chain-of-thought-prompting
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4: 50.7% correct on ''born in an even month?'' (binary); 52.3% on comparing birth dates
+  among individuals born 1900-1910; 71.1% for 1900-1950; 81.6% for all pairs. GPT-4o and Llama-3.1-405B:
+  ''still fail'' (Figure 5, no specific numbers in text).'
+caveat: The paper notes these are the simplest single-step manipulations; more complex composed functions
+  would be even harder. The GPT-4o and Llama-3.1-405B results are qualitative ('still fail') without
+  specific accuracy numbers in the text.
+extracted_by: automatic-extraction
+related_findings:
+- IC-475
+- IC-476

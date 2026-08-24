@@ -1,0 +1,43 @@
+id: IC-195
+title: Transformers achieve high brain alignment in early visual cortex at much shallower network depth
+  than CNNs
+description: 'Comparing 27 CNNs and 14 transformers (all video action recognition models trained on
+  Kinetics-400), the two architectures are roughly equivalent in maximum RSA score across brain regions.
+  However, their alignment profiles across depth differ strikingly: in V2, transformers compute high-correlating
+  representations at around 0.1 of total network depth, while CNNs reach comparable alignment only at
+  around 0.6 of total depth. In EBA, CNNs show a gradual increase in correlation with depth, while transformers
+  maintain relatively stable representations until the classification layer where the score increases
+  abruptly. This pattern also holds for image object recognition CNNs and transformers.'
+models:
+- ref: model:tsm
+- ref: model:i3d
+- ref: model:slowfast
+- ref: model:x3d
+- ref: model:mvit-v2
+- ref: model:videomae
+- ref: model:uniformer
+- ref: model:timesformer
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:one-hundred-neural-networks-brains-watching
+datasets:
+- ref: dataset:bold-moments-dataset
+  role: eval
+- ref: dataset:kinetics-400
+  role: source
+methods:
+- ref: method:representational-similarity-analysis
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'In V2: transformers peak at ~0.1 of total depth, CNNs at ~0.6 of total depth; in EBA: CNNs
+  show gradual increase, transformers stable until classification layer'
+caveat: The paper notes this pattern was not observed in image fMRI studies (Nonaka et al. 2021) and
+  hypothesizes it may relate to the dynamic nature of video stimuli; requires validation on other video
+  fMRI datasets
+extracted_by: automatic-extraction
+related_findings:
+- IC-194
+- IC-196
+- IC-197

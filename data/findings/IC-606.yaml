@@ -1,0 +1,39 @@
+id: IC-606
+title: The relationship between model size and jailbreak vulnerability is reversed between Anthropic
+  and Meta model families
+description: 'Within the Anthropic family, the larger model (Claude-3-Sonnet) is substantially harder
+  to jailbreak than the smaller one (Claude-3-Haiku), with max ASR of 44% versus 82%, and the synthesizer
+  required over 60 iterations to reach 80% mean ASR on Sonnet. Within the Meta Llama-3 family, the pattern
+  is reversed: the larger model (Llama-3-70B) is easier to jailbreak than the smaller one (Llama-3-8B),
+  with max ASR of 90% versus 74%. For OpenAI, both GPT-3.5 and GPT-4o were relatively easy to jailbreak
+  (under 10 synthesis iterations), with GPT-4o showing slightly higher max ASR (94% vs 88%).'
+models:
+- ref: model:claude-3
+  variant: variant:claude-3-sonnet
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:gpt-3-5
+- ref: model:gpt-4o
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:h4rm3l-language-composable-jailbreak-attack-synthesis
+datasets:
+- ref: dataset:advbench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Claude-3-Sonnet max ASR 44% vs Claude-3-Haiku 82%; Llama-3-70B max ASR 90% vs Llama-3-8B
+  74%; GPT-4o max ASR 94% vs GPT-3.5 88%; synthesis iterations to reach muASR > 80%: >60 for claude-3-sonnet
+  and llama-3-8b, <10 for gpt-3.5 and gpt-4o'
+caveat: The 'harder to jailbreak' distinction for OpenAI models refers to synthesis difficulty (iterations
+  to find effective attacks), while the final ASR actually favours GPT-4o over GPT-3.5; the reversal
+  is clearest for Anthropic vs Meta.
+extracted_by: automatic-extraction
+related_findings:
+- IC-605

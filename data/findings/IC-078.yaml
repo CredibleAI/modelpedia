@@ -1,0 +1,40 @@
+id: IC-078
+title: GPT-4's self-verification loop causes performance collapse due to high false negative rates in
+  binary verification
+description: 'When GPT-4 is used as both the solution generator and the verifier in an iterative self-critique
+  loop, performance drops below the standard single-prompt baseline in most domains. The primary mechanism
+  is a high false negative rate: GPT-4 rejects its own correct answers, causing the system to discard
+  valid solutions and time out on later, worse generations. In graph coloring the false negative rate
+  reaches 95.8% and in mystery blocksworld 97.09%. Even adding chain-of-thought to the verification
+  prompt improves accuracy (e.g., Game of 24 from 87.0% to 98.8%) but does not close the gap to a sound
+  verifier.'
+models:
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:self-verification-limitations-large-language-models
+datasets:
+- ref: dataset:game-of-24-4nums-com-instances-1-1000
+  role: eval
+- ref: dataset:planbench
+  role: eval
+methods:
+- ref: method:self-consistency
+  role: compared-to
+related_work:
+- ref: method:self-refine
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Table 2: verification accuracy and FNR — game of 24: 87.0% (3567/4100), FNR 20.7% (213/1029);
+  graph coloring: 72.4% (362/500), FNR 95.8% (113/118); blocksworld: 71.8% (359/500), FNR 15.48% (24/155);
+  mystery blocksworld: 79.6% (398/500), FNR 97.09% (100/103). Table 1: LLM+LLM accuracy — game of 24:
+  3%, graph coloring: 2%, blocksworld: 55%, mystery blocksworld: 0%, versus standard prompting 5%, 16%,
+  40%, 4% respectively.'
+caveat: Results are specific to gpt-4-0613 and three formally verifiable domains. The authors note that
+  blocksworld shows a modest improvement (55% vs 40% baseline) under self-critique, though still far
+  below sound-verifier performance (87%).
+extracted_by: automatic-extraction
+related_findings:
+- IC-079
+- IC-080

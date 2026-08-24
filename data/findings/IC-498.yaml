@@ -1,0 +1,46 @@
+id: IC-498
+title: Multimodal foundation models exhibit severe group unfairness, with race and age biases more pronounced
+  than gender bias in text-to-image models while gender bias is stronger in image-to-text models
+description: The paper evaluates fairness across social stereotypes and decision-making scenarios using
+  group unfairness, individual unfairness, and overkill fairness metrics. All text-to-image models show
+  group unfairness scores (gs) between 0.337 and 0.597, far from the ideal of 0. Race and age biases
+  are more pronounced than gender bias in T2I models, while the reverse holds for I2T models. Group
+  unfairness does not observably correlate with individual unfairness. All T2I models also show poor
+  overkill fairness, sacrificing historical accuracy in pursuit of fairness.
+models:
+- ref: model:flux
+- ref: model:dall-e-3
+- ref: model:dall-e-2
+- ref: model:stable-diffusion
+  variant: variant:sdxl
+- ref: model:gpt-4o
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:gemini-1-5
+- ref: model:llama-3-2-vision
+  variant: variant:llama-3-2-90b-vision-instruct
+- ref: model:nova-canvas
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:mmdt-decoding-trustworthiness-safety-multimodal-foundation
+datasets:
+- ref: dataset:utkface
+  role: source
+methods:
+- ref: method:fairface
+  role: eval
+- ref: method:clipscore
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 't2i group unfairness gs: sdxl 0.337, flux 0.597, dall·e 3 0.376; i2t group unfairness gs:
+  gpt-4o 0.142, gpt-4v 0.179, gemini pro-1.5 0.183, llama-3.2 0.033; t2i overkill fairness o: all models
+  between 0.449 and 0.636'
+caveat: Llama-3.2's low group unfairness score is partly due to over-refusal (85.2% refusal rate on
+  fairness tasks), not genuine fairness.
+extracted_by: automatic-extraction
+related_findings:
+- IC-495
+- IC-496
+- IC-497

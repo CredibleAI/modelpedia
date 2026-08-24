@@ -1,0 +1,26 @@
+id: IC-111
+title: ViT-B/16 pretrained with MAE exhibits higher attention diversity than ViT-B/16 pretrained with
+  MoCo v3, DINO, or DeiT
+description: Using a novel attention diversity metric that measures whether different query patches
+  concentrate on similar or distinct regions, the authors compare the last-layer attention of four ViT-B/16
+  encoders pretrained on ImageNet-1k. Across 12 attention heads and 152 example images, the MAE-pretrained
+  model shows substantially higher diversity (attention dispersed across different local areas), while
+  MoCo v3, DINO, and DeiT all show lower diversity (attention collapsed toward a common global region).
+  This empirically confirms the theoretical prediction that masked reconstruction preserves local attention
+  patterns while discriminative objectives collapse to global ones.
+models:
+- ref: model:vit
+  variant: variant:vit-b-16
+concepts: []
+sources:
+- ref: source:theoretical-analysis-self-supervised-learning-vision
+datasets:
+- ref: dataset:imagenet1k
+  role: source
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The metric is novel and defined by the authors; results are shown as box plots in Figure 3 without
+  explicit numerical values printed in the text. Only the last layer is examined, and only 152 images
+  are used.
+extracted_by: automatic-extraction

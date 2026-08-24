@@ -1,0 +1,44 @@
+id: IC-094
+title: Episodic recall accuracy degrades systematically from content cues to space cues to time cues
+  across all evaluated LLMs
+description: When the retrieval cue is based on event content (what happened), models perform best;
+  when the cue is spatial (where), performance drops; and when the cue is temporal (when), performance
+  is worst. This gradient is visible across all six models in both in-context and RAG settings, and
+  holds for both the short and long books. For GPT-4o in-context on the long book, single-event F1 is
+  0.93 for content cues, 0.93 for space cues, 0.97 for entity cues, but only 1.00 for time cues at zero
+  events dropping to 0.47 at 6+ events. The authors note this mirrors human memory research where temporal
+  memory is less reliable than spatial or content memory.
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-405b-instruct
+- ref: model:o1
+  variant: variant:o1-mini
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:episodic-memories-generation-evaluation-benchmark-large
+datasets:
+- ref: dataset:episodic-memory-benchmark
+  role: eval
+methods:
+- ref: method:in-context-learning
+  role: primary
+- ref: method:retrieval-augmented-generation
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4o in-context (long book, 1 event): content 0.93, space 0.93, entity 0.97, time 1.00;
+  (6+ events): content 0.56, space 0.50, entity 0.59, time 0.47'
+caveat: The authors note it is unclear whether humans are better or worse at temporal versus spatial
+  memory, and that the benchmark uses explicit date strings rather than implicit temporal references.
+extracted_by: automatic-extraction
+related_findings:
+- IC-092
+- IC-093
+- IC-095

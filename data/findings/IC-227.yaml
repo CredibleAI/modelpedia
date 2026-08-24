@@ -1,0 +1,36 @@
+id: IC-227
+title: MSA-based conformation generation methods (AlphaFlow, MSA-subsampling) outperform sequence-based
+  methods (EigenFold, STR2STR, ESMFlow) on conformation changing pair generation
+description: On both the apo/holo (90 pairs) and fold-switching (77 pairs) benchmarks, MSA-based methods
+  achieve higher global residue flexibility correlations than sequence-based methods. For apo/holo,
+  MSA-subsampling achieves 0.398 and AlphaFlow 0.455, versus EigenFold 0.126, STR2STR 0.174/0.148, and
+  ESMFlow 0.416. For fold-switching, MSA-subsampling achieves 0.350 and AlphaFlow 0.385, versus EigenFold
+  0.225, STR2STR 0.161/0.111, and ESMFlow 0.269. The authors conclude this highlights the importance
+  of MSA for generating stable conformation changing protein targets.
+models:
+- ref: model:alphaflow
+- ref: model:alphafold2
+- ref: model:eigenfold
+- ref: model:str2str
+- ref: model:esmflow
+concepts: []
+sources:
+- ref: source:structure-language-models-protein-conformation-generation
+datasets:
+- ref: dataset:apo-holo-pairs
+  role: eval
+- ref: dataset:fold-switching-chakravarty-porter-2022
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Apo/holo resflex r (gl.): MSA-subs 0.398, AlphaFlow 0.455, EigenFold 0.126, STR2STR 0.174/0.148,
+  ESMFlow 0.416; Fold-switch resflex r (gl.): MSA-subs 0.350, AlphaFlow 0.385, EigenFold 0.225, STR2STR
+  0.161/0.111, ESMFlow 0.269'
+caveat: ESMFlow (0.416 apo/holo) narrows the gap with MSA-based methods, and the comparison is on only
+  5 structures per target (few-shot ensemble).
+extracted_by: automatic-extraction
+related_findings:
+- IC-225
+- IC-226
+- IC-228

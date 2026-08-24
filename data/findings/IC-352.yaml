@@ -1,0 +1,40 @@
+id: IC-352
+title: RAG with sufficient retrieved tokens outperforms direct long-context for Qwen2-72b-instruct on
+  >100k tasks, while at 32k the default RAG setting underperforms direct long-context for GPT-4-turbo-2024-04-09,
+  Qwen2-72b-instruct, and Llama-3.1-70b-instruct
+description: 'The paper compares RAG (using E5-Mistral retriever) against direct long-context prompting
+  for the same released models. At 32k context, the default RAG setting (top-5 chunks, 1200 tokens each,
+  6000 total) underperforms: GPT-4-turbo-2024-04-09 drops from 51.93 to 49.84, Qwen2-72b-instruct from
+  49.94 to 48.08, and Llama-3.1-70b-instruct from 49.92 to 47.63. However, at >100k context, RAG with
+  more chunks (top-20 for Qwen2-72b-instruct) outperforms direct long-context: 52.95 vs 52.22. The paper
+  also shows that increasing total retrieved tokens from 3000 to 24000 monotonically improves RAG accuracy
+  on 32k tasks.'
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo-20240409
+- ref: model:qwen-2
+  variant: variant:qwen2-72b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b-instruct
+concepts: []
+sources:
+- ref: source:chatqa-2-bridging-gap-proprietary-llms
+datasets:
+- ref: dataset:longbench
+  role: eval
+- ref: dataset:scrolls
+  role: eval
+methods:
+- ref: method:e5-mistral
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: '32k: GPT-4-turbo RAG 49.84 vs long-context 51.93; Qwen2 RAG 48.08 vs 49.94; Llama-3.1-70b
+  RAG 47.63 vs 49.92. >100k: Qwen2 RAG (k=20) 52.95 vs long-context 52.22'
+caveat: The RAG comparison at >100k uses only en.qa and en.mc tasks, as RAG is not directly applicable
+  to en.sum and en.dia. The 32k RAG setting uses a fixed top-5 with 1200-token chunks, which the authors
+  note is not optimized.
+extracted_by: automatic-extraction
+related_findings:
+- IC-351
+- IC-353

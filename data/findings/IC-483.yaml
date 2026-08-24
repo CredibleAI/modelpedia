@@ -1,0 +1,37 @@
+id: IC-483
+title: When in-context graph structure conflicts with pretrained semantic priors, Llama-3.1-8B encodes
+  the in-context structure in higher principal components while the semantic prior dominates the first
+  two
+description: Using days of the week (which have a circular semantic representation from pretraining)
+  as nodes on a non-semantic 7-node ring, the model's first two principal components still show the
+  original semantic ring geometry, while the in-context ring structure appears in the third and fourth
+  principal components. The Dirichlet energy minimization occurs specifically in the PCA 3,4 dimensions
+  corresponding to the in-context structure. Despite the semantic prior dominating the leading PCs,
+  the model transitions from making semantic-prior predictions to in-context-structure predictions as
+  context length increases, eventually performing well on the task.
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:iclr-context-learning-representations
+datasets: []
+methods:
+- ref: method:pca
+  role: primary
+related_work:
+- name: Engels et al. 2024 (Not all language model features are linear)
+  anchor: https://arxiv.org/abs/2405.14860
+  role: builds-on
+evidence_type: correlational
+key_metric: Energy minimization occurs in PCA 3,4 (in-context dimensions) rather than PCA 1,2 (semantic
+  dimensions), as shown in Fig. 15. The model transitions from semantic-prior accuracy to in-context
+  accuracy with increasing context (Fig. 14).
+caveat: The in-context structure is present but 'unable to dominate the pretrained structure.' The authors
+  note this is a limitation of the representation reorganization under semantic conflict.
+extracted_by: automatic-extraction
+related_findings:
+- IC-481
+- IC-482
+- IC-484

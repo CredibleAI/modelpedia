@@ -1,0 +1,35 @@
+id: IC-538
+title: Chronos-T5's discrete probability prediction approach yields very small power-law exponents on
+  NLL, limiting its scalability, and its in-distribution gains do not extend to out-of-distribution
+  data
+description: The paper retrains Chronos-T5 and a simpler decoder-only transformer on the same 16.8B
+  time-point corpus. Chronos-T5, which tokenises time series values into a discrete vocabulary and predicts
+  the next token, exhibits power laws with very small exponents when evaluated with NLL, indicating
+  limited scalability. The authors attribute this to the discrete probability prediction, where NLL
+  on a discrete distribution is not distance-sensitive. On in-distribution data, Chronos-T5 shows a
+  slight advantage in performance and scalability, but on out-of-distribution data the simpler decoder-only
+  baseline performs better, and both models exhibit similar scaling patterns.
+models:
+- ref: model:chronos
+concepts: []
+sources:
+- ref: source:neural-scaling-laws-time-series-foundation
+datasets:
+- ref: dataset:lotsa
+  role: train
+methods: []
+related_work:
+- name: Kaplan et al. 2020 (Scaling Laws for Neural Language Models)
+  anchor: https://api.semanticscholar.org/CorpusID:210861095
+  role: builds-on
+- name: Edwards et al. 2024 (Scaling-Laws for Large Time-Series Models)
+  anchor: https://api.semanticscholar.org/CorpusID:269982332
+  role: compared-to
+evidence_type: correlational
+caveat: Chronos-T5 was retrained on the authors' 16.8B time-point corpus rather than its original training
+  data. The authors note that NLL is not the most appropriate metric for evaluating discrete token prediction
+  and that SMAPE is more suitable; specific exponent values are reported only in Figure 7, not in the
+  text. Evaluation is restricted to univariate forecasting.
+extracted_by: automatic-extraction
+related_findings:
+- IC-537

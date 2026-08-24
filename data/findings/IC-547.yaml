@@ -1,0 +1,29 @@
+id: IC-547
+title: Llama3.2 3B and Llama3.1 8B exhibit saturation events in which the top prediction, once it appears
+  at a given layer, remains unchanged through all subsequent layers
+description: The authors apply the logit lens (last-layer classifier) to intermediate hidden states
+  of Llama3.2 3B (24 layers) and Llama3.1 8B (32 layers) using the same prompt and greedy decoding.
+  They observe that the model's predicted token stabilises at a certain layer and does not change in
+  any deeper layer, a phenomenon previously described by Geva et al. (2022) for smaller models. A specific
+  instance in Llama3.2 3B with the prompt 'simply put, the theory of relativity states' is visualised
+  across 24 decoding steps, showing the predicted word locking in at an intermediate layer. This confirms
+  that the saturation-event phenomenon generalises to large, recently released LLMs.
+models:
+- ref: model:llama-3-2-3b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:tracing-representation-progression-analyzing-enhancing-layer
+datasets: []
+methods:
+- ref: method:logit-lens
+  role: primary
+related_work: []
+evidence_type: observational
+caveat: The observation is made on a single prompt per model and a small number of decoding steps; no
+  quantitative frequency of saturation events across a corpus is reported.
+extracted_by: automatic-extraction
+related_findings:
+- IC-548

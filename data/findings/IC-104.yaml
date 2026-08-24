@@ -1,0 +1,45 @@
+id: IC-104
+title: Value anchor prompting produces LLM value correlation structures that closely match the human
+  circular value structure, while standard prompting does not
+description: The paper performed multidimensional scaling on the 19x19 value correlation matrices from
+  each model and prompt condition, then compared the resulting 2D embeddings to the human MDS solution
+  via Procrustes analysis. Under the value anchor prompt, the LLM correlation structures showed strong
+  alignment with the human circular pattern (r = 0.87-0.95, p < .001). The sum of squared differences
+  between LLM and human MDS coordinates was 0.11 for value anchor versus 0.71 for names (Gemini 1.0
+  Pro, temperature 0.0). Standard prompting (basic, demographic, generated persona) produced substantially
+  higher differences, indicating poorer fit to the human structure.
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4-0314
+- ref: model:gemini-1-0-pro
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+- ref: model:gemma-2
+  variant: variant:gemma-2-27b
+concepts:
+- ref: concept:circular-representation
+sources:
+- ref: source:llms-have-consistent-values
+datasets:
+- ref: dataset:pvq-rr
+  role: eval
+methods:
+- ref: method:multidimensional-scaling
+  role: primary
+- ref: method:procrustes-analysis
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: r = 0.87 − 0.95, p < .001 for value anchor; sum of squared differences 0.11 (value anchor)
+  vs 0.71 (names) for Gemini 1.0 Pro at temperature 0.0; Table 1 shows value anchor consistently lowest
+  across all models
+caveat: Gemma 2 27B did not produce parseable results for the demographic prompt at temperature 0.0,
+  and some values had zero-variance at temperature 0.0, precluding correlation computation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-103
+- IC-105

@@ -1,0 +1,51 @@
+id: IC-322
+title: Past-tense reformulations of harmful requests bypass refusal training in eight released LLMs,
+  while future-tense reformulations are substantially less effective
+description: 'The authors reformulate 100 harmful requests from JBB-Behaviors into past tense using
+  GPT-3.5 Turbo and test whether the reformulated prompts elicit harmful responses from eight released
+  LLMs. Attack success rates increase dramatically: for example, GPT-4o goes from 1% (direct request)
+  to 88% (20 past-tense attempts) under the GPT-4 judge, and Claude-3.5 Sonnet from 0% to 53%. When
+  the same experiment is repeated with future-tense reformulations, the ASR is consistently lower (e.g.,
+  GPT-4o drops to 61%, Claude-3.5 Sonnet to 5%), indicating that refusal guardrails treat past-tense
+  historical questions as more benign than hypothetical future ones. The effect is already non-trivial
+  with a single attempt (57% on GPT-4o) and saturates after roughly 10 attempts.'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b-instruct
+- ref: model:phi-3
+  variant: variant:phi-3-mini-instruct
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:r2d2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:refusal-training-llms-generalize-past-tense
+datasets:
+- ref: dataset:jbb-behaviors
+  role: eval
+methods:
+- ref: method:gcg
+  role: compared-to
+related_work:
+- ref: method:gcg
+  role: compared-to
+evidence_type: correlational
+key_metric: 'GPT-4o: 1% → 88% (GPT-4 judge), 1% → 65% (Llama-3 70B judge), 13% → 73% (rule-based); GPT-4o-mini:
+  1% → 83%; Claude-3.5 Sonnet: 0% → 53%; Phi-3-mini: 6% → 82%; R2D2: 23% → 98%; Llama-3 8B: 0% → 27%;
+  GPT-3.5 Turbo: 0% → 74%; Gemma-2 9B: 0% → 74% (all GPT-4 judge, 20 attempts, 100 JBB-Behaviors). Future
+  tense: GPT-4o 1% → 61%, Claude-3.5 Sonnet 0% → 5%.'
+caveat: The attack uses GPT-3.5 Turbo as the reformulation model and GPT-4 as the primary judge; the
+  authors note that combining with other prompting techniques (refusal suppression, competing objectives)
+  could further increase ASR but they deliberately omit these to isolate the tense effect. The 100 behaviors
+  span 10 harm categories and ASR varies by category (nearly perfect on malware/hacking, lower on harassment
+  and sexual content).
+extracted_by: automatic-extraction
+related_findings:
+- IC-323

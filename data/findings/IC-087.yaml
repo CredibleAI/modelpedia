@@ -1,0 +1,48 @@
+id: IC-087
+title: Answer symbol production in OLMo 7B Instruct, Llama 3.1 8B Instruct, and Qwen 2.5 1.5B Instruct
+  is causally attributed to a few middle layers and specifically their multi-head self-attention mechanisms,
+  with a sparse set of 1-4 attention heads per layer responsible
+description: 'Using activation patching and vocabulary projection, the paper localizes the computation
+  responsible for predicting the correct answer choice symbol. For OLMo 7B Instruct, layer 24 plays
+  the key causal role in encoding the answer choice, while layers 26, 29, and 31 increase the logit
+  and probit values of the predicted token in vocabulary space. The effect is sparse: only 1-4 attention
+  heads per layer (out of 32) project to non-negligible values on answer choice symbols. Multi-head
+  self-attention dominates over MLPs in this process, despite containing only half the parameters. Similar
+  patterns hold across all three model families, though specific key layers differ.'
+models:
+- ref: model:olmo
+  variant: variant:olmo-0724-7b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:qwen2-5
+  variant: variant:qwen-2-5-1-5b-instruct
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:answer-assemble-ace-understanding-lms-answer
+datasets:
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+methods:
+- ref: method:activation-patching
+  role: primary
+related_work:
+- name: Lieberum et al. 2023
+  anchor: https://arxiv.org/abs/2307.09458
+  role: builds-on
+- name: Li & Gao 2024
+  anchor: https://arxiv.org/abs/2405.03205
+  role: compared-to
+evidence_type: interventional
+key_metric: 1-4 attention heads per layer (out of 32) project to non-negligible values; key encoding
+  layer 24 for OLMo 7B Instruct; promotion layers 26, 29, 31; MHSA contains 67M vs MLP 135M parameters
+  per layer
+caveat: Results are on correctly-predicted instances only; the paper notes that negative results in
+  earlier layers from vocabulary projection are uninformative because the method cannot detect non-linearly
+  decodable subspaces
+extracted_by: automatic-extraction
+related_findings:
+- IC-088
+- IC-089

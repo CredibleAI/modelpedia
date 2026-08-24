@@ -1,0 +1,58 @@
+id: IC-610
+title: In LLaMA2-7B-Chat, RAG hallucinations are causally driven by copying heads losing external context
+  information during generation and by knowledge FFNs in mid-to-upper layers over-adding parametric
+  knowledge to the residual stream
+description: 'The paper identifies the internal mechanism of RAG hallucination in LLaMA2-7B-Chat using
+  mechanistic interpretability. Correlation analysis shows 1006/1024 attention heads have higher external
+  context scores on truthful vs hallucinated responses, and copying heads are strongly associated with
+  hallucinations (PCC 0.41 and 0.46). Causal intervention (noise on copying head attention scores, 10x
+  amplification of knowledge FFN contributions) confirms the causal link: the experimental group''s
+  NLL difference is significantly larger than the control group''s. Further analysis shows 77.5% of
+  the time attention heads correctly attend to the relevant context, meaning the hallucination arises
+  from the model losing that information during generation rather than from mis-attending. The parametric
+  knowledge injection is concentrated in mid-to-upper layers: removing the 16th layer FFN reduces parametric
+  knowledge bias by 3.05% on HotpotQA versus only 0.11% for the 1st layer. Modulating these components
+  via AARF reduces hallucinations across LLaMA2-7B, LLaMA2-13B, and LLaMA3-8B as judged by GPT-4o.'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts:
+- ref: concept:depth-dependent-structure
+- ref: concept:failure-mode
+sources:
+- ref: source:redeep-detecting-hallucination-retrieval-augmented-generation
+datasets:
+- ref: dataset:ragtruth
+  role: eval
+- ref: dataset:dolly-ac
+  role: eval
+- ref: dataset:hotpotqa
+  role: eval
+- ref: dataset:squad
+  role: eval
+- ref: dataset:natural-questions
+  role: eval
+methods:
+- ref: method:logit-lens
+  role: primary
+related_work:
+- name: Transformer Circuits Thread
+  anchor: https://transformer-circuits.pub/2021/framework/index.html
+  role: builds-on
+- name: Copy Suppression
+  anchor: https://arxiv.org/abs/2310.04625
+  role: context
+evidence_type: interventional
+key_metric: '1006/1024 heads show higher ECS on truthful set; PCC(copying head score, ECS diff)=0.41,
+  PCC(copying head score, ECS-hallucination corr)=0.46; 77.5% attention heads attend to correct conflict-supporting
+  info; removing 16th layer FFN: Δ3.05% parametric knowledge bias reduction on HotpotQA vs Δ0.11% for
+  1st layer; AARF on LLaMA3-8B RAGTruth: 110 win / 112 tie / 97 loss'
+caveat: The mechanistic analysis (correlation and causal intervention) is conducted only on LLaMA2-7B-Chat;
+  the AARF mitigation results extend to LLaMA2-13B and LLaMA3-8B but the internal mechanism was not
+  independently verified on those models. The ECS and PKS metrics are described as 'intuitive proxies'
+  rather than exact measures.
+extracted_by: automatic-extraction

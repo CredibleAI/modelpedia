@@ -1,0 +1,41 @@
+id: IC-277
+title: Open-source VLMs show a clear scaling trend in both average accuracy and reasoning robustness
+  on DynaMath, with larger models performing substantially better
+description: Among open-source models, increasing parameter size consistently improves both average-case
+  accuracy and reasoning robustness. Qwen2-VL improves from 42.1% (7B) to 55.1% (72B) average accuracy,
+  and InternVL2 improves from 39.7% (8B) to 54.0% (76B). The paper notes that closed-source models demonstrate
+  greater robustness than open-source models overall, but within the open-source group, reasoning robustness
+  scales with model size. Qwen2-VL-72B and InternVL2-76B outperform Gemini Pro 1.5 on reasoning robustness.
+models:
+- ref: model:qwen-2-vl
+  variant: variant:qwen2-vl-7b
+- ref: model:qwen-2-vl
+  variant: variant:qwen2-vl-72b
+- ref: model:internvl-2
+  variant: variant:internvl-2-8b
+- ref: model:internvl-2
+  variant: variant:internvl2-26b
+- ref: model:internvl-2
+  variant: variant:internvl-2-40b
+- ref: model:internvl-2
+  variant: variant:internvl2-76b
+- ref: model:gemini-1-5
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:dynamath-dynamic-visual-benchmark-evaluating-mathematical
+datasets:
+- ref: dataset:dynamath
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Qwen2-VL: 42.1% (7B) to 55.1% (72B) average accuracy; InternVL2: 39.7% (8B) to 54.0% (76B)
+  average accuracy. Reasoning robustness (RR): Qwen2-VL-72B 51.8%, InternVL2-76B 45.8%, Gemini Pro 1.5
+  44.5%.'
+caveat: The scaling trend is observed only within two model families (Qwen2-VL and InternVL2) and only
+  up to 76B parameters; it is not established whether the trend continues beyond this range.
+extracted_by: automatic-extraction
+related_findings:
+- IC-276
+- IC-278

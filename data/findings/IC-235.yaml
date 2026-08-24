@@ -1,0 +1,35 @@
+id: IC-235
+title: Salmonn and Qwen2-Audio produce responses containing formatted content and redundant explanations
+  that are unsuitable for speech interaction
+description: When applied to speech-to-text instruction following on instructs2s-eval, Salmonn and Qwen2-Audio
+  generate responses that include ordered lists, parentheses, and lengthy explanations not appropriate
+  for speech synthesis. The paper attributes this to the fact that these models, designed as speech-to-text
+  systems, have not been aligned with speech interaction scenarios. Their ChatGPT scores (3.44/3.40
+  for Salmonn, 3.47/3.38 for Qwen2-Audio) are lower than Llama-Omni's (3.99/3.47), and in the streaming
+  scenario their scores and ASR-WER show significant gaps compared to offline, indicating additional
+  errors from word-level streaming TTS.
+models:
+- ref: model:salmonn
+- ref: model:qwen2-audio
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:llama-omni-seamless-speech-interaction-large
+datasets: []
+methods:
+- ref: method:utmos
+  role: eval
+related_work:
+- ref: model:salmonn
+  role: compared-to
+- ref: model:qwen2-audio
+  role: compared-to
+evidence_type: correlational
+key_metric: ChatGPT score 3.44 (s2tif) / 3.40 (s2sif) for Salmonn+Orca, 3.47 (s2tif) / 3.38 (s2sif)
+  for Qwen2-Audio+Orca; ASR-WER 3.78 and 6.77 respectively (offline)
+caveat: The s2sif evaluation relies on Whisper-Large-V3 transcription of the TTS output, and the TTS
+  component (Orca) is an industrial model not part of the original released model, so the s2sif scores
+  reflect the cascaded system rather than the LLM alone.
+extracted_by: automatic-extraction
+related_findings:
+- IC-234

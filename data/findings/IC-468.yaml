@@ -1,0 +1,34 @@
+id: IC-468
+title: Llama-3.1-405B's last hidden layer embeddings of erroneous tokens contain a linearly detectable
+  error signal that a simple logistic regression head can exploit to flag incorrect continuations
+description: 'The paper shows that when Llama-3.1-405B is conditioned on an incorrect token, the last
+  hidden layer embedding of that token carries information that distinguishes it from correct tokens.
+  A logistic regression head trained on 500 question/correct/wrong answer tuples (30k tokens, 16.4k
+  parameters) achieves high accuracy in identifying erroneous tokens. The model also exhibits a ''correcting''
+  behaviour: when forced to continue from a wrong statement (e.g., ''the capital of France is Berlin''),
+  it immediately attempts to rectify the error. Deeper layers perform best with only insignificant differences,
+  while too-shallow layers are clearly worse, consistent with prior work on representation depth.'
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-405b
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:judge-decoding-faster-speculative-sampling-requires
+datasets:
+- ref: dataset:arc
+  role: source
+methods: []
+related_work:
+- ref: method:representation-engineering
+  role: context
+evidence_type: observational
+key_metric: 16.4k parameters trained on 30k tokens in under 1.5 hours; deeper layers perform best with
+  only insignificant differences, too shallow layers clearly worse
+caveat: The judge head is trained on a curated 500-tuple dataset with a 20x positive-to-negative imbalance.
+  Out-of-distribution performance drops (e.g., HumanEval from 86.6 to 80.4% when coding examples are
+  removed from training), indicating the signal is task-dependent.
+extracted_by: automatic-extraction
+related_findings:
+- IC-467

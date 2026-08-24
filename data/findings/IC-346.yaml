@@ -1,0 +1,42 @@
+id: IC-346
+title: Hierarchical and categorical concepts from WordNet are linearly represented in the final-layer
+  space of Gemma-2b and Llama-3-8B, with semantic hierarchy encoded as orthogonality and categorical
+  concepts as polytopes
+description: The paper estimates vector representations for 900+ WordNet synsets (593 noun, 364 verb)
+  in the final-layer unembedding space of Gemma-2b and Llama-3-8B using a variant of LDA. Projections
+  of target words onto the estimated vectors are near 1 while random words are near 0, confirming the
+  existence of vector representations. Cosine similarity between representation vectors mirrors the
+  WordNet hyponym graph structure, and the cosine similarity between a child-parent difference vector
+  and the parent vector is close to 0, as predicted by the hierarchical orthogonality theorem. An interventional
+  check (Table 1) shows that adding the parent contrast vector to context embeddings shifts parent-concept
+  logit differences by 5.1–14.4 while child-concept logit differences remain near 0 (−0.15 to 0.38).
+  Categorical concepts such as {mammal, bird, fish} form polytopes whose vertices are the individual
+  element vectors.
+models:
+- ref: model:gemma
+- ref: model:llama-3
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:geometry-categorical-hierarchical-concepts-large-language
+datasets:
+- ref: dataset:wordnet
+  role: source
+methods:
+- ref: method:ledoit-wolf-shrinkage-estimator
+  role: supporting
+related_work:
+- name: Elhage et al. 2022 (Toy Models of Superposition)
+  anchor: https://arxiv.org/abs/2209.10652
+  role: context
+- name: Jiang et al. 2023 (Partial Orthogonality)
+  anchor: https://arxiv.org/abs/2310.17611
+  role: context
+evidence_type: correlational
+key_metric: 'Table 1 (Gemma-2b): parent logit-difference changes 5.1265 ± 1.1731, 9.8296 ± 1.1099, 14.4222
+  ± 0.9458; child logit-difference changes −0.0600 ± 1.2190, 0.3770 ± 1.5410, −0.1545 ± 1.1426'
+caveat: The whitening transformation used to define the causal inner product only applies to the final
+  layer; the geometry of internal layers is not addressed. The authors note that set inclusion in the
+  estimation procedure can produce spurious orthogonality, though they show the effect persists when
+  set inclusion is broken by using independent 70% training subsets per synset.
+extracted_by: automatic-extraction

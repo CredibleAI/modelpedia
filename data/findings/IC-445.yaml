@@ -1,0 +1,26 @@
+id: IC-445
+title: Stable Diffusion v1.5 generates nudity for 796 out of 4703 prompts in the I2P inappropriate prompts
+  dataset
+description: The authors ran the pre-trained Stable Diffusion v1.5 model on all 4703 prompts from the
+  I2P dataset, which features various inappropriate concepts. Using the NudNet detector, they found
+  that the unmodified model generates nudity for 796 of those prompts. This establishes a baseline failure
+  rate for unsafe content generation in the released model before any editing is applied.
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v1-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:conceptprune-concept-editing-diffusion-models-via
+datasets:
+- ref: dataset:i2p
+  role: eval
+methods:
+- ref: method:nudnet
+  role: eval
+related_work: []
+evidence_type: observational
+key_metric: 796 out of 4703 prompts generate nudity (pre-trained SD v1.5, I2P dataset, NudNet detector)
+extracted_by: automatic-extraction
+related_findings:
+- IC-446

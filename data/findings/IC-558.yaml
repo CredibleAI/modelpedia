@@ -1,0 +1,38 @@
+id: IC-558
+title: Guard models exhibit inconsistent calibration when classifying responses from different response
+  model types, with ECE varying by up to 39 percentage points within a single model
+description: 'On the HarmBench-adv set split by response model type (10 subsets: Baichuan2, Qwen, Solar,
+  Llama2, Vicuna, Orca2, Koala, OpenChat, Starling, Zephyr), each guard model shows large variance in
+  both F1 and ECE. For example, Llama-Guard''s ECE ranges from 10.5% (Llama2 responses) to 49.4% (Solar
+  responses). The authors note that models trained on responses from a single model (Aegis on Mistral,
+  Llama-Guard on internal Llama checkpoints) generalize worse than those trained on diverse response
+  sets (HarmBench, WildGuard).'
+models:
+- ref: model:llama-guard
+- ref: model:llama-guard-2
+- ref: model:llama-guard-3
+- ref: model:aegis-guard-defensive
+- ref: model:mistral-7b
+  variant: variant:harmbench-mistral
+- ref: model:wildguard
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:calibration-llm-based-guard-models-reliable
+datasets:
+- ref: dataset:harmbench
+  role: eval
+methods:
+- ref: method:expected-calibration-error
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Llama-Guard ECE range: 10.5% (Llama2) to 49.4% (Solar); Llama-Guard2 ECE range: 5.8% (Qwen)
+  to 39.4% (Zephyr); Aegis-Guard-D ECE range: 22.2% (Solar) to 40.8% (Llama2)'
+caveat: Each subset has small sample size (33-69 responses per model); subsets with very small n were
+  filtered out
+extracted_by: automatic-extraction
+related_findings:
+- IC-556
+- IC-557
+- IC-559

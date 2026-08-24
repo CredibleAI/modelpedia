@@ -1,0 +1,37 @@
+id: IC-097
+title: Chain-of-thought prompting outperforms few-shot direct QA for Llama 3 models above 8B parameters,
+  while few-shot is best below 3B
+description: The paper compares three prompting strategies (zero-shot direct QA, 15-shot direct QA,
+  and zero-shot chain-of-thought) across the Llama 3 instruct family. For models below 3B parameters,
+  few-shot direct QA performs best. For models above 8B parameters, chain-of-thought is superior. The
+  largest model evaluated with few-shot, Llama 3.3 70B Instruct, does not benefit from including in-context
+  examples at all. CoT yields modest average improvements of 2-3 accuracy points for both the 8B and
+  70B models.
+models:
+- ref: model:llama-3-2-3b
+  variant: variant:llama-3-2-1b-instruct
+- ref: model:llama-3-2-3b
+  variant: variant:llama-3-2-3b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:lawma-power-specialization-legal-annotation
+datasets:
+- ref: dataset:caselawqa
+  role: eval
+methods:
+- ref: method:chain-of-thought-prompting
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: llama 3 8b instruct 0.503, llama 3 8b instruct + cot 0.529, llama 3 70b instruct 0.623,
+  llama 3 70b instruct + cot 0.640
+caveat: CoT evaluation was limited to Llama 3 8B and 70B Instruct due to compute cost (over 500 H100
+  GPU hours). Few-shot evaluation used 15 examples, constrained by the 128k context window and 8k token
+  opinions.
+extracted_by: automatic-extraction
+related_findings:
+- IC-096
+- IC-098

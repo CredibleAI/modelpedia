@@ -461,6 +461,23 @@ def test_the_navigation_marks_nothing_on_the_home_page():
     assert 'aria-current' not in render.navigation(view_of())
 
 
+def test_every_page_marks_the_site_as_a_prototype_beside_its_name():
+    pages = render.render_site(graph_of())
+    documents = [doc for path, doc in pages.items() if path != render.STYLESHEET]
+    assert documents
+    for document in documents:
+        assert render.STATUS_LABEL in document
+        assert document.index(render.PAGE_TITLE) < document.index('class="wip"')
+
+
+def test_the_home_page_marks_the_prototype_on_its_heading_too():
+    view = view_of()
+    body = render.home_body(view)
+    heading = body[body.index("<h1>"):body.index("</h1>")]
+    assert 'class="wip"' in heading
+    assert render.STATUS_LABEL in heading
+
+
 def test_the_navigation_carries_the_theme_toggle():
     nav = render.navigation(view_of())
     assert 'class="theme-toggle"' in nav

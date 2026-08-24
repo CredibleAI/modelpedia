@@ -24,14 +24,14 @@ dataset:patternnet:
   note: null
 
 dataset:mscoco:
-  name: MS COCO / COCO
+  name: MS COCO / COCO / COCO 2014
   anchor: https://arxiv.org/abs/1405.0312
   artifact: https://huggingface.co/datasets/clip-benchmark/wds_mscoco_captions
   note: the artifact is the webdataset packaging of the captions split used in CLIP benchmarking, not
     the full COCO release
 
 dataset:imagenet1k:
-  name: ImageNet-1k / ImageNet
+  name: ImageNet-1k / ImageNet / ImageNet-1k-val
   anchor: https://arxiv.org/abs/1409.0575
   artifact: https://huggingface.co/datasets/ILSVRC/imagenet-1k
   note: ImageNet-1k is the ILSVRC classification subset; the anchor is the challenge paper that defines
@@ -193,7 +193,7 @@ dataset:wikitext-103:
     than in the source'
 
 dataset:wikidata:
-  name: Wikidata
+  name: Wikidata / WikidataRecent
   anchor: https://cacm.acm.org/research/wikidata/
   artifact: https://www.wikidata.org
   note: a live knowledge base rather than a fixed release, so what a study drew from it is defined by
@@ -267,7 +267,7 @@ dataset:needle-in-a-haystack:
     the same URL and only the anchor is recorded
 
 dataset:anthropic-hh:
-  name: Anthropic-HH
+  name: Anthropic-HH / Anthropic HHH / Anthropic/HH-RLHF
   anchor: https://arxiv.org/abs/2204.05862
   artifact: null
   note: null
@@ -344,7 +344,7 @@ dataset:multitp:
     release of its own that the source prints
 
 dataset:moral-machine:
-  name: Moral Machine dataset
+  name: Moral Machine dataset / Moral Machine Experiment
   anchor: null
   artifact: null
   note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
@@ -371,7 +371,7 @@ dataset:ravel:
   note: null
 
 dataset:ioi:
-  name: IOI dataset
+  name: IOI dataset / IOI task
   anchor: null
   artifact: null
   note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
@@ -423,3 +423,1323 @@ dataset:yinqiwenyuan-detection:
   note: 'no anchor recorded: the extractor captured no citation for this entry, and the citing paper''s
     reference entry was never read. The paper does cite it, so this is a gap in our extraction rather
     than in the source'
+
+dataset:advbench:
+  name: AdvBench / AdvBench-50
+  anchor: https://arxiv.org/abs/2307.15043
+
+dataset:stanford-alpaca:
+  name: Stanford Alpaca
+  anchor: https://github.com/tatsu-lab/stanford_alpaca
+
+dataset:arc:
+  name: ARC
+  anchor: https://arxiv.org/abs/1803.05457
+
+dataset:arc-challenge:
+  name: ARC-Challenge
+  anchor: https://arxiv.org/abs/1803.05457
+
+dataset:caltech-101:
+  name: Caltech-101
+
+dataset:chatbot-arena:
+  name: Chatbot Arena
+
+dataset:commonsenseqa:
+  name: CommonsenseQA
+  anchor: https://arxiv.org/abs/1811.00937
+
+dataset:dtd:
+  name: DTD
+
+dataset:flowers-102:
+  name: Flowers-102
+
+dataset:food-101:
+  name: Food-101
+
+dataset:harmbench:
+  name: HarmBench / HarmBench Prompt / HarmBench Response / HarmBench-adv
+
+dataset:hellaswag:
+  name: HellaSwag
+  anchor: https://aclanthology.org/p19-1472
+
+dataset:hotpotqa:
+  name: HotpotQA
+
+dataset:humaneval:
+  name: HumanEval
+  anchor: https://arxiv.org/abs/2107.03374
+
+dataset:ifeval:
+  name: IFEval / IFEval-Simple
+  anchor: https://arxiv.org/abs/2311.07911
+
+dataset:imagenet-r:
+  name: ImageNet-R
+
+dataset:imdb:
+  name: IMDB
+  anchor: http://www.aclweb.org/anthology/p11-1015
+
+dataset:jailbreakbench:
+  name: JailbreakBench
+  anchor: https://arxiv.org/abs/2404.01318
+
+dataset:maliciousinstruct:
+  name: MaliciousInstruct
+
+dataset:mmbench:
+  name: MMBench
+  anchor: https://arxiv.org/abs/2307.06281
+
+dataset:mme:
+  name: MME
+  anchor: https://arxiv.org/abs/2306.13394
+
+dataset:mmlu:
+  name: MMLU
+
+dataset:mt-bench:
+  name: MT-Bench
+  anchor: https://openreview.net/forum?id=ucchpgdlao
+
+dataset:natural-questions:
+  name: Natural Questions / NaturalQA
+
+dataset:openbookqa:
+  name: OpenBookQA
+
+dataset:piqa:
+  name: PIQA
+  anchor: https://arxiv.org/abs/1911.11641
+
+dataset:realtoxicityprompts:
+  name: RealToxicityPrompts
+
+dataset:rewardbench:
+  name: RewardBench
+  anchor: https://arxiv.org/abs/2403.13787
+
+dataset:rte:
+  name: RTE
+  anchor: https://doi.org/10.1007/11736790_9
+
+dataset:sciq:
+  name: SciQ / SciQA
+  anchor: https://doi.org/10.18653/v1/w17-4413
+
+dataset:sst-2:
+  name: SST-2
+  anchor: https://www.aclweb.org/anthology/d13-1170
+
+dataset:stanford-cars:
+  name: Stanford Cars
+
+dataset:truthfulqa:
+  name: TruthfulQA / TruthfulQA MC1
+
+dataset:wikipedia:
+  name: Wikipedia
+  anchor: https://dumps.wikimedia.org
+
+dataset:wikitext:
+  name: WikiText
+
+dataset:wikitext-2:
+  name: WikiText-2
+
+dataset:winogrande:
+  name: Winogrande
+
+dataset:xstest:
+  name: XSTest
+  anchor: https://arxiv.org/abs/2308.01263
+
+dataset:xsum:
+  name: XSum
+
+dataset:zsre:
+  name: ZSRE
+  anchor: https://doi.org/10.18653/v1/k17-1034
+
+dataset:wikimultihopqa-2:
+  name: 2WikiMultiHopQA
+
+dataset:ad-fontes-media:
+  name: Ad Fontes Media
+  anchor: https://adfontesmedia.com/wp-content/uploads/2022/07/ad-fontes-media-content-analysis-methodology-white-paper-september-2021-1.pdf
+
+dataset:adience:
+  name: ADIENCE
+
+dataset:adversarialglue:
+  name: AdversarialGLUE
+
+dataset:aegis:
+  name: Aegis
+  anchor: https://arxiv.org/abs/2404.05993
+
+dataset:ag-news:
+  name: AG-News
+  anchor: https://arxiv.org/abs/1509.01626
+
+dataset:aiops-challenge:
+  name: AIOps Challenge
+  anchor: https://competition.aiops-challenge.com/home/
+
+dataset:alfworld:
+  name: ALFWorld
+  anchor: https://openreview.net/forum?id=0iox0yccdtn
+
+dataset:alpacaeval:
+  name: AlpacaEval
+
+dataset:alpacaeval-2:
+  name: AlpacaEval 2
+  anchor: https://arxiv.org/abs/2404.04475
+
+dataset:american-rhetoric-speech-bank:
+  name: American Rhetoric Speech Bank
+
+dataset:analytic-entailment:
+  name: Analytic Entailment
+  anchor: https://openreview.net/forum?id=uytl5bvosj
+
+dataset:apo-holo-pairs:
+  name: Apo/Holo Pairs
+
+dataset:apps:
+  name: APPS
+  anchor: https://arxiv.org/abs/2105.09938
+
+dataset:aqua:
+  name: AQUA
+
+dataset:arc-easy:
+  name: ARC Easy
+  anchor: https://arxiv.org/abs/1803.05457
+
+dataset:arena-hard-auto:
+  name: Arena-Hard-Auto
+  anchor: https://arxiv.org/abs/2406.11939
+
+dataset:asqa:
+  name: ASQA
+  anchor: https://arxiv.org/abs/2204.06092
+
+dataset:atlas:
+  name: ATLAS
+
+dataset:attaq:
+  name: ATTAQ
+
+dataset:audioset:
+  name: AudioSet
+  anchor: https://doi.org/10.1109/ICASSP.2017.7952261
+
+dataset:ava:
+  name: AVA
+
+dataset:babi:
+  name: bAbI
+
+dataset:bbq:
+  name: BBQ
+  anchor: https://aclanthology.org/2022.findings-acl.165/
+
+dataset:beavertails:
+  name: BeaverTails / BeaverTails Test
+
+dataset:beeradvocate:
+  name: BeerAdvocate
+  anchor: https://doi.org/10.1109/icdm.2012.110
+
+dataset:bias-in-bios:
+  name: Bias in Bios
+  anchor: https://doi.org/10.1145/3287560.3287572
+
+dataset:big-bench:
+  name: Big-Bench
+
+dataset:bioasq:
+  name: BioASQ
+
+dataset:bnlearn:
+  name: bnlearn
+
+dataset:bold:
+  name: BOLD
+
+dataset:bold-moments-dataset:
+  name: BOLD Moments Dataset
+
+dataset:bookcorpus:
+  name: BookCorpus
+
+dataset:bookmia:
+  name: BookMIA
+  anchor: https://openreview.net/forum?id=zwqr3mquns
+
+dataset:boolq:
+  name: BoolQ
+
+dataset:broden:
+  name: BRODEN
+
+dataset:c-eval:
+  name: C-Eval
+
+dataset:c4:
+  name: C4
+  anchor: https://arxiv.org/abs/1910.10683
+
+dataset:caltech-256:
+  name: Caltech-256
+
+dataset:caselawqa:
+  name: CaseLawQA
+
+dataset:casia1:
+  name: CASIA1+
+
+dataset:charades-sta:
+  name: Charades-STA
+
+dataset:chartqa:
+  name: ChartQA
+  anchor: https://arxiv.org/abs/2203.10244
+
+dataset:choices13k:
+  name: Choices13k
+
+dataset:cicero:
+  name: Cicero
+  anchor: https://aclanthology.org/2022.acl-long.344
+
+dataset:cityscapes:
+  name: Cityscapes
+
+dataset:clasheval:
+  name: ClashEval
+  anchor: 'https://api.semanticscholar.org/corpusid: 269157310'
+
+dataset:claude-s-constitution:
+  name: Claude's Constitution
+  anchor: https://www.anthropic.com/news/claudes-constitution
+
+dataset:clevr:
+  name: CLEVR
+
+dataset:cnn-dailymail:
+  name: CNN/DailyMail
+
+dataset:co3d:
+  name: CO3D
+
+dataset:coco-rem:
+  name: COCO-REM
+  anchor: https://arxiv.org/abs/2403.18819
+
+dataset:coco-stuff:
+  name: COCO-Stuff
+
+dataset:codecontests:
+  name: CodeContests
+
+dataset:coift:
+  name: COIFT
+
+dataset:columbia-image-splicing-detection-evaluation-dataset:
+  name: Columbia Image Splicing Detection Evaluation Dataset
+
+dataset:commonsenseqa-2-0:
+  name: CommonsenseQA 2.0
+  anchor: https://datasets-benchmarks-proceedings.neurips.cc/paper_files/paper/2021/file/3ef815416f775098fe977004015c6193-paper-round1.pdf
+
+dataset:conceptedit:
+  name: ConceptEdit
+  anchor: https://aclanthology.org/2024.findings-emnlp.40
+
+dataset:conflictqa:
+  name: ConflictQA
+
+dataset:conneau-et-al-probing-tasks:
+  name: Conneau et al. Probing Tasks
+
+dataset:cosmosqa:
+  name: CosmosQA
+  anchor: https://aclanthology.org/d19-1243
+
+dataset:counterfact:
+  name: CounterFact
+  anchor: https://arxiv.org/abs/2202.05262
+
+dataset:cs-bench:
+  name: CS-Bench
+
+dataset:cub-200-2011:
+  name: CUB-200-2011
+
+dataset:cvbench-2d:
+  name: CVBench-2D
+
+dataset:cvrr-es:
+  name: CVRR-ES
+  anchor: https://arxiv.org/abs/2405.03690
+
+dataset:dan:
+  name: DAN
+  anchor: https://arxiv.org/abs/2308.03825
+
+dataset:databricks-dolly:
+  name: Databricks Dolly
+  anchor: https://www.databricks.com/blog/2023/04/12/dolly-first-open-commercially-viable-instruction-tuned-llm
+
+dataset:decaf:
+  name: DECAF
+
+dataset:dffd:
+  name: DFFD
+
+dataset:dgshd:
+  name: DGSHD
+  anchor: https://doi.org/10.18653/v1/2021.acl-long.132
+
+dataset:dis:
+  name: DIS
+
+dataset:dl19:
+  name: DL19
+  anchor: https://arxiv.org/abs/2003.07820
+
+dataset:deepmind-control-suite:
+  name: DeepMind Control Suite
+  anchor: https://arxiv.org/abs/1801.00690
+
+dataset:do-not-answer:
+  name: Do-Not-Answer
+  anchor: https://arxiv.org/abs/2308.13387
+
+dataset:docvqa:
+  name: DocVQA
+
+dataset:dolly-ac:
+  name: Dolly (AC)
+  anchor: https://arxiv.org/abs/2405.14486
+
+dataset:dolma:
+  name: Dolma
+  anchor: https://aclanthology.org/2024.acl-long.840/
+
+dataset:domainbed:
+  name: DomainBed
+
+dataset:domainnet:
+  name: DomainNet
+
+dataset:dpg-bench:
+  name: DPG-Bench
+  anchor: https://arxiv.org/abs/2403.05135
+
+dataset:drop:
+  name: DROP
+
+dataset:dynamath:
+  name: DynaMath
+
+dataset:e-t-bench:
+  name: E.T.Bench
+
+dataset:ehrshot:
+  name: EHRShot
+
+dataset:lm-evaluation-harness:
+  name: LM Evaluation Harness
+  anchor: https://zenodo.org/records/10256836
+
+dataset:emotic:
+  name: EMOTIC
+
+dataset:english-ud-treebank:
+  name: English UD Treebank
+  anchor: https://aclanthology.org/p13-2017
+
+dataset:enron-corpus:
+  name: Enron Corpus
+  anchor: https://doi.org/10.1007/978-3-540-30115-8_22
+
+dataset:epfl-combinational-benchmark-suite:
+  name: EPFL Combinational Benchmark Suite
+
+dataset:episodic-memory-benchmark:
+  name: Episodic Memory Benchmark / Episodic Memory Benchmark (short book)
+  anchor: https://github.com/ahstat/episodic-memory-benchmark
+
+dataset:aligning-ai-with-shared-human-values:
+  name: Aligning AI with Shared Human Values
+
+dataset:event-bench:
+  name: Event-Bench
+  anchor: https://arxiv.org/abs/2406.14129
+
+dataset:expertqa:
+  name: ExpertQA
+  anchor: https://arxiv.org/abs/2309.07852
+
+dataset:factor-expert:
+  name: Factor-Expert
+  anchor: https://arxiv.org/abs/2307.06908
+
+dataset:factscore:
+  name: FactScore
+  anchor: https://arxiv.org/abs/2305.14251
+
+dataset:fairmt-10k:
+  name: FairMT-10K
+
+dataset:ffhq:
+  name: FFHQ
+
+dataset:fft:
+  name: FFT
+  anchor: https://arxiv.org/abs/2311.18580
+
+dataset:fgvc-aircraft:
+  name: FGVC Aircraft
+  anchor: https://arxiv.org/abs/1306.5151
+
+dataset:fictional-knowledge-dataset:
+  name: Fictional Knowledge Dataset
+  anchor: https://arxiv.org/abs/2406.11813
+
+dataset:financial-phrasebank:
+  name: Financial Phrasebank
+
+dataset:flickr30k:
+  name: Flickr30k
+
+dataset:foil-it:
+  name: Foil It
+  anchor: https://aclanthology.org/p17-1024
+
+dataset:fold-switching-chakravarty-porter-2022:
+  name: Fold-Switching (Chakravarty & Porter 2022)
+
+dataset:folio:
+  name: FOLIO
+  anchor: https://arxiv.org/abs/2209.00840
+
+dataset:freshqa:
+  name: FreshQA
+  anchor: https://arxiv.org/abs/2310.03214
+
+dataset:fsd50k:
+  name: FSD50K
+
+dataset:function-vectors-dataset:
+  name: Function Vectors Dataset
+
+dataset:gale-phase-3-and-4-chinese-newswire-parallel-text:
+  name: GALE Phase 3 and 4 Chinese Newswire Parallel Text
+  anchor: https://catalog.ldc.upenn.edu/ldc2016t25
+
+dataset:game-of-24-4nums-com-instances-1-1000:
+  name: Game of 24 (4nums.com instances 1-1000)
+
+dataset:github-codeparrot:
+  name: GitHub (codeparrot)
+  anchor: https://huggingface.co/datasets/codeparrot/github-code
+
+dataset:gpqa:
+  name: GPQA
+  anchor: https://arxiv.org/abs/2311.12022
+
+dataset:gqa:
+  name: GQA
+
+dataset:gqa-balanced:
+  name: GQA Balanced
+
+dataset:gtzan:
+  name: GTZAN
+
+dataset:halueval:
+  name: HaluEval
+
+dataset:hatexplain:
+  name: HATEXPLAIN
+
+dataset:hci-historical-colored-images:
+  name: HCI (Historical Colored Images)
+
+dataset:hex-phi:
+  name: HEX-Phi
+  anchor: https://huggingface.co/datasets/llm-tuning-safety/hex-phi
+
+dataset:hh-rlhf:
+  name: HH-RLHF
+  anchor: https://arxiv.org/abs/2204.05862
+
+dataset:hotelreviews:
+  name: HotelReviews
+  anchor: https://doi.org/10.1145/1835804.1835903
+
+dataset:hr-sod:
+  name: HR-SOD
+
+dataset:hrs-bench:
+  name: HRS-Bench
+
+dataset:hwobc:
+  name: HWOBc
+
+dataset:i2p:
+  name: I2P
+
+dataset:imagenet-21k:
+  name: ImageNet-21k
+
+dataset:imagenet-a:
+  name: ImageNet-A
+
+dataset:imagenet-c:
+  name: ImageNet-C
+  anchor: https://openreview.net/forum?id=hjz6ticqym
+
+dataset:imagenet-segmentation:
+  name: ImageNet-Segmentation
+
+dataset:imagenet-sketch:
+  name: ImageNet-Sketch
+
+dataset:imagenet-v2:
+  name: ImageNet-V2
+
+dataset:imagenet-x:
+  name: ImageNet-X
+  anchor: https://arxiv.org/abs/2211.01866
+
+dataset:imagenetette:
+  name: ImageNetette
+  anchor: https://doi.org/10.3390/info11020108
+
+dataset:imd2020:
+  name: IMD2020
+
+dataset:bench:
+  name: ∞Bench
+  anchor: https://arxiv.org/abs/2402.13718
+
+dataset:inshop:
+  name: InShop
+
+dataset:insightbench:
+  name: InsightBench
+
+dataset:itc-99:
+  name: ITC'99
+
+dataset:jailbreakv-28k:
+  name: JailbreakV-28K
+
+dataset:jbb-behaviors:
+  name: JBB-Behaviors
+
+dataset:jec-qa:
+  name: JEC-QA
+
+dataset:jigsaw-toxic-comment-classification-challenge:
+  name: Jigsaw Toxic Comment Classification Challenge
+  anchor: https://kaggle.com/competitions/jigsaw-toxic-comment-classification-challenge
+
+dataset:jigsaw-unintended-bias-in-toxicity-classification:
+  name: Jigsaw Unintended Bias in Toxicity Classification
+  anchor: https://kaggle.com/competitions/jigsaw-unintended-bias-in-toxicity-classification
+
+dataset:judgebench:
+  name: JudgeBench
+  anchor: https://arxiv.org/abs/2406.18403
+
+dataset:kinetics:
+  name: Kinetics
+  anchor: http://arxiv.org/abs/1705.06950
+
+dataset:kinetics-400:
+  name: Kinetics-400
+  anchor: https://arxiv.org/abs/1705.06950
+
+dataset:kinetics-710:
+  name: Kinetics-710
+  anchor: https://arxiv.org/abs/1907.06987
+
+dataset:kodak:
+  name: Kodak
+  anchor: https://r0k.us/graphics/kodak
+
+dataset:koniq-10k:
+  name: KONIQ-10K
+
+dataset:laion-5b:
+  name: LAION-5B
+
+dataset:laion-200m:
+  name: LAION-200M
+  anchor: https://arxiv.org/abs/2111.02114
+
+dataset:laion-2b:
+  name: LAION-2B
+
+dataset:laion-400m:
+  name: LAION-400M
+  anchor: https://arxiv.org/abs/2111.02114
+
+dataset:lambada:
+  name: LAMBADA
+  anchor: https://arxiv.org/abs/1606.06031
+
+dataset:l-m-24:
+  name: L+M-24
+  anchor: https://arxiv.org/abs/2403.00791
+
+dataset:natural-language-fmri-dataset-lebel-et-al-2022:
+  name: Natural Language fMRI Dataset (Lebel et al. 2022)
+
+dataset:lichess-2022-blitz-games:
+  name: Lichess 2022 Blitz Games
+
+dataset:llava-instruct:
+  name: LLaVA-Instruct
+
+dataset:llava-pretrain:
+  name: LLaVA-Pretrain
+
+dataset:llm360:
+  name: LLM360
+
+dataset:lmsys-chat-1m:
+  name: LMSYS-Chat-1M
+
+dataset:logiqa:
+  name: LogiQA
+
+dataset:longbench:
+  name: LongBench
+  anchor: https://arxiv.org/abs/2308.14508
+
+dataset:lotsa:
+  name: LOTSA
+  anchor: https://openreview.net/forum?id=yd8ehmy1wz
+
+dataset:m4:
+  name: M4
+
+dataset:maniskill:
+  name: ManiSkill
+  anchor: https://arxiv.org/abs/2410.00425
+
+dataset:mathvista:
+  name: MathVista
+
+dataset:mbpp:
+  name: MBPP
+  anchor: https://arxiv.org/abs/2108.07732
+
+dataset:mc4:
+  name: MC4
+  anchor: https://aclanthology.org/2021.naacl-main.41
+
+dataset:medqa:
+  name: MedQA
+  anchor: https://www.mdpi.com/2076-3417/11/14/6421
+
+dataset:medvl-ct69k:
+  name: MedVL-CT69K
+
+dataset:mess:
+  name: MESS
+
+dataset:metamath:
+  name: MetaMath
+  anchor: https://arxiv.org/abs/2309.12284
+
+dataset:metamathqa:
+  name: MetaMathQA
+
+dataset:microns:
+  name: MICrONS
+
+dataset:minif2f:
+  name: MiniF2F
+  anchor: https://github.com/yangky11/minif2f-lean4/tree/main
+
+dataset:mip-nerf-360:
+  name: Mip-NeRF 360
+
+dataset:common-evaluation-platform-cep:
+  name: Common Evaluation Platform (CEP)
+  anchor: https://github.com/mit-ll/cep.git
+
+dataset:mlvu:
+  name: MLVU
+  anchor: https://arxiv.org/abs/2406.04264
+
+dataset:mm-vet:
+  name: MM-VET
+
+dataset:mmc:
+  name: MMC
+
+dataset:mmlu-pro:
+  name: MMLU Pro
+  anchor: https://arxiv.org/abs/2406.01574
+
+dataset:mmmu:
+  name: MMMU
+
+dataset:mmt-bench:
+  name: MMT-Bench
+
+dataset:mmvp:
+  name: MMVP
+
+dataset:multi-genre-natural-language-inference-mnli:
+  name: Multi-Genre Natural Language Inference (MNLI)
+  anchor: https://aclanthology.org/n18-1101
+
+dataset:monash-time-series-forecasting-archive:
+  name: Monash Time Series Forecasting Archive
+  anchor: https://arxiv.org/abs/2105.06643
+
+dataset:mquake:
+  name: MQuAKE
+  anchor: https://arxiv.org/abs/2305.14795
+
+dataset:mr:
+  name: MR
+  anchor: https://aclanthology.org/p05-1015/
+
+dataset:msr-vtt:
+  name: MSR-VTT
+
+dataset:mt-bench-101:
+  name: MT-Bench-101
+  anchor: https://arxiv.org/abs/2402.14762
+
+dataset:multijail-en:
+  name: MultiJail-EN
+
+dataset:multilingual-amazon-reviews-corpus:
+  name: Multilingual Amazon Reviews Corpus
+  anchor: https://aclanthology.org/2020.emnlp-main.369
+
+dataset:musique:
+  name: MuSiQue / Musique-ans
+
+dataset:neuropathic-pain-diagnosis-simulator:
+  name: Neuropathic Pain Diagnosis Simulator
+
+dataset:newsqa:
+  name: NewsQA
+
+dataset:nocaps:
+  name: NoCaps
+
+dataset:nordland:
+  name: Nordland
+
+dataset:nsd:
+  name: NSD
+
+dataset:obc306:
+  name: OBC306
+
+dataset:obi-ijdh:
+  name: OBI-IJDH
+  anchor: http://www.ihpc.se.ritsumei.ac.jp/obidataseijdh.zip
+
+dataset:obi125:
+  name: OBI125
+
+dataset:objectnet:
+  name: ObjectNet
+
+dataset:obqa:
+  name: OBQA
+  anchor: https://aclanthology.org/d18-1260
+
+dataset:officehome:
+  name: OfficeHome
+
+dataset:ogb-molhiv:
+  name: OGB-MolHIV
+  anchor: https://proceedings.neurips.cc/paper/2020/hash/fb60d411a5c5b72b2e7d3527cfc84fd0-abstract.html
+
+dataset:ontonotes-v5:
+  name: OntoNotes v5
+  anchor: https://catalog.ldc.upenn.edu/ldc2013t19
+
+dataset:oogiri-go:
+  name: Oogiri-go
+
+dataset:openai-moderation:
+  name: OpenAI Moderation
+
+dataset:openwebtext:
+  name: OpenWebText
+  anchor: http://skylion007.github.io/openwebtextcorpus
+
+dataset:orca-math:
+  name: Orca-Math
+  anchor: https://arxiv.org/abs/2402.14830
+
+dataset:orion:
+  name: ORION
+
+dataset:oxford-pets:
+  name: Oxford Pets
+
+dataset:pacs:
+  name: PACS
+
+dataset:pararel:
+  name: ParaRel
+  anchor: https://aclanthology.org/2021.tacl-1.60
+
+dataset:ped:
+  name: PED
+
+dataset:penn-treebank:
+  name: Penn Treebank
+
+dataset:model-written-evaluations-perez-et-al-2023:
+  name: Model-Written Evaluations (Perez et al. 2023)
+
+dataset:picorv32:
+  name: PicoRV32
+  anchor: https://github.com/yosyshq/picorv32
+
+dataset:pile-bio:
+  name: Pile-Bio
+  anchor: https://huggingface.co/lapisrocks
+
+dataset:pitts30k:
+  name: Pitts30k
+
+dataset:pittsburgh30k:
+  name: Pittsburgh30k
+
+dataset:pku-saferlhf:
+  name: PKU-SafeRLHF
+  anchor: https://arxiv.org/abs/2406.15513
+
+dataset:planbench:
+  name: PlanBench
+  anchor: https://openreview.net/forum?id=yxogl4uquo
+
+dataset:pmc-oa:
+  name: PMC-OA
+
+dataset:pope:
+  name: POPE
+  anchor: https://arxiv.org/abs/2305.10355
+
+dataset:popqa:
+  name: PopQA
+  anchor: https://aclanthology.org/2023.acl-long.546
+
+dataset:proteingym:
+  name: ProteinGym
+
+dataset:pubmed:
+  name: PubMed
+
+dataset:pubmedqa:
+  name: PubMedQA
+
+dataset:pvq-rr:
+  name: PVQ-RR
+
+dataset:qampari:
+  name: QAMPARI
+  anchor: https://arxiv.org/abs/2205.12665
+
+dataset:qasc:
+  name: QASC
+
+dataset:qnli:
+  name: QNLI
+
+dataset:quora-question-pairs:
+  name: Quora Question Pairs
+  anchor: https://openreview.net/forum?id=wcu6t5xfjej
+
+dataset:quora-question-answer-dataset:
+  name: Quora Question Answer Dataset
+  anchor: https://huggingface.co/datasets/toughdata/quora-question-answer-dataset
+
+dataset:qvhighlights:
+  name: QVHighlights
+
+dataset:r-gsm:
+  name: R-GSM
+  anchor: https://arxiv.org/abs/2402.08939
+
+dataset:race:
+  name: RACE
+
+dataset:ragtruth:
+  name: RAGTruth
+
+dataset:recipe-mpr:
+  name: Recipe-MPR
+
+dataset:redditbias:
+  name: RedditBias
+  anchor: https://arxiv.org/abs/2106.03521
+
+dataset:redditqa:
+  name: RedditQA
+
+dataset:redpajama:
+  name: RedPajama
+  anchor: https://github.com/togethercomputer/redpajama-data
+
+dataset:refcoco:
+  name: RefCOCO+
+  anchor: https://link.springer.com/chapter/10.1007/978-3-319-46475-6_5
+
+dataset:refcocog:
+  name: RefCOCOg
+
+dataset:relations-dataset:
+  name: Relations Dataset
+  anchor: https://openreview.net/forum?id=w7lu2s14ke
+
+dataset:replica:
+  name: Replica
+
+dataset:rlbench:
+  name: RLBench
+
+dataset:rocket-chip-generator:
+  name: Rocket Chip Generator
+
+dataset:roco:
+  name: ROCO
+
+dataset:rotten-tomatoes:
+  name: Rotten Tomatoes
+
+dataset:roxford:
+  name: ROxford
+
+dataset:paris:
+  name: Paris
+
+dataset:ruozhiba:
+  name: Ruozhiba
+
+dataset:sad:
+  name: SAD
+  anchor: https://arxiv.org/abs/2407.04694
+
+dataset:saferlhf-test:
+  name: SafeRLHF Test
+  anchor: https://arxiv.org/abs/2310.12773
+
+dataset:samsum:
+  name: SAMSum
+  anchor: https://aclanthology.org/d19-5409
+
+dataset:social-bias-frames:
+  name: Social Bias Frames
+  anchor: https://arxiv.org/abs/1911.03891
+
+dataset:supreme-court-database:
+  name: Supreme Court Database
+  anchor: http://supremecourtdatabase.org
+
+dataset:pvq-r-49-cultural-groups:
+  name: PVQ-R 49 Cultural Groups
+
+dataset:screenspot:
+  name: ScreenSpot
+  anchor: https://aclanthology.org/2024.acl-long.505
+
+dataset:scrolls:
+  name: Scrolls
+  anchor: https://aclanthology.org/2022.emnlp-main.823
+
+dataset:searchqa:
+  name: SearchQA
+  anchor: https://arxiv.org/abs/1704.05179
+
+dataset:seed-bench:
+  name: Seed-Bench / SeedBench
+  anchor: https://arxiv.org/abs/2307.16125
+
+dataset:semeval-2020-task-7:
+  name: SemEval 2020 Task 7
+  anchor: https://aclanthology.org/2020.semeval-1.98
+
+dataset:semeval-2021-task-7:
+  name: SemEval 2021 Task 7
+
+dataset:dynamic-sensorium:
+  name: Dynamic Sensorium
+
+dataset:sginw:
+  name: SGInW
+
+dataset:sharegpt4v:
+  name: ShareGPT4V
+  anchor: https://arxiv.org/abs/2311.12793
+
+dataset:simplesafetytests:
+  name: SimpleSafetyTests
+  anchor: https://arxiv.org/abs/2311.08370
+
+dataset:social-iqa:
+  name: Social IQA
+  anchor: https://aclanthology.org/d19-1454
+
+dataset:skempi-2-0:
+  name: SKEMPI 2.0
+
+dataset:slimpajama:
+  name: SlimPajama
+
+dataset:snli:
+  name: SNLI
+
+dataset:social-chemistry-101:
+  name: Social Chemistry 101
+  anchor: https://arxiv.org/abs/2011.00620
+
+dataset:something-something-v2:
+  name: Something-Something V2
+
+dataset:spatialbench:
+  name: SpatialBench
+  anchor: https://arxiv.org/abs/2406.13642
+
+dataset:sst-5:
+  name: SST-5
+  anchor: https://www.aclweb.org/anthology/d13-1170
+
+dataset:stanford-online-products:
+  name: Stanford Online Products
+
+dataset:stl-10:
+  name: STL-10
+
+dataset:strategyqa:
+  name: StrategyQA
+  anchor: https://doi.org/10.1162/tacl_a_00370
+
+dataset:summeval:
+  name: SummEval
+  anchor: https://doi.org/10.1162/tacl_a_00373
+
+dataset:sun397:
+  name: SUN397
+
+dataset:swag:
+  name: SWAG
+  anchor: https://aclanthology.org/d18-1009
+
+dataset:swiss-roll:
+  name: Swiss Roll
+
+dataset:t-eval:
+  name: T-Eval
+
+dataset:taco:
+  name: TACO
+  anchor: https://arxiv.org/abs/2312.14852
+
+dataset:talk2car:
+  name: Talk2Car
+
+dataset:tanks-and-temples:
+  name: Tanks and Temples
+
+dataset:tcga:
+  name: TCGA
+
+dataset:tempcompass:
+  name: TempCompass
+
+dataset:textbookqa:
+  name: TextbookQA
+
+dataset:textvqa:
+  name: TextVQA
+
+dataset:things:
+  name: THINGS
+  anchor: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0223792
+
+dataset:thinobject-5k:
+  name: ThinObject-5K
+
+dataset:tinystories:
+  name: TinyStories
+  anchor: https://arxiv.org/abs/2305.07759
+
+dataset:tl-dr:
+  name: TL;DR
+  anchor: http://arxiv.org/abs/2009.01325
+
+dataset:tokyo24-7:
+  name: Tokyo24/7
+
+dataset:tokyoval:
+  name: TokyoVal
+
+dataset:toxicchat:
+  name: ToxicChat
+  anchor: https://arxiv.org/abs/2310.17389
+
+dataset:toxigen:
+  name: Toxigen
+  anchor: https://doi.org/10.18653/v1/2022.acl-long.234
+
+dataset:trec:
+  name: TREC
+  anchor: https://www.aclweb.org/anthology/c02-1150
+
+dataset:trec-covid:
+  name: TREC-COVID
+
+dataset:tulu:
+  name: Tulu
+  anchor: https://arxiv.org/abs/2306.04751
+
+dataset:tuxemon:
+  name: Tuxemon
+  anchor: https://tuxemon.org/
+
+dataset:ucf101:
+  name: UCF101
+  anchor: https://arxiv.org/abs/1212.0402
+
+dataset:ucr-time-series-archive:
+  name: UCR Time Series Archive
+
+dataset:ultrachat:
+  name: UltraChat
+
+dataset:ultrachat-200k:
+  name: UltraChat 200K
+
+dataset:uniref100:
+  name: UniRef100
+
+dataset:uniref50:
+  name: UniRef50
+
+dataset:uscad:
+  name: USCAD
+  anchor: http://www.songerproject.org/us-courts-of-appeals-databases.html
+
+dataset:utkface:
+  name: UTKFace
+
+dataset:valse:
+  name: VALSE
+  anchor: https://aclanthology.org/2022.acl-long.567
+
+dataset:vggsound:
+  name: VGGSound
+  anchor: https://ieeexplore.ieee.org/document/9053174
+
+dataset:vibe-eval:
+  name: Vibe-Eval
+  anchor: https://arxiv.org/abs/2405.02287
+
+dataset:video-mme:
+  name: Video-MME
+  anchor: https://arxiv.org/abs/2405.21075
+
+dataset:videochatgpt:
+  name: VideoChatGPT
+
+dataset:visualwebbench:
+  name: VisualWebBench
+  anchor: https://openreview.net/forum?id=egvsgtjjax
+
+dataset:vlkeb:
+  name: VLKEB
+
+dataset:vqa:
+  name: VQA
+
+dataset:vqav2:
+  name: VQAv2
+
+dataset:webarena:
+  name: WebArena
+  anchor: https://arxiv.org/abs/2307.13854
+
+dataset:webarena-lite:
+  name: WebArena-Lite
+  anchor: https://arxiv.org/abs/2408.06327
+
+dataset:webshop:
+  name: WebShop
+
+dataset:whisker-sweep-dataset:
+  name: Whisker Sweep Dataset
+  anchor: https://proceedings.neurips.cc/paper_files/paper/2017/file/ab541d874c7bc19ab77642849e02b89f-paper.pdf
+
+dataset:wikiart:
+  name: WikiArt
+  anchor: https://arxiv.org/abs/1505.00855
+
+dataset:wikibio:
+  name: WikiBio
+
+dataset:wikiqa:
+  name: WikiQA
+  anchor: https://aclanthology.org/d15-1237
+
+dataset:wildbench:
+  name: WildBench
+  anchor: https://openreview.net/forum?id=mkehcx25xp
+
+dataset:wildchat:
+  name: WildChat
+  anchor: https://api.semanticscholar.org/corpusid:269390491
+
+dataset:winobias:
+  name: Winobias
+  anchor: https://arxiv.org/abs/1804.06876
+
+dataset:wmdp:
+  name: WMDP
+  anchor: https://arxiv.org/abs/2403.03218
+
+dataset:wordnet:
+  name: WordNet
+
+dataset:workarena:
+  name: WorkArena
+  anchor: https://arxiv.org/abs/2403.07718
+
+dataset:workflowbench:
+  name: WorkflowBench
+
+dataset:x-stance:
+  name: X-Stance
+  anchor: http://ceur-ws.org/vol-2624/paper9.pdf
+
+dataset:xlsum:
+  name: XLSum
+  anchor: https://aclanthology.org/2021.findings-acl.413
+
+dataset:youcook2:
+  name: YouCook2

@@ -1,0 +1,29 @@
+id: IC-478
+title: GPT-4 and GPT-4V achieve approximately 71-73% accuracy in judging whether a web agent trajectory
+  successfully completes a task
+description: The paper evaluates released LLMs on the task of determining whether a web agent's trajectory
+  successfully completes a given instruction, using the WebArena-Lite test set and 100 manually labeled
+  rollouts. GPT-4 achieves 71.9% on the test set and 71.2% on rollouts; GPT-4 with a captioner achieves
+  72.6% and 73.3%; GPT-4V achieves 71.2% and 70.5%. All three are substantially below the authors' 8B
+  ORM (80.8% / 79.4%). The evaluation uses the same prompts as Pan et al. (2024) for the captioner and
+  GPT-4V baselines.
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+concepts: []
+sources:
+- ref: source:webrl-training-llm-web-agents-via
+datasets:
+- ref: dataset:webarena-lite
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4: 71.9% test / 71.2% rollout; Captioner+GPT-4: 72.6% test / 73.3% rollout; GPT-4V:
+  71.2% test / 70.5% rollout'
+caveat: The evaluation is on a single task (binary success/failure of web agent trajectories) in a single
+  environment (WebArena). The 'GPT-4' label in the table may refer to GPT-4-turbo as stated in the text.
+  Results are from a single evaluation setup.
+extracted_by: automatic-extraction
+related_findings:
+- IC-477

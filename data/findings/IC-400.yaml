@@ -1,0 +1,33 @@
+id: IC-400
+title: 'Safety attention heads function as feature extractors: modifying the attention pattern (Wq/Wk)
+  has far greater safety impact than modifying the value (Wv) in Llama-2-7b-chat'
+description: The paper compares undifferentiated attention (scaling Wq or Wk, collapsing attention weights
+  to a uniform matrix) with scaling contribution (scaling Wv, reducing the head's output magnitude)
+  on Llama-2-7b-chat. At the dataset level, undifferentiated attention produces large ASR increases
+  (mean +0.68 on Malicious Instruct, +0.63 on JailbreakBench), while scaling contribution produces negligible
+  changes (mean +0.02 and 0.00). This indicates the safety function of these heads lies in the information
+  they extract via attention patterns, not in the values they pass through. The top-10 heads identified
+  by the two methods show minimal overlap (Figure 5a).
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+concepts: []
+sources:
+- ref: source:role-attention-heads-large-language-model
+datasets:
+- ref: dataset:maliciousinstruct
+  role: eval
+- ref: dataset:jailbreakbench
+  role: eval
+methods: []
+related_work: []
+evidence_type: interventional
+key_metric: 'Mean ASR change at dataset level (Llama-2-7b-chat): undifferentiated attention +0.68 (Malicious
+  Instruct), +0.63 (JailbreakBench); scaling contribution +0.02, 0.00'
+caveat: Results are for Llama-2-7b-chat; Vicuna-7b-v1.5 results (Appendix C.3) show scaling contribution
+  is more effective on that model, suggesting model-specific variation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-398
+- IC-399
+- IC-401

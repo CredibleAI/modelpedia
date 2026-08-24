@@ -1,0 +1,42 @@
+id: IC-253
+title: Post-training reinforcement learning significantly reduces harmful gender stereotypes in GPT
+  models, with the best-fit slope of 0.21 indicating post-RL models have far lower bias than pre-RL
+  versions
+description: 'The paper compares harmful gender stereotype ratings for four GPT models before and after
+  post-training RL across 19 selected tasks. All post-RL models fall below the 45-degree line, indicating
+  reduced bias. The best-fit slope is 0.21 (95% CI: 0.17, 0.24), meaning post-RL models retain only
+  about 21% of the pre-RL bias level. Individual slopes range from 0.08 (GPT-4o Mini) to 0.37 (GPT-4
+  Turbo), showing the effect is consistent across the model family.'
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+concepts: []
+sources:
+- ref: source:first-person-fairness-chatbots
+datasets:
+- ref: dataset:lmsys-chat-1m
+  role: source
+- ref: dataset:wildchat
+  role: source
+methods: []
+related_work:
+- name: Achiam et al. 2023
+  anchor: https://arxiv.org/abs/2303.08774
+  role: context
+- name: Perez et al. 2023
+  anchor: https://doi.org/10.18653/v1/2023.findings-acl.847
+  role: context
+evidence_type: correlational
+key_metric: 'slope of best-fit line is 0.21 (95% ci: 0.17, 0.24); individual slopes: gpt-3.5t (slope=0.31),
+  gpt-4t (slope=0.37), gpt-4o (slope=0.26), gpt-4o-mini (slope=0.08)'
+caveat: The authors note it is 'rl (and possibly other post-sft mitigations)' that reduce bias, so the
+  effect is not isolated to RL alone. Pre-RL models are intermediate checkpoints not independently released.
+extracted_by: automatic-extraction
+related_findings:
+- IC-252
+- IC-254
+- IC-255

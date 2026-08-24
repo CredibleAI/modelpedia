@@ -1,0 +1,41 @@
+id: IC-350
+title: Editing conceptual knowledge with rome on Llama-2 7B is harder than factual knowledge editing,
+  with the model failing to update concept-instance relationships
+description: Using the ConceptEdit dataset, the paper edits conceptual knowledge (definitions of concepts)
+  with rome on Llama-2 7B. At 100 edits, editing performance (efficacy 28.25, generalization 30.18,
+  locality 5.68) and general abilities (reasoning 12.29, summarization 4.7, open-QA 0.77, NLI 0) are
+  all very low. The 'instance change' metric is only 10, indicating that when a concept's definition
+  is altered, the model still recognizes the original instances as belonging to that concept. The paper
+  concludes that rome 'primarily modifies the definition without successfully altering the relationship
+  between concepts and instances.'
+models:
+- ref: model:llama-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:perturbation-restrained-sequential-model-editing
+datasets:
+- ref: dataset:conceptedit
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:samsum
+  role: eval
+- ref: dataset:natural-questions
+  role: eval
+- ref: dataset:rte
+  role: eval
+methods:
+- ref: method:rome
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Table 2: rome at 100 edits on ConceptEdit: reasoning 12.29, summa 4.7, open-qa 0.77, nli
+  0, efficacy 28.25, general 30.18, locality 5.68, instance 10. At 200 edits: reasoning 0, summa 4.62,
+  open-qa 0, nli 0, efficacy 10.14, general 8.65, locality 5.31, instance -8.99.'
+caveat: Only rome was tested on conceptual knowledge; memit and mend were not evaluated on ConceptEdit.
+  Only Llama-2 7B was used for this experiment.
+extracted_by: automatic-extraction
+related_findings:
+- IC-348
+- IC-349

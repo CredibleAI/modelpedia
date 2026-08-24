@@ -1,0 +1,41 @@
+id: IC-600
+title: Chain-of-thought prompting improves most LMMs on synthetic detection but degrades LLaVA-ov-7b
+  from 56.6% to 18.8%, while GPT-4o performs well without it (64.1% baseline)
+description: On image and 3D judgment tasks, CoT prompting raises accuracy for InternVL2-8B (49.6→50.4),
+  Qwen2-VL-7B (56.8→59.5), Gemini-1.5-Pro (47.9→51.0), and Claude-3.5-Sonnet (55.2→56.4). GPT-4o already
+  scores 64.1% without CoT and reaches 75.1% with it. Few-shot prompting fails to help most models.
+  LLaVA-ov-7b suffers a dramatic drop from 56.6% to 18.8% under CoT, which the paper attributes to degraded
+  long-context understanding after fine-tuning.
+models:
+- ref: model:gpt-4o
+- ref: model:llava-onevision
+  variant: variant:llava-ov-7b
+- ref: model:internvl-2
+  variant: variant:internvl-2-8b
+- ref: model:qwen-2-vl
+  variant: variant:qwen2-vl-7b
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+concepts: []
+sources:
+- ref: source:loki-comprehensive-synthetic-data-detection-benchmark
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: primary
+- ref: method:few-shot-prompting
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: 'Image & 3D judgment: GPT-4o baseline 64.1, CoT 75.1, few-shot 74.2; LLaVA-ov-7b baseline
+  56.6, CoT 18.8, few-shot 46.4; InternVL2-8b baseline 49.6, CoT 50.4; Qwen2-VL-7b baseline 56.8, CoT
+  59.5 (Table 5)'
+caveat: The paper notes that the CoT degradation in LLaVA-ov-7b may result from a decline in long-context
+  ability after fine-tuning, and that more CoT results are in the appendix.
+extracted_by: automatic-extraction
+related_findings:
+- IC-597
+- IC-598
+- IC-599

@@ -1,0 +1,33 @@
+id: IC-583
+title: 'Brain alignment in InstructBLIP and Idefics is organized by depth: middle layers align with
+  higher visual regions while later layers align with early visual regions, whereas mPLUG-Owl shows
+  later layers aligning with both'
+description: 'By mapping each cortical voxel to the layer (out of 33) that produces the highest normalized
+  brain alignment, the paper reveals a depth-dependent structure in how MLLM representations correspond
+  to visual processing. For InstructBLIP and Idefics, middle layers show greater alignment in higher
+  visual regions (floc-bodies, floc-faces, floc-places, floc-words), while later layers align more with
+  early visual regions (prf-visual ROIs). mPLUG-Owl differs: its later layers achieve higher alignment
+  in both higher and early visual regions. The authors attribute this cross-model variation to differences
+  in the underlying language decoder architectures.'
+models:
+- ref: model:instructblip
+- ref: model:mplug-owl
+- ref: model:idefics
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:correlating-instruction-tuning-multimodal-models-vision
+datasets:
+- ref: dataset:nsd
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: This variation across the 3 MLLMs may be due to the difference in the underlying language decoder
+  models, which generate output tokens, capture contextual representations, and influence the alignment
+  trend across the layers
+extracted_by: automatic-extraction
+related_findings:
+- IC-582
+- IC-584
+- IC-585

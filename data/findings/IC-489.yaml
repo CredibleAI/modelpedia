@@ -1,0 +1,49 @@
+id: IC-489
+title: State-of-the-art MLLMs fail at multi-step visual analogical reasoning, with best accuracy at
+  13% (Llama 3.2) on VOILA-WD and 29% (GPT-4o) on VOILA-ND, far below human performance of 71% and 70%
+description: 'Seven released MLLMs were evaluated on the VOILA benchmark, which requires models to infer
+  a relational rule from a reference image pair and apply it to a new image pair to predict a fourth
+  image. Performance degrades sharply across the four reasoning steps: models achieve 50-79% on image
+  description, drop to 12-43% on relationship identification, and fall to 0.4-29% on applying the relationship.
+  The gap between the best model and human participants is approximately 58 percentage points on VOILA-WD
+  and 40 on VOILA-ND. The distraction rule in VOILA-WD further reduces accuracy for all models except
+  Llama 3.2, which handles it better than other models.'
+models:
+- ref: model:gpt-4o
+- ref: model:llama-3-2
+  variant: variant:llama-3-2-11b
+- ref: model:qwen-2-vl
+  variant: variant:qwen2-vl-7b-instruct
+- ref: model:cogvlm-2
+  variant: variant:cogvlm2-19b
+- ref: model:seed-llama-8b
+- ref: model:molmoe-7b
+- ref: model:emu2
+  variant: variant:emu2-37b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:voila-evaluation-mllms-perceptual-understanding-analogical
+datasets: []
+methods:
+- ref: method:least-to-most-prompting
+  role: primary
+related_work:
+- name: Visalogy
+  anchor: https://arxiv.org/abs/1510.08973
+  role: context
+- name: VASR
+  anchor: https://arxiv.org/abs/2212.04542
+  role: context
+evidence_type: correlational
+key_metric: 'Llama 3.2 applying relationship: 13.16% (VOILA-WD); GPT-4o applying relationship: 29.03%
+  (VOILA-ND); Human: 71.36% (VOILA-WD), 69.69% (VOILA-ND); GPT-4o describing images: 78.94% (3i, VOILA-WD);
+  GPT-4o identifying relations: 42.79% (3i, VOILA-WD)'
+caveat: Evaluation uses GPT-4o as an automated judge with up to 10% error rate per step; image generation
+  step evaluated only on GPT-4o, Seed-LLaMA, and Emu2 due to limited image generation capabilities of
+  other models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-490
+- IC-491
+- IC-492

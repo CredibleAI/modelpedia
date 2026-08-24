@@ -1,0 +1,29 @@
+id: IC-154
+title: CLIP ViT-L/14 text embeddings fail to capture fine-grained visual class similarities, ranking
+  rottweiler and doberman at position 828 behind unrelated pairs
+description: 'The paper uses CLIP ViT-L/14 text embeddings as a proxy for ground-truth class similarity
+  on ImageNet-1k, computing cosine similarities between the text embeddings of all 1000 class names.
+  Fine-grained visual similarities are poorly captured: the pair rottweiler and doberman, which are
+  visually very similar dog breeds, ranks at position 828 out of all pairs. It is ranked behind semantically
+  unrelated pairs such as hog and tank, lemon and yawl, or hamster and snail. More commonly used terms
+  (e.g., orangutan and gorilla) are correctly associated, but fine-grained distinctions are not. The
+  authors had to set the number of similar classes to consider to 1250 to include the rottweiler/doberman
+  pair.'
+models:
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:qpm-discrete-optimization-globally-interpretable-image
+datasets:
+- ref: dataset:imagenet1k
+  role: source
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: rottweiler and doberman ranks at position 828; number of similar classes to consider set
+  to 1250
+caveat: The paper uses only the first description given for every class name; the limitation is specific
+  to text-name similarity rather than image similarity, and the authors note that shared tokens (e.g.,
+  ski and ski mask) also inflate similarity scores.
+extracted_by: automatic-extraction

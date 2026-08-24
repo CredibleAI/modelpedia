@@ -1,0 +1,49 @@
+id: IC-095
+title: Evaluated LLMs achieve at most 36% latest-state accuracy and 18% full-set accuracy on multi-event
+  entity tracking, with low Kendall's tau on chronological ordering
+description: 'On questions requiring tracking an entity''s state across multiple events (ground truth
+  length ≥ 2), no model exceeds 36% on identifying the correct latest state, and no model exceeds 18%
+  on retrieving the complete set of all states. Even when models do retrieve the correct events, they
+  frequently fail to order them chronologically: Kendall''s tau coefficients range from 0.33 to 1.00,
+  with most models at or below 0.60. Llama 3.1-405B and O1-mini achieve 0% on full-set recall. The authors
+  conclude this reveals a significant gap in models'' ability to process temporal relationships between
+  events.'
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-405b-instruct
+- ref: model:o1
+  variant: variant:o1-mini
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:episodic-memories-generation-evaluation-benchmark-large
+datasets:
+- ref: dataset:episodic-memory-benchmark
+  role: eval
+methods:
+- ref: method:in-context-learning
+  role: primary
+- ref: method:retrieval-augmented-generation
+  role: primary
+- ref: method:kendall-s-tau
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Latest state: max 36% (GPT-4o-mini RAG, GPT-4o in-context); All states: max 18% (Claude
+  3 Haiku RAG); Kendall''s tau: 0.43 (Claude 3 Haiku RAG), 0.93 (GPT-4o-mini RAG), 0.60 (Claude 3.5
+  Sonnet RAG), 0.50 (GPT-4o RAG, GPT-4o in-context), 0.33 (GPT-4o-mini in-context); Llama 3.1-405B and
+  O1-mini: 0% all states, n.a. Kendall''s tau'
+caveat: Kendall's tau is computed only on answers that fully match the ground truth set, so it measures
+  ordering accuracy conditional on correct retrieval; the 0% all-states scores for Llama 3.1 and O1-mini
+  mean no ordering could be assessed.
+extracted_by: automatic-extraction
+related_findings:
+- IC-092
+- IC-093
+- IC-094

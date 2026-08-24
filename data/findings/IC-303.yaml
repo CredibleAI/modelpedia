@@ -1,0 +1,28 @@
+id: IC-303
+title: Explicitly stating the Markovian structure in the prompt significantly improves Llama-3.1-70B's
+  next-state prediction on the Markov chain task
+description: 'The authors test three prompt formulations on Llama-3.1: one that simply asks to continue
+  a digit sequence, one that adds ''the sequence comes from a Markov process'', and one that further
+  specifies ''it only depends on the last state''. For the 70B model, adding these Markovian descriptions
+  yields a significant reduction in KL divergence compared to the bare prompt, indicating the model
+  can parse and incorporate natural-language instructions about the generative process into its sequence
+  modeling.'
+models:
+- ref: model:llama-3-1
+concepts: []
+sources:
+- ref: source:competition-dynamics-shape-algorithmic-phases-context
+datasets: []
+methods:
+- ref: method:nnsight-and-ndif
+  role: eval
+related_work:
+- name: Sclar et al. 2024 (Quantifying language models' sensitivity to spurious features in prompt design)
+  anchor: https://arxiv.org/abs/2310.11324
+  role: context
+evidence_type: correlational
+caveat: The effect is reported only for the 70B model; the paper does not state whether the same improvement
+  holds for 8B or 405B. No specific KL values are printed in the text.
+extracted_by: automatic-extraction
+related_findings:
+- IC-302

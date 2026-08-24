@@ -1,0 +1,43 @@
+id: IC-587
+title: Real-world knowledge acts as a shortcut in LLM relational reasoning, causing worse-than-chance
+  performance on logically valid but factually incongruent statements
+description: The authors construct comparison problems using 540 real-world objects with known size/weight,
+  creating congruent (consistent with reality), incongruent (contradicting reality), and random-string
+  (no semantic prior) variants. Across all models, congruent statements outperform incongruent ones.
+  Some models exhibit worse-than-chance (0.5) correctness on incongruent comparison problems, meaning
+  they are actively misled by their real-world priors. Random-string performance lands between the two
+  extremes, confirming that the effect is driven by factual coherence rather than surface form.
+models:
+- ref: model:gemma
+  variant: variant:gemma-2b
+- ref: model:gemma
+  variant: variant:gemma-9b
+- ref: model:gemma
+  variant: variant:gemma-27b
+- ref: model:mixtral
+  variant: variant:mixtral-7x22b
+- ref: model:gemini
+  variant: variant:gemini-flash
+- ref: model:gemini
+  variant: variant:gemini-pro
+- ref: model:gpt-4o
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:recoglab-framework-testing-relational-reasoning-cognitive
+datasets: []
+methods: []
+related_work:
+- name: Lampinen et al. 2024
+  anchor: https://doi.org/10.1093/pnasnexus/pgae233
+  role: builds-on
+evidence_type: correlational
+key_metric: worse-than-chance (0.5) correctness on incongruent comparison problems; 540 objects used
+  for congruency construction
+caveat: Object sizes and weights were estimated by Gemini Pro, introducing potential noise in the congruency
+  labels.
+extracted_by: automatic-extraction
+related_findings:
+- IC-586
+- IC-588
+- IC-589

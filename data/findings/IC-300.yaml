@@ -1,0 +1,31 @@
+id: IC-300
+title: One MoE expert in Mixtral-8x7B is structurally distinct from the others in many layers
+description: The paper applies DOCS to the expert weight matrices (W1, W2, W3) of the mixture-of-experts
+  layers in Mixtral-8x7B. In many layers, typically just one expert stands out with clear separation
+  (dark grids) from the other experts. The third expert in particular shows prominent dark intersecting
+  lines in the similarity heatmaps, indicating it has a significantly different weight structure. The
+  authors hypothesize this may relate to data load imbalance during MoE training.
+models:
+- ref: model:mixtral-8x7b
+concepts: []
+sources:
+- ref: source:docs-quantifying-weight-similarity-deeper-insights
+datasets: []
+methods: []
+related_work:
+- name: Shazeer et al. 2017 (sparsely-gated MoE)
+  anchor: https://arxiv.org/abs/1701.06538
+  role: context
+- name: Lepikhin et al. 2020 (GShard)
+  anchor: https://arxiv.org/abs/2006.16668
+  role: context
+evidence_type: observational
+key_metric: typically just one expert stands out, indicated by dark grids that show clear separation
+  from the others; the third expert's prominent dark intersecting lines
+caveat: The authors note this is a hypothesis (data load imbalance) rather than a confirmed cause; the
+  finding is based on visual inspection of heatmaps without a quantitative threshold for 'standing out'.
+extracted_by: automatic-extraction
+related_findings:
+- IC-298
+- IC-299
+- IC-301

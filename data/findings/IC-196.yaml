@@ -1,0 +1,38 @@
+id: IC-196
+title: Models trained on Something-Something-V2 (which contains no faces) show reduced alignment with
+  face-selective FFA compared to the same models trained on Kinetics-400
+description: Comparing the same four models trained on Kinetics-400 versus Something-Something-V2, a
+  significant advantage of Kinetics-400 training is observed in FFA and OFA, with a similar pattern
+  in LOC. This effect appears in both shallow and deep layers. Since Something-Something-V2 never shows
+  faces and FFA is the functionally selective region for faces, this demonstrates that a training dataset
+  bias (absence of a stimulus category) transfers to model-brain alignment in the corresponding functionally
+  selective brain area. By contrast, training on Kinetics-710 (an extended version of Kinetics-400)
+  largely has no effect on brain alignment.
+models:
+- ref: model:tsm
+concepts: []
+sources:
+- ref: source:one-hundred-neural-networks-brains-watching
+datasets:
+- ref: dataset:bold-moments-dataset
+  role: eval
+- ref: dataset:kinetics-400
+  role: source
+- ref: dataset:something-something-v2
+  role: source
+- ref: dataset:kinetics-710
+  role: source
+methods:
+- ref: method:representational-similarity-analysis
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: Significant advantage of Kinetics-400 over Something-Something-V2 in FFA and OFA; Kinetics-710
+  vs. Kinetics-400 shows largely no effect
+caveat: Only four models are available in both Kinetics-400 and Something-Something-V2 variants, limiting
+  the generalizability of this comparison
+extracted_by: automatic-extraction
+related_findings:
+- IC-194
+- IC-195
+- IC-197

@@ -1,0 +1,49 @@
+id: IC-175
+title: 'Context-sufficiency performance is scale-dependent: larger LLMs achieve high accuracy with sufficient
+  context but still answer correctly 35-62% of the time without it, while smaller models hallucinate
+  or abstain even with sufficient context'
+description: 'Stratifying by context sufficiency reveals a systematic size gradient. On a curated challenging
+  set, larger models (Gemini 1.5 Pro 84.1%, GPT-4o 82.5%, Claude 3.5 Sonnet 85.7%) achieve high accuracy
+  with sufficient context, while Gemma 2 27B reaches only 71.4%. With insufficient context, the same
+  larger models still answer correctly 35-62% of the time on main datasets (HotpotQA, FreshQA, Musique),
+  indicating substantial parametric knowledge contribution. In contrast, smaller models (Llama 3.1 8B,
+  Mistral 3 7B, Gemma 2 27B) show high hallucination rates even with sufficient context: Mistral 3 7B
+  hallucinates 59.4% of the time with RAG on Musique, and Gemma 2 27B hallucinates 25.4% with sufficient
+  context on the curated set.'
+models:
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:gpt-4o
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:gemma-2
+  variant: variant:gemma-2-27b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:mistral-7b
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:sufficient-context-new-lens-retrieval-augmented
+datasets:
+- ref: dataset:freshqa
+  role: eval
+- ref: dataset:musique
+  role: eval
+- ref: dataset:hotpotqa
+  role: eval
+methods: []
+related_work:
+- ref: method:retrobust
+  role: context
+evidence_type: correlational
+key_metric: 'Sufficient context (curated set): Gemini 1.5 Pro 84.1%, GPT-4o 82.5%, Claude 3.5 Sonnet
+  85.7%, Gemma 2 27B 71.4% correct. Insufficient context (main datasets): 35-62% correct for SOTA models.
+  Mistral 3 7B with RAG on Musique: 28.8% correct, 11.8% abstain, 59.4% hallucinate.'
+caveat: The 35-62% correct rate with insufficient context partly reflects parametric knowledge from
+  pre-training; the paper notes this 'only explains part of the story' and categorizes eight types of
+  such instances. The curated set (Table 4) uses human-annotated labels while main results use the LLM
+  autorater.
+extracted_by: automatic-extraction
+related_findings:
+- IC-174

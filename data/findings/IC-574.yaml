@@ -1,0 +1,37 @@
+id: IC-574
+title: Guard models fail to effectively mitigate bijection attacks even at capability parity with the
+  target model
+description: 'The authors construct a guarded LLM system with Claude 3.5 Sonnet as the target and test
+  three guard configurations: GPT-4o-mini, Claude 3 Haiku, and Claude 3.5 Sonnet as input/output classifiers.
+  The GPT-4o-mini guard reduces ASR by only 9 percentage points while triggering on 12% of benign intents.
+  The Claude 3 Haiku guard reduces ASR to near-zero but overrefuses 96% of benign intents. The Claude
+  3.5 Sonnet guard, at capability parity with the target, reduces ASR by only 10 percentage points with
+  no benign overrefusal, while tripling inference cost.'
+models:
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:endless-jailbreaks-bijection-learning
+datasets:
+- ref: dataset:harmbench
+  role: eval
+methods: []
+related_work:
+- ref: model:llama-guard-3
+  role: context
+evidence_type: correlational
+key_metric: 'Unguarded Sonnet ASR on HarmBench: 73.8%. GPT-4o-mini guard: ASR reduced by 9 pp, 12% benign
+  overrefusal. Claude 3 Haiku guard: ASR near-zero, 96% benign overrefusal. Claude 3.5 Sonnet guard:
+  ASR reduced by 10 pp, 0% benign overrefusal.'
+caveat: Guard evaluation uses a fixed set of bijection encodings with attack budget 6 on HarmBench and
+  budget 1 on 100 benign intents. The sonnet guard triples inference cost for a 10 pp reduction.
+extracted_by: automatic-extraction
+related_findings:
+- IC-572
+- IC-573

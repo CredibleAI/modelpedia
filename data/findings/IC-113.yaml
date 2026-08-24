@@ -1,0 +1,41 @@
+id: IC-113
+title: Released LLMs show a reproducible failure mode where accuracy on fraction and scientific notation
+  tasks falls below 20% even for the shortest inputs
+description: All tested released LLMs perform well on integer and float tasks but their accuracy drops
+  sharply when the numerical representation changes to fractions or scientific notation. Even in the
+  shortest s range (1-4 digits), average accuracy on these less common representations falls below 20%.
+  This holds for GPT-4o, GPT-4o-mini, Qwen2-72B, and all other tested models. The paper attributes this
+  to insufficient exposure to diverse numerical representations in training data, highlighting a mismatch
+  between models' strong performance on standard integer arithmetic and their poor handling of everyday
+  numerical diversity.
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b
+- ref: model:llama-2
+  variant: variant:llama-2-7b-hf
+- ref: model:mixtral-8x7b
+- ref: model:qwen-2
+  variant: variant:qwen-2-7b
+- ref: model:qwen-2
+  variant: variant:qwen-2-72b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:number-cookbook-number-understanding-language-models
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: average accuracy falling below 20%, even for the shortest s-range (1-4 digits) on fraction
+  and scientific notation tasks
+caveat: The paper acknowledges the range of tasks could still be incomplete and biased toward certain
+  aspects. The number of models tested is limited.
+extracted_by: automatic-extraction
+related_findings:
+- IC-112
+- IC-114
+- IC-115

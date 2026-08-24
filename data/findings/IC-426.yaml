@@ -1,0 +1,37 @@
+id: IC-426
+title: MultiBERTs exhibit a pushdown phenomenon where syntactic information migrates from later to earlier
+  layers as training progresses
+description: 'By probing multiple syntactic properties (NER, POS, dependency, depth, distance, phrase
+  boundaries) across all layers of MultiBERT checkpoints at many training steps, the paper finds that
+  early in training, syntactic information is best recovered from later, more contextualized layers.
+  As training proceeds, the same properties become better encoded in earlier layers, until only the
+  first couple of layers are needed. The rate of pushdown varies by property, following an order: NER,
+  phrase start, c-POS/f-POS, phrase end, dependency, depth, distance.'
+models:
+- ref: model:multiberts
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:dual-process-learning-controlling-use-context
+datasets:
+- ref: dataset:english-ud-treebank
+  role: eval
+- ref: dataset:ontonotes-v5
+  role: eval
+methods:
+- ref: method:structural-probing
+  role: primary
+related_work:
+- name: Elazar et al. 2020 (amnesic probing)
+  anchor: https://arxiv.org/abs/2006.00995
+  role: builds-on
+- name: Hewitt & Manning 2019 (structural probe)
+  anchor: https://doi.org/10.18653/v1/n19-1419
+  role: builds-on
+evidence_type: observational
+caveat: The pushdown is measured via linear probes on templatic and treebank data; the paper notes the
+  timing may reflect rule complexity or a dependency hierarchy but does not disentangle these.
+extracted_by: automatic-extraction
+related_findings:
+- IC-424
+- IC-425

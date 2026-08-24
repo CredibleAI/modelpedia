@@ -1,0 +1,29 @@
+id: IC-473
+title: ResNet-18 lacks a clear multifractal structure while ResNet-152 shows one with irregular shifts,
+  and a 160M diffusion model exhibits lower degree of emergence than Pythia 160M
+description: The paper extends NeuroMFA to non-transformer architectures. ResNet-18's spectral graph
+  lacks a regular bell-shaped structure, indicating no clear multifractal structure or self-organization.
+  ResNet-152 displays a noticeable multifractal structure but with irregular horizontal shifts, suggesting
+  a stable self-organized structure did not form. A 160M diffusion model (Stable Diffusion) shows a
+  lower degree of emergence than Pythia 160M at the same parameter size, indicating a lower level of
+  emergent abilities for the CV task compared to the NLP task.
+models:
+- ref: model:resnet
+  variant: variant:resnet-18
+- ref: model:stable-diffusion
+- ref: model:pythia
+concepts: []
+sources:
+- ref: source:neuron-based-multifractal-analysis-neuron-interaction
+datasets: []
+methods: []
+related_work:
+- ref: model:stable-diffusion
+  role: context
+evidence_type: correlational
+caveat: The authors describe these as preliminary validation results. The exact diffusion model checkpoint
+  (160M) is not fully specified, making independent replication difficult.
+extracted_by: automatic-extraction
+related_findings:
+- IC-471
+- IC-472

@@ -1,0 +1,32 @@
+id: IC-232
+title: System prompts cannot effectively steer GPT-4-turbo's value preferences in moral dilemmas
+description: The paper designs specialized system prompts for each of the 16 OpenAI ModelSpec principles,
+  instructing GPT-4-turbo to prioritize either supporting or opposing values. Across all 16 principles,
+  the model's value preferences do not shift in the intended direction. For example, under principle
+  13, the model favors supporting values (openness, respect) regardless of whether the prompt steers
+  toward supporting or opposing values. Under principle 5, both modulations lead to a stronger preference
+  toward supporting values (privacy) regardless of steering purpose. The model's inherent value tendencies
+  resist prompt-based override.
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+concepts: []
+sources:
+- ref: source:dailydilemmas-revealing-value-preferences-llms-quandaries
+datasets: []
+methods: []
+related_work:
+- name: OpenAI ModelSpec
+  anchor: https://cdn.openai.com/spec/model-spec-2024-05-08
+  role: context
+evidence_type: correlational
+key_metric: 'gpt-4-turbo chose action 1 in 45.6 out of 100 dilemmas on average across 5 runs (sd: 1.02,
+  or 1.02%), confirming low generation variance; steerability results shown qualitatively in Fig. 5
+  across all 16 principles'
+caveat: The experiment was conducted only on GPT-4-turbo, a closed-source model accessible only via
+  API. The authors note this illustrates a fundamental challenge for end-users of closed-source models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-230
+- IC-231
+- IC-233

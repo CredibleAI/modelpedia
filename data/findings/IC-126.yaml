@@ -1,0 +1,30 @@
+id: IC-126
+title: CLIP and CLAP language representations are statistically indistinguishable from a uniform distribution
+  on the hypersphere
+description: The paper tests assumption 3 (that contrastive representations are uniform on the unit
+  hypersphere) on real-world data. It computes language representations for each model over the AudioSet
+  ontology and performs a two-sample Kolmogorov-Smirnov test against a uniform hypersphere distribution.
+  CLIP yields a p-value of 0.0877 and CLAP a p-value of 0.1788, both above the conventional 0.05 significance
+  threshold, so neither model's representations show significant deviation from uniformity.
+models:
+- ref: model:clip
+- ref: model:clap
+concepts: []
+sources:
+- ref: source:law-unconscious-contrastive-learner-probabilistic-alignment
+datasets:
+- ref: dataset:audioset
+  role: eval
+methods:
+- ref: method:kolmogorov-smirnov-two-sample-test
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: KS test p-value 0.0877 (CLIP), p-value 0.1788 (CLAP) against uniform hypersphere
+caveat: The test is performed on language representations over the AudioSet ontology only, not on image
+  or audio representations.
+extracted_by: automatic-extraction
+related_findings:
+- IC-124
+- IC-125
+- IC-127

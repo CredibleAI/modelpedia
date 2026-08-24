@@ -1,0 +1,62 @@
+id: IC-194
+title: Temporal modeling in video models drives representational alignment to early visual cortex, while
+  action classification task drives alignment to late brain areas
+description: 'Across 92 models (41 image object recognition, 10 image action recognition, 41 video action
+  recognition all on Kinetics-400), video models score significantly higher than image models in early
+  visual cortex (V1, V2, V3v, V3d), while in later areas the classification objective matters more:
+  image models trained on action recognition outperform those trained on object recognition, and video
+  models do not fare much better than action-trained image models. The control of image models trained
+  on action recognition decouples temporal modeling from classification task, showing temporal modeling
+  is the determining factor for early visual cortex alignment. In V2, the model MViT V2-S comes close
+  to capturing almost all of the explainable variance for a portion of subjects.'
+models:
+- ref: model:tsm
+- ref: model:i3d
+- ref: model:slowfast
+- ref: model:mvit-v2
+- ref: model:videomae
+- ref: model:uniformer
+- ref: model:timesformer
+- ref: model:resnet
+- ref: model:vgg
+- ref: model:vit
+- ref: model:deit
+- ref: model:x3d
+- ref: model:alexnet
+- ref: model:densenet
+- ref: model:efficientnet
+- ref: model:regnet
+- ref: model:resnext
+- ref: model:wideresnet
+- ref: model:inception
+- ref: model:repvgg
+- ref: model:xception
+- ref: model:convit
+concepts: []
+sources:
+- ref: source:one-hundred-neural-networks-brains-watching
+datasets:
+- ref: dataset:bold-moments-dataset
+  role: eval
+- ref: dataset:kinetics-400
+  role: source
+- ref: dataset:imagenet1k
+  role: source
+methods:
+- ref: method:representational-similarity-analysis
+  role: primary
+- ref: method:net2brain
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: Video models significantly outperform image models in early visual cortex; in late areas,
+  action recognition models (both image and video) outperform object recognition models; MViT V2-S approaches
+  upper noise ceiling in V2 for some subjects
+caveat: Results are based on a single fMRI dataset (BMD) and 10 subjects; the paper notes that a rival
+  study (Garcia et al. 2024) found a different pattern with improved alignment mainly in MT and EBA,
+  possibly due to methodological differences
+extracted_by: automatic-extraction
+related_findings:
+- IC-195
+- IC-196
+- IC-197

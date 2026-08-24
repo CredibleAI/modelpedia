@@ -1,0 +1,41 @@
+id: IC-246
+title: Pretrained LLMs assign coherent semantic meaning to linear interpolations between token embeddings,
+  extending the linear embedding hypothesis to the output space
+description: 'The authors feed linear interpolations of two token embeddings (e.g., ''apples'' and ''bananas'')
+  as input to six released LLMs. The intermediate embedding does not correspond to any known token,
+  yet the models produce smooth, semantically coherent outputs: ''are [interpolation] red?'' transitions
+  from ''yes'' to ''no'', ''are [interpolation] fruits?'' is always ''yes'', and for a subset of models
+  (Llama3, Gemma 1, Mistral, partially Gemma 2) ''the most common colour for [interpolation] is'' yields
+  ''green''. Across 200 records (50 object pairs, 4 properties each), on average 20.79% of records show
+  output probabilities outside the range spanned by the two endpoint tokens, which cannot be explained
+  by simple interpolation.'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+- ref: model:phi-3
+  variant: variant:phi-3-medium-4k-instruct
+- ref: model:gemma
+  variant: variant:gemma-17b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+- ref: model:mistral-7b
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:language-models-implicitly-continuous
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Global average mmax 0.0339; 20.79% of records have mmax >= 0.05; global normalised maximum
+  absolute derivative 6.214 (Llama2-13B: 9.005, Phi-3: 9.279, Mistral-7B: 7.445, Llama3-8B: 4.959, Gemma-17B:
+  5.090, Gemma-2-9B: 5.402)'
+caveat: Valid rates vary by model (Llama3-8B 74.0%, Llama2-13B 34.0%, Phi-3 34.0%, Mistral-7B 46.0%)
+  due to tokenizer differences. The authors note the metric for smoothness is 'imperfect' and that 'some
+  questions may have borderline answers'.
+extracted_by: automatic-extraction
+related_findings:
+- IC-245
+- IC-247

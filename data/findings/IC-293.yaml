@@ -1,0 +1,40 @@
+id: IC-293
+title: 'ViT-B/16 and ViT-B/32 are largely redundant: retaining only top-5 neurons per layer while zeroing
+  all others preserves most classification accuracy'
+description: The paper prunes neurons by zeroing out all FFN neurons except the top-t most frequently
+  selected by the neuron path method (t in {1,5,10,30,50}), tested on held-out 20% of the validation
+  set. For ViT-B/16, retaining top-5 neurons per layer while pruning 100% of other neurons maintains
+  accuracy near the ~69% baseline. For ViT-B/32, the same procedure keeps accuracy near the ~53% baseline.
+  Notably, increasing the number of retained neurons beyond 5 leads to a decline in performance, suggesting
+  that non-path neurons can be harmful. A comparison with ViT-Slim (restricted to FFNs) shows JAS-prune
+  achieving 67.7% vs ViT-Slim's 9.96%.
+models:
+- ref: model:vit
+  variant: variant:vit-b-16
+- ref: model:vit
+  variant: variant:vit-b-32
+concepts: []
+sources:
+- ref: source:discovering-influential-neuron-path-vision-transformers
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:vit-slim
+  role: compared-to
+related_work:
+- name: Mixture-of-Depths
+  anchor: https://arxiv.org/abs/2404.02258
+  role: context
+evidence_type: interventional
+key_metric: 'ViT-Slim accuracy 9.96% vs JAS-prune 67.7% (Table 2). Ablation (Table 3, 100% mask): JAS
+  topk=5 accuracy 0.521252 (depth 6), 0.527151 (depth 9), 0.540702 (depth 12) vs activation topk=5:
+  0.517991, 0.518137, 0.531976.'
+caveat: The pruning is class-specific (top neurons identified per class from 80% of data, applied to
+  20% held-out). The paper notes this is a generalization setting but the class-specificity limits direct
+  applicability to a single global pruning.
+extracted_by: automatic-extraction
+related_findings:
+- IC-290
+- IC-291
+- IC-292

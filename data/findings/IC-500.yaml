@@ -1,0 +1,37 @@
+id: IC-500
+title: GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro, and Llama 3.1 405B solve multi-step retrieval problems
+  without fine-tuning, achieving near-perfect accuracy for chains of up to 5 steps
+description: The paper introduces the retrieval problem, a task requiring chained multi-step retrieval
+  (e.g., a=7, b=a, c=b, d=c, what is d?). Four state-of-the-art LLMs are evaluated zero-shot on 500
+  randomly generated questions across five formulations (equations, lives-with, kingdoms, functions,
+  relatives) with no fine-tuning. All four models achieve near-perfect accuracy on the equations formulation
+  for retrieval chains of up to 5 steps (d ≤ 5), and strong performance on the lives-with, kingdoms,
+  functions, and relatives formulations at d = 5. Accuracy degrades as the chain length increases beyond
+  5 steps, with all models falling toward random-guessing levels at d = 13.
+models:
+- ref: model:gpt-4o
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-405b
+concepts: []
+sources:
+- ref: source:mechanism-emergence-stacked-attention-heads-multi
+datasets: []
+methods: []
+related_work:
+- name: Olsson et al. 2022 (induction heads)
+  anchor: https://arxiv.org/abs/2209.11895
+  role: builds-on
+- ref: method:zero-shot-chain-of-thought
+  role: context
+evidence_type: correlational
+key_metric: 500 questions per formulation; near-perfect accuracy for d ≤ 5 (equations formulation);
+  strong performance at d = 5 (lives-with, kingdoms, functions, relatives formulations); accuracy degrades
+  toward random guessing at d = 13
+caveat: The paper does not report exact per-model accuracy numbers in the text; specific values are
+  only shown in Figure 2. The evaluation uses a single sampling strategy (repeat until acceptable answer)
+  which may inflate accuracy.
+extracted_by: automatic-extraction

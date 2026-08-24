@@ -1,0 +1,33 @@
+id: IC-071
+title: DINOv2's dense features are dominated by global context, impairing fine-grained spatial detail
+description: 'The paper reports that DINOv2 produces dense feature artifacts that impair its ability
+  to capture fine-grained details, resulting in abnormal representations dominated by global context.
+  This is measured via unsupervised segmentation with CAUSE: DINOv2 achieves 29.9 mIoU on Cityscapes
+  and 43.0 mIoU on COCO-Stuff. Affinity map visualizations (Figure 8) show that a query token''s similarity
+  map is spread broadly rather than focused on the local region, confirming the global-context dominance.
+  The paper attributes this observation to Darcet et al. 2023.'
+models:
+- ref: model:dinov2
+concepts: []
+sources:
+- ref: source:refining-clip-s-spatial-awareness-visual
+datasets:
+- ref: dataset:cityscapes
+  role: eval
+- ref: dataset:coco-stuff
+  role: eval
+methods:
+- ref: method:cause
+  role: eval
+related_work:
+- name: Vision Transformers Need Registers
+  anchor: https://arxiv.org/abs/2309.16588
+  role: context
+evidence_type: observational
+key_metric: 'DINOv2 mIoU: 29.9 on Cityscapes, 43.0 on COCO-Stuff (Table 5)'
+caveat: The interpretation of the artifacts as 'register tokens' is attributed to Darcet et al. 2023;
+  this paper measures the performance but does not independently diagnose the mechanism.
+extracted_by: automatic-extraction
+related_findings:
+- IC-069
+- IC-070

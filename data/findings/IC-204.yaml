@@ -1,0 +1,31 @@
+id: IC-204
+title: GPT-4o performs worse with explicit chain-of-thought prompting than with the original prompt
+  on OpenRCA tasks
+description: 'A repetitive experiment compared GPT-4o''s accuracy under the original prompt versus a
+  CoT prompt that explicitly requests step-by-step analysis of telemetry. Across three trials, the median
+  accuracy with CoT was lower in both sampling settings: 2.99% versus 3.58% for balanced sampling, and
+  5.37% versus 6.27% for oracle sampling. Manual review of a case study showed that CoT led GPT-4o to
+  focus on the most superficially anomalous component (highest latency) rather than following the diagnostic
+  guidance to trace the failure propagation chain to the originating component.'
+models:
+- ref: model:gpt-4o
+concepts: []
+sources:
+- ref: source:openrca-large-language-models-locate-root
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: compared-to
+related_work:
+- ref: method:chain-of-thought-prompting
+  role: builds-on
+evidence_type: correlational
+key_metric: 'GPT-4o median accuracy: balanced 3.58% (original) vs 2.99% (CoT); oracle 6.27% (original)
+  vs 5.37% (CoT)'
+caveat: Only GPT-4o was tested in this comparison. The absolute accuracy numbers are very low, so the
+  difference of 0.59 percentage points (balanced) may be within noise despite the median being reported
+  over three trials.
+extracted_by: automatic-extraction
+related_findings:
+- IC-202
+- IC-203

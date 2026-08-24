@@ -1,0 +1,26 @@
+id: IC-420
+title: 'CLIP ViT-B/16''s SAE latent interpretability is depth-dependent: layer 11 encodes semantic object
+  concepts while layers 2, 5, and 8 encode local shapes and attention patterns'
+description: 'The authors train separate PatchSAEs on CLIP ViT-B/16''s residual stream at layers 2,
+  5, 8, and 11. Qualitative inspection of reference images and segmentation masks shows that layer 11
+  latents represent semantic concepts (e.g., ''golden gate bridge''), layer 8 and 5 latents capture
+  geometric shapes (e.g., ''triangle shape of the object''), and layer 2 latents are less interpretable,
+  activated by local token attention rather than global semantics. The SAE training metrics also differ:
+  L0 (active latents) ranges from 148.56 (layer 11) to 298.97 (layer 5).'
+models:
+- ref: model:clip
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:sparse-autoencoders-reveal-selective-remapping-visual
+datasets:
+- ref: dataset:imagenet1k
+  role: train
+methods: []
+related_work: []
+evidence_type: observational
+caveat: The depth-dependent interpretability finding is qualitative (based on reference image inspection)
+  and reported in the appendix; no quantitative interpretability metric is provided to compare layers.
+extracted_by: automatic-extraction
+related_findings:
+- IC-419

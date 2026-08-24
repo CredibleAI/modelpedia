@@ -1,0 +1,89 @@
+id: IC-592
+title: The log-likelihood layer in LLaMA-2-7B, LLaMA-2-7B-Chat, Vicuna-7B, and Mistral-7B-Instruct produces
+  factually incorrect answers on TruthfulQA MC1 (817 samples) due to a misalignment between the output
+  distribution and internal attention head representations, with LM-to-head-norm accuracy gaps of 24.23
+  to 40.68 points.
+description: 'On TruthfulQA MC1, the standard log-likelihood decoding of these four 7B LLMs yields substantially
+  lower accuracy than a method that reads the L2 norms of their attention heads. The gap between the
+  LM baseline and the head-norm-based prediction ranges from 24.23 points (Mistral-7B-Instruct: 53.86
+  vs 78.09) to 40.68 points (LLaMA-2-7B: 28.48 vs 69.16). The paper attributes this to the log-likelihood
+  layer favouring fluency over factuality, so that the model''s internal factual knowledge is not faithfully
+  expressed in its output probabilities. The phenomenon generalizes to four additional models (Phi3-3.8B-IT,
+  Zephyr-7B-Beta, Llama3-8B, Gemma2-9B-IT) with major gains of 20 points averaged across factuality
+  benchmarks.'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct
+- ref: model:zephyr-7b-beta
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b-it
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:novo-norm-voting-off-hallucinations-attention
+datasets:
+- ref: dataset:truthfulqa
+  role: eval
+- ref: dataset:commonsenseqa-2-0
+  role: eval
+- ref: dataset:qasc
+  role: eval
+- ref: dataset:swag
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+- ref: dataset:piqa
+  role: eval
+- ref: dataset:cosmosqa
+  role: eval
+- ref: dataset:adversarialglue
+  role: eval
+- ref: dataset:factor-expert
+  role: eval
+- ref: dataset:natural-questions
+  role: eval
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:arc
+  role: eval
+methods:
+- ref: method:truthx
+  role: compared-to
+- ref: method:inference-time-intervention
+  role: compared-to
+- ref: method:dola
+  role: compared-to
+- ref: method:icd
+  role: compared-to
+related_work:
+- ref: method:truthx
+  role: compared-to
+- ref: method:inference-time-intervention
+  role: compared-to
+- ref: method:dola
+  role: compared-to
+- ref: method:icd
+  role: compared-to
+- name: REPE
+  anchor: https://arxiv.org/abs/2310.01405
+  role: compared-to
+evidence_type: correlational
+key_metric: 'TruthfulQA MC1 accuracy: LLaMA-2-7B-Chat LM 34.27 vs NOVO 70.13; LLaMA-2-7B LM 28.48 vs
+  NOVO 69.16; Vicuna-7B LM 34.64 vs NOVO 69.89; Mistral-7B-Instruct LM 53.86 vs NOVO 78.09'
+caveat: NOVO is limited to multiple-choice settings and cannot be applied to single-span generation.
+  The norm selection uses 30 random samples from ARC-Easy, and performance is best with in-domain samples;
+  out-of-distribution calibration shows increased variance.
+extracted_by: automatic-extraction
+related_findings:
+- IC-593
+- IC-594

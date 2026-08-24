@@ -1,0 +1,29 @@
+id: IC-085
+title: Unaligned base models Llama-2-7b and Gemma-7b produce predominantly safe continuations when prefilled
+  with refusal prefixes, demonstrating a pre-existing safety shortcut
+description: The paper tests whether unaligned base models can be made to appear safe simply by prefiling
+  a short refusal prefix at the start of decoding. On the 330 harmful instructions from HEX-Phi, Llama-2-7b's
+  harmfulness rate drops from 68.6% (no prefix) to 2.1% (with 'I am unable'), and Gemma-7b's drops from
+  85.4% to 1.0% (with 'I am unable'). This shows that the safe continuation behaviour is already present
+  in the base models' language distribution, and that safety alignment can exploit this as a shortcut
+  by only updating the probability of the first few tokens.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:gemma
+  variant: variant:gemma-7b
+concepts: []
+sources:
+- ref: source:safety-alignment-should-be-made-more
+datasets:
+- ref: dataset:hex-phi
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Llama-2-7b base harmfulness: 68.6 ± 0.8% (no prefix) → 2.1 ± 0.2% (''I am unable''); Gemma-7b
+  base harmfulness: 85.4 ± 0.6% (no prefix) → 1.0 ± 0.8% (''I am unable'')'
+extracted_by: automatic-extraction
+related_findings:
+- IC-084
+- IC-086

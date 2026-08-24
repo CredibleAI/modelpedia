@@ -1,0 +1,41 @@
+id: IC-093
+title: No evaluated LLM achieves perfect confabulation avoidance on questions about non-existent events
+description: The benchmark includes 150 questions whose cues match zero events in the document, testing
+  whether the model can say 'I don't know.' No model reaches F1 of 1.0. O1-mini performs best at 0.97±0.16,
+  followed by Claude 3.5 Sonnet at 0.92±0.27 (in-context) and GPT-4o at 0.84±0.37. Smaller models (GPT-4o-mini
+  at 0.51±0.50) struggle substantially. Manual analysis of GPT-4o's 24 incorrect zero-event answers
+  shows the model fabricates contextually relevant but factually wrong details by combining elements
+  from different chapters.
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-405b-instruct
+- ref: model:o1
+  variant: variant:o1-mini
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:episodic-memories-generation-evaluation-benchmark-large
+datasets:
+- ref: dataset:episodic-memory-benchmark
+  role: eval
+methods:
+- ref: method:in-context-learning
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: O1-mini 0.97±0.16, Claude 3.5 Sonnet 0.92±0.27, GPT-4o 0.84±0.37, Claude 3 Haiku 0.84±0.37,
+  Llama 3.1-405B 0.80±0.40, GPT-4o-mini 0.51±0.50 (in-context, long book, 150 zero-event questions)
+caveat: The zero-event questions use either inner (elements from the book but wrong combination) or
+  outer (elements from outside the book) strategies; the authors note the evaluation uses a lenient
+  F1 that may undercount false positives.
+extracted_by: automatic-extraction
+related_findings:
+- IC-092
+- IC-094
+- IC-095

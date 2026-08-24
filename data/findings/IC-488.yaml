@@ -1,0 +1,33 @@
+id: IC-488
+title: LLM performance degrades progressively as the number of reasoning hops increases, with error
+  propagation from earlier sub-questions
+description: Sub-question-level EM and F1 scores drop at each successive hop for all models. GPT-4 on
+  3-hop goes from Q1 EM 70.9 to Q2 EM 59.7 to Q3 EM 58.1. GPT-3.5 on 4-hop shows a cliff-like descent
+  from Q2 F1 46.9 to Q3 F1 36.3. An error analysis of 20 incorrect GPT-4 final answers on 4-hop questions
+  finds that 9 of 20 are caused by errors in the first sub-question, confirming that early errors propagate
+  and dominate later failures. The paper also notes that roughly half of incorrect final answers stem
+  from errors at the first sub-question.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+- ref: model:gemini
+  variant: variant:gemini-pro
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:cofca-step-wise-counterfactual-multi-hop
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4 3-hop: Q1 EM 70.9±0.3, Q2 EM 59.7±0.3, Q3 EM 58.1±0.2; GPT-3.5 4-hop: Q2 F1 46.9±0.3,
+  Q3 F1 36.3±0.2; GPT-4 4-hop error analysis: 9/20 incorrect finals due to first sub-question error'
+caveat: The error analysis is based on only 20 sampled incorrect answers from GPT-4 on the 4-hop dataset,
+  so the proportions are indicative rather than statistically robust.
+extracted_by: automatic-extraction
+related_findings:
+- IC-485
+- IC-486
+- IC-487

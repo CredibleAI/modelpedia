@@ -1,0 +1,42 @@
+id: IC-413
+title: Factors of variation in ImageNet-X are linearly decodable from the second-to-last-layer representations
+  of ImageNet-pretrained ResNet50 and ViT-B/16
+description: The paper tests whether binary factors of variation (defined by human annotators in ImageNet-X)
+  can be recovered by training a linear decoder on the frozen second-to-last-layer features of ResNet50
+  (d=2048) and ViT-B/16 (d=768), both trained on standard ImageNet classification. In most cases, the
+  linear decoders achieve accuracy significantly above the 50% chance level (Bonferroni-adjusted, κ=0.05/85,
+  10 seeds of balanced resampling). ResNet50 shows slightly higher decoding performance than ViT-B/16.
+  Some factors (e.g., darker, brighter) are decodable even from randomly initialized models or raw input,
+  while shape information is decodable from the trained models, suggesting shortcut learning may be
+  mitigated after standard training.
+models:
+- ref: model:resnet
+  variant: variant:resnet50
+- ref: model:vit
+  variant: variant:vit-b-16
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:cross-entropy-all-you-need-invert
+datasets:
+- ref: dataset:imagenet-x
+  role: eval
+- ref: dataset:imagenet1k
+  role: source
+methods:
+- ref: method:logistic-regression
+  role: primary
+related_work:
+- ref: dataset:imagenet-x
+  role: builds-on
+- name: Shortcut learning in deep neural networks (Geirhos et al., 2020)
+  anchor: https://doi.org/10.1038/s42256-020-00257-z
+  role: context
+evidence_type: correlational
+key_metric: d= 2048 (ResNet50) vs d= 768 (ViT-B/16); chance level 50%; Bonferroni-adjusted significance
+  κ = 0.05/85; 10 seeds of balanced resampling
+caveat: The factors in ImageNet-X are binary proxies defined by human annotators, not the true latent
+  variables of the data generating process. The authors note this 'only provide[s] some supporting evidence
+  for our theory on real data.' The VMF distributional assumption of the theory may not hold for real-world
+  data.
+extracted_by: automatic-extraction

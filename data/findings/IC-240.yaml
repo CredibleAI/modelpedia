@@ -1,0 +1,35 @@
+id: IC-240
+title: Introducing multiple preferences (including conflicting ones) in a conversation improves LLM
+  adherence to the original preference
+description: Counterintuitively, when additional non-conflicting or even conflicting preferences are
+  inserted throughout a conversation, the model's accuracy in following the original (first) preference
+  increases. For Claude 3 Sonnet with reminder prompting, accuracy rises from ~0.35 with 2 preferences
+  to ~0.45 with 20 preferences. Conflicting preference pairs also outperform the single-preference baseline.
+  The authors conjecture that multiple preferences reinforce the model's attention to the preference
+  dimension. This effect was confirmed across Claude 3 Sonnet, Claude 3 Haiku, Mistral 7B, and Mistral
+  8x7B.
+models:
+- ref: model:claude-3
+  variant: variant:claude-3-sonnet
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct
+- ref: model:mixtral-8x7b
+concepts: []
+sources:
+- ref: source:llms-recognize-your-preferences-evaluating-personalized
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Claude 3 Sonnet with reminder: accuracy increases from ~0.35 (2 preferences) to ~0.45 (20
+  preferences); conflicting pairs outperform single-preference baseline across Claude 3 Sonnet, Claude
+  3 Haiku, and Mistral 7B'
+caveat: Mistral 8x7B shows similar performance between conflicting and non-conflicting pairs with a
+  slight advantage for non-conflicting, suggesting the effect is model-dependent.
+extracted_by: automatic-extraction
+related_findings:
+- IC-238
+- IC-239
+- IC-241

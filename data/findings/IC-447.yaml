@@ -1,0 +1,56 @@
+id: IC-447
+title: CLIP ViT-B/16 produces noisy saliency maps and contains only 42 concept detectors, indicating
+  poor visual interpretability
+description: The paper measures the visual interpretability of the original CLIP ViT-B/16 image encoder
+  using multiple feature attribution methods and network dissection. Simple gradient saliency maps are
+  described as 'largely stochastic without highlighting any meaningful patterns,' and Grad-CAM maps
+  suffer from 'background noise interference.' Quantitatively, the pointing game score is 25.77 for
+  simple gradients and 51.00 for Grad-CAM on the ImageNet-Segmentation validation set. Network dissection
+  via CLIP-Dissect reveals only 42 concept detectors in the [CLS] token of the last layer, compared
+  to 159 after AFT. The authors attribute this to the non-smoothness induced by false negatives during
+  contrastive training and the inherent nature of the ViT architecture.
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:boosting-visual-interpretability-clip-via-adversarial
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:imagenet-segmentation
+  role: eval
+- ref: dataset:broden
+  role: eval
+- ref: dataset:imagenetette
+  role: eval
+- ref: dataset:caltech-256
+  role: eval
+methods:
+- ref: method:simple-gradient
+  role: primary
+- ref: method:grad-cam
+  role: primary
+- ref: method:pointing-game
+  role: eval
+- ref: method:clip-dissect
+  role: eval
+- ref: method:network-dissection
+  role: eval
+- ref: method:m2ib
+  role: compared-to
+- ref: method:grad-eclip
+  role: compared-to
+- ref: method:roar
+  role: validation
+related_work: []
+evidence_type: correlational
+key_metric: PG 25.77 (SG), 51.00 (GC) on ImageNet-Segmentation; 42 concept detectors (Figure 1); PG-energy
+  31.32 (SG), 43.71 (GC); pixel acc. 65.51 (SG), 61.79 (GC)
+caveat: The paper notes that more advanced attribution methods (M2IB, Grad-ECLIP) already produce better
+  saliency maps on the original CLIP, so the poor interpretability is most evident with basic gradient-based
+  methods.
+extracted_by: automatic-extraction
+related_findings:
+- IC-448
+- IC-449
+- IC-450

@@ -1,0 +1,34 @@
+id: IC-241
+title: Preference following degrades when the preference is placed in the middle of a long conversation,
+  extending the lost-in-the-middle effect to preference tracking
+description: Using Claude 3 Sonnet and Claude 3 Haiku, the authors insert a user preference at different
+  positions (turns 5, 10, 30, 50, 70, 90) within a fixed 100-turn conversation and measure preference-following
+  accuracy. Accuracy is significantly lower when the preference is placed around turn 50 (middle) compared
+  to positions near the beginning or end. This pattern holds across four diverse topics and both model
+  sizes, confirming that the lost-in-the-middle phenomenon extends beyond factual retrieval to preference
+  following.
+models:
+- ref: model:claude-3
+  variant: variant:claude-3-sonnet
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:llms-recognize-your-preferences-evaluating-personalized
+datasets: []
+methods: []
+related_work:
+- name: Lost in the Middle
+  anchor: https://doi.org/10.1162/tacl
+  role: builds-on
+evidence_type: correlational
+key_metric: Preference following accuracy drops at position 50 compared to positions 5, 10, 70, 90 in
+  a fixed 100-turn conversation, observed across Claude 3 Sonnet and Claude 3 Haiku on four topics
+caveat: Only two models (Claude 3 Sonnet and Claude 3 Haiku) and four topics were tested for this specific
+  positional analysis.
+extracted_by: automatic-extraction
+related_findings:
+- IC-238
+- IC-239
+- IC-240

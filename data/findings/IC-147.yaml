@@ -1,0 +1,51 @@
+id: IC-147
+title: CLIP's OOD performance on rendition domains is largely an artifact of domain contamination in
+  its web-scale training data
+description: The paper demonstrates that CLIP's strong zero-shot accuracy on rendition-style test sets
+  (ImageNet-Sketch, ImageNet-R, DomainNet variants) is substantially inflated by the presence of rendition
+  images in its LAION-400M/200M training data. By training CLIP ViT-B/32 from scratch on a clean 57M-sample
+  natural-image-only subset (LAION-natural) and comparing to equally-sized subsets of the contaminated
+  LAION-200M, the authors show that relative corrected OOD accuracy on rendition test sets drops to
+  approximately 0.4. Adding just 13–16M rendition images to the training set nearly doubles rendition
+  top-1 accuracy (from ~22% to ~40–42%) while having minimal impact on natural-domain performance. The
+  effect is consistent across training set sizes from 4M to 57M samples, and the authors conclude that
+  CLIP's apparent OOD robustness is not genuine generalization but a consequence of overlapping domain
+  data.
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:search-forgotten-domain-generalization
+datasets:
+- ref: dataset:laion-200m
+  role: source
+- ref: dataset:imagenet-r
+  role: eval
+- ref: dataset:imagenet-sketch
+  role: eval
+- ref: dataset:domainnet
+  role: eval
+- ref: dataset:imagenet-a
+  role: eval
+- ref: dataset:objectnet
+  role: eval
+- ref: dataset:imagenet-v2
+  role: eval
+methods:
+- ref: method:openclip
+  role: primary
+related_work:
+- name: Mayilvahanan et al. 2023 (Does CLIP's generalization performance mainly stem from high train-test
+    similarity?)
+  anchor: https://arxiv.org/abs/2310.09562
+  role: compared-to
+evidence_type: correlational
+key_metric: Relative corrected OOD accuracy ~0.4 on rendition test sets (natural-only training); LAION-natural
+  21.98% rendition top-1 (standard) / 17.81% (clean); LAION-mix-13m 40.48% / 40.78%; LAION-mix-16m 41.46%
+  / 42.07%; LAION-rand-57m 40.66% / 39.58%; LAION-200M contains at least 7.90% rendition images (16M
+  samples)
+caveat: Training sets are constrained by the availability of natural (57M) and rendition (16M) samples;
+  the authors conjecture but cannot prove the result holds at the full LAION-400M scale. They also note
+  they did not control for object class distribution differences between LAION-natural and LAION-rendition,
+  and the impact of ambiguous samples is left for future work.
+extracted_by: automatic-extraction

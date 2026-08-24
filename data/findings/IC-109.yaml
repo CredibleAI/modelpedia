@@ -1,0 +1,35 @@
+id: IC-109
+title: GPT-3.5-turbo and GPT-4 produce cycles in inferred causal graphs when using pairwise prompts,
+  with cycle counts growing sharply on larger graphs
+description: 'When LLMs are queried with pairwise prompts to determine causal direction between variable
+  pairs, the aggregated edge orientations frequently contain cycles, making the causal order undefined.
+  This failure is severe on larger graphs: GPT-3.5-turbo produces >>3k cycles on the 20-node child dataset
+  and >>5k on the 22-node neuropathic dataset. GPT-4, despite being more capable, still produces >>10k
+  cycles on child, >>10k on neuropathic, 684 on alzheimers, and 15 on covid-19. The paper shows that
+  even upgrading from GPT-3.5-turbo to GPT-4 does not eliminate this failure mode.'
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:causal-order-key-leveraging-imperfect-experts
+datasets:
+- ref: dataset:bnlearn
+  role: eval
+methods:
+- ref: method:chain-of-thought-prompting
+  role: compared-to
+related_work:
+- name: Kıcıman et al. 2023
+  anchor: https://arxiv.org/abs/2305.00050
+  role: builds-on
+evidence_type: correlational
+key_metric: 'GPT-3.5-turbo pairwise: child >>3k cycles, neuropathic >>5k cycles; GPT-4 pairwise: child
+  >>10k cycles, neuropathic >>10k cycles, alzheimers 684 cycles, covid 15 cycles'
+caveat: Cycle counts are lower bounds (computed as total k-length cycles with k=5) because counting
+  all cycles in a DAG is NP-hard.
+extracted_by: automatic-extraction
+related_findings:
+- IC-110

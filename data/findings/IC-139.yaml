@@ -1,0 +1,44 @@
+id: IC-139
+title: 3D Gaussian Splatting and its variants (Scaffold-GS, Mip-Splatting) are vulnerable to computation
+  cost attacks via data poisoning, with peak GPU memory increasing up to 21.93x and training time up
+  to 4.97x under unconstrained perturbation
+description: The paper demonstrates that 3DGS's adaptive density control mechanism can be exploited
+  by poisoning input images to increase their total variation (sharpness). This forces the algorithm
+  to over-densify, creating far more 3D Gaussians and dramatically increasing GPU memory and training
+  time. The attack works in white-box against standard 3DGS and generalizes in black-box to Scaffold-GS
+  and Mip-Splatting without modification. In unconstrained cases on NeRF-Synthetic, peak GPU memory
+  reaches 80956 MB (21.93x) on the ship scene, approaching the 80 GB limit of A800/H100 GPUs and causing
+  denial-of-service. A naive defense of capping the Gaussian count degrades reconstruction PSNR from
+  29.21 to as low as 19.03 dB, making it impractical.
+models:
+- ref: model:gaussian-splatting-3d
+- ref: model:scaffold-gs
+- ref: model:mip-splatting
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:poison-splat-computation-cost-attack-3d
+datasets:
+- ref: dataset:mip-nerf-360
+  role: eval
+- ref: dataset:tanks-and-temples
+  role: eval
+methods: []
+related_work:
+- ref: model:gaussian-splatting-3d
+  role: builds-on
+- ref: model:scaffold-gs
+  role: compared-to
+- ref: model:mip-splatting
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Unconstrained: ns-ship peak GPU 3692→80956 MB (21.93x↑), training time 8.87→44.11 min (4.97x↑);
+  ns-lego peak GPU 3532→78852 MB (22.33x↑). Constrained (ε=16/255): mip-room peak GPU 12316→46238 MB
+  (3.75x↑), ns-hotdog 3336→29747 MB (8.92x↑). Black-box Mip-Splatting unconstrained: all Mip-NeRF360
+  scenes reach DoS (out-of-memory at 80 GB). Defense threshold 2M Gaussians on room: PSNR drops from
+  29.21 to 19.03 dB.'
+caveat: The attack assumes the attacker can inject poisoned images into the training dataset (data poisoning
+  threat model). The paper approximates computational cost by Gaussian count, acknowledging that Gaussian
+  density (overlap in tiles) might be a better metric. The attack was tested on a single NVIDIA A800-SXM4-80G
+  GPU.
+extracted_by: automatic-extraction

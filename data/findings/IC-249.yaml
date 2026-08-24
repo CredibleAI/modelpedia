@@ -1,0 +1,30 @@
+id: IC-249
+title: The GitHub data-refined LLC identifies the induction circuit heads in Pythia-70m by distinguishing
+  previous-token and induction heads from other head types across layers 2 and 3
+description: 'The authors apply their weight- and data-refined local learning coefficient (wdrllc) to
+  Pythia-70m, a 70M-parameter released transformer. Using the GitHub code distribution as the data refinement,
+  the relative difference between Pile and GitHub LLC values for layer 2 heads reveals a single outlier
+  corresponding to the model''s sole previous-token head. For layer 3, the same measure separates two
+  clusters: candidate induction heads and non-induction heads. These identifications are confirmed using
+  the previous-token score and prefix-matching score from Olsson et al. (2022), with head 3:2 noted
+  as an exception to the induction-head cluster.'
+models:
+- ref: model:pythia
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:differentiation-specialization-attention-heads-via-refined
+datasets:
+- ref: dataset:github-codeparrot
+  role: eval
+- ref: dataset:the-pile
+  role: eval
+methods: []
+related_work:
+- name: Hoogland et al. (2024)
+  anchor: https://arxiv.org/abs/2402.02364
+  role: builds-on
+evidence_type: correlational
+caveat: Head 3:2 is an exception, not cleanly classified as an induction head by the prefix score; the
+  analysis is limited to two layers (2 and 3) of the model.
+extracted_by: automatic-extraction

@@ -1,0 +1,29 @@
+id: IC-279
+title: GP-LVM produces less structured latent representations and lower generative-classification accuracy
+  than QEP-LVM on oil flow and MNIST
+description: The paper applies the standard Bayesian GP-LVM (q=2) to the oil flow and MNIST datasets
+  and reports its generative-classification performance and latent-space geometry. On oil flow, GP-LVM
+  achieves 0.68 ± 0.05 accuracy and 0.83 ± 0.03 AUC over 10 random seeds. On MNIST, it achieves 0.965
+  ± 0.012 accuracy and 0.981 ± 0.0062 AUC. The 2-D latent projections show GP-LVM yielding less concentrated
+  digit clusters (e.g. segregated but overlapping 6/7 groups) compared to the tighter, more separated
+  clusters from QEP-LVM at q=1.5.
+models:
+- ref: model:gp-lvm
+concepts: []
+sources:
+- ref: source:bayesian-regularization-latent-representation
+datasets:
+- ref: dataset:mnist
+  role: eval
+- ref: dataset:swiss-roll
+  role: eval
+methods:
+- ref: method:t-sne
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'oil flow: acc 0.68 ± 0.05, auc 0.83 ± 0.03, ari 0.34 ± 0.07, nmi 0.37 ± 0.07; MNIST: acc
+  0.965 ± 0.012, auc 0.981 ± 0.0062, ari 0.923 ± 0.025, nmi 0.938 ± 0.019'
+caveat: Results are from the authors' own training runs with 25 (oil flow) or 128 (MNIST) inducing points
+  and a specific ARD SE kernel; the paper does not release the trained GP-LVM checkpoints.
+extracted_by: automatic-extraction

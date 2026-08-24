@@ -1,0 +1,42 @@
+id: IC-290
+title: Zeroing out or doubling specific FFN neurons identified by the neuron path method causes significant
+  accuracy changes in ViT and MAE models
+description: 'The paper identifies one influential neuron per FFN layer (a ''neuron path'') using a
+  joint attribution score, then intervenes by zeroing out or doubling those neuron values. Across all
+  four models, the neuron path method produces the largest accuracy deviations: removing the path neurons
+  drops accuracy by 2.40% (ViT-B/16), 3.81% (ViT-B/32), 5.28% (ViT-L/32), and 26.50% (MAE-B/16), while
+  doubling them improves accuracy by 2.04%, 3.06%, 5.02%, and 7.28% respectively. Baseline methods (max
+  activation, influence pattern) produce much smaller effects, confirming that the identified paths
+  carry critical information for inference.'
+models:
+- ref: model:vit
+  variant: variant:vit-b-16
+- ref: model:vit
+  variant: variant:vit-b-32
+- ref: model:vit
+  variant: variant:vit-l-32
+- ref: model:mae-b-16
+concepts: []
+sources:
+- ref: source:discovering-influential-neuron-path-vision-transformers
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:knowledge-attribution
+  role: compared-to
+related_work:
+- name: Knowledge Neurons in Pretrained Transformers
+  anchor: https://doi.org/10.18653/v1/2022.acl-long.581
+  role: builds-on
+evidence_type: interventional
+key_metric: 'Removal accuracy deviation: -2.40% (ViT-B/16), -3.81% (ViT-B/32), -5.28% (ViT-L/32), -26.50%
+  (MAE-B/16); Enhancement accuracy deviation: +2.04%, +3.06%, +5.02%, +7.28% respectively. JAS: 0.4078,
+  0.6610, 1.0086, 0.0095.'
+caveat: The method only targets FFN neurons (first linear layer output), not attention or other components.
+  The paper acknowledges this as a limitation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-291
+- IC-292
+- IC-293

@@ -1,0 +1,36 @@
+id: IC-494
+title: The instruction-following dimension in Llama-2-7B-Chat and Llama-2-13B-Chat is more closely aligned
+  with prompt phrasing than with task familiarity or instruction difficulty
+description: 'The authors conducted a sensitivity analysis on 20 prompts from the ''forbidden keyword''
+  instruction type, creating five modified versions for each of three perturbation types: changing the
+  task to one with lower perplexity (task familiarity), simplifying the instruction by reducing constraints
+  (instruction difficulty), and rephrasing while preserving meaning (phrasing). They computed the cosine
+  similarity between the perturbation-induced representation change and the instruction-following dimension.
+  In both models, phrasing modifications showed the strongest alignment with the dimension, suggesting
+  the model''s internal signal for instruction-following is driven by surface phrasing rather than the
+  semantic difficulty of the task or instruction.'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+concepts: []
+sources:
+- ref: source:llms-know-internally-when-they-follow
+datasets:
+- ref: dataset:ifeval
+  role: eval
+methods: []
+related_work:
+- name: Lu et al. (prompt sensitivity)
+  anchor: https://arxiv.org/abs/2311.07230
+  role: context
+- name: Sclar et al. (spurious features in prompt design)
+  anchor: https://arxiv.org/abs/2310.11324
+  role: context
+evidence_type: correlational
+caveat: Analysis limited to 20 prompts from a single instruction type ('forbidden keyword') and two
+  models; the cosine similarity values are shown only in Figure 4 as a plot, not as tabulated numbers.
+extracted_by: automatic-extraction
+related_findings:
+- IC-493

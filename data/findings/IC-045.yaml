@@ -1,0 +1,37 @@
+id: IC-045
+title: A 50-dimensional Hessian-identified subspace in Tulu-2-13B causally mediates entity-attribute
+  binding, generalizing to three-entity contexts
+description: The authors identify a binding subspace via a Hessian-based algorithm that approximates
+  the model's second-order structure. Interchange interventions projecting activations into the top
+  50 singular vectors (out of 5120 dimensions) successfully swap binding information between entities
+  across all 40 layers. The subspace, computed on two-entity contexts, generalizes to three-entity contexts,
+  enabling swaps 0-1, 0-2, and 1-2. Random subspaces of all dimensions fail, and Distributed Alignment
+  Search (DAS) succeeds only for the 0-1 swap but not 1-2.
+models:
+- ref: model:tulu-2
+  variant: variant:tulu-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:monitoring-latent-world-states-language-models
+datasets: []
+methods:
+- ref: method:distributed-alignment-search
+  role: compared-to
+- ref: method:interchange-intervention
+  role: primary
+related_work:
+- name: Pyvene
+  anchor: https://arxiv.org/abs/2403.07809
+evidence_type: interventional
+key_metric: Top 50 dimensions (out of 5120) sufficient for all three pairwise binding swaps in 3-entity
+  contexts; random subspaces fail at all dimensions tested
+caveat: The 50-dim subspace may contain spurious non-binding directions; the binding similarity metric
+  does not clearly discriminate between the second and third entities in qualitative plots.
+extracted_by: automatic-extraction
+related_findings:
+- IC-044
+- IC-046
+- IC-047

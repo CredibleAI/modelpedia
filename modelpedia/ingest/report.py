@@ -163,9 +163,159 @@ def for_split(result):
     return render([section(result) for section in SPLIT_SECTIONS])
 
 
+class Comparison(NamedTuple):
+    rows: tuple
+    left_name: str
+    right_name: str
+    left: object
+    right: object
+    agreement: dict
+    only_left: tuple
+    only_right: tuple
+
+
+def comparison_heading(result):
+    return [
+        "%s on %s answered by both"
+        % ("%s (left) against %s (right)" % (result.left_name, result.right_name),
+           plural(len(result.rows), "paper")),
+        "  left only: %s; right only: %s"
+        % (", ".join(result.only_left) or "none", ", ".join(result.only_right) or "none"),
+    ]
+
+
+def comparison_table(result):
+    lines = ["%-13s %9s %11s %8s %s" % ("paper", "findings", "models", "shared", "models only on one side")]
+    for row in result.rows:
+        lines.append("%-13s %4d/%-4d %5d/%-5d %8d %s"
+                     % (row.paper, row.left.findings, row.right.findings,
+                        len(row.left.models), len(row.right.models), len(row.shared()),
+                        ", ".join(sorted(row.only_left() | row.only_right()))[:44]))
+    return lines
+
+
+def comparison_checks(result):
+    lines = ["%-26s %14s %14s" % ("", result.left_name[:14], result.right_name[:14])]
+    lines.append("%-26s %14d %14d" % ("findings", result.left.findings, result.right.findings))
+    for state in NUMBER_ORDER:
+        lines.append("%-26s %14s %14s"
+                     % ("key_metric numbers %s" % state,
+                        ratio(result.left.numbers.get(state, 0), result.left.numeric()),
+                        ratio(result.right.numbers.get(state, 0), result.right.numeric())))
+    for state in CITATION_ORDER:
+        lines.append("%-26s %14s %14s"
+                     % ("citations %s" % state,
+                        ratio(result.left.quotes.get(state, 0), result.left.cited()),
+                        ratio(result.right.quotes.get(state, 0), result.right.cited())))
+    for value, left, right in evidence_rows(result):
+        lines.append("%-26s %14d %14d" % ("evidence %s" % value, left, right))
+    return lines
+
+
+NUMBER_ORDER = ("found", "review", "missing")
+CITATION_ORDER = ("confirmed", "partial", "rejected", "absent")
+
+
+def ratio(part, whole):
+    return "-" if not whole else "%d/%d  %3.0f%%" % (part, whole, 100 * part / whole)
+
+
+def evidence_rows(result):
+    left, right = Counter(result.left.evidence), Counter(result.right.evidence)
+    return [(value, left.get(value, 0), right.get(value, 0))
+            for value in sorted(set(left) | set(right))]
+
+
+def comparison_agreement(result):
+    found = result.agreement
+    return [
+        "models named by both sides: %d of %d on the left (%.0f%%), of %d on the right (%.0f%%)"
+        % (found["shared"], found["left"], 100 * found["of_left"],
+           found["right"], 100 * found["of_right"]),
+        "  papers where the two sides share no model at all: %d" % found["papers_without_overlap"],
+        "  a shared model is agreement about what the paper is about, not about what it says;"
+        " the claims themselves still need reading",
+    ]
+
+
+def comparison_unreadable(result):
+    broken = [row.paper for row in result.rows if row.left.unreadable or row.right.unreadable]
+    if not broken:
+        return []
+    return ["answers that would not parse: %s" % ", ".join(broken)]
+
+
+COMPARISON_SECTIONS = (comparison_heading, comparison_table, comparison_checks,
+                       comparison_agreement, comparison_unreadable)
+
+
+def for_comparison(result):
+    return render([section(result) for section in COMPARISON_SECTIONS])
+
+
 def for_citations(tally, order, rejected_state, destination):
     total = sum(tally.values())
     lines = ["  %-10s %4d  %3.0f%%" % (state, tally[state], 100 * tally[state] / total)
              for state in order]
     return render([lines, ["%d entities, %d rejected, report in %s"
                            % (total, tally[rejected_state], destination)]])
+
+
+def for_adoption(verdicts, unreadable, proposals):
+    adopted = [v for v in verdicts if v.adopted()]
+    refused = [v for v in verdicts if v.decision == "refuse"]
+    troubled = [v for v in verdicts if v.problem]
+    anchored = [v for v in adopted if v.anchor]
+    lines = [
+        "%s judged of %s put to the model"
+        % (plural(len(verdicts), "answer"), plural(proposals, "proposal")),
+        "  adopted        %d" % len(adopted),
+        "  refused        %d, of which %d name an entry the registry already holds"
+        % (len(refused), sum(1 for v in refused if v.alias_of)),
+        "  anchors kept   %d of %d, the rest were not in any citing paper"
+        % (len(anchored), len(adopted)),
+    ]
+    families = Counter(v.family for v in adopted if v.field == "models" and v.family)
+    if families:
+        lines.append("  models placed under a family: %d, new families: %d"
+                     % (sum(count for key, count in families.items() if key != "new"),
+                        families.get("new", 0)))
+    blocks = [lines]
+    if troubled:
+        blocks.append(["answers the checks did not let through as written:"]
+                      + ["  %-28s %s" % (v.name[:28], v.problem) for v in troubled])
+    if unreadable:
+        blocks.append(["answers that would not parse:"]
+                      + ["  %-28s %s" % (name[:28], why) for name, why in unreadable])
+    return render(blocks)
+
+
+def for_tagging(agreed, none, invented, unreadable):
+    lines = [
+        "%s tagged, %d left with no concept" % (plural(agreed["findings"], "finding"), none),
+        "  unchanged      %d" % agreed["unchanged"],
+        "  concepts added %d, removed %d" % (agreed["added"], agreed["removed"]),
+    ]
+    blocks = [lines]
+    if invented:
+        blocks.append(["identifiers outside the closed list, not written:"]
+                      + ["  %-12s %s" % pair for pair in invented[:20]])
+    if unreadable:
+        blocks.append(["answers that would not parse:"]
+                      + ["  %-16s %s" % pair for pair in unreadable[:20]])
+    return render(blocks)
+
+
+def for_facets(taken, empty, refused, unreadable):
+    spread = Counter(field for values in taken.values() for field in values)
+    lines = ["%s described, %d answered with nothing on any axis"
+             % (plural(len(taken), "model"), empty)]
+    lines += ["  %-9s on %d models" % (field, count) for field, count in spread.most_common()]
+    blocks = [lines]
+    if refused:
+        blocks.append(["values outside the closed list, not written:"]
+                      + ["  %-26s %s: %s" % row for row in refused[:20]])
+    if unreadable:
+        blocks.append(["answers that would not parse:"]
+                      + ["  %-26s %s" % pair for pair in unreadable[:20]])
+    return render(blocks)

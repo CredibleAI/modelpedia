@@ -53,6 +53,11 @@ META_FIELDS = ("developer", "date", "modality", "domain", "task", "venue")
 PAGE_TITLE = "Modelpedia"
 TAGLINE = "Findings about machine learning models"
 
+STATUS_LABEL = "Work in progress"
+STATUS_TITLE = "Prototype: the data, the schema and the site are all still changing"
+STATUS_BADGE = '<span class="wip" title="%s">%s</span>' % (escape(STATUS_TITLE),
+                                                           escape(STATUS_LABEL))
+
 LEDE = ("A finding is a claim about how one model behaves, made by someone other than its "
         "authors, after the fact. Findings about different models meet on the mechanisms they "
         "describe.")
@@ -242,7 +247,8 @@ def bridge_entries(view, node):
 
 
 def navigation(view):
-    items = ["<li>%s</li>" % anchor(site_paths.href(view.here, HOME), escape(PAGE_TITLE))]
+    items = ["<li>%s%s</li>" % (anchor(site_paths.href(view.here, HOME), escape(PAGE_TITLE)),
+                               STATUS_BADGE)]
     for node_type in graph_json.PAGE_TYPES:
         current = ' aria-current="page"' if view.here.startswith(
             node_type.url_segment + "/") else ""
@@ -284,7 +290,8 @@ def home_body(view):
     registries = [node_type for node_type in graph_json.PAGE_TYPES
                   if node_type.name != graph_json.FINDING]
     return "".join([
-        "<header><h1>%s</h1>%s</header>" % (escape(PAGE_TITLE), paragraph(TAGLINE, "tagline")),
+        "<header><h1>%s%s</h1>%s</header>" % (escape(PAGE_TITLE), STATUS_BADGE,
+                                              paragraph(TAGLINE, "tagline")),
         paragraph(escape(LEDE), "lede"),
         heading("Models"),
         entry_list([entry("", link(view, node["id"]) + '<span class="entry-note">%s</span>'

@@ -1,0 +1,37 @@
+id: IC-130
+title: Amplifying visual-token attention in high layers (16-32) of released VLMs reduces sycophancy
+  while preserving VQA accuracy, indicating that insufficient high-layer visual attention is a key cause
+  of sycophancy
+description: The paper applies a training-free post-processing method that amplifies image-token attention
+  logits before normalization at specific layers. For LLaVA-1.5, amplifying layers 16-32 reduces sycophancy
+  from 94.6% to 64.4% while improving accuracy from 84.7% to 88.3%. For BLIP-2, sycophancy drops from
+  38.3% to 0.4%. For InstructBLIP, it drops from 68.8% to 8.3%. In contrast, amplifying low layers (1-16)
+  or all layers (1-32) degrades accuracy significantly. Layer-wise probing confirms the sycophancy signal
+  is concentrated in higher layers (AUC peaks at layer 31), and attention analysis shows the original
+  model assigns less attention to visual tokens in high layers than SFT/DPO-mitigated versions.
+models:
+- ref: model:llava-1-5
+- ref: model:blip-2
+- ref: model:instructblip
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:have-vlms-lost-confidence-study-sycophancy
+datasets: []
+methods:
+- ref: method:linear-probing
+  role: supporting
+related_work:
+- name: Liu et al. 2024b (Paying More Attention to Image)
+  anchor: https://arxiv.org/abs/2407.21771
+  role: builds-on
+evidence_type: interventional
+key_metric: 'LLaVA-1.5 x16-32: syc 94.6% → 64.4%, acc@r1 84.7% → 88.3% (+3.6); BLIP-2 x16-32: syc 38.3%
+  → 0.4%; InstructBLIP x16-32: syc 68.8% → 8.3%; cor w/o a increases +7.3 (LLaVA) and +12.5 (InstructBLIP)'
+caveat: The method was tested only on three VLMs (LLaVA-1.5, BLIP-2, InstructBLIP); the amplification
+  factor λ is model-specific (0.9, 0.4, 1.1) and requires tuning; generalizability to other architectures
+  is not evaluated.
+extracted_by: automatic-extraction
+related_findings:
+- IC-128
+- IC-129

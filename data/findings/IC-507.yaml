@@ -1,0 +1,40 @@
+id: IC-507
+title: The refusal feature direction in Llama-3-8B-Instruct, Mistral-7B-Instruct-v0.2, and Gemma-7B-IT
+  ranks near the top among 100 perturbations for compromising model safety
+description: For each harmful prompt where the model refuses, the authors inject 100 unit-norm perturbations
+  into the residual stream (99 random directions plus the normalized refusal feature) and rank them
+  by how much they reduce the log-likelihood ratio between refusal and compliance responses. The refusal
+  feature direction consistently achieves a high rank (i.e., near worst-case) in the last few layers
+  of all three models, showing that ablating this single linear direction approximates the most effective
+  adversarial perturbation for offsetting safety.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+- ref: model:gemma
+  variant: variant:gemma-7b-it
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:robust-llm-safeguarding-via-refusal-feature
+datasets:
+- ref: dataset:harmbench
+  role: eval
+- ref: dataset:advbench
+  role: source
+methods: []
+related_work:
+- name: Arditi et al. 2024
+  anchor: https://arxiv.org/abs/2406.11717
+  role: builds-on
+evidence_type: correlational
+key_metric: 100 perturbations per prompt (99 random + 1 RF); optimality measured as average rank across
+  all HarmBench refusal prompts
+caveat: The specific rank values are shown only in Figure 5 (layer-wise plot); no aggregate rank number
+  is printed in the text. The perturbation norm is fixed at unit length, which may not match the norm
+  of real adversarial perturbations.
+extracted_by: automatic-extraction
+related_findings:
+- IC-505
+- IC-506

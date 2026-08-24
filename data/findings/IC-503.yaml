@@ -1,0 +1,42 @@
+id: IC-503
+title: Adding probe regression coefficients to attention head activations steers Llama-2-7B-Chat, Mistral-7B-Instruct-v0.1,
+  and Vicuna-7B-v1.5 toward more liberal or conservative generated text
+description: Following the inference-time intervention methodology, the authors add α·σ·θ (where θ is
+  the probe's regression coefficient and σ is the activation standard deviation) to the activations
+  of the k most predictive attention heads during generation. Across 1,134 essays on nine policy issues,
+  increasing α from −30 to +30 shifts the GPT-4o-rated political slant monotonically toward more conservative
+  positions. The correlation between α and slant is 0.607 for Llama-2-7B-Chat, 0.396 for Mistral-7B-Instruct,
+  and 0.381 for Vicuna-7B at k∈{64,80,96}. At α=0, all three models produce text rated below the neutral
+  midpoint (4 on a 1–7 scale), indicating a base-level liberal lean. Interventions on early-to-middle
+  layers (layers 1–21) are effective (ρ=0.540) while middle-to-last layers (22–32) have almost no effect
+  (ρ=−0.022).
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-1
+- ref: model:vicuna
+  variant: variant:vicuna-7b-v1-5
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:linear-representations-political-perspective-emerge-large
+datasets: []
+methods:
+- ref: method:inference-time-intervention
+  role: primary
+- ref: method:linear-probing
+  role: supporting
+related_work: []
+evidence_type: interventional
+key_metric: 'Correlation between α and political slant: 0.607 (Llama-2-7B-Chat), 0.396 (Mistral-7B-Instruct),
+  0.381 (Vicuna-7B) at k∈{64,80,96}; layer-specific: ρ=0.540 (layers<22) vs ρ=−0.022 (layers≥22)'
+caveat: For |α|>30, the proportion of coherent responses drops below 40% across all three models. Steering
+  is more reliable for issues with wider stance distributions (immigration, abortion) and less so for
+  issues like free speech or trust in science. The authors note potential for bias when using GPT-4o
+  as the slant evaluator.
+extracted_by: automatic-extraction
+related_findings:
+- IC-501
+- IC-502
+- IC-504

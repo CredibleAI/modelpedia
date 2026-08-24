@@ -1,0 +1,35 @@
+id: IC-263
+title: DeepGate2 and DeepGate3 achieve average SAT solving runtime reductions of 18.24% and 21.31% respectively
+  when used to constrain boolean fence search space
+description: The paper integrates GNN-based circuit embeddings into an exact synthesis SAT solver to
+  predict the number of nodes and levels for optimal equivalent implementations, thereby constraining
+  the boolean fence search space. On five designs (adder, sqrt, hyp, i2c, div), DeepGate2 achieves an
+  average solver runtime reduction of 18.24% and DeepGate3 achieves 21.31% compared to unconstrained
+  exact synthesis. The paper notes that for easier cases (e.g., adder, sqrt), the GNN inference overhead
+  makes the overall runtime worse than the baseline.
+models:
+- ref: model:deepgate2
+- ref: model:deepgate3
+concepts: []
+sources:
+- ref: source:circuit-representation-learning-masked-gate-modeling
+datasets: []
+methods:
+- ref: method:abc
+  role: eval
+related_work:
+- ref: model:deepgate2
+  role: compared-to
+- ref: model:deepgate3
+  role: compared-to
+evidence_type: correlational
+key_metric: 'DeepGate2 average solver reduction = 18.24%, DeepGate3 average solver reduction = 21.31%;
+  overall average: DeepGate2 408.78s vs baseline 999.99s, DeepGate3 521.38s vs baseline 999.99s'
+caveat: The SAT solver with GNN is less effective for easier cases as model inference accounts for a
+  significant portion of total runtime; overall runtime for DeepGate3 (521.38s) is worse than DeepGate2
+  (408.78s) despite higher solver-only reduction
+extracted_by: automatic-extraction
+related_findings:
+- IC-260
+- IC-261
+- IC-262

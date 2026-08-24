@@ -1,0 +1,39 @@
+id: IC-464
+title: Video-LLaVA and Llama-VID systematically overestimate candidate VLM scores, assigning ratings
+  near 4.00 across all visual dimensions and showing near-zero or negative agreement with a reference-guided
+  agent-debate method
+description: 'When used as judges to rate candidate VLM responses on the CVRR-ES benchmark, Video-LLaVA
+  assigns scores close to 4.00 across nearly all 11 visual dimensions, and Llama-VID assigns scores
+  typically above 3.70, regardless of the candidate model''s actual quality. Their weighted Cohen''s
+  kappa agreement with the reference-guided LLM agent-debate method is near zero or negative (Video-LLaVA:
+  -1.83 to 2.81; Llama-VID: -4.15 to 3.70), indicating they cannot discriminate between good and poor
+  responses. This pattern is confirmed on a second dataset (VideoChatGPT), where Video-LLaVA''s average
+  kappa is only 1.72%.'
+models:
+- ref: model:video-llava
+- ref: model:llama-vid
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:your-video-language-model-reliable-judge
+datasets:
+- ref: dataset:cvrr-es
+  role: eval
+- ref: dataset:videochatgpt
+  role: eval
+methods:
+- ref: method:weighted-cohen-s-kappa
+  role: eval
+related_work:
+- ref: dataset:cvrr-es
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Video-LLaVA scores 3.95-4.00 across dimensions; Llama-VID scores 3.76-4.03; Video-LLaVA
+  kappa range -1.83 to 2.81; Llama-VID kappa range -4.15 to 3.70; VideoChatGPT dataset: Video-LLaVA
+  average kappa 1.72%'
+caveat: The reference (agent-debate) itself requires reference responses and is text-only (no visual
+  input for GPT-3.5 agents), so the baseline may not be perfectly calibrated for video content.
+extracted_by: automatic-extraction
+related_findings:
+- IC-465
+- IC-466

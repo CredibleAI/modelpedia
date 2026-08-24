@@ -1,0 +1,45 @@
+id: IC-166
+title: A 1-dimensional subspace in a single layer encodes the context-versus-prior decision in Llama-3.1-8B,
+  Gemma-2 9B, and Mistral-v0.3 7B, and setting this subspace steers the released (non-fine-tuned) models'
+  behavior
+description: The authors identify a rank-1 subspace in layer 16 (Llama-3.1) of the residual stream that
+  encodes whether the model will follow the context or its prior knowledge. Although the subspace is
+  learned on a fine-tuned model, the same direction functions as an effective control knob in the non-fine-tuned
+  instruct and base models of each family. Steering the subspace value (e.g., c(pri)=-6, c(ctx)=6 for
+  Llama-3.1) changes the model's answer without any explicit intent instruction in the prompt. A strong
+  Pearson correlation between the subspace value separation and task performance (0.908 for Llama-3.1,
+  0.871 for Mistral, 0.975 for Gemma-2) further supports that this subspace is the mechanism underlying
+  context sensitivity.
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+- ref: model:mistral-7b
+  variant: variant:mistral-v0-3-7b
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:controllable-context-sensitivity-knob-behind-it
+datasets: []
+methods:
+- ref: method:activation-patching
+  role: primary
+- ref: method:distributed-alignment-search
+  role: primary
+- ref: method:in-context-learning
+  role: supporting
+related_work: []
+evidence_type: interventional
+key_metric: 'Llama-3.1-8B-Instruct zero-shot: 73% pairacc baseline, 73% steered; Llama-3.1-8B ICL: 83%
+  baseline, 88% steered; Gemma-2 9B instruct zero-shot: 4% baseline, 44% steered; Pearson correlation
+  between subspace value mean difference and pairacc: 0.908 (Llama-3.1, p=0.000), 0.871 (Mistral, p=0.000),
+  0.975 (Gemma-2, p=0.000)'
+caveat: Steering is less effective when the model must reason over the context rather than directly
+  copy the answer; the base model zero-shot achieves 0% pairacc because it lacks instruction-following
+  training; the subspace was learned on the fine-tuned model and its transfer to released models is
+  not uniform across all configurations.
+extracted_by: automatic-extraction

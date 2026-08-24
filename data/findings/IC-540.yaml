@@ -1,0 +1,32 @@
+id: IC-540
+title: Spatial understanding is the most challenging dimension for code-based models while numerical
+  understanding is most challenging for direct image models
+description: 'Breaking down correctness by understanding type reveals a model-type-specific weakness.
+  For code-based models (GPT-4o, Llama, AutoTikZ), spatial understanding scores are the lowest: GPT-4o
+  drops from ~4.0 on attribute binding to 3.35-3.47 on spatial. For direct image models (Stable Diffusion,
+  DALL-E), numerical understanding is the weakest: both score below 1.8 on numerical versus ~2.7 on
+  attribute. This discrepancy means combined tasks involving the weak dimension (e.g., numerical & spatial)
+  receive the lowest scores across all models.'
+models:
+- ref: model:gpt-4o
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:autotikz
+- ref: model:stable-diffusion
+- ref: model:dall-e
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:scimage-good-multimodal-large-language-models
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4o_tikz: attribute 4.11, numerical 3.49, spatial 3.35; Stable Diffusion: attribute
+  2.75, numerical 1.73, spatial 2.06; DALL-E: attribute 2.68, numerical 1.77, spatial 2.13'
+caveat: Sample sizes per understanding type range from 40 to 80 prompts, limiting statistical power
+  for individual cells.
+extracted_by: automatic-extraction
+related_findings:
+- IC-539
+- IC-541

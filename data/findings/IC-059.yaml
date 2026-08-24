@@ -1,0 +1,35 @@
+id: IC-059
+title: Code data is strongly overrepresented in the most influential pretraining documents for reasoning
+  queries in Command R 7B and 35B
+description: Comparing the source datasets of the top and bottom k influential documents to the pretraining
+  distribution, code sources are heavily overrepresented for reasoning queries. StackExchange has 10x
+  more influential data than expected for the top portions, and other code sources are 2x overrepresented
+  for k = 50 to 50000. For the 7B, StackExchange and math/trivia have multipliers of 50 and 24 respectively
+  at k=50 for reasoning, versus 27 and 5 for factual. For the 35B, the multipliers are 62 and 21 for
+  reasoning. Content analysis of the top 500 most frequent documents among the k=5000 most influential
+  confirms the 'code' category dominates, while random samples show a much smaller fraction of code.
+models:
+- ref: model:cohere-command-r
+  variant: variant:cohere-command-r-7b
+- ref: model:cohere-command-r
+  variant: variant:cohere-command-r-35b
+concepts: []
+sources:
+- ref: source:procedural-knowledge-pretraining-drives-reasoning-large
+datasets: []
+methods:
+- ref: method:ek-fac-influence-functions
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'StackExchange multiplier: 10x (top portions); other code sources: 2x (k=50 to 50000); 7B
+  reasoning k=50: StackExchange 50, math/trivia 24; 35B reasoning k=50: StackExchange 62, math/trivia
+  21; 7B factual k=50: math/trivia 27, Wikipedia 5'
+caveat: The authors note this is conventional wisdom among practitioners and cite prior work (Aryabumi
+  et al. 2024) finding code important for reasoning; the question of why code is influential remains
+  open
+extracted_by: automatic-extraction
+related_findings:
+- IC-056
+- IC-057
+- IC-058

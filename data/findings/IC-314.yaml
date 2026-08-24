@@ -1,0 +1,33 @@
+id: IC-314
+title: Llama-3-70b as an LLM-based evaluator (Llama-3-eval) produces agent rankings consistent with
+  GPT-4-based G-Eval on InsightBench
+description: 'The paper compares G-Eval (using GPT-4) and Llama-3-eval (using Llama-3-70b) as evaluators
+  of agent-generated insights on the first 10 InsightBench datasets. Both methods produce scores in
+  similar ranges and rank the agents in the same order: GPT-4o backbone highest, then GPT-4-turbo, GPT-3.5-turbo,
+  and Llama-3-70b. The authors conclude Llama-3-70b is a feasible open-source alternative to GPT-4 for
+  evaluation, avoiding API costs and periodic model updates.'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:insightbench-evaluating-business-analytics-agents-through
+datasets:
+- ref: dataset:insightbench
+  role: eval
+methods:
+- ref: method:g-eval
+  role: compared-to
+related_work:
+- ref: method:g-eval
+  role: builds-on
+evidence_type: correlational
+key_metric: 'G-Eval vs Llama-3-eval (soft scores): GPT-4o 0.53±0.01 vs 0.57±0.02; GPT-4-turbo 0.52±0.02
+  vs 0.55±0.02; GPT-3.5-turbo 0.46±0.01 vs 0.50±0.01; Llama-3-70b 0.45±0.01 vs 0.50±0.02'
+caveat: Comparison is on only the first 10 datasets of InsightBench, not the full 100. The two evaluators
+  use different prompt templates (G-Eval vs the custom Llama-3-eval prompt).
+extracted_by: automatic-extraction
+related_findings:
+- IC-312
+- IC-313

@@ -1,0 +1,48 @@
+id: IC-581
+title: Induction heads for ICL operate on task-specific attention subspaces, with partial overlap across
+  tasks, and the geometry of these subspaces explains demonstration saturation
+description: The paper identifies induction heads (attention heads with high scores from label tokens
+  to the query forerunner) in Llama 3 70B and finds that more than half are not 'correct' (do not preferentially
+  attend to the correct label). Correct induction heads show significant but incomplete overlap across
+  the 6 evaluation datasets (e.g., 0.83 overlap between SST-2 and MR, 0.55 between SST-2 and AG News),
+  indicating a mix of task-inherent and task-specific subspaces. PCA visualization of label representations
+  mapped through the best induction head (correct rate 0.95) shows that attention assignment morphology
+  changes significantly from k=1 to k=2 demonstrations but stabilizes from k=15 to k=16, explaining
+  the submodular improvement and saturation of ICL performance with more demonstrations.
+models:
+- ref: model:llama-3
+concepts: []
+sources:
+- ref: source:revisiting-context-learning-inference-circuit-large
+datasets:
+- ref: dataset:sst-2
+  role: eval
+- ref: dataset:mr
+  role: eval
+- ref: dataset:financial-phrasebank
+  role: eval
+- ref: dataset:sst-5
+  role: eval
+- ref: dataset:trec
+  role: eval
+- ref: dataset:ag-news
+  role: eval
+methods:
+- ref: method:pca
+  role: supporting
+related_work:
+- name: induction circuit
+  anchor: https://transformer-circuits.pub/2021/framework/index.html
+  role: builds-on
+evidence_type: correlational
+key_metric: 'correct induction head overlap rates (SST-2 vs. others): 0.83 (MR), 0.67 (FP), 0.76 (SST-5),
+  0.59 (TREC), 0.55 (AG News); best induction head correct rate 0.95 (layer 31, head 32) vs. worst 0.00
+  (head 9)'
+caveat: The overlap analysis is on 6 classification datasets; the degree of task-specificity may differ
+  for other task types. The PCA visualization is on a single sample from SST-2, though appendix H.3
+  shows 4 additional samples with consistent results.
+extracted_by: automatic-extraction
+related_findings:
+- IC-578
+- IC-579
+- IC-580

@@ -1,0 +1,39 @@
+id: IC-123
+title: Llama-2-7B, Gemma-7B, and Llama-2-13B organize 16 concepts into hierarchical clusters in their
+  representation space that reflect real-world category structure
+description: The paper measures average cosine similarity between concept vectors for 16 low-level concepts
+  grouped into 4 high-level categories (sports events, populated places, animals, movie genres) at the
+  penultimate layer of three LLMs. In all three models, concepts within the same high-level category
+  show substantially higher cosine similarity than concepts from different categories, forming distinct
+  4x4 blocks in the similarity matrix. PCA projections of the concept vectors confirm this clustering.
+  Additionally, Llama-2-7B and Llama-2-13B show stronger cross-category correlations between populated
+  places and animals (e.g., island correlates more with bird and fish than with insect and cat), aligning
+  with real-world semantic relationships.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:gemma
+  variant: variant:gemma-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+concepts:
+- ref: concept:distance-preservation
+- ref: concept:linear-representation
+sources:
+- ref: source:beyond-single-concept-vector-modeling-concept
+datasets: []
+methods:
+- ref: method:linear-probing
+  role: primary
+- ref: method:pca
+  role: primary
+related_work:
+- name: Park et al. 2024 (Geometry of Categorical and Hierarchical Concepts)
+  anchor: https://arxiv.org/abs/2406.01506
+  role: compared-to
+evidence_type: correlational
+caveat: The paper notes that plausibility evaluation is limited to hierarchical structure, which represents
+  a subset of plausibility.
+extracted_by: automatic-extraction
+related_findings:
+- IC-122

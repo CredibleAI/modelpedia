@@ -1,0 +1,41 @@
+id: IC-118
+title: Hallucination heads in LLaVA-7B and MiniGPT-4 allocate 4.75x more attention to text tokens than
+  image tokens, and this pattern is inherited from the base language model
+description: The paper measures attention weights split into text and image components for identified
+  hallucination and non-hallucination heads. Hallucination heads show a 4.75x text-over-image ratio
+  versus 1.35x for non-hallucination heads. Comparing attention maps on generated text tokens between
+  LLaVA-7B and its base LM Vicuna-7B (and MiniGPT-4 and LLaMA-2-7B), the top hallucination head shows
+  cosine similarity of 0.84 (0.93 for MiniGPT-4) versus 0.63 (0.59) for the top non-hallucination head.
+  Additionally, replaying instruction tuning shows that top hallucination heads exhibit slower JS divergence
+  from the pre-trained model, indicating they are 'lazy' during full-parameter tuning.
+models:
+- ref: model:llava-1-5
+  variant: variant:llava-v1-5-7b
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+- ref: model:minigpt-4
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:understanding-mitigating-hallucination-large-vision-language
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods:
+- ref: method:jensen-shannon-divergence
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Text/image attention ratio: 4.75x (hallucination) vs 1.35x (non-hallucination); cosine
+  similarity 0.84 vs 0.63 (LLaVA-7B/Vicuna-7B), 0.93 vs 0.59 (MiniGPT-4/LLaMA-2-7B); JS divergence over
+  5000 tuning steps (Figure 5)'
+caveat: The comparison with the base LM uses a placeholder <image> token since Vicuna-7B and LLaMA-2-7B
+  cannot process images directly. The JS divergence analysis replays the tuning process rather than
+  using the original training logs.
+extracted_by: automatic-extraction
+related_findings:
+- IC-116
+- IC-117
+- IC-119

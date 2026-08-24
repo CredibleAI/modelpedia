@@ -1,0 +1,58 @@
+id: IC-309
+title: As zero-shot safety judges, GPT-4o achieves 78.9% Cohen's kappa agreement with human annotators
+  while Llama-3-8B-instruct (39.0%) and Mistral-7B-instruct-v0.2 (53.9%) perform substantially worse
+description: 'The paper meta-evaluates multiple LLMs as automated safety judges on 4,400 human-annotated
+  (instruction, response) pairs. GPT-4o achieves 78.9% Cohen''s kappa agreement with humans at a cost
+  of ~260s per evaluation pass. Llama-3-70B-instruct achieves 71.5% at ~100s. Smaller models perform
+  much worse: Llama-3-8B-instruct at 39.0%, Mistral-7B-instruct-v0.2 at 53.9%, Gemma-7B-it at 54.4%,
+  and GPT-3.5-turbo at 53.4%. Released safeguard models (Llama-Guard-2-8B at 39.0%, MD-Judge at 36.0%,
+  WildGuard at 60.6%, HarmBench classifier at 52.5%) and rule-based methods (keyword match at 37.3%,
+  Perspective API at 1.1%) all perform substantially below the best LLM judges.'
+models:
+- ref: model:gpt-4o
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:llama-3
+  variant: variant:llama-3-70b-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+- ref: model:gemma
+  variant: variant:gemma-7b-it
+- ref: model:llama-guard-2
+  variant: variant:llama-guard-2-8b
+- ref: model:wildguard
+- ref: model:harmbench-classifier
+- ref: model:bert-base-cased
+concepts: []
+sources:
+- ref: source:sorry-bench-systematically-evaluating-large-language
+datasets:
+- ref: dataset:sorrybench
+  role: eval
+methods:
+- ref: method:cohen-s-kappa
+  role: eval
+- ref: method:chain-of-thought-prompting
+  role: compared-to
+- ref: method:few-shot-prompting
+  role: compared-to
+related_work:
+- ref: dataset:harmbench
+  role: compared-to
+- name: Salad-Bench
+  anchor: https://arxiv.org/abs/2402.05044
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Cohen''s kappa: GPT-4o 78.9%, Llama-3-70B-instruct 71.5%, Llama-3-8B-instruct 39.0%, Mistral-7B-instruct-v0.2
+  53.9%, Gemma-7B-it 54.4%, GPT-3.5-turbo 53.4%, Llama-Guard-2-8B 39.0%, WildGuard 60.6%, HarmBench
+  classifier 52.5%, Perspective API 1.1%, keyword match 37.3%'
+caveat: Time costs are approximate and depend on hardware/parallelization. The authors note that smaller
+  LLMs often fail to understand the judgment task and decline to provide a judgment due to their safety
+  guardrails, which is counted as disagreement.
+extracted_by: automatic-extraction
+related_findings:
+- IC-307
+- IC-308
+- IC-310

@@ -1,0 +1,46 @@
+id: IC-382
+title: Data commonalities are localizable to a small set of capability neurons in Llama2-7B, Llama2-13B,
+  and GPT-J-6B, and these neurons enhance or degrade performance when manipulated
+description: The authors propose CNL, which identifies neurons whose gradient contribution exceeds a
+  threshold (σ=6) across a dataset. On GSM8K, the overlap of located neurons between two data splits
+  is 96.42% (Llama2-7B), with only 0.14% of MLP parameters targeted. Fine-tuning only these located
+  neurons (0.15% of parameters) improves average performance by 5.17% over random at epoch 1 (Llama2-7B,
+  σ=6). Erasing the located neurons degrades Llama2-13B average performance by 18.68% at σ=3, compared
+  to 0.21% for random. Cross-dataset experiments show that enhancing GSM8K-located neurons improves
+  MetaMath performance by 22% while leaving other datasets largely unaffected, indicating the neurons
+  encode a transferable capability.
+models:
+- ref: model:llama-2
+- ref: model:gpt-j
+concepts: []
+sources:
+- ref: source:capability-localization-capabilities-be-localized-rather
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:metamath
+  role: eval
+- ref: dataset:imdb
+  role: eval
+methods:
+- ref: method:rome
+  role: compared-to
+related_work:
+- name: KN
+  anchor: https://arxiv.org/abs/2104.08696
+  role: compared-to
+- ref: method:rome
+  role: compared-to
+- name: KC
+  anchor: https://arxiv.org/abs/2405.17969
+  role: compared-to
+evidence_type: interventional
+key_metric: 'overlap 96.42% (GSM8K, Llama2-7B), neuron ratio 0.14%; enhancement: 5.17% avg improvement
+  (Llama2-7B, σ=6, epoch 1); erasure: 18.68% avg decrease (Llama2-13B, σ=3); cross-dataset: +22% on
+  MetaMath from GSM8K neuron enhancement'
+caveat: The authors note the maximum model size tested is 7B (Llama2-13B is the largest) and they did
+  not evaluate on models beyond this scale. The σ threshold is set to 6 without extensive ablation in
+  the main text.
+extracted_by: automatic-extraction
+related_findings:
+- IC-381

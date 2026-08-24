@@ -1,0 +1,36 @@
+id: IC-292
+title: Neuron paths in ViT-B/16 show class-specific neuron clustering and semantic similarity between
+  image categories
+description: Aggregating neuron paths over all 50 images of each ImageNet class, the paper finds that
+  at most layers, a small set of neurons is selected with significantly higher frequency for a given
+  class (intra-class clustering). Furthermore, computing cosine similarity between per-class neuron
+  utilization matrices reveals that semantically similar classes (e.g., nile crocodile and alligator
+  lizard, sim 0.501) have higher neuron path similarity than dissimilar classes (e.g., nile crocodile
+  and mileometer, sim 0.144). This pattern holds across ViT-B/16, ViT-B/32, ViT-L/32, and MAE-B/16 as
+  shown in appendix visualizations.
+models:
+- ref: model:vit
+  variant: variant:vit-b-16
+- ref: model:vit
+  variant: variant:vit-b-32
+- ref: model:vit
+  variant: variant:vit-l-32
+- ref: model:mae-b-16
+concepts: []
+sources:
+- ref: source:discovering-influential-neuron-path-vision-transformers
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: 'Cosine similarity examples (ViT-B/16): nile crocodile–alligator lizard 0.501, nile crocodile–komodo
+  lizard 0.623, nile crocodile–mileometer 0.144, nile crocodile–smoothing iron 0.178'
+caveat: The analysis is limited to 50 images per class from the ImageNet validation set, and the similarity
+  is computed on neuron selection frequency rather than activation magnitude.
+extracted_by: automatic-extraction
+related_findings:
+- IC-290
+- IC-291
+- IC-293

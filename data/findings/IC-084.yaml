@@ -1,0 +1,48 @@
+id: IC-084
+title: Safety alignment in Llama-2-7b-chat and Gemma-7b-1.1-it is shallow, with the KL divergence from
+  the base model concentrated in the first few output tokens, making the models vulnerable to prefilling
+  attacks
+description: The paper measures the per-token KL divergence between each aligned model and its unaligned
+  base on 330 harmful instructions from HEX-Phi. For both Llama-2-7b-chat vs Llama-2-7b and Gemma-7b-1.1-it
+  vs Gemma-7b, the KL divergence is significantly higher in the first few token positions than in later
+  positions, indicating that the alignment budget is spent almost entirely on the initial tokens. The
+  aligned models produce rigid refusal prefixes in the vast majority of cases (96.1% for Llama-2-7b-chat,
+  96.7% for Gemma-7b-1.1-it). When a small number of harmful tokens are prefilled, the aligned models'
+  attack success rate increases quickly from near zero to over 50%, confirming that the safety behaviour
+  can be bypassed by controlling only the first few output tokens.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:gemma
+  variant: variant:gemma-7b-1-1-it
+- ref: model:gemma
+  variant: variant:gemma-7b
+concepts:
+- ref: concept:shortcut
+- ref: concept:failure-mode
+sources:
+- ref: source:safety-alignment-should-be-made-more
+datasets:
+- ref: dataset:hex-phi
+  role: eval
+methods: []
+related_work:
+- name: Zou et al. 2023b (GCG)
+  anchor: https://arxiv.org/abs/2307.15043
+  role: context
+- name: Huang et al. 2023 (decoding parameters exploit)
+  anchor: https://arxiv.org/abs/2310.06987
+  role: context
+evidence_type: correlational
+key_metric: llama-2-7b-chat starts with 'i cannot' or 'i apologize' in 96.1% of instances; gemma-7b-1.1-it
+  generates 'i am unable' in 96.7% of cases; ASR increases from near zero to over 50% with increasing
+  prefilled harmful tokens
+caveat: The KL divergence is a neutral measure of distributional difference and does not by itself specify
+  whether the divergence is toward safer or unsafe directions; the prefilling results confirm the vulnerability
+  but the exact ASR values at each token count are shown only in a figure.
+extracted_by: automatic-extraction
+related_findings:
+- IC-085
+- IC-086

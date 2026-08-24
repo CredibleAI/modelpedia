@@ -1,0 +1,29 @@
+id: IC-422
+title: Safety fine-tuning in Llama models improves with parameter size but exhibits diminishing returns
+description: The paper observes that across the Llama family (1B, 3B, 8B instruct variants), the mean
+  number of unsafe responses elicited by the SOC attack decreases as model size increases, indicating
+  stronger safety alignment in larger models. However, the gap between 1B and 3B is substantially larger
+  than the gap between 3B and 8B, which the authors interpret as diminishing returns in safety fine-tuning
+  with scale. This pattern is visible in the cumulative unsafe-response curves in Figure 3a.
+models:
+- ref: model:llama-3-2-3b
+  variant: variant:llama-3-2-1b-instruct
+- ref: model:llama-3-2-3b
+  variant: variant:llama-3-2-3b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:efficient-jailbreak-attack-sequences-large-language
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: 'The specific per-model unsafe-response values are reported only in figures (Figure 3a), not
+  as printed numbers in the text. The observation is qualitative: ''the large gap between the 1b and
+  3b models and the smaller gap between the 3b and 8b models.'''
+extracted_by: automatic-extraction
+related_findings:
+- IC-421
+- IC-423

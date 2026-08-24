@@ -1,0 +1,39 @@
+id: IC-053
+title: In GPT-2 small's l10h0 name mover queries, the io attribute is encoded with higher-magnitude
+  features than the s attribute, and both are causally relevant, but SAEs preferentially learn io features
+  due to the magnitude asymmetry
+description: 'The paper measures the L2 norms of supervised feature vectors for io and s names in the
+  queries of the l10h0 name mover head and finds io features have significantly higher norm. Both attributes
+  are causally relevant: ablating either changes the logit difference by approximately 0.5. Despite
+  this, task SAEs consistently find features for almost all io names but never more than 22 s-name features
+  (out of 216 names), across a wide hyperparameter sweep. Surgically reducing the io feature magnitude
+  causes the number of discovered s features to increase monotonically, and a toy model with isotropic
+  random features of matching norms reproduces the effect.'
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-small
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:principled-evaluations-sparse-autoencoders-interpretability-control
+datasets:
+- ref: dataset:ioi
+  role: eval
+methods:
+- ref: method:activation-patching
+  role: primary
+- ref: method:f1-score
+  role: eval
+related_work:
+- name: Wang et al. 2022 (IOI circuit)
+  anchor: https://openreview.net/forum?id=npsvsn6o4ul
+  role: builds-on
+evidence_type: interventional
+key_metric: Ablating either io or s in l10h0 queries leads to a change of ≈ 0.5 in logit difference.
+  Number of s features with f1 > 0.5 never exceeds 22 (out of 216 names) across the hyperparameter grid.
+caveat: The magnitude difference between io and s features is described as 'small but significant';
+  the effect is observed at one specific circuit location (l10h0 queries) and may not generalize to
+  all locations.
+extracted_by: automatic-extraction
+related_findings:
+- IC-052

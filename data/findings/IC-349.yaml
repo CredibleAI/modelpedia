@@ -1,0 +1,45 @@
+id: IC-349
+title: Larger LLMs (Llama-2 7B, Llama-3 8B) suffer more severe general ability degradation than smaller
+  models (GPT-2 XL 1.5B) under the same number of sequential edits
+description: 'When the same editing method (memit) is applied for 300 sequential edits, GPT-2 XL''s
+  downstream task performance remains largely unchanged, while Llama-2 and Llama-3 performance drops
+  to nearly zero. The paper notes this as a general trend: ''larger models suffered more pronounced
+  compromises in their general abilities when subjected to the same number of edits.'' This scale-dependent
+  susceptibility is observed across multiple downstream tasks and editing methods.'
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl
+- ref: model:llama-2
+- ref: model:llama-3
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:perturbation-restrained-sequential-model-editing
+datasets:
+- ref: dataset:counterfact
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:samsum
+  role: eval
+- ref: dataset:natural-questions
+  role: eval
+- ref: dataset:rte
+  role: eval
+methods:
+- ref: method:memit
+  role: primary
+- ref: method:rome
+  role: primary
+- ref: method:mend
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: with 300 edits, memit's performance on gpt2-xl remained largely unchanged, whereas it dwindled
+  to nearly 0 on llama-2 and llama-3
+caveat: Only three model sizes are tested (1.5B, 7B, 8B), and the two larger models are from the same
+  family (Llama), so the comparison is not fully controlled for architecture.
+extracted_by: automatic-extraction
+related_findings:
+- IC-348
+- IC-350

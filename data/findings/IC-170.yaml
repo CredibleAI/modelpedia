@@ -1,0 +1,46 @@
+id: IC-170
+title: GPT-4, GPT-3.5, and Claude-3.5-Sonnet rely heavily on parametric knowledge in RAG settings, producing
+  ungrounded responses with high answered ratios and low trust-scores
+description: 'The paper measures how much released closed-source models rely on their internal parametric
+  knowledge versus the provided documents in a RAG setting. GPT-4 answers 86.81% of ASQA questions and
+  73.40% of QAMPARI questions, with parametric knowledge scores (sparam) of 12.71 and 13.05. Claude-3.5-Sonnet
+  shows a similar pattern with 84.60% AR% on ASQA and sparam 12.99. This reliance on parametric knowledge
+  rather than grounding in documents results in lower trust-scores (GPT-4: 69.72 ASQA, 40.35 QAMPARI,
+  49.33 ELI5; Claude-3.5: 64.36, 39.78, 25.92) despite higher answer correctness scores, because the
+  responses are not supported by the cited documents.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:measuring-enhancing-trustworthiness-llms-rag-through
+datasets:
+- ref: dataset:asqa
+  role: eval
+- ref: dataset:qampari
+  role: eval
+- ref: dataset:eli5
+  role: eval
+- ref: dataset:expertqa
+  role: eval
+methods: []
+related_work:
+- name: RARR
+  anchor: https://doi.org/10.18653/v1/2023.acl-long.910
+  role: context
+- name: FRONT
+  anchor: https://aclanthology.org/2024.findings-acl.838
+  role: compared-to
+evidence_type: correlational
+key_metric: 'GPT-4: AR% 86.81 (ASQA), 73.40 (QAMPARI), 61.50 (ELI5); sparam 12.71, 13.05, 9.05; trust
+  69.72, 40.35, 49.33. Claude-3.5: AR% 84.60, 69.80, 59.00; sparam 12.99, 12.55, 1.76; trust 64.36,
+  39.78, 25.92. GPT-3.5: AR% 71.20, 65.30, 49.00; sparam 9.74, 11.45, 7.89; trust 67.64, 38.95, 49.31'
+caveat: sparam only partially captures parametric knowledge utilization; it does not account for cases
+  where the document contains the answer and the model still relies on parametric knowledge to generate
+  the correct answer
+extracted_by: automatic-extraction
+related_findings:
+- IC-171

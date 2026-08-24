@@ -1,0 +1,35 @@
+id: IC-119
+title: The number of salient hallucination heads decreases as model size increases within the LLaVA
+  family
+description: The paper examines LLaVA-7B, LLaVA-13B, and LLaVA-34B using the contrastive influence map
+  to identify salient hallucination heads (those exceeding 25% of the maximum contrastive influence
+  value). The absolute number drops from 42 to 37 to 10, and the ratio of all attention heads drops
+  from 4.1% to 2.3% to 0.3%. The authors hypothesize that larger models have stronger representational
+  power to learn correct behaviors from data, while smaller models are more prone to language bias.
+  They note they cannot fully disentangle the contributions of LLM backbone, data size, and image tokenizer.
+models:
+- ref: model:llava-1-5
+  variant: variant:llava-v1-5-7b
+- ref: model:llava-1-5
+  variant: variant:llava-v1-5-13b
+- ref: model:llava-next
+  variant: variant:llava-v1-6-34b
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:understanding-mitigating-hallucination-large-vision-language
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Salient hallucination heads: 42 (4.1%) at 7B, 37 (2.3%) at 13B, 10 (0.3%) at 34B (Table
+  10)'
+caveat: The authors explicitly state they cannot disentangle the contributions of individual factors
+  (LLM backbone, data size, data sources, image tokenizer) to the observed trend.
+extracted_by: automatic-extraction
+related_findings:
+- IC-116
+- IC-117
+- IC-118

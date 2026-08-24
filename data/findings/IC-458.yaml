@@ -1,0 +1,57 @@
+id: IC-458
+title: Most VLM decoders show negative CC-SHAP on VALSE multiple-choice, indicating their explanations
+  are less self-consistent than their answers, driven by a shift from text-dominant to image-dominant
+  processing
+description: 'The paper measures self-consistency using CC-SHAP, which compares input token contributions
+  during answer generation versus explanation generation. On VALSE multiple-choice, bakllava (avg -0.04±0.02),
+  llava-next-mistral (-0.06±0.03), and llava-next-vicuna (-0.05±0.03) all show negative post-hoc CC-SHAP,
+  meaning their explanations rely on different inputs than their answers. mPLUG-Owl3 shows positive
+  scores (0.12±0.04 post-hoc, 0.11±0.03 CoT). The mechanism is a modality shift: text contributions
+  decrease by 1-30 percentage points when generating explanations versus answers, with the shift larger
+  in CoT than post-hoc. All models also perform significantly worse with CoT except mPLUG-Owl3.'
+models:
+- ref: model:bakllava
+- ref: model:llava-next
+  variant: variant:llava-next-mistral
+- ref: model:llava-next
+  variant: variant:llava-next-vicuna
+- ref: model:mplug-owl-3
+concepts:
+- ref: concept:explanation-faithfulness
+sources:
+- ref: source:vision-language-decoders-use-images-text
+datasets:
+- ref: dataset:valse
+  role: eval
+- ref: dataset:vqa
+  role: eval
+- ref: dataset:gqa
+  role: eval
+- ref: dataset:gqa-balanced
+  role: eval
+- ref: dataset:mscoco
+  role: eval
+methods:
+- ref: method:cc-shap
+  role: primary
+- ref: method:mm-shap
+  role: supporting
+- ref: method:corrupting-cot
+  role: supporting
+related_work:
+- ref: method:cc-shap
+  role: builds-on
+- ref: method:corrupting-cot
+  role: compared-to
+evidence_type: correlational
+key_metric: 'CC-SHAP post-hoc on VALSE: bakllava -0.04±0.02, lv-mistral -0.06±0.03, lv-vicuna -0.05±0.03,
+  mplug-owl3 0.12±0.04; CC-SHAP CoT: bakllava -0.02±0.01, lv-mistral -0.07±0.02, lv-vicuna -0.03±0.03,
+  mplug-owl3 0.11±0.03; t-shap decrease from answer to explanation: 1 to 30 percentage points'
+caveat: Edit-based tests (counterfactual edits, biasing features, corrupting CoT) were not implemented
+  for mPLUG-Owl3 due to code functionality differences. On generative tasks (VQA, GQA), bakllava and
+  llava-next-vicuna show positive CC-SHAP, contrasting with their negative scores on multiple-choice.
+  The paper notes no ground truth exists for explanation faithfulness.
+extracted_by: automatic-extraction
+related_findings:
+- IC-456
+- IC-457

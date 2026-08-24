@@ -1,0 +1,46 @@
+id: IC-520
+title: Temporal reasoning performance drops significantly across all 15 MLLMs when video frames are
+  shuffled or reduced to one-fifth of the original count
+description: 'The paper tests 15 MLLMs on temporal understanding questions under three conditions: original
+  videos, shuffled video frames, and videos reduced to 1/5 of their original frame count. All models
+  show performance degradation under both perturbations. GPT-4o drops from 40.90% to 35.11% (shuffled)
+  and 32.19% (reduced). Proprietary models (GPT-4o, GPT-4V) show better resilience than most open-source
+  models. The largest drops are seen in Video-LLaVA (34.45% to 18.47% shuffled) and Otter-7B (9.52%
+  to 3.25% shuffled), indicating high sensitivity to temporal coherence.'
+models:
+- ref: model:gpt-4o
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:gemini
+  variant: variant:gemini-pro
+- ref: model:video-llava
+  variant: variant:video-llava-7b
+- ref: model:video-chat-7b
+- ref: model:video-chatgpt
+  variant: variant:video-chatgpt-7b
+- ref: model:imagebind-llm-7b
+- ref: model:pandagpt-7b
+- ref: model:chat-univi-7b
+- ref: model:video-llama-2-13b
+- ref: model:x-instructblip-7b
+- ref: model:lwm-1m-jax
+- ref: model:otter-7b
+- ref: model:mplug-owl
+  variant: variant:mplug-owl-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:mmworld-multi-discipline-multi-faceted-world
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4o: 40.90% original, 35.11% shuffled, 32.19% reduced; Video-LLaVA: 34.45% original,
+  18.47% shuffled; Otter-7B: 9.52% original, 3.25% shuffled'
+extracted_by: automatic-extraction
+related_findings:
+- IC-518
+- IC-519
+- IC-521

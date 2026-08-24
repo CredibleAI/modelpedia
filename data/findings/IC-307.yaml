@@ -1,0 +1,70 @@
+id: IC-307
+title: 56 LLMs on Sorry-Bench show fulfillment rates ranging from below 10% (Claude-2, Gemini-1.5) to
+  above 90% (Mistral-7B-instruct-v0.1, Dolphin-2.6-mixtral-8x7b), with GPT-4o at 30% and Llama-3-70B
+  at 35%
+description: 'The paper benchmarks 56 proprietary and open-weight LLMs on 440 class-balanced unsafe
+  instructions across 44 fine-grained safety categories. Fulfillment rates (the fraction of unsafe instructions
+  the model complies with) vary dramatically: Claude-2.1 and Claude-2.0 refuse almost all instructions
+  in the first 24 categories, Gemini-1.5-flash refuses all ''potentially unqualified advice'' requests,
+  while Mistral-7B-instruct-v0.1 and Dolphin-2.6-mixtral-8x7b fulfill over 90% of instructions. GPT-4o
+  shows a 30% fulfillment rate, higher than its predecessor GPT-3.5-turbo-1106 at 11%, which the authors
+  attribute to OpenAI''s updated model spec allowing more permissive responses on certain topics.'
+models:
+- ref: model:gpt-4o
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:claude-2-1
+- ref: model:claude-2-0
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-flash
+- ref: model:gemini
+  variant: variant:gemini-pro
+- ref: model:llama-3
+  variant: variant:llama-3-70b-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:llama-2
+  variant: variant:llama-2-70b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-1
+- ref: model:gemma
+  variant: variant:gemma-7b-it
+- ref: model:vicuna
+  variant: variant:vicuna-7b-v1-5
+- ref: model:openchat-3-5-0106
+- ref: model:mixtral-8x7b
+  variant: variant:dolphin-2-6-mixtral-8x7b
+- ref: model:zephyr-7b-beta
+concepts: []
+sources:
+- ref: source:sorry-bench-systematically-evaluating-large-language
+datasets:
+- ref: dataset:sorrybench
+  role: eval
+methods:
+- ref: method:cohen-s-kappa
+  role: eval
+related_work:
+- ref: dataset:harmbench
+  role: compared-to
+- name: Salad-Bench
+  anchor: https://arxiv.org/abs/2402.05044
+  role: compared-to
+- ref: model:wildguard
+  role: compared-to
+evidence_type: correlational
+key_metric: 'fulfillment rates: Claude-2 <10%, Gemini-1.5 <10%, GPT-4o 30%, Llama-3-70B 35%, Mistral-7B-instruct-v0.2
+  67%, Mistral-7B-instruct-v0.1 >90%, Dolphin-2.6-mixtral-8x7b >90%, Llama-2-70B-chat 12%, Gemini-pro
+  33%'
+caveat: Results depend on evaluation configuration (temperature 0.7, no system prompt for most models);
+  the authors note that varying decoding parameters can noticeably impact model safety behavior. The
+  benchmark does not capture multi-category unsafe scenarios or neutral prompts.
+extracted_by: automatic-extraction
+related_findings:
+- IC-308
+- IC-309
+- IC-310

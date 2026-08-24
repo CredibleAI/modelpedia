@@ -1,0 +1,45 @@
+id: IC-605
+title: Six SOTA LLMs are vulnerable to composable jailbreak attacks, with maximum attack success rates
+  ranging from 44% to 94%
+description: The paper benchmarks GPT-3.5, GPT-4o, Claude-3-Sonnet, Claude-3-Haiku, Llama-3-8B, and
+  Llama-3-70B against 83 jailbreak attacks (identity, 22 state-of-the-art, and 60 synthesized) using
+  50 illicit prompts from AdvBench. The highest recorded attack success rates are 88% for GPT-3.5, 94%
+  for GPT-4o, 82% for Claude-3-Haiku, 44% for Claude-3-Sonnet, 90% for Llama-3-70B, and 74% for Llama-3-8B.
+  The most effective attacks targeting a given model are rarely as effective against other models, indicating
+  model-specific vulnerability profiles. Synthesized attacks outperform the best state-of-the-art attacks
+  by margins of 10–50 percentage points across all six models.
+models:
+- ref: model:gpt-3-5
+- ref: model:gpt-4o
+- ref: model:claude-3
+  variant: variant:claude-3-sonnet
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:h4rm3l-language-composable-jailbreak-attack-synthesis
+datasets:
+- ref: dataset:advbench
+  role: eval
+methods: []
+related_work:
+- ref: dataset:harmbench
+  role: compared-to
+- ref: dataset:jailbreakbench
+  role: compared-to
+evidence_type: correlational
+key_metric: 'highest recorded ASR: 88% for gpt-3.5, 94% for gpt-4o, 82% for claude-3-haiku, 44% for
+  claude-3-sonnet, 90% for llama-3-70b, and 74% for llama-3-8b; synthesized attacks outperform best
+  SOTA attacks by 10% (gpt-3.5), 50% (gpt-4o), 42% (claude-3-haiku), 42% (claude-3-sonnet), 32% (llama-3-70b),
+  46% (llama-3-8b)'
+caveat: Anthropic applied additional safety filters to the authors' account during experiments, so Claude-3
+  results reflect behaviour under that extra layer of protection and are not directly comparable to
+  the other models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-606

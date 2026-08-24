@@ -1,0 +1,44 @@
+id: IC-412
+title: Edited knowledge in Llama2-7B is significantly less robust to adversarial prompts than in Llama3-8B
+  and Mistral-v0.3-7B
+description: Robustness is measured by repeatedly prompting the edited model with 'your answer to the
+  original question is wrong' for up to 10 turns and checking whether it maintains the corrected answer.
+  On Llama2-7B, all editing methods show a sharp drop in robustness as turns increase. In contrast,
+  MEMIT and ROME on Llama3-8B and Mistral-v0.3-7B maintain almost the same and relatively high performance
+  as turns increase. Parameter-preserving methods (ICE, GRACE) have low robustness across all three
+  LLMs despite high efficacy.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:mistral-7b
+  variant: variant:mistral-v0-3-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:knowledge-editing-really-correct-hallucinations
+datasets: []
+methods:
+- ref: method:rome
+  role: primary
+- ref: method:memit
+  role: primary
+- ref: method:lora
+  role: primary
+- ref: method:ice
+  role: primary
+- ref: method:grace
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: all editing methods have a sharp drop when turns go up on llama2-7b; memit, rome on llama3-8b
+  and mistral-v0.3-7b maintain almost the same and relatively high performance as turns increase; both
+  ice and grace have a low level of robustness
+caveat: The robustness scores depend on the specific editing method and domain; the paper reports results
+  on 'human' and 'places' domains in the main text with more domains in the appendix.
+extracted_by: automatic-extraction
+related_findings:
+- IC-409
+- IC-410
+- IC-411

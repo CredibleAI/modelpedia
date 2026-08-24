@@ -1,0 +1,31 @@
+id: IC-482
+title: In Llama-3.1-8B, in-context graph structure is absent in early layers dominated by semantic priors
+  and emerges clearly in deeper layers
+description: When processing in-context graph traces, Llama-3.1-8B's earlier layers (e.g., layer 6)
+  show token representations organized by pretrained semantic relationships, while deeper layers (e.g.,
+  layer 26) show representations organized by the in-context graph geometry. In the ring graph, semantically
+  related concepts (apple, orange) are closer together in layer 6 but become essentially antipodal by
+  layer 26, matching the graph's structure. Layer-by-layer PCA projections (Figs. 9, 10) show the grid
+  and hexagonal structures becoming progressively clearer from layer 0 through layer 30.
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:iclr-context-learning-representations
+datasets: []
+methods:
+- ref: method:pca
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: In the ring graph, concepts apple and orange are closer to each other in layer 6 but become
+  essentially antipodal around layer 26, as dictated by the graph.
+caveat: The depth-dependent observation is based on visual inspection of 2D PCA projections, which the
+  authors acknowledge can be difficult to interpret or misleading.
+extracted_by: automatic-extraction
+related_findings:
+- IC-481
+- IC-483
+- IC-484

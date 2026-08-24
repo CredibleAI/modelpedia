@@ -1,0 +1,60 @@
+id: IC-407
+title: Safety-aligned LLMs (Llama-2-chat, Llama-3-instruct, Gemma, GPT-3.5, GPT-4o, R2D2) achieve 100%
+  jailbreak attack success rate under adaptive prompt-and-suffix attacks on 50 harmful requests
+description: The authors design a manually crafted prompt template and optimize an adversarial suffix
+  via random search on logprobs, with self-transfer initialization. On 50 harmful requests from AdvBench,
+  this composite attack achieves 100% attack success rate (as judged by GPT-4 at 10/10) on Llama-2-chat-7b/13b/70b,
+  Llama-3-instruct-8b, Gemma-7b, GPT-3.5 Turbo, GPT-4o, and R2D2-7b. GPT-4 Turbo reaches 96%. R2D2,
+  which was adversarially trained against GCg, is particularly sensitive to in-context learning prompts
+  (90% ASR from the prompt alone, 100% with random search). The standard prompt template alone yields
+  0% ASR on Llama-2-chat and Llama-3-instruct, confirming their safety alignment is effective against
+  static prompts but not against optimized suffixes.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-chat
+- ref: model:llama-3
+  variant: variant:llama-3-instruct
+- ref: model:gemma
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:gpt-4o
+- ref: model:r2d2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:jailbreaking-leading-safety-aligned-llms-simple
+datasets:
+- ref: dataset:advbench
+  role: eval
+- ref: dataset:jailbreakbench
+  role: eval
+methods:
+- ref: method:gcg
+  role: compared-to
+- ref: method:pair
+  role: compared-to
+- ref: method:tap
+  role: compared-to
+- ref: method:pap
+  role: compared-to
+related_work:
+- ref: method:gcg
+  role: compared-to
+- ref: method:pair
+  role: compared-to
+- ref: dataset:harmbench
+  role: context
+- ref: dataset:jailbreakbench
+  role: context
+evidence_type: correlational
+key_metric: '100% ASR on 50 AdvBench requests: Llama-2-chat-7b/13b/70b, Llama-3-instruct-8b, Gemma-7b,
+  GPT-3.5 Turbo, GPT-4o, R2D2-7b; 96% ASR on GPT-4 Turbo; prompt alone yields 0% on Llama-2-chat and
+  Llama-3-instruct-8b'
+caveat: Attacks are model-specific (adaptive); no single method generalizes across all targets. GPT-4
+  as judge may have false positives. The 50-request set is small. GPT-4 Turbo non-determinism (varying
+  logprobs at temperature 0) limits optimization reliability.
+extracted_by: automatic-extraction
+related_findings:
+- IC-408

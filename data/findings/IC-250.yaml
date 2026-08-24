@@ -1,0 +1,43 @@
+id: IC-250
+title: Existing multimodal embedding models show highly uneven performance across MMEB's four meta-task
+  categories, with VQA scores as low as 4.2 and overall scores ranging from 13.3 to 44.7
+description: 'The paper evaluates seven released multimodal embedding models on the new MMEB benchmark,
+  which spans classification, VQA, retrieval, and visual grounding. All baselines without fine-tuning
+  show a pronounced gap between task categories: CLIP scores 53.0 on retrieval but only 9.1 on VQA;
+  BLIP2 scores 47.0 on grounding but 4.2 on VQA; E5-V scores 11.5 on retrieval but 4.9 on VQA. The best
+  baseline without fine-tuning (UniIR CLIP SF) reaches 44.7 overall, and even with fine-tuning the best
+  (OpenCLIP) reaches only 47.2. No single baseline achieves reasonable performance across all four meta-task
+  categories simultaneously.'
+models:
+- ref: model:clip
+- ref: model:blip-2
+- ref: model:siglip
+- ref: model:openclip
+- ref: model:uniir
+- ref: model:magiclens
+- ref: model:e5-v
+concepts: []
+sources:
+- ref: source:vlm2vec-training-vision-language-models-massive
+datasets: []
+methods: []
+related_work:
+- ref: model:blip-2
+  role: compared-to
+- ref: model:siglip
+  role: compared-to
+- ref: model:uniir
+  role: compared-to
+- ref: model:magiclens
+  role: compared-to
+- ref: model:e5-v
+  role: compared-to
+evidence_type: correlational
+key_metric: CLIP 37.8 overall / 9.1 VQA; BLIP2 25.2 / 4.2; SigLIP 34.8 / 8.4; OpenCLIP 39.7 / 10.9;
+  UniIR (CLIP SF) 44.7 / 16.2; E5-V 13.3 / 4.9; MagicLens 27.8 / 8.3 (precision@1, 36 datasets, no fine-tuning)
+caveat: The paper notes that for CLIP-family baselines, some queries or target text may be truncated
+  due to text encoder length limitations, and score-level fusion with equal weights is used without
+  instructions.
+extracted_by: automatic-extraction
+related_findings:
+- IC-251

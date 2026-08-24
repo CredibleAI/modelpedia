@@ -1,0 +1,33 @@
+id: IC-470
+title: LOVT and MGCA, which use implicit cross-attention local alignment, show only marginal improvement
+  over CLIP in 3D CT diagnosis (AUC 69.4 and 70.1 vs 68.4)
+description: The paper evaluates LOVT and MGCA, two methods that integrate global contrastive learning
+  with implicit local alignment via cross-attention, on the same 54 zero-shot CT diagnosis tasks. LOVT
+  achieves AUC 69.4 and MGCA achieves AUC 70.1, only marginally above CLIP's 68.4. The authors interpret
+  this as evidence that implicit local alignment, which works for 2D chest X-rays, is insufficient for
+  3D CT volumes that encompass hundreds of anatomical structures and far more complex reports.
+models:
+- ref: model:lovt
+- ref: model:mgca
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:large-scale-fine-grained-vision-language
+datasets:
+- ref: dataset:medvl-ct69k
+  role: eval
+methods: []
+related_work:
+- ref: model:lovt
+  role: compared-to
+- ref: model:mgca
+  role: compared-to
+evidence_type: correlational
+key_metric: LOVT AUC 69.4, MGCA AUC 70.1, CLIP AUC 68.4 on 54 zero-shot diagnosis tasks (Table 1)
+caveat: The comparison is on the authors' own dataset; the 'marginal improvement' is only 1-2 AUC points,
+  and the authors do not ablate whether the cross-attention mechanism itself is the bottleneck versus
+  other factors.
+extracted_by: automatic-extraction
+related_findings:
+- IC-469

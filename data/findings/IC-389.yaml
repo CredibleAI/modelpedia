@@ -1,0 +1,37 @@
+id: IC-389
+title: All evaluated LLMs score significantly lower on CS reasoning questions than knowledge questions,
+  with the gap narrowing for stronger models
+description: Across all 30+ evaluated models, the average score on reasoning-type CS questions is 45.60%
+  compared to 60.61% on knowledge-type questions, a gap of approximately 15 percentage points. The paper
+  observes that weaker models show a much larger relative gap (e.g., Llama2-7b scores 26.19% on open-ended
+  reasoning but 60.61% on assertion reasoning), while stronger models like GPT-4 score comparably across
+  formats (68.94% open-ended reasoning vs 67.68% assertion reasoning). Error analysis attributes the
+  primary cause of failures to lack of domain knowledge rather than general reasoning deficiency, and
+  notes that CS-specific reasoning errors (logical reasoning) do not decrease as much as mathematical
+  reasoning errors with model scale.
+models:
+- ref: model:llama-2
+- ref: model:gpt-4
+- ref: model:gpt-4o
+- ref: model:gpt-3-5
+- ref: model:palm-2
+- ref: model:claude-2-1
+concepts: []
+sources:
+- ref: source:cs-bench-comprehensive-benchmark-large-language
+datasets:
+- ref: dataset:cs-bench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Average reasoning 45.60% vs knowledge 60.61%; Llama2-7b: open-ended reasoning 26.19% vs
+  assertion reasoning 60.61%; GPT-4: open-ended reasoning 68.94% vs assertion reasoning 67.68%'
+caveat: The gap is measured on a single benchmark (CS-Bench) and may not generalize to other domains.
+  The error type analysis is based on GPT-4 categorization of MC question errors, which may introduce
+  classification bias.
+extracted_by: automatic-extraction
+related_findings:
+- IC-386
+- IC-387
+- IC-388

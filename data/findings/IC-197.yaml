@@ -1,0 +1,41 @@
+id: IC-197
+title: Model computational complexity (FLOPs) shows a significant negative correlation with brain alignment
+  in high-level brain areas
+description: Across 41 video action recognition models, the RSA score (best-scoring layer) is negatively
+  correlated with model FLOPs in several high-level brain regions. The most significant correlations
+  are in RSC (r=-0.49, p=0.0003), TOS (r=-0.48, p=0.0004), PPA (r=-0.38, p=0.0072), and IPS0 (r=-0.36,
+  p=0.0113). The negative relation is mostly consistent throughout brain regions, though significance
+  is not present in all. No consistent significant correlations were found for model parameters or model
+  accuracy.
+models:
+- ref: model:tsm
+- ref: model:i3d
+- ref: model:slowfast
+- ref: model:mvit-v2
+- ref: model:videomae
+- ref: model:uniformer
+- ref: model:timesformer
+- ref: model:x3d
+concepts: []
+sources:
+- ref: source:one-hundred-neural-networks-brains-watching
+datasets:
+- ref: dataset:bold-moments-dataset
+  role: eval
+- ref: dataset:kinetics-400
+  role: source
+methods:
+- ref: method:representational-similarity-analysis
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: correlation = -0.49, p = 0.0003 (RSC); correlation = -0.48, p = 0.0004 (TOS); correlation
+  = -0.38, p = 0.0072 (PPA); correlation = -0.36, p = 0.0113 (IPS0)
+caveat: The correlation is moderate and only significant in six ROIs; the paper notes this is a correlational
+  finding across heterogeneous architectures and does not establish causation; no consistent significant
+  correlations were found for model parameters or accuracy
+extracted_by: automatic-extraction
+related_findings:
+- IC-194
+- IC-195
+- IC-196

@@ -1,0 +1,40 @@
+id: IC-363
+title: LLM inferences about others' preferences from observed decisions are highly correlated with human
+  inferences because both assume the decision-maker is rational
+description: 'Using 47 observed decisions from Jern et al. (2017), LLMs were asked to rank decisions
+  by how strongly they suggest a preference for a target item, via pairwise comparisons. LLM inferences
+  correlated positively with rational models (absolute and relative utility), with correlation increasing
+  with model capability and reasoning: Llama-3-8B zero-shot 0.20, Llama-3-8B CoT 0.62, Llama-3-70B CoT
+  0.88/0.89, GPT-4o CoT 0.95/0.94. Crucially, LLM inferences were even more correlated with human inferences
+  than with rational models: GPT-4o CoT achieved ρ = 0.97 with humans versus 0.95 with absolute utility.
+  This alignment arises because humans also ascribe rational decision-making to others when interpreting
+  their choices, so the LLMs'' rational assumption matches human expectation rather than human behavior.'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:gpt-4o
+concepts: []
+sources:
+- ref: source:large-language-models-assume-people-more
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4o CoT: ρ = 0.97 with humans, 0.95 with absolute utility, 0.94 with relative utility;
+  Llama-3-8B zero-shot: 0.20 with absolute utility; Llama-3-70B CoT: 0.88/0.89; humans: 0.98 with absolute
+  utility'
+caveat: Only 47 decisions were used, limiting statistical power. Claude 3 Opus used an artificial sample
+  size of 5 due to cost constraints. The negative (electric shock) context showed lower correlations
+  overall, and LLM correlations with humans exceeded those with rational models in that context, suggesting
+  shared heuristics beyond pure rationality.
+extracted_by: automatic-extraction
+related_findings:
+- IC-362

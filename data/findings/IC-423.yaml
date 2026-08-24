@@ -1,0 +1,34 @@
+id: IC-423
+title: Llama-3.1-8B-Instruct achieves 97.8% accuracy as a zero-shot toxicity classifier on ToxiGen,
+  outperforming Llama-3-Guard-1B and matching Llama-3-Guard-8B
+description: The paper evaluates Llama-3.1-8B-Instruct as a zero-shot binary toxicity classifier using
+  a custom prompt template on the ToxiGen dataset. It reports accuracy 0.978, precision 0.9579, recall
+  1.0, and F1 0.9785. For comparison, Llama-3-Guard-1B achieves precision 0.68, recall 0.99, F1 0.81,
+  accuracy 0.76, while Llama-3-Guard-8B achieves precision 0.96, recall 1.00, F1 0.98, accuracy 0.97.
+  The authors conclude that a general-purpose instruct model prompted as a judge matches a dedicated
+  safety classifier.
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-guard-1b
+- ref: model:llama-3
+  variant: variant:llama-3-guard-8b
+concepts: []
+sources:
+- ref: source:efficient-jailbreak-attack-sequences-large-language
+datasets:
+- ref: dataset:toxigen
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Llama-3.1-8B-Instruct: accuracy 0.978, precision 0.9579, recall 1.0, F1 0.9785; Llama-3-Guard-1B:
+  precision 0.68, recall 0.99, F1 0.81, accuracy 0.76; Llama-3-Guard-8B: precision 0.96, recall 1.00,
+  F1 0.98, accuracy 0.97'
+caveat: Evaluation is on a single dataset (ToxiGen) with a specific prompt template; performance may
+  not generalize to other harm categories or phrasings.
+extracted_by: automatic-extraction
+related_findings:
+- IC-421
+- IC-422

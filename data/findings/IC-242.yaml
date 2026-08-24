@@ -1,0 +1,49 @@
+id: IC-242
+title: Most LLMs exhibit higher bias ratios in multi-turn dialogues than in single-turn, with bias accumulating
+  across successive turns
+description: The paper evaluates six LLMs on multi-turn fairness tasks and compares their bias ratio
+  when the same final prompt is given as a single-turn input versus as the last turn of a five-turn
+  dialogue. All models except Gemma-7B-IT show higher bias in the multi-turn setting. The bias ratio
+  increases monotonically with the number of dialogue turns for all models on both stereotype and toxicity
+  datasets. Llama-2-Chat (7B, 13B) and Llama-3.1-8B-Instruct show the largest increases, with differences
+  typically ranging between 5% and 10% on stereotype and around 10% on toxicity.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-3
+- ref: model:gemma
+  variant: variant:gemma-7b-it
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:fairmt-bench-benchmarking-fairness-multi-turn
+datasets:
+- ref: dataset:fairmt-10k
+  role: eval
+- ref: dataset:redditbias
+  role: source
+- ref: dataset:hatexplain
+  role: source
+methods:
+- ref: method:llama-guard-3-8b
+  role: eval
+related_work:
+- ref: dataset:mt-bench-101
+  role: context
+evidence_type: correlational
+key_metric: '"all llms, except gemma, exhibit higher bias ratio in multi-turn dialogues than in single-turn
+  ones across stereotype and toxicity"; "bias ratio differences typically range between 5% and 10%";
+  "the bias ratio of all models for both stereotype and toxicity increase with the number of turns";
+  Gemma-7B-IT fixed format: 86.08% single-turn vs 3.11% multi-turn (83% reduction)'
+caveat: Gemma-7B-IT is an exception, showing reduced bias in multi-turn dialogues overall, driven by
+  an 83% drop in the fixed format task; the paper notes this is task-specific and Gemma still shows
+  higher bias in scattered questions under multi-turn.
+extracted_by: automatic-extraction
+related_findings:
+- IC-243
+- IC-244

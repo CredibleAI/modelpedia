@@ -1,0 +1,43 @@
+id: IC-080
+title: GPT-4's performance is largely insensitive to the content of feedback; simple re-prompting with
+  a sound verifier (sampling) matches or exceeds detailed critique
+description: The paper ablates the feedback content in the iterative loop, comparing binary feedback
+  ('wrong'), first-error feedback, and all-error feedback from a sound verifier. The differences between
+  these conditions are small, and in two domains (graph coloring, mystery blocksworld) more detailed
+  feedback actually decreases performance. Removing critique entirely and simply re-prompting the same
+  question until the sound verifier accepts an answer (sampling) achieves comparable gains. A self-consistency
+  baseline (picking the most common answer from 15 samples) shows no improvement over standard prompting,
+  confirming that the gain comes from the sound verifier filtering, not from the model learning from
+  feedback.
+models:
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:self-verification-limitations-large-language-models
+datasets:
+- ref: dataset:game-of-24-4nums-com-instances-1-1000
+  role: eval
+- ref: dataset:planbench
+  role: eval
+methods:
+- ref: method:self-consistency
+  role: compared-to
+- ref: method:val
+  role: validation
+related_work:
+- name: Tree of Thoughts
+  anchor: https://openreview.net/forum?id=5xc1ecxo1h
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Table 1: Graph coloring — B.F. 38%, F.E.F. 37%, A.E.F. 34%, Sampling K=15: 40%, Sampling
+  K=25: 44%, S.C. 14%. Blocksworld — B.F. 60%, F.E.F. 87%, A.E.F. 83%, Sampling K=15: 68%, Sampling
+  K=25: 72%, S.C. 42%. Mystery blocksworld — B.F. 10%, F.E.F. 8%, A.E.F. 6%, Sampling K=15: 9%, Sampling
+  K=25: 14%, S.C. 4%.'
+caveat: The sampling setup has quadratically lower token cost than the critique setup because prompts
+  do not grow with iteration count. The authors note that increasing k further can push performance
+  higher, so the comparison at k=15/25 may understate the sampling advantage.
+extracted_by: automatic-extraction
+related_findings:
+- IC-078
+- IC-079

@@ -1,0 +1,55 @@
+id: IC-072
+title: LLM agents of varying scales exhibit a failure mode on web automation tasks when processing raw,
+  complex web page observations, with the penalty being more severe for smaller models
+description: 'Five released LLM agents (GPT-4o, Gemini-1.5-Flash, Claude-3.5-Sonnet, Llama-3.1-8B, Llama-3.1-70B)
+  were evaluated on web automation benchmarks (WebShop, WorkArena, WebArena) using raw accessibility-tree
+  observations. All models show substantially lower success rates on raw observations compared to contextualized
+  ones. The penalty is scale-dependent: Llama-3.1-8B achieves only 1.2% on WorkArena with raw observations,
+  while GPT-4o achieves 38.2% and Claude-3.5-Sonnet 44.8%. On WebShop, raw-observation success rates
+  range from 26.6% (Claude-3.5-Sonnet) to 43.6% (Gemini-1.5-Flash). When observations are contextualized,
+  all models improve, with smaller models showing the largest absolute gains (Llama-3.1-8B: +35.8 pp
+  on WorkArena; GPT-4o: +6.0 pp).'
+models:
+- ref: model:gpt-4o
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-flash
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b
+concepts:
+- ref: concept:failure-mode
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:learning-contextualize-web-pages-enhanced-decision
+datasets:
+- ref: dataset:webshop
+  role: eval
+- ref: dataset:workarena
+  role: eval
+- ref: dataset:webarena
+  role: eval
+methods:
+- ref: method:behavior-cloning
+  role: compared-to
+related_work:
+- ref: method:react
+  role: compared-to
+- name: WebGUM
+  anchor: https://arxiv.org/abs/2305.11854
+  role: compared-to
+- name: AgentQ
+  anchor: https://arxiv.org/abs/2408.07199
+  role: compared-to
+- ref: method:layer-selective-rank-reduction
+  role: compared-to
+evidence_type: correlational
+key_metric: 'WorkArena raw-observation success rates: GPT-4o 38.2%, Gemini-1.5-Flash 11.5%, Claude-3.5-Sonnet
+  44.8%, Llama-3.1-70B 26.1%, Llama-3.1-8B 1.2%; WebShop raw-observation success rates: GPT-4o 34.8%,
+  Gemini-1.5-Flash 43.6%, Claude-3.5-Sonnet 26.6%, Llama-3.1-70B 34.2%'
+caveat: The contextualized observations are produced by the authors' LCOW module, so the improvement
+  is conditional on that specific contextualization. The paper acknowledges that LCOW does not generalize
+  to unseen UI element categories (0% on filter-list tasks for both GPT-4o and Gemini-1.5-Flash).
+extracted_by: automatic-extraction

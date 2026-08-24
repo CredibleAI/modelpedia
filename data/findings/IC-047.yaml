@@ -1,0 +1,32 @@
+id: IC-047
+title: Tulu-2-13B's entity-attribute binding partially relies on token order as a shortcut, degrading
+  in nested orderings where order and semantic binding conflict
+description: Across five template orderings (series, cross, reverse, coref, nested), propositional probes
+  perform well in all except nested (ab21), where EM accuracy drops to 44% (vs. 25% for random binding
+  and 0% for pure order-based binding). The paper states the model 'relies on shortcuts such as order
+  information to capture binding.' On a second nested dataset (nested_2), prompting fails catastrophically
+  while probes maintain similar performance. Constraining propositions to unique entities improves nested
+  accuracy to 76%. The binding subspace is not sensitive to distance between tokens but is affected
+  by order.
+models:
+- ref: model:tulu-2
+  variant: variant:tulu-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:monitoring-latent-world-states-language-models
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: Nested ordering EM accuracy 44% (probes) vs 25% (random) vs 0% (pure order); 76% with unique-entity
+  constraint; prompting fails catastrophically on nested_2
+caveat: The 44% is interpreted as a mixture of order and semantic binding; the authors note the 50-dim
+  subspace may contain spurious directions contributing to the order sensitivity.
+extracted_by: automatic-extraction
+related_findings:
+- IC-044
+- IC-045
+- IC-046

@@ -1,0 +1,42 @@
+id: IC-112
+title: Released LLMs show a reproducible failure mode where numerical task accuracy degrades sharply
+  as input digit length increases
+description: Across all eight tested released LLMs, accuracy on numerical tasks (addition, comparison,
+  digit operations) drops substantially as the number of digits in the input grows. GPT-4o's integer
+  addition accuracy falls from nearly 100% in the s range (1-4 digits) to around 40% in the l range
+  (9-14 digits) and just 15% in the xl range (15-20 digits). The same pattern holds for float addition
+  (90% to <5%) and is consistent across Llama-3.1, Qwen2, Mixtral, and Llama-2. The degradation affects
+  both per-digit accuracy (digit match) and overall answer length (dlength), indicating the model struggles
+  with both individual digit processing and generating correctly-lengthed outputs.
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b
+- ref: model:llama-2
+  variant: variant:llama-2-7b-hf
+- ref: model:mixtral-8x7b
+- ref: model:qwen-2
+  variant: variant:qwen-2-7b
+- ref: model:qwen-2
+  variant: variant:qwen-2-72b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:number-cookbook-number-understanding-language-models
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4o integer addition: nearly 100% (s), 80% (m), around 40% (l), just 15% (xl); GPT-4o
+  float addition: 90% (s), 60% (m), 15% (l), less than 5% (xl); Qwen2 integer-length: almost 100% (s),
+  50% (m), below 5% (l and xl)'
+caveat: Results are zero-shot; 5-shot prompting provides some improvement but the length degradation
+  pattern persists. The paper notes the number of models tested is limited.
+extracted_by: automatic-extraction
+related_findings:
+- IC-113
+- IC-114
+- IC-115

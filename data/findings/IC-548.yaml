@@ -1,0 +1,33 @@
+id: IC-548
+title: CLIP-B/32 exhibits progressively increasing layer-wise representation similarity in both its
+  vision encoder and text encoder, and the pattern also holds across modalities
+description: The authors extract the [cls] token features from each of the 12 layers of the pretrained
+  CLIP-B/32 vision encoder and the [eos] token features from the text encoder, project them through
+  the model's own projection matrices, and compute pairwise cosine similarities on the CIFAR-10 validation
+  set. In both encoders, the cosine similarity between a layer's features and the last layer's features
+  increases monotonically as the two layers get closer, mirroring the pattern observed in DeiT. Cross-modality
+  similarity (vision layer vs. text layer) also increases progressively, though the last-layer vision
+  and text representations are not perfectly aligned, consistent with the known modality gap.
+models:
+- ref: model:clip
+  variant: variant:clip-b-32
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:tracing-representation-progression-analyzing-enhancing-layer
+datasets:
+- ref: dataset:cifar-10
+  role: eval
+methods:
+- ref: method:cosine-similarity
+  role: primary
+- ref: method:cka
+  role: compared-to
+related_work: []
+evidence_type: observational
+caveat: The analysis is conducted on a single dataset (CIFAR-10 validation) with a fixed text template
+  ('this is a photo of a {label}'); no numerical similarity values are printed in the text, only qualitative
+  trends from figures.
+extracted_by: automatic-extraction
+related_findings:
+- IC-547

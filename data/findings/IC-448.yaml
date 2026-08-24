@@ -1,0 +1,46 @@
+id: IC-448
+title: CLIP ViT-L/14 achieves 0% accuracy under 2/255 and 4/255 L-infinity adversarial perturbations
+  across all 15 evaluation datasets
+description: The paper evaluates the adversarial robustness of the original CLIP ViT-L/14 using the
+  first two attacks of AutoAttack (APGD with cross-entropy and APGD with targeted DLR loss). Under both
+  2/255 and 4/255 L-infinity perturbation budgets, the original CLIP achieves exactly 0.00% accuracy
+  on every one of the 15 zero-shot classification datasets tested, including ImageNet, CIFAR-10, STL-10,
+  and ImageNet-R. This complete vulnerability contrasts sharply with the AFT-fine-tuned variants, which
+  retain 44-46% average accuracy under 2/255 perturbations.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:boosting-visual-interpretability-clip-via-adversarial
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:cifar-10
+  role: eval
+- ref: dataset:stl-10
+  role: eval
+- ref: dataset:cifar-100
+  role: eval
+- ref: dataset:imagenet-r
+  role: eval
+- ref: dataset:imagenet-sketch
+  role: eval
+methods:
+- ref: method:autoattack
+  role: eval
+related_work:
+- name: FARE
+  anchor: https://arxiv.org/abs/2402.12336
+  role: compared-to
+evidence_type: correlational
+key_metric: 0.00% accuracy on all 15 datasets (ImageNet, CIFAR-10, STL-10, CIFAR-100, Cars, Caltech,
+  OxfordPets, Flowers, DTD, EuroSAT, FGVC, PCAM, ImageNet-R, ImageNet-S) under both 2/255 and 4/255
+  L-infinity AutoAttack
+caveat: The evaluation uses only 1000 samples per dataset for robustness testing, and the attacks are
+  limited to the first two AutoAttack components.
+extracted_by: automatic-extraction
+related_findings:
+- IC-447
+- IC-449
+- IC-450

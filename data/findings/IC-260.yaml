@@ -1,0 +1,31 @@
+id: IC-260
+title: DeepGate2 achieves an average NDCG@3 of 0.334 and top-10% commonality of 0.226 on QOR prediction
+  across 10 circuit designs
+description: The paper evaluates DeepGate2's ability to predict the quality of logic synthesis optimization
+  sequences. Using circuit embeddings extracted from AIGs, DeepGate2 ranks 1500 optimization sequences
+  per design. Across 10 evaluation designs (bc0, apex1, div, k2, i10, mainpla, or1200 cpu, picorv32,
+  rocket, sqrt), DeepGate2 achieves an average NDCG@3 of 0.334, NDCG@5 of 0.324, top-3% commonality
+  of 0.116, top-5% of 0.157, and top-10% of 0.226.
+models:
+- ref: model:deepgate2
+concepts: []
+sources:
+- ref: source:circuit-representation-learning-masked-gate-modeling
+datasets:
+- ref: dataset:itc-99
+  role: train
+- ref: dataset:picorv32
+  role: eval
+methods:
+- ref: method:abc
+  role: eval
+related_work:
+- ref: model:deepgate2
+  role: compared-to
+evidence_type: correlational
+key_metric: average NDCG@3 = 0.334, NDCG@5 = 0.324, top-3% = 0.116, top-5% = 0.157, top-10% = 0.226
+extracted_by: automatic-extraction
+related_findings:
+- IC-261
+- IC-262
+- IC-263

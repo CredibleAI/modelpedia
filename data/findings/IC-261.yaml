@@ -1,0 +1,31 @@
+id: IC-261
+title: DeepGate2 achieves an average F1-score of 0.424 and AUC of 0.804 on logic equivalence identification
+  across 10 circuit designs
+description: The paper evaluates DeepGate2's ability to identify logically equivalent gate pairs by
+  computing cosine similarity between their AIG embeddings. On 10000 pairs of logic gates derived from
+  10 circuit designs, DeepGate2 achieves an average precision of 0.295, recall of 0.841, F1-score of
+  0.424, and AUC of 0.804. Performance varies widely across designs, with i10 being the strongest (F1=0.575,
+  AUC=0.918) and apex1 the weakest (F1=0.223, AUC=0.601).
+models:
+- ref: model:deepgate2
+concepts: []
+sources:
+- ref: source:circuit-representation-learning-masked-gate-modeling
+datasets:
+- ref: dataset:itc-99
+  role: train
+- ref: dataset:picorv32
+  role: eval
+methods:
+- ref: method:abc
+  role: eval
+related_work:
+- ref: model:deepgate2
+  role: compared-to
+evidence_type: correlational
+key_metric: average precision = 0.295, recall = 0.841, F1-score = 0.424, AUC = 0.804
+extracted_by: automatic-extraction
+related_findings:
+- IC-260
+- IC-262
+- IC-263

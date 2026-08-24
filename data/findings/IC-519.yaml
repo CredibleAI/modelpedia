@@ -1,0 +1,48 @@
+id: IC-519
+title: MLLMs exhibit different skill sets than humans, correctly answering expert-level questions that
+  all three human annotators miss while failing on easy questions humans answer correctly
+description: 'The paper defines four difficulty levels based on 3 Amazon Turkers'' performance per question
+  (easy: 3/3 correct, medium: 2/3, hard: 1/3, expert: 0/3). While MLLMs generally show decreasing accuracy
+  with increasing difficulty, they also correctly answer expert-level questions that all three humans
+  got wrong, particularly in business and health & medicine. Conversely, they sometimes fail on easy
+  questions that all humans answered correctly. GPT-4V scores 92% on expert-level business questions
+  but only 60% on easy-level art & sports questions, and 87% on expert-level health & medicine but 46%
+  on easy-level embodied tasks.'
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:gpt-4o
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:gemini
+  variant: variant:gemini-pro
+- ref: model:video-llava
+  variant: variant:video-llava-7b
+- ref: model:video-chat-7b
+- ref: model:video-chatgpt
+  variant: variant:video-chatgpt-7b
+- ref: model:imagebind-llm-7b
+- ref: model:pandagpt-7b
+- ref: model:chat-univi-7b
+- ref: model:video-llama-2-13b
+- ref: model:x-instructblip-7b
+- ref: model:lwm-1m-jax
+- ref: model:otter-7b
+- ref: model:mplug-owl
+  variant: variant:mplug-owl-7b
+concepts: []
+sources:
+- ref: source:mmworld-multi-discipline-multi-faceted-world
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4V: 92% expert-level business, 60% easy-level art & sports; 87% expert-level health
+  & medicine, 46% easy-level embodied tasks'
+caveat: Difficulty levels are defined by only 3 Turkers per question, which may not capture the full
+  range of human difficulty.
+extracted_by: automatic-extraction
+related_findings:
+- IC-518
+- IC-520
+- IC-521

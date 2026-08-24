@@ -1,0 +1,47 @@
+id: IC-062
+title: Llama 3 70B implements temporal difference learning in-context for reward-based RL, with causally
+  relevant SAE features in its residual stream, while Llama 3 8B performs at chance
+description: The paper prompts Llama 3 70B with a two-step MDP and a 5x5 grid world, and shows that
+  its action choices are best explained by a q-learning model (NLL 2729) over a myopic model (NLL 2864)
+  or a repetition model (NLL 5745). SAEs trained on the residual stream reveal features that correlate
+  with TD errors (r = 0.58 in block 34 for the two-step task; r >= 0.75 in blocks 40+ for the grid world)
+  and with q-values. Lesioning a single TD latent in block 34 significantly impairs task performance
+  and makes behavior less consistent with q-learning, while control lesions have no effect. Negatively
+  scaling the TD latent by 10 reduces subsequent correlations with both q-values and TD errors. The
+  8B variant performs at chance level, indicating the ability emerges with scale.
+models:
+- ref: model:llama-3
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:sparse-autoencoders-reveal-temporal-difference-learning
+datasets: []
+methods:
+- ref: method:sparse-autoencoder
+  role: primary
+- ref: method:q-learning
+  role: compared-to
+- ref: method:nnsight
+  role: supporting
+related_work:
+- name: Wang et al. 2024 (Transformers learn TD methods for in-context RL)
+  anchor: https://arxiv.org/abs/2405.13861
+  role: builds-on
+- name: Templeton et al. 2024 (Scaling monosemanticity)
+  anchor: https://transformer-circuits.pub/2024/scaling-monosemanticity/index.html
+  role: builds-on
+- name: Binz & Schulz 2023 (Using cognitive psychology to understand GPT-3)
+  anchor: https://www.pnas.org/doi/abs/10.1073/pnas
+  role: context
+evidence_type: interventional
+key_metric: 'NLL: q-learning 2729, myopic 2864, repetition 5745 (t(99)=3.40, p=0.001); SAE-TD correlation
+  r=0.58 (block 34, two-step); grid world TD latents r>=0.75 (blocks 40+); 8B at chance level'
+caveat: The SAEs are task-specific and not suitable for identifying RL-related variables for arbitrary
+  tasks; the alignment between q-learning and Llama's behavior is not perfect, and a repetition preference
+  may be needed to fully account for it.
+extracted_by: automatic-extraction
+related_findings:
+- IC-063
+- IC-064

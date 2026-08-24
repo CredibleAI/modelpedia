@@ -1,0 +1,44 @@
+id: IC-398
+title: Ablating a single safety attention head in Llama-2-7b-chat increases attack success rate from
+  0.04 to 0.64 and in Vicuna-7b-v1.5 from 0.27 to 0.55, by modifying only 0.006% of parameters
+description: The paper identifies specific attention heads critical for safety using the SHIPS metric
+  and ablates them via undifferentiated attention (scaling Wq or Wk by a small epsilon). For Llama-2-7b-chat,
+  the average ASR across three harmful-query datasets jumps from 0.04 to 0.64 (a 16x increase) with
+  only 0.006% of parameters modified. For Vicuna-7b-v1.5, ASR rises from 0.27 to 0.55. When all 1024
+  heads are individually ablated, only a sparse subset significantly affects safety, with head 2-26
+  being the most critical for Llama-2-7b-chat. The SHIPS score distribution is long-tailed, confirming
+  that safety is concentrated in very few heads.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:vicuna
+  variant: variant:vicuna-7b-v1-5
+concepts: []
+sources:
+- ref: source:role-attention-heads-large-language-model
+datasets:
+- ref: dataset:advbench
+  role: eval
+- ref: dataset:jailbreakbench
+  role: eval
+- ref: dataset:maliciousinstruct
+  role: eval
+methods: []
+related_work:
+- name: GTAC & DAP
+  anchor: https://arxiv.org/abs/2406.14144
+  role: compared-to
+- name: LSP
+  anchor: https://arxiv.org/abs/2405.18166
+  role: compared-to
+evidence_type: interventional
+key_metric: ASR 0.04 to 0.64 (Llama-2-7b-chat, undifferentiated attention, template input), 0.27 to
+  0.55 (Vicuna-7b-v1.5), 0.006% parameter modification, 16x improvement
+caveat: The ASR metric uses rule-based keyword matching for rejection detection, which may misclassify
+  outputs. The ablation uses a specific epsilon value and the effect depends on the input format (template
+  vs. direct).
+extracted_by: automatic-extraction
+related_findings:
+- IC-399
+- IC-400
+- IC-401

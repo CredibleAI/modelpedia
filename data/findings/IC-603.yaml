@@ -1,0 +1,33 @@
+id: IC-603
+title: SIREN's embedding layer is not effectively optimized by gradient descent, so its embedding frequencies
+  must be set as a hyperparameter
+description: The authors track the frequency magnitudes of SIREN's embedding layer (ω₀‖wᵢ‖₂) during
+  training on five images from different datasets. They find that the magnitudes change only slightly
+  over 15 000 steps, and this small increase is negligible compared to the multi-fold increase in ω₀
+  required by the optimal configuration found via grid search. The authors attribute this to the periodic
+  (sine) activation in the embedding, which prevents gradient descent from adjusting the effective frequencies.
+  As a consequence, the default ω₀ = 30 produces blurry reconstructions on high-frequency images, while
+  the optimal ω₀ (e.g. 90 on a Kodak image) yields sharp details.
+models:
+- ref: model:siren
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:fresh-frequency-shifting-accelerated-neural-representation
+datasets:
+- ref: dataset:kodak
+  role: eval
+- ref: dataset:ffhq
+  role: eval
+- ref: dataset:wikiart
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: during training, magnitudes change only slightly, but this increase is negligible when compared
+  to magnitudes induced by optimal embeddings, whose size reflects the multiple-fold increase of ω0
+  observed in table 1
+caveat: The observation is made on five images and one architecture (SIREN); the authors note a similar
+  pattern was previously noted by Tancik et al. (2020) for Fourier features, but do not verify it for
+  other architectures in this paper.
+extracted_by: automatic-extraction

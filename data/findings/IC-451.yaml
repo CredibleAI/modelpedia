@@ -1,0 +1,52 @@
+id: IC-451
+title: Transformer block coupling of Jacobian singular vectors positively correlates with benchmark
+  performance across 30+ LLMs, more strongly than parameter count, depth, or embedding dimension
+description: The paper computes Jacobians of each transformer block along token trajectories, performs
+  SVD, and measures the alignment of top-k singular vectors between blocks (coupling). Across 30+ released
+  LLMs from over 8 organizations, the average coupling score correlates with HuggingFace Open LLM Leaderboard
+  benchmark scores. The regression fit yields R-squared of 0.8 with p-value 9.99e-10. This correlation
+  exceeds the correlation of benchmark score with parameter count, model depth, or embedding dimension.
+  The relationship is robust across different choices of k (1%, 3%, 5% of hidden dimension).
+models:
+- ref: model:llama-3
+- ref: model:llama-2
+- ref: model:pythia
+- ref: model:gpt-2
+- ref: model:gemma
+- ref: model:mpt
+- ref: model:falcon
+- ref: model:mistral-7b
+- ref: model:phi-2
+concepts: []
+sources:
+- ref: source:transformer-block-coupling-its-correlation-generalization
+datasets:
+- ref: dataset:arc
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:truthfulqa
+  role: eval
+- ref: dataset:winogrande
+  role: eval
+methods:
+- ref: method:singular-value-decomposition
+  role: primary
+related_work:
+- name: Novak et al. (2018) Sensitivity and Generalization
+  anchor: https://arxiv.org/abs/1802.08760
+  role: context
+evidence_type: correlational
+key_metric: R^2 = 0.8, p = 9.99 x 10^-10 (coupling vs. benchmark score, k = 1/10 d_model); correlation
+  stronger than with parameter count, model depth, or embedding dimension
+caveat: Coupling is measured on a smaller subset of dataset prompts due to computational cost of Jacobian
+  computation; the correlation is across models, not causal.
+extracted_by: automatic-extraction
+related_findings:
+- IC-452
+- IC-453
+- IC-454

@@ -1,0 +1,50 @@
+id: IC-419
+title: CLIP ViT-B/16's layer-11 residual stream contains class-discriminative information in sparse
+  SAE latent directions, and ablating class-specific top-k latents significantly degrades zero-shot
+  classification accuracy
+description: 'The authors train a sparse autoencoder on CLIP ViT-B/16''s layer-11 residual stream and
+  use it to decompose the representation into 49,152 sparse latent directions. By replacing CLIP''s
+  intermediate representation with the SAE-reconstructed version and selectively masking latents, they
+  show that class-specific top-k latents carry critical discriminative information: the identity mask
+  recovers 64.82% accuracy (vs 68.25% original), the all-zero mask drops to 0.1%, and ablating per-class
+  top-k latents causes a clear performance drop as k decreases. Random or dataset-level selections show
+  marginal impact, confirming the class-specific structure.'
+models:
+- ref: model:clip
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:sparse-autoencoders-reveal-selective-remapping-visual
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:stanford-cars
+  role: eval
+- ref: dataset:fgvc-aircraft
+  role: eval
+- ref: dataset:food-101
+  role: eval
+- ref: dataset:sun397
+  role: eval
+- ref: dataset:ucf101
+  role: eval
+- ref: dataset:oxford-pets
+  role: eval
+- ref: dataset:dtd
+  role: eval
+- ref: dataset:eurosat
+  role: eval
+- ref: dataset:caltech-101
+  role: eval
+- ref: dataset:flowers-102
+  role: eval
+methods: []
+related_work: []
+evidence_type: interventional
+key_metric: 64.82% (identity mask) vs 68.25% (original) on ImageNet-1k; 0.1% (all-zero mask); class-specific
+  top-k masking shows crucial impact while random or dataset-level selections show marginal or no impact
+caveat: The SAE reconstruction introduces a small error (64.82% vs 68.25%), so the masking experiment
+  operates on a slightly degraded representation rather than the exact original.
+extracted_by: automatic-extraction
+related_findings:
+- IC-420

@@ -1,0 +1,58 @@
+id: IC-493
+title: A linear direction in the input embedding space of Llama-2-7B-Chat, Llama-2-13B-Chat, Mistral-7B-Instruct-v0.3,
+  and Phi-3-mini-128k predicts instruction-following success, generalizes across tasks but not instruction
+  types, and can be used to improve adherence via representation engineering
+description: The authors trained linear probes on frozen model representations to identify a direction
+  in input embedding space that separates instruction-following successes from failures. This direction
+  generalizes across unseen tasks (AUROC 0.70–0.88 for the first token) but not across unseen instruction
+  types (AUROC 0.50–0.55, near chance), even when the training set is expanded to 23 instruction types.
+  The information is available from the first token, before any response generation begins. When representations
+  in the last layer are shifted along this direction (representation engineering), instruction-following
+  success rates improve over both original outputs and random-direction shifts, while response quality
+  is maintained or improved.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-3
+- ref: model:phi-3
+  variant: variant:phi-3-mini-128k-instruct
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:llms-know-internally-when-they-follow
+datasets:
+- ref: dataset:ifeval
+  role: source
+- ref: dataset:ifeval
+  role: eval
+methods:
+- ref: method:linear-probing
+  role: primary
+- ref: method:representation-engineering
+  role: primary
+- ref: method:pca
+  role: supporting
+related_work:
+- name: Marks & Tegmark (geometry of truth)
+  anchor: https://arxiv.org/abs/2310.06824
+  role: builds-on
+- name: Azaria & Mitchell (internal state knows when lying)
+  anchor: https://arxiv.org/abs/2304.13734
+  role: builds-on
+- name: Zou et al. (representation engineering)
+  anchor: https://arxiv.org/abs/2310.01405
+  role: builds-on
+evidence_type: interventional
+key_metric: 'Task generalization AUROC (first token): Llama-2-7B 0.77±0.04, Llama-2-13B 0.83±0.03, Mistral-7B
+  0.74±0.02, Phi-3 0.88±0.03. Instruction-type generalization AUROC (first token): Llama-2-7B 0.52±0.03,
+  Llama-2-13B 0.56±0.06, Mistral-7B 0.50±0.05, Phi-3 0.55±0.04. RE success rate (last layer): Llama-2-7B
+  0.57→0.59, Llama-2-13B 0.61→0.65, Mistral-7B 0.58→0.64, Phi-3 0.71→0.74 (inst-follow vs original).'
+caveat: Analysis limited to 5 simple instruction types (or 23 in the expanded experiment) and 100 tasks;
+  the authors note that unambiguously interpreting the meaning of the dimension remains an open question.
+  Results are consistent across the four models studied but may not generalize to other architectures.
+extracted_by: automatic-extraction
+related_findings:
+- IC-494

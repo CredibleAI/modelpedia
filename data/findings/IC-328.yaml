@@ -1,0 +1,54 @@
+id: IC-328
+title: Llama-3-8B-Instruct and Mistral-7B-Instruct-v0.3 are susceptible to confidence-elicitation-guided
+  word substitution attacks, with CEAttack outperforming existing hard-label black-box methods
+description: The paper demonstrates that using elicited confidence as feedback for a greedy word-substitution
+  search (CEAttack) achieves higher attack success rates than SSPAttack, TextHoaxer, and Self-Fool Word
+  Sub on both models across SST-2, AG-News, and StrategyQA. For Llama-3-8B-Instruct, CEAttack achieves
+  ASR of 19.73%, 30.74%, and 45.67% versus SSPAttack's 9.73%, 26.71%, and 29.67%. The attack also requires
+  fewer queries and preserves higher semantic similarity. The condition is synonym word substitutions
+  guided by decreasing elicited confidence, checked over 500 samples per dataset.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-3
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:confidence-elicitation-new-attack-vector-large
+datasets:
+- ref: dataset:sst-2
+  role: eval
+- ref: dataset:ag-news
+  role: eval
+- ref: dataset:strategyqa
+  role: eval
+methods:
+- ref: method:sspattack
+  role: compared-to
+- ref: method:texthoaxer
+  role: compared-to
+- ref: method:universal-sentence-encoder
+  role: eval
+related_work:
+- name: Liu et al. 2023 (SSPAttack)
+  anchor: https://doi.org/10.1609/aaai.v37i11.26553
+  role: compared-to
+- name: Ye et al. 2022 (TextHoaxer)
+  anchor: https://doi.org/10.1609/aaai.v36i4.20303
+  role: compared-to
+- name: Xu et al. 2024 (An LLM Can Fool Itself)
+  anchor: https://openreview.net/forum?id=VVgGbB9TNV
+  role: compared-to
+evidence_type: correlational
+key_metric: 'ASR: Llama-3-8B-Instruct CEAttack 19.73%/30.74%/45.67% vs SSPAttack 9.73%/26.71%/29.67%
+  (SST-2/AG-News/StrategyQA); Mistral-7B-Instruct-v0.3 CEAttack 17.94%/38.33%/39.26% vs SSPAttack 14.08%/20.0/30.99%;
+  semsim 0.88-0.93 for CEAttack'
+caveat: The attack is limited to word-level synonym substitutions from counter-fitted embeddings with
+  a semantic similarity threshold of 0.84. Results are on zero-shot classification tasks only. The paper
+  notes that temperature was set to approximately 0 for deterministic behavior, and a temperature ablation
+  (tau=0.7) shows different ASR values.
+extracted_by: automatic-extraction
+related_findings:
+- IC-327
+- IC-329

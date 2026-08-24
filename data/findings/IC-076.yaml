@@ -1,0 +1,34 @@
+id: IC-076
+title: 'GoogLeNet and ViT exhibit input space mode connectivity: inputs with similar predictions are
+  connected by low-loss paths, with real-real pairs showing approximately linear paths and real-adversarial
+  pairs showing significantly higher barriers'
+description: The authors linearly interpolate pairs of same-class inputs in GoogLeNet (ImageNet) and
+  ViT (ImageNet) and measure the cross-entropy loss along the path. For real-real pairs, a single optimization
+  step on the maximum-loss intermediate point yields a low-loss path that is nearly linear. For real-adversarial
+  pairs, the barrier is significantly higher and the path requires multiple optimization rounds. Across
+  5,000 pairs per scenario (5 per class over 1000 ImageNet classes), the mean barrier height is 2.27
+  for real-real pairs versus 5.82 for real-adversarial pairs, and the mean barrier gap is 1.00 versus
+  5.19 respectively. The same qualitative pattern is observed in ViT base patch16 224.sam in1k.
+models:
+- ref: model:googlenet
+- ref: model:vit
+concepts: []
+sources:
+- ref: source:input-space-mode-connectivity-deep-neural
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:feature-visualization-by-optimization
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Barrier height: real-real mean 2.27, median 1.79; real-adversarial mean 5.82, median 5.99.
+  Barrier gap: real-real mean 1.00, median 0.47; real-adversarial mean 5.19, median 5.30. 5,000 pairs
+  per scenario (5 per class, 1000 classes), 250 interpolation steps.'
+caveat: Experiments limited to vision models with continuous input spaces; generalization to other modalities
+  (e.g., tokenized language models) was not tested. The percolation-based theoretical justification
+  assumes independence between nearby inputs, which does not hold for neural networks even at initialization.
+extracted_by: automatic-extraction
+related_findings:
+- IC-077

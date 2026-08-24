@@ -1,0 +1,35 @@
+id: IC-553
+title: OpenCLIP ViT-B/16's image-text alignment score is a strong predictor of domain generalization
+  accuracy, while perceptual similarity to LAION-400M pre-training data is a weaker predictor
+description: 'The paper computes the cosine similarity between OpenCLIP''s frozen image embeddings and
+  text label embeddings (alignment score) for every sample across five DomainBed datasets. When samples
+  are binned by alignment score, DG accuracy shows a strong monotonic increase: near-zero accuracy at
+  low alignment and near-perfect accuracy at high alignment. In contrast, the perceptual similarity
+  score (cosine similarity to the nearest neighbor in LAION-400M) shows only a shallow, weak relationship
+  with accuracy. OpenCLIP''s own zero-shot accuracy drops from 79.0% on high-alignment (IP) samples
+  to 48.1% on low-alignment (OOP) samples, confirming that the alignment property of the pre-trained
+  representation directly governs classification performance.'
+models:
+- ref: model:openclip
+  variant: variant:openclip-vit-b-16
+concepts: []
+sources:
+- ref: source:large-scale-pretraining-secret-good-domain
+datasets:
+- ref: dataset:domainbed
+  role: eval
+- ref: dataset:laion-400m
+  role: source
+methods: []
+related_work:
+- name: Mayilvahanan et al. 2024 (image similarity hypothesis)
+  anchor: https://openreview.net/forum?id=tnbaiidobu
+  role: compared-to
+evidence_type: correlational
+key_metric: 'OpenCLIP zero-shot average accuracy: 79.0% (DomainBed-IP) vs 48.1% (DomainBed-OOP); alignment
+  threshold 0.21 separates IP from OOP; below alignment score 0.15, label noise is unacceptably high
+  across all datasets'
+caveat: 'The alignment score is computed using the same OpenCLIP backbone that initializes the DG methods,
+  so the finding is specific to this backbone. The paper notes this in Section 4: ''we use the same
+  backbone both for splitting the datasets into ip and oop subsets and for training dg methods.'''
+extracted_by: automatic-extraction

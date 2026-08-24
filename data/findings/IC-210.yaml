@@ -1,0 +1,30 @@
+id: IC-210
+title: 'GPT-4o-mini-2024-07-18 does not exhibit authority bias when used as a judge: appending fabricated
+  references to model responses decreases rather than increases its score'
+description: 'The paper tests whether adding authoritative-looking references to a model''s response
+  can game the LLM judge, a vulnerability reported in prior work. Two hacks were tried: (1) appending
+  generic verified references matched to the question category, and (2) imitating the judge''s own response
+  style with 5-7 tailored references in MLA format. Both hacks decreased the arena-hard-auto score by
+  approximately 48-49%, and the judge explicitly flagged the citations as unnecessary. This shows GPT-4o-mini
+  is robust to this particular manipulation when acting as a judge.'
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini-2024-07-18
+concepts: []
+sources:
+- ref: source:style-outweighs-substance-failure-modes-llm
+datasets:
+- ref: dataset:arena-hard-auto
+  role: eval
+methods:
+- ref: method:arena-hard-auto
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Hack 1 loss: 49%, Hack 2 loss: 48% (Table 11)'
+caveat: The authors note that the authority bias 'remains potentially hackable' but 'must be executed
+  with precision to avoid detection, at least when the judge is a foundation model such as gpt-4o-mini.'
+  Only one judge model was tested for this specific hack.
+extracted_by: automatic-extraction
+related_findings:
+- IC-209

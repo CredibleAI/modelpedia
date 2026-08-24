@@ -1,0 +1,28 @@
+id: IC-055
+title: OLMoE 6.9B experts show no domain specialization, with routing scores evenly distributed across
+  MMLU domains, preventing targeted knowledge unlearning
+description: The paper examines OLMoE 6.9B's expert routing patterns on MMLU data. Using a skewness
+  criterion (routing probability for a domain at least twice the second-highest), no experts were identified
+  as specialized in any of the 14 MMLU domains. The authors note that OLMoE's expert routing scores
+  are evenly distributed, reflecting feature polysemanticity due to its limited expert count. When they
+  fall back to a maximum-activation criterion and remove the most-activated expert per domain, the resulting
+  cross-domain performance changes (∆ others) range from -0.27 to -5.00, showing less targeted removal
+  than the authors' MONET model.
+models:
+- ref: model:olmoe-6-9b
+concepts: []
+sources:
+- ref: source:monet-mixture-monosemantic-experts-transformers
+datasets:
+- ref: dataset:mmlu
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: 0 experts identified as domain-specialized under skewness criterion; ∆ others in MMLU ranges
+  from -0.27 to -5.00 across 14 domains under max-activation criterion
+caveat: The skewness criterion (2× threshold) is the authors' own; a different threshold might yield
+  different results. The paper acknowledges these criteria are 'basic and minimal.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-054

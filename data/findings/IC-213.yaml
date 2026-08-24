@@ -1,0 +1,38 @@
+id: IC-213
+title: Qwen2-0.5B-Instruct uses English-specific past tense heads and late FFN layers for morphological
+  marking that is absent in Chinese
+description: Path patching and ablation on Qwen2-0.5B-Instruct show that the past tense task uses shared
+  copy heads (21.3, 21.4, 21.13) for both English and Chinese, but English-specific past tense heads
+  (19.4, 19.5) and FFN layers (20-24) that are causally relevant only for English. Ablating the past
+  tense heads promotes present tense verbs by 83.21 positions in English while barely affecting Chinese
+  (4.58 positions). Ablating FFN layers 20-24 drops English accuracy from 97.44% to 47.44% and zero-rank
+  from 58.06% to 17.74%, while Chinese zero-rank changes only from 25.08% to 24.19%. The copy heads,
+  by contrast, are essential for both languages.
+models:
+- ref: model:qwen-2
+  variant: variant:qwen2-0-5b-instruct
+concepts: []
+sources:
+- ref: source:same-but-different-structural-similarities-differences
+datasets: []
+methods:
+- ref: method:path-patching
+  role: primary
+related_work:
+- name: Merullo et al. 2023 (FFN for past tense)
+  anchor: https://arxiv.org/abs/2305.16130
+  role: builds-on
+- name: Ferrando & Voita 2024 (information flow routes)
+  anchor: https://arxiv.org/abs/2403.00824
+  role: context
+evidence_type: interventional
+key_metric: 'FFN ablation (layers 20-24): EN accuracy 97.44%→47.44%, zero-rank 58.06%→17.74%; ZH zero-rank
+  25.08%→24.19%. Past tense head ablation: EN present tense promoted 83.21 positions, ZH correct verb
+  +4.58 positions. Copy head ablation: EN past tense rank -141.95, present tense -221.39; ZH verbs -201.82.'
+caveat: The authors note that the semantics of the verb is not entirely decoupled from the tense, and
+  that the Chinese task lacks minimal pairs so accuracy cannot be computed; the analysis is limited
+  to one language pair and one morphological phenomenon.
+extracted_by: automatic-extraction
+related_findings:
+- IC-211
+- IC-212

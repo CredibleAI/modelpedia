@@ -1,0 +1,35 @@
+id: IC-278
+title: Claude-3.5 Sonnet and GPT-4o exhibit a memorization failure mode, outputting the same answer
+  regardless of visual parameter changes in the problem
+description: The paper identifies a phenomenon where VLMs provide the same answer to structurally identical
+  questions with different visual parameters, indicating reliance on a memorized default rather than
+  reading the specific input. For Claude-3.5 Sonnet, altering the period of a sinusoidal function (e.g.,
+  from 2π to π or 4π) does not change its response, which consistently remains 2π; this accounts for
+  4.1% of its 171 incorrect answers. For GPT-4o, a shifted absolute value function f(x)=|x-a| is consistently
+  judged not differentiable at x=0 for 7 of 10 variants, with 90% repetition consistency on the failing
+  variant, despite the sharp corner no longer being at x=0.
+models:
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:gpt-4o
+concepts:
+- ref: concept:shortcut
+- ref: concept:failure-mode
+sources:
+- ref: source:dynamath-dynamic-visual-benchmark-evaluating-mathematical
+datasets:
+- ref: dataset:dynamath
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Claude-3.5 Sonnet: 4.1% of 171 incorrect answers are memorization cases. GPT-4o: 90% repetition
+  consistency on variant 9 of seed question 78; incorrect answer for 7 of 10 variants of the shifted
+  absolute value function.'
+caveat: The memorization phenomenon was identified qualitatively and the 4.1% figure is for Claude-3.5
+  only; a systematic study across all models and all question types is noted as future work. A newly
+  designed prompt explicitly instructing the model to avoid memorized answers did not resolve the issue.
+extracted_by: automatic-extraction
+related_findings:
+- IC-276
+- IC-277

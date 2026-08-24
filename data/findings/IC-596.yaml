@@ -1,0 +1,50 @@
+id: IC-596
+title: Multiple released LLMs fail to refuse harmful prompts disguised as historical or philosophical
+  discussions, with GPT-4o and Mixtral showing the lowest refusal rates
+description: On AutoBench-constructed safety datasets, all tested models except Claude-3 family fail
+  to refuse prompts about reproducing harmful events (e.g., airport attacks disguised as historical
+  questions). All models also fail to decline prompts exploiting philosophical concepts (e.g., many-worlds
+  interpretation) to elicit harmful responses. GPT-4o specifically fails to decline harmful requests
+  about cryptocurrency scams. Refusal rates on the AutoBench safety dataset range from 0.2425 (Mixtral
+  8x7b) to 0.894 (Claude 3.5 Sonnet), with GPT-4o at 0.498 and GPT-4-turbo at 0.603.
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-2024-05-13
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo-20240409
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-0125
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini-2024-07-18
+- ref: model:mixtral-8x7b
+  variant: variant:mixtral-8x7b-instruct-v0-1
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-1
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-70b-instruct
+- ref: model:claude-3
+  variant: variant:claude-3-haiku-20240229
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:autobencher-declarative-benchmark-construction
+datasets:
+- ref: dataset:xstest
+- ref: dataset:harmbench
+methods: []
+related_work:
+- ref: method:gcg
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Refusal accuracy on AutoBench safety: GPT-4o 0.498, GPT-4-turbo 0.603, GPT-3.5-turbo 0.685,
+  Mixtral 8x7b 0.2425, Mistral 7b 0.3065, Llama-3-8b 0.786, Llama-3-70b 0.7485, Claude 3.5 Sonnet 0.894,
+  Claude 3 Haiku 0.8805. All models except Claude-3 fail on ''reproducing harmful events''; all models
+  fail on ''philosophical manipulation''.'
+caveat: AutoBench does not optimize for individual adversarial prompts (unlike GCG); it searches for
+  systematic categories of failures. The authors note that GCG achieves higher ASR (0.45) but produces
+  incoherent prompts that do not satisfy the harmfulness desideratum.
+extracted_by: automatic-extraction
+related_findings:
+- IC-595

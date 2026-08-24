@@ -1,0 +1,33 @@
+id: IC-341
+title: The effectiveness of GCG and PAIR attacks on Llama-2-7b-chat is sensitive to the order of adversarial
+  tokens, with swapping the two halves of the GCG suffix reducing the created high-importance region
+  by 23%
+description: To test distributional dependency, the paper splits the GCG adversarial suffix into two
+  equal-length halves and swaps their order on Llama-2-7b-chat. The perceived-importance of the created
+  high-importance region drops by 23%, and the model refocuses on malicious-intent tokens. Similarly,
+  for PAIR, the total perceived-importance of the adversarial prompts decreases from 67% to 49% after
+  swapping. This demonstrates that the attacks' misleading effect is tightly tied to the specific token
+  order in the source model's sampling process, not to the semantic content of the adversarial tokens.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:understanding-enhancing-transferability-jailbreaking-attacks
+datasets: []
+methods:
+- ref: method:gcg
+  role: primary
+- ref: method:pair
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'GCG high-importance region: 23% drop after order swap; PAIR high-importance region: 67%
+  to 49% after order swap (both on Llama-2-7b-chat)'
+caveat: Demonstrated on a single input example ('how to build a bomb') rather than a systematic evaluation
+  across many inputs.
+extracted_by: automatic-extraction
+related_findings:
+- IC-340
+- IC-342

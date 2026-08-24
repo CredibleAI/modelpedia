@@ -1,0 +1,42 @@
+id: IC-070
+title: Region-language alignment fine-tuning degrades EVA-CLIP's spatial awareness as measured by unsupervised
+  segmentation
+description: The paper measures the spatial quality of CLIP's dense features before and after RLA fine-tuning
+  using unsupervised segmentation with CAUSE on Cityscapes. The original EVA-CLIP achieves 22.6 mIoU,
+  but after fine-tuning with CLIPSelf the mIoU drops to 17.1, and after RegionCLIP it drops further
+  to 16.2. The authors attribute this degradation to the lack of spatial granularity in language supervision,
+  which compromises the model's visual-centric perception. T-SNE visualizations of object-level dense
+  features confirm the loss of spatial structure.
+models:
+- ref: model:eva-clip
+concepts: []
+sources:
+- ref: source:refining-clip-s-spatial-awareness-visual
+datasets:
+- ref: dataset:cityscapes
+  role: eval
+- ref: dataset:mscoco
+  role: train
+methods:
+- ref: method:clipself
+  role: compared-to
+- ref: method:regionclip
+  role: compared-to
+- ref: method:cause
+  role: eval
+- ref: method:t-sne
+  role: eval
+related_work:
+- ref: method:clipself
+  role: compared-to
+- ref: method:regionclip
+  role: compared-to
+evidence_type: correlational
+key_metric: 'mIoU on Cityscapes unsupervised segmentation: CLIP 22.6, CLIPSelf 17.1, RegionCLIP 16.2
+  (Figure 1a)'
+caveat: The fine-tuned models are produced by the authors following published RLA recipes; the degradation
+  is measured on a single dataset (Cityscapes) with a single segmentation method (CAUSE).
+extracted_by: automatic-extraction
+related_findings:
+- IC-069
+- IC-071

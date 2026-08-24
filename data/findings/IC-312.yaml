@@ -1,0 +1,39 @@
+id: IC-312
+title: GPT-4o achieves the highest insight-level Llama-3-eval score (0.60) among all tested LLM backbones
+  on InsightBench multi-step data analytics
+description: The paper evaluates four released LLMs as backbones in the AgentPoirot data analytics agent
+  on 100 synthetic business datasets. GPT-4o attains the best insight-level Llama-3-eval score of 0.60
+  (±0.03), followed by GPT-4-turbo (0.56±0.02), Llama-3-70b (0.52±0.04), and GPT-3.5-turbo (0.50±0.02).
+  The Pandas Agent baseline with GPT-4o scores 0.54±0.01 on the same metric. Performance also varies
+  by dataset category, difficulty, and insight type, with all agents showing declining performance on
+  harder tasks and from descriptive to predictive insights.
+models:
+- ref: model:gpt-4o
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+concepts: []
+sources:
+- ref: source:insightbench-evaluating-business-analytics-agents-through
+datasets:
+- ref: dataset:insightbench
+  role: eval
+methods:
+- ref: method:rouge-1
+  role: eval
+related_work:
+- ref: method:g-eval
+  role: context
+evidence_type: correlational
+key_metric: 'insight-level llama-3-eval: GPT-4o 0.60±0.03, GPT-4-turbo 0.56±0.02, Llama-3-70b 0.52±0.04,
+  GPT-3.5-turbo 0.50±0.02 (AgentPoirot); PA (GPT-4o) 0.54±0.01'
+caveat: Results are measured through a specific agent framework (AgentPoirot) with fixed prompting;
+  performance may differ under other agent designs. All results are for sampling temperature 0.0 and
+  5 seeds.
+extracted_by: automatic-extraction
+related_findings:
+- IC-313
+- IC-314

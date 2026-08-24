@@ -1,0 +1,32 @@
+id: IC-117
+title: Hallucination heads in LLaVA-7B and MiniGPT-4 are concentrated in the middle and deeper layers
+  of the transformer
+description: After identifying hallucination heads via contrastive influence scoring (top-k selection
+  from 1,024 heads across 32 layers in LLaVA-7B), the paper observes that both the most prominent hallucination
+  heads and non-hallucination heads are predominantly located in the middle and deeper layers. The same
+  pattern is confirmed for MiniGPT-4, where hallucination heads are distributed in the latter half of
+  the model. This aligns with prior findings that deeper layers capture more abstract, task-specific
+  representations.
+models:
+- ref: model:llava-1-5
+  variant: variant:llava-v1-5-7b
+- ref: model:minigpt-4
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:understanding-mitigating-hallucination-large-vision-language
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: Top 20 hallucination heads (blue boxes) and top non-hallucination heads (red boxes) predominantly
+  in layers 16-32 of 32 (Figure 2); same pattern in MiniGPT-4 (Figure 10)
+caveat: The depth distribution is observed for the top-k heads selected by contrastive influence; the
+  paper does not provide a formal statistical test of the depth distribution.
+extracted_by: automatic-extraction
+related_findings:
+- IC-116
+- IC-118
+- IC-119

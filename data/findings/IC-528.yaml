@@ -1,0 +1,48 @@
+id: IC-528
+title: The knowledge localization assumption fails for a large fraction of facts in GPT-2, Llama2-7B,
+  and Llama3-8B, with 77% of facts classified as inconsistent knowledge in Llama3-8B
+description: 'The paper measures whether rephrased queries for the same fact activate the same set of
+  knowledge neurons (the KL assumption). Using three independent localization methods (Integrated Gradients,
+  Sequential IG, AMIG) on the ParaRel dataset, the authors compute a consistency score for each fact.
+  A large proportion of facts show low consistency, meaning the neurons activated differ across paraphrases.
+  In Llama3-8B with a static threshold, 77% of facts are classified as inconsistent knowledge (Ki).
+  Modification experiments confirm this: editing the query-specific neurons for Ki facts yields near-zero
+  generalization to neighbor queries (gen=0.04 for Llama3-8B), while editing the union of all neighbor
+  neurons causes a 105% perplexity increase.'
+models:
+- ref: model:gpt-2
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts: []
+sources:
+- ref: source:knowledge-localization-mission-not-accomplished-enter
+datasets:
+- ref: dataset:pararel
+  role: eval
+- ref: dataset:wikitext-2
+  role: eval
+methods:
+- ref: method:integrated-gradients
+  role: primary
+- ref: method:sequential-integrated-gradients
+  role: primary
+related_work:
+- name: Knowledge Neurons in Pretrained Transformers
+  anchor: https://doi.org/10.18653/v1/2022.acl-long.581
+  role: builds-on
+- name: Locating and Editing Factual Associations in GPT
+  anchor: https://openreview.net/forum?id=-h6WAS6eE4
+  role: context
+evidence_type: correlational
+key_metric: 'Llama3-8b static threshold (Dai et al.): ri=0.84, ui=0.16, t=123, p<1e-6; Llama2-7b static:
+  ri=0.60, ui=0.40, t=158; GPT-2 static: ri=0.44, ui=0.56, t=236. Modification: Ki ni erasure Llama3-8b
+  gen=0.04; Ki nu erasure Llama3-8b Δppl=1.05'
+caveat: The classification threshold (static 0.1 or Otsu) is a hyperparameter; the authors show robustness
+  across thresholds from 0.04 to 0.80 in Figure 9, but the exact proportion of Ki varies with threshold
+  choice.
+extracted_by: automatic-extraction
+related_findings:
+- IC-529
+- IC-530

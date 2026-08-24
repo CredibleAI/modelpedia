@@ -1,0 +1,31 @@
+id: IC-219
+title: The bag-of-heuristics mechanism in LLaMA3-8B fails on certain arithmetic prompts due to insufficient
+  total logit contribution from heuristic neurons, not due to a lack of associated heuristics
+description: 'The authors test two hypotheses for why the bag of heuristics produces incorrect answers:
+  (i) the prompt lacks sufficient associated heuristic neurons, or (ii) the heuristics have imperfect
+  recall or low logits for the correct answer token. Sampling 50 correct and 50 incorrect prompts, they
+  find that incorrect prompts actually have MORE associated heuristic neurons on average, ruling out
+  hypothesis (i). However, the total logit contribution of all heuristic neurons to the correct answer
+  token is slightly higher for correct prompts than for incorrect ones, supporting hypothesis (ii):
+  the primary failure mode is poor promotion of the correct answer logit, not an absence of heuristics.'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:arithmetic-without-algorithms-language-models-solve
+datasets: []
+methods:
+- ref: method:logit-lens
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: incorrect prompts have more associated heuristic neurons than correct prompts on average;
+  slight advantage in total logit contribution for correct prompts over incorrect prompts
+caveat: Analysis is limited to 50 correct and 50 incorrect prompts sampled from LLaMA3-8B; the logit
+  contribution difference is described as 'slight' and the exact magnitude is shown only in a figure.
+extracted_by: automatic-extraction
+related_findings:
+- IC-218
+- IC-220

@@ -1,0 +1,35 @@
+id: IC-329
+title: GPT-4o is more robust to confidence-elicitation-guided word substitution attacks than open-source
+  LLMs, with lower attack success rates and better confidence calibration
+description: In Appendix G, the paper tests GPT-4o (2024-08-06) via the OpenAI API on the same three
+  datasets. GPT-4o achieves lower ASR under CEAttack (14.58% SST-2, 9.2% AG-News, 29.69% StrategyQA)
+  compared to Llama-3-8B-Instruct (19.73%, 30.74%, 45.67%). GPT-4o also shows the best calibration with
+  ECE of 0.0286 on SST-2. The authors attribute the greater robustness to the model's larger scale,
+  noting that 'their larger scale makes them more robust to semantic perturbations.'
+models:
+- ref: model:gpt-4o
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:confidence-elicitation-new-attack-vector-large
+datasets:
+- ref: dataset:sst-2
+  role: eval
+- ref: dataset:ag-news
+  role: eval
+- ref: dataset:strategyqa
+  role: eval
+methods:
+- ref: method:sspattack
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4o CEAttack ASR: 14.58% (SST-2), 9.2% (AG-News), 29.69% (StrategyQA); ECE 0.0286/0.0641/0.2300;
+  compared to Llama-3-8B-Instruct ASR 19.73%/30.74%/45.67%'
+caveat: GPT-4o was tested via API with different hyperparameters (|s|=20 for SSPAttack/CEAttack, |s|=50
+  for CEAttack++). The comparison is not perfectly controlled since the attack configurations were tuned
+  separately for the API model.
+extracted_by: automatic-extraction
+related_findings:
+- IC-327
+- IC-328

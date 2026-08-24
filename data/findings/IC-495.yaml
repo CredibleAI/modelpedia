@@ -1,0 +1,49 @@
+id: IC-495
+title: All evaluated multimodal foundation models achieve average non-hallucination accuracy below 50%
+  across six hallucination scenarios
+description: The paper constructs a hallucination benchmark with six scenarios (natural selection, distraction,
+  counterfactual reasoning, co-occurrence, misleading, OCR) each covering five tasks. Across all 18
+  evaluated models (8 text-to-image, 10 image-to-text), the average non-hallucination accuracy remains
+  below 50%. The best text-to-image model (FLUX) averages 39.7% and the best image-to-text model (Nova
+  Pro) averages 46.9%. Spatial reasoning is the most challenging task, with all text-to-image models
+  achieving below 3% accuracy on natural prompts.
+models:
+- ref: model:flux
+- ref: model:dall-e-3
+- ref: model:dall-e-2
+- ref: model:stable-diffusion
+  variant: variant:sdxl
+- ref: model:nova-pro
+- ref: model:gpt-4o
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:llama-3-2-vision
+  variant: variant:llama-3-2-90b-vision-instruct
+- ref: model:llava-next
+- ref: model:gemini-1-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:mmdt-decoding-trustworthiness-safety-multimodal-foundation
+datasets:
+- ref: dataset:mscoco
+  role: source
+- ref: dataset:hrs-bench
+  role: source
+methods:
+- ref: method:groundingdino
+  role: eval
+- ref: method:llava-next
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: average performance for all mmfms in terms of non-hallucination accuracy is below 50%; best
+  t2i model flux averages 39.7%, best i2t model nova pro averages 46.9%; spatial reasoning accuracy
+  below 3% for all t2i models on natural prompts
+caveat: The benchmark data was selected to be challenging based on surrogate model performance, so the
+  absolute numbers may not reflect performance on easier distributions.
+extracted_by: automatic-extraction
+related_findings:
+- IC-496
+- IC-497
+- IC-498

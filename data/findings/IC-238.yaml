@@ -1,0 +1,59 @@
+id: IC-238
+title: LLMs fail to follow user preferences in zero-shot settings, with accuracy below 10% at 10 turns
+  and near zero at 300 turns
+description: Across 10 open-source and proprietary LLMs, preference-following accuracy in zero-shot
+  settings drops steeply as the number of conversation turns between the stated preference and the query
+  increases. At 5 turns accuracy falls from roughly 80% to below 30%, and at 300 turns it approaches
+  zero for all models. Even at just 10 turns (~3k tokens), GPT-4o, Claude 3.5 Sonnet, and Gemini-1.5-Pro
+  all score only 0.07. The dominant error type in zero-shot is preference-unaware violation, meaning
+  the model simply does not track the earlier preference.
+models:
+- ref: model:claude-3
+  variant: variant:claude-3-sonnet
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct
+- ref: model:mixtral-8x7b
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-70b-instruct
+- ref: model:gpt-4o
+- ref: model:gpt-4-1
+- ref: model:o1
+  variant: variant:o1-preview
+- ref: model:o4-mini
+- ref: model:o3
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:llms-recognize-your-preferences-evaluating-personalized
+datasets:
+- ref: dataset:lmsys-chat-1m
+  role: source
+methods:
+- ref: method:rag
+  role: compared-to
+related_work:
+- name: LAMP
+  anchor: https://arxiv.org/abs/2304.11406
+  role: context
+- name: Lost in the Middle
+  anchor: https://doi.org/10.1162/tacl
+  role: context
+evidence_type: correlational
+key_metric: 'accuracy drops from approximately 80% to below 30% at 5 turns; at 300 turns accuracy falls
+  close to zero; at 10 turns zero-shot: GPT-4o 0.07, Claude 3.5 Sonnet 0.07, Gemini-1.5-Pro 0.07, O1-preview
+  0.50, O3 0.71'
+caveat: The o-series models may involve additional test-time compute due to their thinking phase, making
+  direct comparison with other models potentially unfair.
+extracted_by: automatic-extraction
+related_findings:
+- IC-239
+- IC-240
+- IC-241

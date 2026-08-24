@@ -1,0 +1,43 @@
+id: IC-205
+title: Gemma 2's SAE features exhibit depth-dependent organization, with polysemantic features in early
+  layers and persistent, matchable features in later layers
+description: Using GemmaScope SAEs on each layer of Gemma 2 2B, the authors match features across layers
+  by minimizing MSE between folded SAE parameters and validate matches with GPT-4o mini LLM evaluation
+  of feature descriptions. The number of 'same' features (identical meaning) remains near zero in initial
+  layers and begins to increase only after the 10th layer. Feature similarity, measured by LLM score,
+  persists for approximately five layers before declining. Layer pruning experiments confirm that matched
+  features can approximate the next hidden state with minimal cross-entropy loss beyond the 10th layer.
+  Similar depth-dependent patterns are observed for Llama-3.1-8B in the appendix.
+models:
+- ref: model:gemma-2
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:mechanistic-permutability-match-features-across-layers
+datasets:
+- ref: dataset:openwebtext
+  role: eval
+- ref: dataset:wikitext
+  role: eval
+methods:
+- ref: method:linear-assignment-problem
+  role: supporting
+related_work:
+- ref: method:gemma-scope
+  role: builds-on
+- name: Towards Monosemanticity
+  anchor: https://transformer-circuits.pub/2023/monosemantic-features/index.html
+  role: builds-on
+- name: Scaling Monosemanticity
+  anchor: https://transformer-circuits.pub/2024/scaling-monosemanticity/index.html
+  role: context
+evidence_type: correlational
+key_metric: 'LLM evaluation: ''same'' features near zero in initial layers, increasing after 10th layer;
+  feature similarity significant for approximately five layers; minimal loss from layer pruning beyond
+  10th layer on OpenWebText'
+caveat: Authors note that initial layers have large variance in L0 norms of SAEs, and using SAEs with
+  similar norms improves explained variance. The bijective matching assumption may not capture all feature
+  dynamics; some features are not matched in this way.
+extracted_by: automatic-extraction

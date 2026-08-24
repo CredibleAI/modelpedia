@@ -1,0 +1,43 @@
+id: IC-462
+title: GPT-2 encodes toxicity in a low-dimensional linear subspace of its MLP layers, concentrated in
+  higher layers
+description: 'By computing the SVD of the difference between toxic and non-toxic sentence embeddings
+  in GPT-2''s MLP layers, the paper identifies a low-dimensional toxic subspace. The top singular vectors
+  map to toxic vocabulary (e.g., profanity, slurs) when projected onto the output embedding matrix,
+  while lower-ranked vectors correspond to context-dependent topics. This toxic subspace is not uniformly
+  distributed across layers: editing only the higher layers (15-24) reduces toxicity to 26.83% while
+  preserving perplexity, whereas editing the lower layers (1-10) actually increases toxicity to 74.63%
+  and degrades perplexity. The interpretation is consistent across different data subsets and layers.'
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-medium
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:model-editing-as-robust-denoised-variant
+datasets:
+- ref: dataset:realtoxicityprompts
+  role: eval
+- ref: dataset:wikitext-2
+  role: source
+methods:
+- ref: method:screenot
+  role: supporting
+related_work:
+- name: Lee et al. 2024
+  anchor: https://arxiv.org/abs/2401.01967
+  role: builds-on
+- name: Bordia & Bowman 2019
+  anchor: https://arxiv.org/abs/1904.03035
+  role: builds-on
+evidence_type: observational
+key_metric: 'Table 14: editing layers 15-24 gives toxicity 26.83 (0.89) and perplexity 32.50 (0.28);
+  editing layers 1-10 gives toxicity 74.63 (9.61) and perplexity 38.41 (2.47); editing layers 1-24 gives
+  toxicity 49.80 (1.10) and perplexity 46.25 (5.99)'
+caveat: Analysis is limited to GPT-2 Medium (355M) and MLP layers only; the paper notes that self-attention
+  layers are not explored. The toxic subspace rank is small (k=2 for GPT-2), and the interpretation
+  relies on mapping singular vectors to top-scoring vocabulary tokens.
+extracted_by: automatic-extraction
+related_findings:
+- IC-463

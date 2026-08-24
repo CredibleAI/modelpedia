@@ -1,0 +1,54 @@
+id: IC-572
+title: Bijection learning achieves state-of-the-art jailbreak ASR on frontier models, with peak ASR
+  increasing with model capability
+description: 'The authors apply a bijective string-to-string encoding to harmful prompts and teach the
+  model the mapping in-context, then measure whether the model produces a harmful response. Across Claude
+  3 Haiku, Claude 3 Opus, Claude 3.5 Sonnet, GPT-4o-mini, and GPT-4o, the attack outperforms an ensemble
+  of 11 prior encoding-based attacks by at least 30 percentage points on both AdvBench-50 and HarmBench.
+  The peak ASR for each model scales with its MMLU capability: within the Claude family, the more capable
+  model reaches a higher peak ASR at a higher MMLU score, and the same pattern holds for GPT-4o and
+  Llama 3.1 families.'
+models:
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+concepts:
+- ref: concept:failure-mode
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:endless-jailbreaks-bijection-learning
+datasets:
+- ref: dataset:advbench
+  role: eval
+- ref: dataset:harmbench
+  role: eval
+methods:
+- ref: method:gcg
+  role: compared-to
+- ref: method:pair
+  role: compared-to
+- ref: method:tap
+  role: compared-to
+related_work:
+- ref: method:gcg
+  role: compared-to
+- ref: method:pair
+  role: compared-to
+- ref: method:tap
+  role: compared-to
+evidence_type: correlational
+key_metric: 'AdvBench-50 ASR: 92% (Claude 3 Haiku), 94% (Claude 3 Opus), 94% (Claude 3.5 Sonnet), 88%
+  (GPT-4o-mini), 66% (GPT-4o). HarmBench ASR: 82.1%, 78.1%, 86.3%, 64.1%, 59.1% respectively. Outperforms
+  encoding ensemble by at least 30 percentage points.'
+caveat: Evaluations limited to closed-source models due to cost; larger sweeps restricted to cheaper
+  models. Bijection learning requires 25,000-50,000 input tokens, limiting applicability to models with
+  large context windows.
+extracted_by: automatic-extraction
+related_findings:
+- IC-573
+- IC-574

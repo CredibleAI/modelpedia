@@ -1,0 +1,27 @@
+id: IC-134
+title: Mistral Large V2 as a judge on SummEval coherence systematically avoids extreme ratings (1 and
+  5), while human annotators assign over 24% of items a median rating of 5
+description: Using the proposed ordinal HM perception comparison chart, the paper visualizes the distribution
+  of human and machine ratings binned by human median. For Mistral Large V2 on SummEval coherence (1600
+  samples, 3 human annotations each), the model assigns no items a rating of 1 and a negligible number
+  a rating of 5, whereas humans assign over 24% of items a median rating of 5. This middle-rating bias
+  means Mistral cannot distinguish very poor from very good summaries, a gap invisible in the aggregate
+  Krippendorff's-α of 0.49.
+models:
+- ref: model:mistral-large-v2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:beyond-correlation-impact-human-uncertainty-measuring
+datasets:
+- ref: dataset:summeval
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: 'Mistral on SummEval coherence: 0 items rated 1, negligible items rated 5; humans assign
+  >24% of items median rating 5. Krippendorff''s-α HM = 0.49 (all samples).'
+caveat: This observation is from a single criterion (coherence) of a single dataset (SummEval) with
+  3 human annotations per item. The authors note that 'some key item level discrepancies between machines
+  and humans ratings might not be clearly surfaced' at the aggregate level.
+extracted_by: automatic-extraction

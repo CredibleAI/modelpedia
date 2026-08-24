@@ -1,0 +1,52 @@
+id: IC-092
+title: All evaluated LLMs show consistent F1 degradation to at most 0.60 when two or more events match
+  a retrieval cue
+description: 'On the long book (100k tokens, 196 events), every model and memory strategy tested shows
+  a sharp drop in recall accuracy once a cue matches more than one event. For single-event cues, top
+  models reach F1 of 0.81–0.97, but for two or more matching events the best F1 across all models and
+  strategies is 0.60 or below. The effect is consistent across in-context, RAG, and fine-tuning settings,
+  and persists on the shorter 10k-token book. The authors attribute this to cue overload: the model
+  cannot disambiguate among multiple similar events sharing a cue dimension.'
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-405b-instruct
+- ref: model:o1
+  variant: variant:o1-mini
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:episodic-memories-generation-evaluation-benchmark-large
+datasets:
+- ref: dataset:episodic-memory-benchmark
+  role: eval
+methods:
+- ref: method:in-context-learning
+  role: primary
+- ref: method:retrieval-augmented-generation
+  role: primary
+related_work:
+- ref: dataset:needle-in-a-haystack
+  role: context
+- name: Babi tasks
+  anchor: https://arxiv.org/abs/1502.05698
+  role: context
+- name: Michelangelo (LSQ)
+  anchor: https://arxiv.org/abs/2409.12640
+  role: context
+evidence_type: correlational
+key_metric: 'f1 ≤0.60 for all models when 2+ events match the cue (long book); e.g. GPT-4o in-context:
+  0.81 (1 event) → 0.60 (2 events) → 0.57 (3-5) → 0.53 (6+); O1-mini in-context: 0.05 (1 event) → 0.12
+  (2) → 0.12 (3-5) → 0.24 (6+)'
+caveat: The benchmark is synthetic and uses explicit temporal/spatial markers; the authors note it may
+  not capture implicit or relative temporal references in natural language.
+extracted_by: automatic-extraction
+related_findings:
+- IC-093
+- IC-094
+- IC-095

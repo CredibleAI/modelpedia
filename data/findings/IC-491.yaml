@@ -1,0 +1,33 @@
+id: IC-491
+title: Presenting three images as a single collage rather than sequentially reduces MLLM accuracy by
+  approximately 40% on the relationship application step
+description: 'GPT-4o and Qwen2-VL-7B-Instruct, which accept both input formats, were evaluated on VOILA-WD
+  and VOILA-ND using L2M prompting. When the three input images are combined into a single collage,
+  accuracy on the applying-relationship step drops substantially: GPT-4o goes from 6.44% to 3.94% on
+  VOILA-WD and from 29.03% to 19.43% on VOILA-ND. The authors attribute the degradation to image resolution
+  constraints in the collage format. A follow-up test with LLaVA-OneVision''s anyres strategy partially
+  closes the gap (53% vs. 57% on image description).'
+models:
+- ref: model:gpt-4o
+- ref: model:qwen-2-vl
+  variant: variant:qwen2-vl-7b-instruct
+- ref: model:llava-onevision
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:voila-evaluation-mllms-perceptual-understanding-analogical
+datasets: []
+methods:
+- ref: method:least-to-most-prompting
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4o applying relationship: 3.94% (collage) vs. 6.44% (sequential) on VOILA-WD; 19.43%
+  vs. 29.03% on VOILA-ND; Qwen2-VL: 0.52% vs. 0.85% (VOILA-WD); 3.77% vs. 6.8% (VOILA-ND)'
+caveat: Only two models (GPT-4o, Qwen2-VL) support both input formats; the effect may be specific to
+  models with resolution constraints on multi-image input.
+extracted_by: automatic-extraction
+related_findings:
+- IC-489
+- IC-490
+- IC-492

@@ -1,0 +1,30 @@
+id: IC-431
+title: Llama-2-7b generates more toxic content for female-associated prompts than male-associated prompts
+  on the BOLD dataset
+description: Using the BOLD gender domain (776 'American actresses' vs 776 'American actors' prompts),
+  the paper measures the toxic rate of Llama-2-7b's raw generations. The female-associated prompts yield
+  a toxic rate of 0.066 and avg. max toxicity of 0.243, compared to 0.031 and 0.213 for male-associated
+  prompts. The authors interpret this as the model being 'somewhat biased against female.' Both RAD
+  and SASA mitigate the gap, with SASA reaching 0.027 vs 0.023 avg. max toxicity for female vs male.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:large-language-models-become-strong-self
+datasets:
+- ref: dataset:bold
+  role: eval
+methods:
+- ref: method:perspective-api
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: toxic rate 0.066 (female) vs 0.031 (male); avg. max toxicity 0.243 (female) vs 0.213 (male)
+  for raw Llama-2-7b on BOLD gender domain
+caveat: The authors note this is a 'somewhat' biased result and the gap is modest; the finding is reported
+  in the appendix (Table 13) as a secondary analysis.
+extracted_by: automatic-extraction
+related_findings:
+- IC-430

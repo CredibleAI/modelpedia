@@ -1,0 +1,33 @@
+id: IC-115
+title: 'NUPA performance is largely independent of model size within a family: GPT-4o and GPT-4o-mini
+  show nearly identical performance, as do Qwen2-72B and Qwen2-7B'
+description: The paper observes that within the same model family, the larger and smaller variants achieve
+  nearly identical NUPA scores across most tasks. GPT-4o and GPT-4o-mini perform almost identically,
+  and Qwen2-72B and Qwen2-7B show a similar pattern. The authors conclude that once a model reaches
+  a certain size, NUPA performance depends more on architecture, training strategies, data diversity,
+  and post-training refinements rather than on simply increasing parameter count. This contrasts with
+  the general trend in LLMs where larger models outperform smaller ones on most benchmarks.
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:qwen-2
+  variant: variant:qwen-2-7b
+- ref: model:qwen-2
+  variant: variant:qwen-2-72b
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:number-cookbook-number-understanding-language-models
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: gpt-4o and gpt-4o-mini show nearly identical performance across most tasks, similar to the
+  comparison between qwen2-72b and qwen2-7b
+caveat: The paper notes this is an observation across a limited set of models and tasks; the number
+  of models tested is limited and more models are planned for future evaluation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-112
+- IC-113
+- IC-114

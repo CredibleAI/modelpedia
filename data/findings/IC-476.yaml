@@ -1,0 +1,28 @@
+id: IC-476
+title: GPT-4 and GPT-3.5 show strong positional bias in Chinese idiom character completion
+description: 'The paper tests GPT-4 and GPT-3.5 on a task where a 4-character Chinese idiom has one
+  character masked and the model must fill it in. The accuracy depends dramatically on which position
+  is masked: for GPT-4, accuracy ranges from 17.6% (position 1) to 90.6% (position 4); for GPT-3.5,
+  from 9.4% to 56.7%. The same three visible characters serve as evidence in all four cases, but the
+  model''s ability to recover the missing character depends on where the gap sits in the sequence. This
+  demonstrates that the model''s response to the same evidence depends on its position in the input.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:physics-language-models-part-3-2
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4: 17.6% (pos 1), 36.1% (pos 2), 76.7% (pos 3), 90.6% (pos 4). GPT-3.5: 9.4% (pos 1),
+  29.5% (pos 2), 32.0% (pos 3), 56.7% (pos 4).'
+caveat: The task uses a small set of common 4-character Chinese idioms; the paper does not report the
+  number of test items or variance. The effect may partly reflect the autoregressive nature of the architecture
+  (later positions have more context) rather than a general positional bias.
+extracted_by: automatic-extraction
+related_findings:
+- IC-474
+- IC-475

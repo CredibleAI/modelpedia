@@ -1,0 +1,33 @@
+id: IC-324
+title: Fine-tuning Gemini Nano 1 on 8 memorization examples causes it to override in-context predictions
+  with in-weight predictions in 2 of 8 cases, while the base model always follows in-context predictions
+description: The authors fine-tuned the released Gemini Nano 1 (1.8B) on eight name-city pairs (four
+  real, four invented) to force in-weight memorization. When tested with a contradictory in-context
+  prompt (e.g., 'kaitlyn lives in kjheergg. Where does kaitlyn live?'), the base model always answers
+  with the in-context city (8/8 ICL). After fine-tuning, the model reverts to the memorized in-weight
+  answer in 2 of 8 cases (trrrrqe, kaitlyn) and produces an unrelated answer in 2 more, while still
+  following ICL in 4 cases. On the pure IWL test (no contradictory context), the fine-tuned model answers
+  6/8 correctly (4/4 real, 2/4 invented), whereas the base model answers 0/8. This demonstrates that
+  in-weight memorization can partially override in-context learning in a released LLM.
+models:
+- ref: model:gemini
+  variant: variant:gemini-nano-1
+concepts: []
+sources:
+- ref: source:toward-understanding-context-vs-weight-learning
+datasets: []
+methods: []
+related_work:
+- name: Wei et al. (2023) - Larger language models do in-context learning differently
+  anchor: https://arxiv.org/abs/2303.03846
+  role: compared-to
+evidence_type: interventional
+key_metric: 'Base model ICL: 8/8 answers = in-context city (kjheergg). Fine-tuned model ICL: 4/8 ICL,
+  2/8 IWL override (trrrrqe answers qtbnaaa log-prob 0.0000 vs kjheergg -21.6897; kaitlyn answers kingston
+  log-prob -0.1156 vs kjheergg -2.4694), 2/8 other. Fine-tuned IWL: 6/8 correct (4/4 real, 2/4 invented)
+  vs base 0/8.'
+caveat: Only 8 questions were used for fine-tuning and evaluation; the effect is demonstrated on a single
+  small set of name-city pairs. The paper notes that with longer or more informative prompts the ICL
+  behaviour is partially restored, and that the results are specific to this small-scale memorization
+  setup.
+extracted_by: automatic-extraction

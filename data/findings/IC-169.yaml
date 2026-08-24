@@ -1,0 +1,48 @@
+id: IC-169
+title: BT-based, DPO-based reward models, and GPT-4 as judge all exhibit significant length bias, with
+  their scores correlating with output length rather than quality
+description: The paper measures length bias across 33 BT-based reward models, 46 DPO-based reward models,
+  and GPT-4 used as a pairwise judge. For BT-based RMs, 8 of 10 top models show high gameability (sensitivity
+  to verbosity prompting) and low accuracy on the 17-example LengthBiasBench subset, with a -0.879 Spearman
+  correlation between the two metrics. The average absolute Spearman correlation between output length
+  and reward across all 33 BT-based RMs is 0.293. GPT-4's pairwise judgments in AlpacaEval1 show 27.9%
+  gameability. DPO-based RMs also exhibit the bias, with average calibration gains of 1.60 and 1.68.
+  The bias also extends to markdown formatting features, with 1.81 and 1.86 average gains after calibrating
+  for list/header/bold counts.
+models:
+- ref: model:gpt-4
+- ref: model:internlm2-reward
+  variant: variant:internlm2-7b-reward
+- ref: model:internlm2-reward
+  variant: variant:internlm2-20b-reward
+- ref: model:qwen-2
+  variant: variant:btrm-qwen2-7b
+- ref: model:eurus-rm-7b
+- ref: model:llama-3
+  variant: variant:llama-3-offsetbias-rm
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:post-hoc-reward-calibration-case-study
+datasets:
+- ref: dataset:rewardbench
+  role: eval
+- ref: dataset:alpacaeval
+  role: eval
+- ref: dataset:alpacaeval-2
+  role: eval
+- ref: dataset:chatbot-arena
+  role: eval
+methods:
+- ref: method:spearman-correlation
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: '|ρ|avg = 0.2930±0.1836 (Spearman, length vs reward, 33 BT-based RMs); 8/10 top RMs high
+  gameability + low LengthBiasBench; -0.879 Spearman between gameability and LengthBiasBench; AE1 gameability
+  27.9%; DPO-based avg gains 1.60 (rc-mean) / 1.68 (rc-lwr); markdown calibration gains 1.81 / 1.86'
+caveat: The LengthBiasBench subset contains only 17 test examples. The independence assumption (that
+  true reward is uncorrelated with length) may not hold for specific prompt subsets. The paper notes
+  that a rule-based RM always choosing the shorter sentence achieves 60% accuracy on RewardBench, so
+  the ideal length-reward correlation is slightly negative, not zero.
+extracted_by: automatic-extraction

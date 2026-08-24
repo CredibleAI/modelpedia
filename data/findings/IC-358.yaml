@@ -1,0 +1,38 @@
+id: IC-358
+title: GPT-2-small and Mistral 7B contain circular representations of days of the week and months of
+  the year in their internal activations, discovered via SAE dictionary element clustering
+description: The authors train or obtain sparse autoencoders on GPT-2-small (all layers, from Bloom
+  2024) and Mistral 7B (layers 8, 16, 24, trained by the authors on 1B+ tokens). By clustering SAE dictionary
+  elements by cosine similarity and reconstructing activations within each cluster, they find that days
+  of the week, months of the year, and (in GPT-2) years of the 20th century are arranged in circular
+  order in the PCA projections of the reconstructed activations. The days-of-week cluster in GPT-2-small
+  scores m_ε(f)=0.4750 and s(f)=0.9506 on the irreducibility tests, ranking 9th out of 1000 clusters
+  by the combined metric.
+models:
+- ref: model:gpt-2
+- ref: model:mistral-7b
+concepts:
+- ref: concept:circular-representation
+sources:
+- ref: source:not-all-language-model-features-one
+datasets:
+- ref: dataset:the-pile
+  role: source
+methods:
+- ref: method:sparse-autoencoder
+  role: primary
+- ref: method:spectral-clustering
+  role: supporting
+- ref: method:pca
+  role: supporting
+related_work: []
+evidence_type: observational
+key_metric: m_ε(f) = 0.4750, s(f) = 0.9506 for days-of-week cluster (GPT-2-small, layer 7); clusters
+  rank 9, 28, 15 out of 1000 by product of (1 − ε-mixture index) and separability index
+caveat: The authors note it is unclear why they did not find more interpretable multi-dimensional features,
+  and their irreducibility definitions are purely statistical and had to be relaxed to hold in practice.
+extracted_by: automatic-extraction
+related_findings:
+- IC-359
+- IC-360
+- IC-361

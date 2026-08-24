@@ -1,0 +1,35 @@
+id: IC-529
+title: For inconsistent knowledge in GPT-2, Llama2-7B, and Llama3-8B, the knowledge neurons are associated
+  with the specific query rather than the fact, as shown by differential effects of suppressing or enhancing
+  query-specific versus neighbor neurons
+description: The authors intervene on neuron activations by suppressing or enhancing them and measure
+  the change in answer probability. For Ki facts, manipulating the query's own neurons (ni) has a large
+  effect on the answer, while manipulating the union, intersection, or refined set of neighbor neurons
+  has a much smaller effect. For Kc facts, the decrease in effect for neighbor neurons is less pronounced.
+  This demonstrates that for Ki, the same fact is stored in different neurons depending on which paraphrase
+  is used to query it, violating the assumption of a fixed fact-to-neuron mapping.
+models:
+- ref: model:gpt-2
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts: []
+sources:
+- ref: source:knowledge-localization-mission-not-accomplished-enter
+datasets:
+- ref: dataset:pararel
+  role: eval
+methods: []
+related_work:
+- name: Knowledge Neurons in Pretrained Transformers
+  anchor: https://doi.org/10.18653/v1/2022.acl-long.581
+  role: builds-on
+evidence_type: interventional
+caveat: The specific magnitude of the differential effect is shown only in Figure 4 (violin/bar plots)
+  without tabulated values in the text. The threshold for classifying Kc vs Ki is set very low to be
+  conservative, meaning some Kc facts may not be fully consistent.
+extracted_by: automatic-extraction
+related_findings:
+- IC-528
+- IC-530

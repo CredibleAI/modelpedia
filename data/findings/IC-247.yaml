@@ -1,0 +1,35 @@
+id: IC-247
+title: Pretrained LLMs are invariant to positional shifts but sensitive to duration scaling of the input
+description: 'The authors test two transformations on the continuous input: shifting all positional
+  indices by a fixed amount (up to 10) without changing durations, and scaling all durations by a factor
+  in [0.2, 1.4]. Shifting produces negligible change in the model''s output across all six LLMs and
+  three test sentences, consistent with the shift-invariance of sinusoidal and rotary positional encodings.
+  Scaling, by contrast, significantly changes the predicted next token. The same shift-invariance is
+  observed in GPT-2 (learned positional embeddings), though with smaller magnitude.'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+- ref: model:phi-3
+  variant: variant:phi-3-medium-4k-instruct
+- ref: model:gemma
+  variant: variant:gemma-17b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+- ref: model:mistral-7b
+- ref: model:gpt-2
+concepts: []
+sources:
+- ref: source:language-models-implicitly-continuous
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The shifting experiment uses a fixed shift up to 10; the scaling experiment uses factors in
+  [0.2, 1.4]. Results are qualitative (probability plots) without a single aggregate metric. The GPT-2
+  result is noted as having 'less strong' effect compared to RoPE models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-245
+- IC-246

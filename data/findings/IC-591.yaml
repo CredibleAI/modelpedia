@@ -1,0 +1,32 @@
+id: IC-591
+title: Downstream fine-tuning on GSM8K degrades safety of Llama2-7b-chat and Mistral-7b-instruct-v0.2,
+  but RSN-Tune partially preserves safety by protecting non-overlapping safety neurons.
+description: 'Fine-tuning instruction-tuned models on the GSM8K training set significantly increases
+  harmfulness: Llama2-7b-chat''s harmful score rises from 0.0 to 41.0, and Mistral-7b-instruct-v0.2''s
+  from 36.0 to 79.0. The authors attribute this to overlap between safety neurons and ''foundation neurons''
+  that are modified during fine-tuning. RSN-Tune, which tunes only safety neurons that do not overlap
+  with foundation neurons, reduces the post-fine-tuning harmful score to 26.0 (Llama2-7b-chat) and 41.0
+  (Mistral-7b-instruct-v0.2), while maintaining downstream task performance (GSM8K accuracy 26.2 and
+  63.2 respectively).'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:understanding-enhancing-safety-mechanisms-llms-via
+datasets:
+- ref: dataset:gsm8k
+  role: train
+methods: []
+related_work: []
+evidence_type: interventional
+key_metric: 'harmful score after GSM8K fine-tuning: 0.0→41.0 (Llama2-7b-chat), 36.0→79.0 (Mistral-7b-instruct-v0.2);
+  RSN-Tune: 41.0→26.0, 79.0→41.0; GSM8K accuracy 26.2 and 63.2'
+caveat: A complete reduction to 0.0 harmful score is not achievable due to insufficient non-overlapping
+  safety neurons; tested only on GSM8K as the downstream task.
+extracted_by: automatic-extraction
+related_findings:
+- IC-590

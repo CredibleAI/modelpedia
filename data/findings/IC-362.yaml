@@ -1,0 +1,44 @@
+id: IC-362
+title: LLMs with chain-of-thought prompting predict and simulate human risky choices that are more rational
+  than actual human behavior, correlating more highly with maximum expected value than with human choices
+description: 'Across 9,831 risky choice problems from the Choices13k dataset, five LLMs were asked to
+  predict, aggregate, or simulate human gamble selections. Under chain-of-thought prompting, all models
+  produced predictions that correlated more strongly with the maximum expected value (the rational choice)
+  than with actual human choices. GPT-4o CoT achieved a Spearman correlation of 0.94 with max EV versus
+  only 0.61 with humans, while humans themselves correlate at 0.48 with max EV. The gap widens with
+  model capability: Llama-3-8B CoT reaches 0.57 with EV, Llama-3-70B 0.80, Claude 3 Opus 0.76, GPT-4-Turbo
+  0.93. Zero-shot prompting yields noisier, less rational predictions, and a behavioral model fit on
+  GPT-4-Turbo zero-shot outputs revealed a mixture of rational and probability-ignoring strategies.'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:gpt-4o
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:large-language-models-assume-people-more
+datasets:
+- ref: dataset:choices13k
+  role: eval
+methods:
+- ref: method:chain-of-thought-prompting
+  role: primary
+related_work:
+- name: Binz and Schulz (2023a) - Turning LLMs into cognitive models
+  anchor: https://arxiv.org/abs/2306.03917
+  role: builds-on
+evidence_type: correlational
+key_metric: 'GPT-4o CoT: Spearman 0.9444 with max EV vs 0.6113 with humans; humans 0.4835 with max EV;
+  Llama-3-8B CoT 0.5665 with EV; Llama-3-70B CoT 0.7957; Claude 3 Opus CoT 0.7566; GPT-4-Turbo CoT 0.9322'
+caveat: Experiments used controlled, abstract gambling domains that may not generalize to real-world
+  contexts. The Choices13k dataset may be subject to sampling bias. Claude 3 Opus was only evaluated
+  on the individual-choice task due to cost limitations.
+extracted_by: automatic-extraction
+related_findings:
+- IC-363

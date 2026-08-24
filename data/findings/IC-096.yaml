@@ -1,0 +1,41 @@
+id: IC-096
+title: Large commercial and open-weight models achieve 70-78% accuracy on CASELAWQA, with Claude 3.7
+  Sonnet at the top
+description: The paper evaluates nine large models (at least 70B parameters) on 260 legal text classification
+  tasks drawn from U.S. Supreme Court and Court of Appeals databases. Accuracy ranges from 70% (Qwen
+  2.5 72B Instruct) to 78% (Claude 3.7 Sonnet), with GPT-4.5 Preview and Llama 3 405B Instruct at 76%.
+  All large models substantially outperform the constant classifier baseline (40%), but the authors
+  argue this level of accuracy is insufficient for reliable legal annotation work.
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:qwen-2-5-72b-instruct
+- ref: model:o3
+  variant: variant:o3-mini
+- ref: model:gpt-4o
+- ref: model:llama-3
+  variant: variant:llama-3-405b-instruct
+- ref: model:gpt-4-5
+- ref: model:deepseek-r1
+- ref: model:claude-3-7-sonnet
+concepts: []
+sources:
+- ref: source:lawma-power-specialization-legal-annotation
+datasets:
+- ref: dataset:caselawqa
+  role: eval
+- ref: dataset:uscad
+  role: source
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'accuracy ranges from 70% to 78%: Llama 3.1 8B Instruct 0.59, Qwen 2.5 72B Instruct 0.70,
+  Llama 3.3 70B Instruct 0.71, O3 Mini (high) 0.71, GPT-4o 0.74, Llama 3 405B Instruct 0.76, GPT-4.5
+  Preview 0.76, DeepSeek R1 0.77, Claude 3.7 Sonnet 0.78'
+caveat: The tasks are exclusively from U.S. Supreme Court and appellate courts; the authors note they
+  cannot speak to other legal domains or countries. Performance is measured on a subsampled test set
+  to control for class imbalance.
+extracted_by: automatic-extraction
+related_findings:
+- IC-097
+- IC-098

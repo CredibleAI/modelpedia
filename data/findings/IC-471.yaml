@@ -1,0 +1,33 @@
+id: IC-471
+title: Pythia models exceeding 100M parameters show a consistent leftward shift of the multifractal
+  spectrum (increasing regularity) during training that is absent in the 14M and 31M variants
+description: The paper applies neuron-based multifractal analysis to the weight matrices of Pythia models
+  at multiple training checkpoints. For models above 100M parameters, the Lipschitz-Hölder exponent
+  α0 shifts leftward from epoch 0 to approximately 35,000, indicating increasing structural regularity,
+  then stabilizes. The 14M model shows no such shift (α0 actually increases slightly), and the 31M model
+  shows only a brief, non-continuing shift at epoch 5,000. The spectrum width (heterogeneity) increases
+  for all sizes but stabilizes after roughly 35,000 epochs for models above 1B. At 53,000 epochs, the
+  degree of emergence scales logarithmically with model size.
+models:
+- ref: model:pythia
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:neuron-based-multifractal-analysis-neuron-interaction
+datasets: []
+methods: []
+related_work:
+- ref: model:pythia
+  role: context
+evidence_type: correlational
+key_metric: 'leftward shift observed from 0th to 35,000th epoch for models >100M; 14M shows increasing
+  α0 (no shift); 31M shows subtle shift at 5,000th epoch only; spectrum width stabilizes after ~35,000
+  epochs for >1B models; degree of emergence at 53,000 epochs: Pythia-1b 0.72, Pythia-1.4b 0.65, Pythia-2.8b
+  0.73'
+caveat: Analysis is based on sampled subgraphs of 64 nodes per layer (10 random samples averaged), not
+  the full network. The authors note the 14M and 31M models were excluded from degree-of-emergence computation
+  because the leftward shift was absent.
+extracted_by: automatic-extraction
+related_findings:
+- IC-472
+- IC-473

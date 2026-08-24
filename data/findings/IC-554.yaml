@@ -1,0 +1,33 @@
+id: IC-554
+title: In Stable Diffusion 1.4, 1.5, 2.0, and 3.0, parameters with the smallest absolute values (below
+  ~10^-3) do not contribute to the generative process, and this ineffectiveness is caused by stochastic
+  training dynamics rather than architectural redundancy.
+description: 'The authors zeroed out parameters below a threshold in released Stable Diffusion checkpoints
+  and measured FID and CLIP score. For all four SD versions, zeroing the smallest parameters (up to
+  10-20% of all weights) changed FID and CLIP by less than 1%, and in some cases (SD 1.4/1.5 at threshold
+  5e-4 to 1e-3; SD 2.0/3.0 at 1e-4) FID actually improved. To determine whether this was architectural
+  or training-induced, they continued training an SD model on FFHQ and tracked which parameters crossed
+  the threshold: 99% of initially below-threshold parameters became effective, while 1% of initially
+  above-threshold parameters fell below it, showing the ineffectiveness is a transient artefact of stochastic
+  optimisation.'
+models:
+- ref: model:stable-diffusion
+concepts: []
+sources:
+- ref: source:sara-high-efficient-diffusion-model-fine
+datasets:
+- ref: dataset:ffhq
+  role: eval
+methods:
+- ref: method:fid
+  role: eval
+- ref: method:clipscore
+  role: eval
+related_work: []
+evidence_type: interventional
+key_metric: Δclip score<1% Δfid<1% when parameters below threshold set to 0; sd1.4 and sd1.5 show better
+  fid at θt ∈ [5×10−4, 10−3]; sd2.0 and sd3.0 exhibit superior fid at θt = 10−4; 99% of initially below-threshold
+  parameters become effective during continued training
+caveat: The continued-training experiment in Sec. 3.2 uses an unspecified SD model pre-trained on FFHQ;
+  the exact checkpoint is not identified, so the 99% figure may not generalise to all SD versions.
+extracted_by: automatic-extraction

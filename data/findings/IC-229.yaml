@@ -1,0 +1,28 @@
+id: IC-229
+title: GIN, GCN, and GAT achieve only random-chance accuracy on WL-separable ε-tree graph pairs, exposing
+  a gap between theoretical expressivity and practical separation
+description: The paper constructs adversarial ε-tree graph pairs that are separable by 3 iterations
+  of the 1-WL test but have very small tree mover's distance. When trained on 100 such pairs for binary
+  classification, GIN, GCN, and GAT all achieve 0.5 accuracy, indistinguishable from random guessing.
+  This is notable because GIN is theoretically maximally expressive, meaning it can in principle separate
+  all WL-separable graph pairs. The failure demonstrates that sum-based MPNNs have poor practical separation
+  quality despite their theoretical expressivity, a gap the paper's Holder-in-expectation framework
+  quantifies.
+models:
+- ref: model:gin
+- ref: model:gcn
+- ref: model:gat
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:holder-stability-multiset-graph-neural-networks
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: GIN 0.5, GCN 0.5, GAT 0.5 accuracy on ε-tree binary classification (100 pairs, height 4,
+  ε ∈ [0.1, 1])
+caveat: The ε-tree examples are specifically constructed to expose the weakness of sum-based MPNNs;
+  the paper notes that wider or deeper variants may overcome this limitation, and the result is demonstrated
+  at a single depth (2 message passing layers) and embedding dimension.
+extracted_by: automatic-extraction

@@ -1,0 +1,45 @@
+id: IC-522
+title: LLMs perform correct example inference without inducing the correct rule, and this gap is robust
+  to prompting methods, fact count, and scenario form
+description: Across five released LLMs evaluated on the MIRAGE dataset, rule induction (RI) accuracy
+  is consistently and substantially lower than example inference (EI) accuracy in nearly all conditions.
+  The gap persists when using chain-of-thought, self-consistency, self-refine, and hypothesis refinement
+  prompting, when varying the number of observed facts, and when transferring rules across scenario
+  formats. A change-rate control experiment confirms the two tasks have comparable intrinsic difficulty,
+  ruling out that EI is simply easier to guess. A transferability test shows that a rule induced in
+  one scenario does not help in another, further indicating the model is not internally representing
+  and applying an abstract rule.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-4o
+- ref: model:claude-3-5
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+concepts: []
+sources:
+- ref: source:mirage-evaluating-explaining-inductive-reasoning-process
+datasets: []
+methods:
+- ref: method:self-consistency
+  role: compared-to
+- ref: method:self-refine
+  role: compared-to
+- ref: method:hypothesis-refinement
+  role: compared-to
+related_work:
+- name: 'Hypothesis search: inductive reasoning with language models'
+  anchor: https://openreview.net/forum?id=g7utigqmjm
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4o RI 0.16–0.44 vs EI 0.17–0.68; GPT-4 RI 0.15–0.58 vs EI 0.21–0.71; Claude-3.5 RI
+  0.13–0.46 vs EI 0.24–0.79; Llama3-8B RI 0.02–0.23 vs EI 0.09–0.30; Llama2-13B RI 0.00–0.21 vs EI 0.01–0.26
+  (d=3,5,8; 4 scenarios, n=5). CR (d=3,n=3): GPT-4o RI 0.74 vs EI 0.77; Claude-3.5 RI 0.81 vs EI 0.66.
+  CoT 0-shot on GPT-4o: RI 0.50, EI 0.57 (LT) vs IO 0-shot RI 0.46, EI 0.76.'
+caveat: The authors note they do not meticulously design prompts and use 0-shot IO with simple instructions;
+  they also could not evaluate the o1 model due to API frequency limits. The evaluation is on a synthetic
+  dataset with single-digit integer vectors.
+extracted_by: automatic-extraction
+related_findings:
+- IC-523

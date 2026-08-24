@@ -1,0 +1,34 @@
+id: IC-124
+title: Direct comparison of CLIP image embeddings with CLAP audio embeddings achieves near-chance retrieval,
+  while logsumexp bridging through the shared language modality recovers 62% recall@10 on AudioSet
+description: The paper evaluates whether the image encoder of CLIP and the audio encoder of CLAP can
+  be directly compared via normalized dot product for audio-visual retrieval. Direct comparison yields
+  only 14% recall@10 on AudioSet, barely above the 10% chance level for a 10-way task. Applying the
+  logsumexp (monte carlo) method, which marginalizes over the intermediate language modality using the
+  AudioSet ontology as the sample space, raises performance to 62% recall@10. This demonstrates that
+  two independently trained contrastive models cannot be naively plugged together without an explicit
+  bridging procedure.
+models:
+- ref: model:clip
+- ref: model:clap
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:law-unconscious-contrastive-learner-probabilistic-alignment
+datasets:
+- ref: dataset:audioset
+  role: eval
+methods: []
+related_work:
+- ref: model:languagebind
+  role: compared-to
+evidence_type: correlational
+key_metric: 14% recall@10 (direct CLIP image vs CLAP audio) vs 62% recall@10 (logsumexp via language)
+  on AudioSet
+caveat: The logsumexp method uses only the AudioSet ontology (600-700 language descriptions) as the
+  intermediate sample space, which limits the approximation quality.
+extracted_by: automatic-extraction
+related_findings:
+- IC-125
+- IC-126
+- IC-127

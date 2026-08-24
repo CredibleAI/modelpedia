@@ -1,0 +1,52 @@
+id: IC-436
+title: API selection accuracy of 10 LLM-based agents degrades sharply as task complexity increases,
+  with open-source models ≥70B matching closed-source on simpler tasks but lagging on the most complex
+description: The paper evaluates 10 LLMs (5 open-source, 5 closed-source) on API selection across 4
+  difficulty levels of ShortcutsBench. At the easiest level (0,1] all models perform well, but accuracy
+  drops by an average of 19% moving to (1,5] and by 46% moving to (5,15]. Open-source models ≥70B (Llama-3-70B,
+  Qwen-2-72B, DeepSeek-2-Chat/Coder) match or exceed closed-source models on the first three difficulty
+  levels but fall behind on the hardest (15,30] level. Performance also varies by task type, with lifestyle
+  & social tasks scoring highest and development & API tasks lowest.
+models:
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-flash
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:qwen-2
+  variant: variant:qwen-2-72b
+- ref: model:qwen2-5
+  variant: variant:qwen-2-5-7b
+- ref: model:deepseek-2-chat
+- ref: model:deepseek-2-coder
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:glm-4
+  variant: variant:chatglm-4-air
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:shortcutsbench-large-scale-real-world-benchmark
+datasets: []
+methods:
+- ref: method:react
+  role: primary
+related_work:
+- name: MetaTool
+  anchor: https://openreview.net/forum?id=r0c2qtalgg
+  role: compared-to
+evidence_type: correlational
+key_metric: average accuracy dropped by 19% as task difficulty rose from (0,1] to (1,5], ranging from
+  a 9% decrease (deepseek-2-chat) to a 44% (chatglm-4-air); from (0,1] to (5,15], accuracy fell by 46%,
+  with drops from 38% (gemini-1.5-pro) to 58% (chatglm-4-air); performance difference across task types
+  ranges from 15.94% (gpt-4o-mini) to 36.70% (gemini-1.5-pro)
+caveat: Gemini-1.5-Pro was tested on only 801 instances due to cost, while other models were tested
+  on 5000+ instances; shortcuts longer than 30 actions were excluded from evaluation
+extracted_by: automatic-extraction
+related_findings:
+- IC-437
+- IC-438
+- IC-439

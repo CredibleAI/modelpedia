@@ -1,0 +1,56 @@
+id: IC-188
+title: LLMs show constraint-type-specific performance on system message following, with weaker models
+  exhibiting large variance across constraint categories
+description: The paper evaluates 16 LLMs on 500 system messages containing six constraint types (action,
+  content, background, role, format, style). GPT-4o leads across all types with an overall CSR of 87.1%.
+  Stronger models show relatively uniform performance across constraint types, while weaker models show
+  significant variance. For example, Qwen2-7b achieves 81.0% on role constraints but drops to 43.3%
+  on style constraints. ERNIE-4, despite performing well on other instruction-following benchmarks,
+  scores only 50.7% overall on system message following, comparable to Qwen2-7b.
+models:
+- ref: model:gpt-4o
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo-20240409
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:mixtral
+  variant: variant:mixtral-8x22b-instruct
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-20231106
+- ref: model:qwen-2-5-72b-instruct
+- ref: model:qwen-2
+  variant: variant:qwen2-72b-instruct
+- ref: model:qwen-2
+  variant: variant:qwen-2-7b-instruct
+- ref: model:glm-4
+  variant: variant:glm-4-0520
+- ref: model:glm-4
+  variant: variant:glm-4-9b-chat
+- ref: model:deepseek-v2-0628
+- ref: model:moonshot-v1-8k
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:sysbench-llms-follow-system-message
+datasets: []
+methods: []
+related_work:
+- name: FollowBench
+  anchor: https://doi.org/10.48550/arxiv.2310.20410
+  role: compared-to
+- ref: dataset:ifeval
+  role: compared-to
+evidence_type: correlational
+key_metric: GPT-4o CSR 87.1% (action 86.8%, content 86.9%, background 87.2%, role 93.5%, format 87.4%,
+  style 86.5%); Qwen2-7b role 81.0% vs. style 43.3%; ERNIE-4 total 50.7%
+caveat: Evaluation uses GPT-4o as a model-based verifier; the paper reports 97.3% human-model consistency
+  at constraint granularity but this is a proxy for ground truth.
+extracted_by: automatic-extraction
+related_findings:
+- IC-189
+- IC-190
+- IC-191

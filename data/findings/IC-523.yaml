@@ -1,0 +1,42 @@
+id: IC-523
+title: LLMs rely on observed facts close to the test case in input feature space (neighbor-based reasoning)
+  rather than on an abstract rule, and this effect is localized
+description: 'When observed facts are partitioned into in-neighborhood (IF), cross-neighborhood (CF),
+  and out-neighborhood (OF) relative to the test input using Chebyshev distance, model accuracy on example
+  inference follows IF > CF > OF across all five models, all four scenarios, and multiple fact counts.
+  Removing neighbor facts (OF only) causes a significant accuracy drop compared to the baseline. The
+  effect is universal: it holds for GPT-4o, Claude-3.5, Llama3-8B, and Llama2-13B across list transformation,
+  real-world problems, code generation, and string transformation. A deductive-density analysis shows
+  the benefit of neighbor facts is localized: at test radius eta=1 the model achieves over 0.9 deductive
+  density, but this drops to around 0.5 in the full test space, indicating the model generalizes only
+  within a small neighborhood of the test case.'
+models:
+- ref: model:gpt-4o
+- ref: model:claude-3-5
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+concepts: []
+sources:
+- ref: source:mirage-evaluating-explaining-inductive-reasoning-process
+datasets: []
+methods: []
+related_work:
+- name: In-context learning and induction heads
+  anchor: https://doi.org/10.48550/arxiv.2209.11895
+  role: context
+- name: 'Case-based or rule-based: how do transformers do the math?'
+  anchor: https://openreview.net/forum?id=4vqr8srfyx
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4o (d=5, n=5): IF only 0.84/0.52/0.84/0.63, CF only 0.69/0.35/0.72/0.50, OF only 0.49/0.23/0.57/0.36,
+  baseline 0.66/0.36/0.71/0.46 (LT/RP/CG/ST). Deductive density: over 0.9 at eta=1 (d=3), around 0.5
+  in full test space (d=5). Claude-3.5 (d=5, n=5): IF only 0.90/0.46/0.87/0.61, OF only 0.60/0.30/0.71/0.39.'
+caveat: The neighborhood is defined using Chebyshev distance on the input vectors; the authors validate
+  this choice against Euclidean, Manhattan, and Minkowski distances and find only Chebyshev produces
+  the effect. The analysis is on synthetic single-digit integer vectors, and the models are treated
+  as black boxes with no internal inspection.
+extracted_by: automatic-extraction
+related_findings:
+- IC-522

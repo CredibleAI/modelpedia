@@ -1,0 +1,30 @@
+id: IC-165
+title: Llama-3-8B performs algorithm selection during in-context learning, selecting the classification
+  criterion with the lowest test error on ambiguous natural language tasks
+description: The paper designs an ambiguous sentence classification task where each sentence can be
+  classified by one of three criteria (sentiment, type, or location), with labels mapped to meaningless
+  strings. As context length increases, the model's top-5 accuracy for the true underlying criterion
+  significantly exceeds the accuracy for the other two criteria. This demonstrates that the model performs
+  algorithm selection by preferring the pretraining function that minimizes test error, consistent with
+  the theoretical low-test-error preference proven in section 5.1.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts: []
+sources:
+- ref: source:context-learning-really-generalize-out-distribution
+datasets: []
+methods:
+- ref: method:in-context-learning
+  role: primary
+related_work:
+- name: 'Yadlowsky et al. (2023): Pretraining data mixtures enable narrow model selection'
+  anchor: https://arxiv.org/abs/2311.00871
+  role: compared-to
+evidence_type: correlational
+caveat: The specific model used in section 5.3 is not explicitly named in the text; it is inferred to
+  be Llama-3-8B based on the paper's pattern of using this model for all real-world LLM experiments.
+  The task uses only 128 test examples per context length.
+extracted_by: automatic-extraction
+related_findings:
+- IC-164

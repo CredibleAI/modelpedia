@@ -1,0 +1,29 @@
+id: IC-504
+title: GPT-4o (gpt-4o-2024-08-06) rates the political slant of LLM-generated essays in close agreement
+  with politically balanced human annotators
+description: To evaluate the political slant of 1,134 generated essays, the authors recruit 10 human
+  annotators (3 Democrats, 4 Independents, 3 Republicans) from CloudResearch Survey to rate a random
+  sample of 21 essays on a 7-point scale. GPT-4o is then prompted to rate the same essays on the identical
+  scale. The intraclass correlation between GPT-4o's ratings and the averaged human ratings is 0.91,
+  and the Spearman correlation is 0.952. The authors use this agreement as validation to deploy GPT-4o
+  for rating the full set of essays.
+models:
+- ref: model:gpt-4o
+concepts: []
+sources:
+- ref: source:linear-representations-political-perspective-emerge-large
+datasets: []
+methods: []
+related_work:
+- name: O'Hagan & Schein 2023
+  anchor: https://arxiv.org/abs/2312.09203
+  role: context
+evidence_type: correlational
+key_metric: ICC(a,1) = 0.91; Spearman ρ = 0.952 (GPT-4o vs. averaged human ratings, n=21 essays)
+caveat: Validation is on only 21 essays from Llama-2-7B-Chat. The authors acknowledge potential for
+  bias when using an LLM as an evaluator and recommend continued validation against human annotations.
+extracted_by: automatic-extraction
+related_findings:
+- IC-501
+- IC-502
+- IC-503

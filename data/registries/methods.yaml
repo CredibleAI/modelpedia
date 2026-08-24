@@ -52,7 +52,7 @@ method:bh-fdr:
     thousands of tiles produces significant regions by chance alone.
 
 method:probing-classifiers:
-  name: Probing classifiers
+  name: Probing classifiers / MLP probing classifiers
   anchor: https://arxiv.org/abs/1610.01644
   artifact: null
   description: 'Freeze the model, train a small supervised model on its internal activations to predict
@@ -187,7 +187,7 @@ method:control-task:
     well proves nothing. Introduced by Hewitt and Liang as probe selectivity.
 
 method:logistic-regression:
-  name: Logistic regression
+  name: Logistic regression / Linear decoder (logistic regression)
   anchor: https://en.wikipedia.org/wiki/Logistic_regression
   artifact: null
   description: Linear classifier over the log-odds of the outcome. Used as a supervised baseline against
@@ -202,7 +202,7 @@ method:linear-svm:
     constructions.
 
 method:cosine-similarity:
-  name: Cosine similarity
+  name: Cosine similarity / Cosine similarity analysis / Cosine semantic similarity / cosine similarity of hidden states / Sample-wise cosine similarity
   anchor: https://en.wikipedia.org/wiki/Cosine_similarity
   artifact: null
   description: Normalised dot product between two vectors. It measures directional alignment independently
@@ -319,14 +319,14 @@ method:local-fidelity-r2:
     as the model's mechanism rather than as an approximation of it.
 
 method:activation-patching:
-  name: Activation patching
+  name: Activation patching / Activation replacement
   anchor: https://arxiv.org/abs/2404.15255
   artifact: null
   description: Replace an activation in one forward pass with the value it took in another and measure
     how the output changes, isolating which component carries a behaviour.
 
 method:activation-steering:
-  name: Activation steering
+  name: Activation steering / Mean steering / PCA steering
   anchor: https://doi.org/10.48550/arXiv.2308.10248
   artifact: null
   description: Add a direction to the residual stream at inference time to push the model's behaviour,
@@ -347,7 +347,7 @@ method:logit-lens:
     would predict at that depth.
 
 method:sparse-autoencoder:
-  name: Sparse autoencoder / Sparse autoencoders
+  name: Sparse autoencoder / Sparse autoencoders / K-sparse autoencoder / Topk sparse autoencoder / Scaling and Evaluating Sparse Autoencoders
   anchor: null
   artifact: null
   description: Train an overcomplete autoencoder with a sparsity penalty on model activations, so that
@@ -409,7 +409,7 @@ method:knowledge-distillation:
     labels.
 
 method:direct-preference-optimization:
-  name: Direct Preference Optimization / Direct Preference Optimisation / DPO
+  name: Direct Preference Optimization / Direct Preference Optimisation / DPO / Rafailov et al. 2023 (Direct Preference Optimization)
   anchor: https://arxiv.org/abs/2305.18290
   artifact: null
   description: Train on pairwise preferences directly against a reference policy, without fitting a
@@ -419,7 +419,7 @@ method:direct-preference-optimization:
     result this entry describes'
 
 method:chain-of-thought-prompting:
-  name: Chain-of-Thought prompting / Chain-of-Thought (CoT) prompting / CoT prompting
+  name: Chain-of-Thought prompting / Chain-of-Thought (CoT) prompting / CoT prompting / Few-shot Chain of Thought
   anchor: http://papers.nips.cc/paper_files/paper/2022/hash/9d5609613524ecf4f15af0f7b31abca4-Abstract-Conference.html
   artifact: null
   description: Prompt the model to produce intermediate reasoning steps before its answer.
@@ -608,7 +608,7 @@ method:rouge-l:
   description: Text overlap measure based on the longest common subsequence between candidate and reference.
 
 method:fleiss-kappa:
-  name: Fleiss' kappa
+  name: Fleiss' kappa / Fleiss-κ
   anchor: null
   artifact: null
   description: Agreement between more than two raters, corrected for the agreement expected by chance.
@@ -638,8 +638,797 @@ method:rahf-score:
     as a reward signal for evaluation.
 
 method:safely-partial-parameter-fine-tuning:
-  name: Safely Partial-Parameter Fine-Tuning
+  name: Safely Partial-Parameter Fine-Tuning / SPPFT (Safely Partial Parameter Fine-Tuning)
   anchor: null
   artifact: null
   description: Fine-tuning restricted to a subset of parameters chosen so that safety behaviour learned
     earlier is not overwritten.
+
+method:autodan:
+  name: AutoDan
+  anchor: https://arxiv.org/abs/2310.04451
+
+method:clipscore:
+  name: CLIPScore
+  anchor: https://arxiv.org/abs/2104.08718
+
+method:gcg:
+  name: GCG
+  anchor: https://arxiv.org/abs/2307.15043
+
+method:in-context-learning:
+  name: In-Context Learning / In-context learning prompt
+  anchor: https://arxiv.org/abs/2301.00234
+
+method:interchange-intervention:
+  name: Interchange Intervention
+  anchor: https://proceedings.neurips.cc/paper_files/paper/2020/file/92650b2e92217715fe312e6fa7b90d82-paper.pdf
+
+method:linear-probing:
+  name: Linear Probing / Ridge regression linear probing
+  anchor: https://arxiv.org/abs/1610.01644
+
+method:lora:
+  name: LoRA
+  anchor: https://arxiv.org/abs/2106.09685
+
+method:memit:
+  name: MEMIT
+
+method:pair:
+  name: PAIR
+  anchor: https://arxiv.org/abs/2310.08419
+
+method:path-patching:
+  name: Path Patching
+  anchor: https://openreview.net/pdf?id=npsvsn6o4ul
+
+method:retrieval-augmented-generation:
+  name: Retrieval-Augmented Generation
+
+method:rome:
+  name: ROME
+  anchor: https://arxiv.org/abs/2202.05262
+
+method:t-sne:
+  name: t-SNE
+
+method:zero-shot-chain-of-thought:
+  name: Zero-shot Chain-of-Thought / Wei et al. 2022 (Chain of Thought)
+
+method:abc:
+  name: ABC
+
+method:attention-calibration:
+  name: Attention Calibration
+  anchor: https://arxiv.org/abs/2406.15765
+
+method:activation-addition:
+  name: Activation Addition
+  anchor: https://arxiv.org/abs/2308.10248
+
+method:arena-hard-auto:
+  name: Arena-Hard-Auto
+  anchor: https://arxiv.org/abs/2406.11939
+
+method:attackvlm:
+  name: AttackVLM
+
+method:attribution-patching:
+  name: Attribution Patching
+  anchor: https://www.neelnanda.io/mechanistic-interpretability/attribution-patching
+
+method:auroc:
+  name: AUROC
+
+method:opro:
+  name: OPRO
+
+method:bap:
+  name: BAP
+  anchor: https://arxiv.org/abs/2406.04031
+
+method:batch-calibration:
+  name: Batch Calibration
+  anchor: https://arxiv.org/abs/2309.17249
+
+method:behavior-cloning:
+  name: Behavior Cloning
+
+method:bge-large-en-v1-5:
+  name: BGE-large-en-v1.5
+  anchor: http://arxiv.org/abs/2310.07554
+
+method:bleu:
+  name: BLEU
+
+method:c-w:
+  name: C&W
+  anchor: https://doi.org/10.1109/sp.2017.49
+
+method:calibrate-before-use:
+  name: Calibrate Before Use
+  anchor: https://api.semanticscholar.org/corpusid:231979430
+
+method:cats:
+  name: CATS
+  anchor: https://openreview.net/forum?id=v3w2a7eino
+
+method:causal-mediation-analysis:
+  name: Causal mediation analysis
+
+method:cause:
+  name: CAUSE
+  anchor: https://arxiv.org/abs/2310.07379
+
+method:cc-shap:
+  name: CC-SHAP
+
+method:canonical-correlation-analysis:
+  name: Canonical Correlation Analysis
+
+method:contrastive-decoding:
+  name: Contrastive Decoding
+  anchor: https://aclanthology.org/2023.acl-long.687
+
+method:centered-kernel-alignment:
+  name: Centered Kernel Alignment
+
+method:chair:
+  name: CHAIR
+  anchor: https://arxiv.org/abs/1809.02156
+
+method:circuit-breakers:
+  name: Circuit Breakers
+
+method:cka:
+  name: CKA
+
+method:clip:
+  name: CLIP
+
+method:clip-dissect:
+  name: CLIP-Dissect
+  anchor: https://arxiv.org/abs/2204.10965
+
+method:clipself:
+  name: CLIPSelf
+  anchor: https://arxiv.org/abs/2310.01403
+
+method:cnniqa:
+  name: CNNIQA
+
+method:codebleu:
+  name: CodeBLEU
+  anchor: https://arxiv.org/abs/2009.10297
+
+method:cohen-s-kappa:
+  name: Cohen's kappa
+
+method:contextual-calibration:
+  name: Contextual Calibration
+
+method:continual-knowledge-learning:
+  name: Continual Knowledge Learning
+  anchor: https://openreview.net/forum?id=vfsrb5mimo9
+
+method:contrastive-pairs-method:
+  name: Contrastive Pairs Method
+  anchor: https://arxiv.org/abs/2310.01405
+
+method:coop:
+  name: CoOp
+
+method:corrupting-cot:
+  name: Corrupting CoT
+  anchor: https://arxiv.org/abs/2307.13702
+
+method:counter-fitting:
+  name: Counter-fitting
+
+method:dbnet:
+  name: DBNet
+  anchor: https://ojs.aaai.org/index.php/aaai/article/view/6812
+
+method:decaf:
+  name: DECAF
+
+method:deepfloyd-if:
+  name: DeepFloyd IF
+  anchor: https://github.com/deep-floyd/if
+
+method:deepfool:
+  name: DeepFool
+  anchor: https://doi.org/10.1109/CVPR.2016.282
+
+method:divergent-association-task:
+  name: Divergent Association Task
+
+method:dola:
+  name: DoLa
+  anchor: https://arxiv.org/abs/2309.03883
+
+method:drtune:
+  name: DRTune
+  anchor: https://arxiv.org/abs/2405.00760
+
+method:e5-mistral:
+  name: E5-Mistral
+  anchor: https://arxiv.org/abs/2401.00368
+
+method:easyocr:
+  name: EasyOCR
+
+method:ek-fac-influence-functions:
+  name: EK-FAC Influence Functions
+  anchor: https://arxiv.org/abs/2308.03296
+
+method:error-consistency:
+  name: Error Consistency
+
+method:eureka:
+  name: Eureka
+  anchor: https://arxiv.org/abs/2310.12931
+
+method:expected-calibration-error:
+  name: Expected Calibration Error
+
+method:f1-score:
+  name: F1 score
+
+method:fairface:
+  name: FairFace
+
+method:fast-detectgpt:
+  name: Fast-DetectGPT
+
+method:feature-visualization-by-optimization:
+  name: Feature Visualization by Optimization
+  anchor: https://distill.pub/2017/feature-visualization
+
+method:few-shot-prompting:
+  name: Few-shot prompting
+
+method:fid:
+  name: FID
+
+method:fisher-s-r-to-z-transformation:
+  name: Fisher's r-to-z transformation
+
+method:flipd:
+  name: FLIPD
+
+method:foot-in-the-door-attack:
+  name: Foot-in-the-Door Attack
+  anchor: https://arxiv.org/abs/2402.15690
+
+method:g-eval:
+  name: G-Eval
+
+method:gaussian-kde:
+  name: Gaussian KDE
+
+method:gemma-scope:
+  name: Gemma Scope
+
+method:gini-index:
+  name: Gini Index
+
+method:gpt-4-32k:
+  name: GPT-4-32k
+
+method:grace:
+  name: GRACE
+
+method:grad-cam:
+  name: Grad-CAM
+
+method:grad-eclip:
+  name: Grad-ECLIP
+
+method:greedy-maximum-coverage-approximation:
+  name: Greedy Maximum Coverage Approximation
+
+method:gride:
+  name: GRIDE
+  anchor: https://doi.org/10.1038/s41598-022-20991-1
+
+method:groundingdino:
+  name: GroundingDINO
+  anchor: https://arxiv.org/abs/2303.05499
+
+method:h2o:
+  name: H2O
+
+method:humanjailbreaks:
+  name: HumanJailbreaks
+  anchor: https://arxiv.org/abs/2402.04249
+
+method:hypothesis-refinement:
+  name: Hypothesis Refinement
+  anchor: https://openreview.net/forum?id=bnt7oajl2a
+
+method:i-o-cot:
+  name: I/O CoT
+  anchor: https://arxiv.org/abs/2201.11903
+
+method:icd:
+  name: ICD
+  anchor: https://arxiv.org/abs/2312.15710
+
+method:ice:
+  name: ICE
+  anchor: https://arxiv.org/abs/2305.12740
+
+method:imgjp:
+  name: ImgJP
+  anchor: https://arxiv.org/abs/2402.02309
+
+method:inference-time-intervention:
+  name: Inference-Time Intervention / ITI
+
+method:infini-gram:
+  name: Infini-gram
+  anchor: https://arxiv.org/abs/2401.17377
+
+method:influence-functions:
+  name: Influence Functions
+
+method:influence-patterns:
+  name: Influence Patterns
+
+method:information-flow-routes:
+  name: Information Flow Routes
+  anchor: https://arxiv.org/abs/2403.00824
+
+method:information-imbalance:
+  name: Information Imbalance
+
+method:inpca:
+  name: INPCA
+
+method:isotonic-regression:
+  name: Isotonic regression
+
+method:jensen-shannon-divergence:
+  name: Jensen-Shannon divergence
+
+method:knowledge-circuits:
+  name: Knowledge Circuits
+  anchor: https://arxiv.org/abs/2405.17969
+
+method:kendall-s-tau:
+  name: Kendall's tau
+
+method:kendall-s:
+  name: Kendall's τ
+
+method:knowledge-neurons:
+  name: Knowledge Neurons
+  anchor: https://arxiv.org/abs/2104.08696
+
+method:knowledge-attribution:
+  name: Knowledge Attribution
+  anchor: https://aclanthology.org/2022.acl-long.581
+
+method:kolmogorov-smirnov-two-sample-test:
+  name: Kolmogorov-Smirnov two-sample test
+
+method:krippendorff-s:
+  name: Krippendorff's α
+
+method:kronfluence:
+  name: Kronfluence
+  anchor: https://doi.org/10.5281/zenodo.13131049
+
+method:least-to-most-prompting:
+  name: Least-to-Most Prompting
+  anchor: https://arxiv.org/abs/2205.10625
+
+method:ledoit-wolf-shrinkage-estimator:
+  name: Ledoit-Wolf Shrinkage Estimator
+
+method:linear-assignment-problem:
+  name: Linear Assignment Problem
+
+method:linear-cka:
+  name: Linear CKA
+
+method:linear-hsic:
+  name: Linear HSIC
+
+method:llama-3:
+  name: Llama 3
+
+method:llama-guard-3-8b:
+  name: Llama-Guard-3-8B
+  anchor: https://github.com/meta-llama/purplellama/blob/main/llama-guard3/1b/model_card.md
+
+method:llamascope:
+  name: LlamaScope
+  anchor: https://arxiv.org/abs/2410.20526
+
+method:llava-next:
+  name: LLaVA-Next
+
+method:llm-as-a-judge:
+  name: LLM-as-a-Judge
+
+method:lm-evaluation-harness:
+  name: LM Evaluation Harness
+  anchor: https://github.com/eleutherai/lm-evaluation-harness
+
+method:lm-eval:
+  name: lm-eval
+  anchor: https://zenodo.org/records/12608602
+
+method:m2ib:
+  name: M2IB
+
+method:manipulate-anything:
+  name: Manipulate-Anything
+  anchor: https://arxiv.org/abs/2406.18915
+
+method:mcnemar-s-test:
+  name: McNemar's test
+  anchor: https://link.springer.com/article/10.1007/bf02295996
+
+method:mean-ablation:
+  name: Mean Ablation
+
+method:mi-zero:
+  name: MI-Zero
+
+method:minilm-l6-v2:
+  name: MiniLM-L6-V2
+
+method:miro:
+  name: MIRo
+
+method:mm-shap:
+  name: MM-SHAP
+  anchor: https://aclanthology.org/2023.acl-long.223
+
+method:mmp:
+  name: MMP
+  anchor: https://arxiv.org/abs/2402.01369
+
+method:mmseqs2:
+  name: MMseqs2
+
+method:mpa:
+  name: MPA
+
+method:mppi:
+  name: MPPi
+  anchor: https://doi.org/10.1109/ICRA.2016.7487277
+
+method:multidimensional-scaling:
+  name: Multidimensional Scaling
+  anchor: https://api.semanticscholar.org/corpusid:120849755
+
+method:mutual-nearest-neighbor-kernel-alignment:
+  name: Mutual Nearest-Neighbor Kernel Alignment
+  anchor: https://arxiv.org/abs/2405.07987
+
+method:net2brain:
+  name: Net2Brain
+  anchor: https://arxiv.org/abs/2208.09677
+
+method:network-dissection:
+  name: Network Dissection
+
+method:nima:
+  name: NIMA
+
+method:nnsight:
+  name: NNSight
+  anchor: https://arxiv.org/abs/2407.14561
+
+method:nnsight-and-ndif:
+  name: NNSight and NDIF
+  anchor: https://arxiv.org/abs/2407.14561
+
+method:nnsight-ndif:
+  name: NNSight/NDIF
+  anchor: https://arxiv.org/abs/2407.14561
+
+method:nudnet:
+  name: NudNet
+
+method:onion:
+  name: Onion
+
+method:online-dpo:
+  name: Online DPO
+  anchor: http://arxiv.org/abs/2402.04792
+
+method:openclip:
+  name: OpenCLIP
+  anchor: https://doi.org/10.5281/zenodo.5143773
+
+method:openmask3d:
+  name: OpenMask3D
+
+method:ordinalclip:
+  name: OrdinalCLIP
+
+method:orthogonal-matching-pursuit:
+  name: Orthogonal Matching Pursuit
+  anchor: https://api.semanticscholar.org/corpusid:16513805
+
+method:oti:
+  name: OTI
+
+method:pap:
+  name: PAP
+  anchor: https://arxiv.org/abs/2401.06373
+
+method:parallel-context-windows:
+  name: Parallel Context Windows
+  anchor: https://doi.org/10.18653/v1/2023.acl-long.352
+
+method:pass-k:
+  name: pass@k
+
+method:pearson-correlation:
+  name: Pearson correlation
+
+method:pearson-correlation-coefficient:
+  name: Pearson correlation coefficient
+
+method:persona-modulation:
+  name: Persona Modulation
+  anchor: https://arxiv.org/abs/2311.03348
+
+method:perspective-api:
+  name: Perspective API
+  anchor: https://github.com/conversationai/perspectiveapi.git
+
+method:platt-scaling:
+  name: Platt scaling
+
+method:poison-rlhf:
+  name: Poison-RLHF
+  anchor: https://arxiv.org/abs/2311.14455
+
+method:polynomial-regression:
+  name: Polynomial Regression
+
+method:proximal-policy-optimization:
+  name: Proximal Policy Optimization
+  anchor: http://arxiv.org/abs/1707.06347
+
+method:activation-projection:
+  name: Activation Projection
+  anchor: https://www.anthropic.com/news/probes-catch-sleeper-agents
+
+method:proc3s:
+  name: ProC3S
+  anchor: https://arxiv.org/abs/2406.05572
+
+method:procrustes-analysis:
+  name: Procrustes Analysis
+
+method:prompt-tuning:
+  name: Prompt Tuning
+  anchor: https://arxiv.org/abs/2104.08691
+
+method:pvq-rr:
+  name: PVQ-RR
+
+method:q-learning:
+  name: Q-learning
+
+method:qlora:
+  name: QLoRA
+
+method:reward-augmented-decoding:
+  name: Reward-Augmented Decoding
+
+method:rag:
+  name: RAG
+
+method:rahf:
+  name: RAHF
+
+method:random-forest-regression:
+  name: Random Forest Regression
+
+method:randomized-svd:
+  name: Randomized SVD
+
+method:react:
+  name: ReAct
+  anchor: https://arxiv.org/abs/2210.03629
+
+method:reasoning-score:
+  name: Reasoning Score
+
+method:regionclip:
+  name: RegionCLIP
+
+method:renellm:
+  name: ReNeLLM
+  anchor: https://arxiv.org/abs/2311.08268
+
+method:representation-engineering:
+  name: Representation Engineering / Representation engineering (control vectors)
+  anchor: https://arxiv.org/abs/2310.01405
+
+method:representational-similarity-analysis:
+  name: Representational Similarity Analysis
+
+method:residual-stream-patching:
+  name: Residual Stream Patching
+
+method:rloo:
+  name: RLOO
+  anchor: http://arxiv.org/abs/2402.14740
+
+method:roar:
+  name: ROAR
+
+method:rouge-1:
+  name: ROUGE-1
+  anchor: https://aclanthology.org/w04-1013
+
+method:screenot:
+  name: ScreenOT
+
+method:self-consistency:
+  name: Self-Consistency
+
+method:self-refine:
+  name: Self-Refine
+  anchor: https://doi.org/10.48550/arxiv.2303.17651
+
+method:sentence-bert:
+  name: Sentence-BERT
+  anchor: https://doi.org/10.18653/v1/d19-1410
+
+method:sequential-integrated-gradients:
+  name: Sequential Integrated Gradients
+  anchor: https://arxiv.org/abs/2305.15853
+
+method:simple-gradient:
+  name: Simple Gradient
+  anchor: https://arxiv.org/abs/1312.6034
+
+method:singular-value-decomposition:
+  name: Singular Value Decomposition
+
+method:smooth-ece:
+  name: Smooth ECE
+
+method:smoothgrad:
+  name: SmoothGrad
+
+method:smoothllm:
+  name: SmoothLLM
+  anchor: https://arxiv.org/abs/2310.03684
+
+method:prefix-tuning:
+  name: Prefix Tuning
+  anchor: https://arxiv.org/abs/2101.00190
+
+method:sparsegpt:
+  name: SparseGPT
+
+method:spectral-clustering:
+  name: Spectral Clustering
+
+method:sscd:
+  name: SSCD
+
+method:ssim:
+  name: SSIM
+
+method:sspattack:
+  name: SSPAttack
+  anchor: https://ojs.aaai.org/index.php/aaai/article/view/26553
+
+method:structural-probing:
+  name: Structural Probing
+  anchor: https://aclanthology.org/n19-1419
+
+method:structured-prompting:
+  name: Structured Prompting
+  anchor: https://arxiv.org/abs/2212.06713
+
+method:successor-representation:
+  name: Successor Representation
+
+method:svcca:
+  name: SVCCA
+
+method:tap:
+  name: TAP (Tree of Attacks with Pruning)
+  anchor: https://arxiv.org/abs/2312.02119
+
+method:tap-therapeutic-antibody-profiler:
+  name: Therapeutic Antibody Profiler
+
+method:temperature-scaling:
+  name: Temperature Scaling
+
+method:texthoaxer:
+  name: TextHoaxer
+  anchor: https://doi.org/10.1609/aaai.v36i4.20303
+
+method:textspan:
+  name: TextSpan
+  anchor: https://arxiv.org/pdf/2310.05916
+
+method:tldr:
+  name: TLDR
+
+method:truth-forest:
+  name: Truth Forest
+
+method:truthx:
+  name: TruthX
+  anchor: https://arxiv.org/abs/2402.17811
+
+method:tuned-lens:
+  name: Tuned Lens
+  anchor: http://arxiv.org/abs/2303.08112
+
+method:two-stage-least-squares:
+  name: Two-Stage Least Squares
+
+method:unipc:
+  name: UniPC
+
+method:universal-sentence-encoder:
+  name: Universal Sentence Encoder
+  anchor: https://arxiv.org/abs/1803.11175
+
+method:utmos:
+  name: UTMOS
+  anchor: https://doi.org/10.21437/interspeech.2022-439
+
+method:vaa:
+  name: VAA
+
+method:variational-autoencoder:
+  name: Variational Autoencoder
+
+method:val:
+  name: VAL
+
+method:variance-ratio-test:
+  name: Variance Ratio Test
+
+method:verbalized-confidence:
+  name: Verbalized Confidence
+
+method:vit-slim:
+  name: ViT-Slim
+
+method:vlad:
+  name: VLAD
+
+method:vqascore:
+  name: VQAScore
+
+method:wanda:
+  name: Wanda
+
+method:weighted-cohen-s-kappa:
+  name: Weighted Cohen's Kappa
+  anchor: https://doi.org/10.1177/001316446002000104
+
+method:wimbd:
+  name: WIMBD
+  anchor: https://openreview.net/forum?id=rvfpnokpv4
+
+method:whisper-large-v3:
+  name: Whisper-Large-V3
+
+method:word-mover-s-distance:
+  name: Word Mover's Distance
+  anchor: http://proceedings.mlr.press/v37/kusnerb15.html
+
+method:zerocap:
+  name: ZeroCap

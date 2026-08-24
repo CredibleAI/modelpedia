@@ -1,0 +1,36 @@
+id: IC-168
+title: Control vectors derived from BABI improve GSM8K accuracy and vice versa on Mistral-7B-Instruct,
+  indicating a task-general reasoning direction in the residual stream
+description: The authors derive a PCA control vector from BABI contrastive pairs and apply it to the
+  GSM8K evaluation, and vice versa. In both directions, Mistral-7B-Instruct shows an increase in logit-based
+  accuracy comparable to the same-task control vector, with similar trends in KL divergence and entropy.
+  This cross-task transfer suggests that the residual stream encodes a direction associated with reasoning
+  more broadly rather than a task-specific feature.
+models:
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:improving-reasoning-performance-large-language-models
+datasets:
+- ref: dataset:babi
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+methods:
+- ref: method:representation-engineering
+  role: primary
+- ref: method:pca
+  role: primary
+related_work:
+- name: Zou et al. 2023 (Representation Engineering)
+  anchor: https://arxiv.org/abs/2310.01405
+  role: builds-on
+evidence_type: interventional
+caveat: The authors note that the model representations are not very robust to the intervention (jagged
+  trend line) and that the cross-task result is observed on a single model (Mistral-7B-Instruct) with
+  a single pair of tasks.
+extracted_by: automatic-extraction
+related_findings:
+- IC-167

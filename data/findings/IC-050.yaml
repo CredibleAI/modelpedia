@@ -1,0 +1,27 @@
+id: IC-050
+title: GPT-4o achieves 53.33 overall on Event-Bench with strong event description (57.50) and counter
+  reasoning (63.44) but weaker episodic reasoning (37.33)
+description: The paper evaluates GPT-4o on Event-Bench, a benchmark for causal reasoning over videos.
+  GPT-4o achieves the highest overall score among all models tested (53.33), with particularly strong
+  performance on event description (57.50 overall) and counterfactual reasoning (63.44). However, its
+  episodic reasoning score (37.33) is notably lower than its other causal reasoning sub-scores, indicating
+  a relative weakness in that specific reasoning type.
+models:
+- ref: model:gpt-4o
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:trace-temporal-grounding-video-llm-via
+datasets:
+- ref: dataset:event-bench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Event-Bench overall: 53.33; Event description avg: 57.50 (atomic 54.27, composite 56.75);
+  Causal reasoning avg: 49.24 (counter 63.44, contextual 50.13, episodic 37.33)'
+extracted_by: automatic-extraction
+related_findings:
+- IC-048
+- IC-049
+- IC-051

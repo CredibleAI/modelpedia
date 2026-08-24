@@ -1,0 +1,35 @@
+id: IC-110
+title: Phi-3 (3.8B) and Llama-3 (8B) with triplet prompting outperform GPT-4 with pairwise prompting
+  on causal graph orientation
+description: The paper evaluates whether smaller open-weight models can match or exceed a larger proprietary
+  model on causal reasoning. Using the triplet method (which queries three variables at a time and enforces
+  acyclicity), Phi-3 and Llama-3 8B produce cycle-free causal orders with lower SHD than GPT-4 using
+  standard pairwise prompting. On the 20-node child dataset, Phi-3 triplet achieves SHD 69 and Llama-3
+  triplet achieves SHD 129, compared to GPT-4 pairwise's SHD 148, while both smaller models produce
+  zero cycles versus GPT-4's >>10k cycles.
+models:
+- ref: model:phi-3
+- ref: model:llama-3
+- ref: model:gpt-4
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:causal-order-key-leveraging-imperfect-experts
+datasets:
+- ref: dataset:bnlearn
+  role: eval
+methods: []
+related_work:
+- name: Jiralerspong et al. 2024
+  anchor: https://arxiv.org/abs/2402
+  role: compared-to
+evidence_type: correlational
+key_metric: 'child dataset: GPT-4 pairwise SHD 148, >>10k cycles; Phi-3 triplet SHD 69, 0 cycles; Llama-3
+  triplet SHD 129, 0 cycles'
+caveat: 'The comparison is confounded by the prompting strategy: the smaller models use the triplet
+  method while GPT-4 uses pairwise. The paper does not report GPT-4 with triplet prompting on the same
+  datasets for a controlled comparison (Table A10 shows GPT-4 triplet on a subset but with different
+  metrics).'
+extracted_by: automatic-extraction
+related_findings:
+- IC-109

@@ -1,0 +1,37 @@
+id: IC-061
+title: The induction circuit in Mamba-130m is structurally analogous to the transformer induction circuit,
+  with an off-by-one motif in SSM state writing
+description: 'Using path patching on Mamba-130m, the authors identify the induction circuit: SSM states
+  at layer 17 are critical for induction (logit drop of -9.65 to -10.16 when patched), with layer 20
+  showing a weaker effect. The key information flows into the SSM input c at position b1+1 rather than
+  b1, meaning the local convolution layer aggregates tokens a and b into the SSM state at the next token
+  position. This ''off-by-one'' motif is absent in transformers, where the previous-token head and induction
+  head operate directly on the relevant token positions. The same off-by-one pattern is observed in
+  the IOI task.'
+models:
+- ref: model:mamba
+  variant: variant:mamba-130m
+concepts: []
+sources:
+- ref: source:universality-studying-mechanistic-similarity-across-language
+datasets: []
+methods:
+- ref: method:path-patching
+  role: primary
+related_work:
+- name: In-context Learning and Induction Heads
+  anchor: https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html
+  role: context
+- name: 'Interpretability in the Wild: A Circuit for Indirect Object Identification in GPT-2 Small'
+  anchor: https://openreview.net/pdf?id=NpsVSN6o4ul
+  role: builds-on
+evidence_type: interventional
+key_metric: 'Layer 17 logit diff: -9.65 (dist 8), -8.09 (dist 16), -8.73 (dist 32), -10.16 (dist 64),
+  -8.44 (dist 128); Layer 20 logit diff: -2.02 to -0.66; c(17) at b1+1 logit diff: -9.69 to -16.84;
+  x(17) at b1 logit diff: -9.11 to -15.17'
+caveat: Circuit analysis is qualitative; the authors note they have not yet quantitatively measured
+  circuit similarity with automated tools. The off-by-one mechanism's purpose is unclear. Results are
+  on 128 randomly generated induction data points.
+extracted_by: automatic-extraction
+related_findings:
+- IC-060

@@ -1,0 +1,35 @@
+id: IC-537
+title: Moirai's architectural enhancements (any-variate attention, multi-scale patch embedding, diverse
+  mixture distribution) improve in-distribution forecasting but reduce out-of-distribution scalability
+  relative to a simpler encoder-only baseline
+description: The paper retrains Moirai and a simpler encoder-only transformer on the same 16.8B time-point
+  corpus and compares their scaling behaviour across parameter counts. On in-distribution data, Moirai's
+  design choices yield better forecasting performance. On out-of-distribution data, however, as the
+  number of parameters increases, Moirai is gradually surpassed by the simpler baseline, and its fitted
+  power-law slope is smaller, indicating weaker scalability. The authors attribute this to Moirai's
+  architectural modifications, which primarily benefit in-distribution performance without transferring
+  to out-of-distribution generalisation.
+models:
+- ref: model:moirai
+concepts: []
+sources:
+- ref: source:neural-scaling-laws-time-series-foundation
+datasets:
+- ref: dataset:lotsa
+  role: train
+methods: []
+related_work:
+- name: Kaplan et al. 2020 (Scaling Laws for Neural Language Models)
+  anchor: https://api.semanticscholar.org/CorpusID:210861095
+  role: builds-on
+- name: Edwards et al. 2024 (Scaling-Laws for Large Time-Series Models)
+  anchor: https://api.semanticscholar.org/CorpusID:269982332
+  role: compared-to
+evidence_type: correlational
+caveat: Moirai was retrained on the authors' 16.8B time-point corpus rather than its original LOTSA
+  training data, so the specific scaling exponents reflect the retrained model. Evaluation is restricted
+  to univariate forecasting. Specific power-law exponent values are reported only in Figure 6, not in
+  the text.
+extracted_by: automatic-extraction
+related_findings:
+- IC-538

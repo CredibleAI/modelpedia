@@ -1,0 +1,36 @@
+id: IC-089
+title: OLMo 0724 7B base learns formatted multiple-choice question answering between 80k and 100k training
+  steps, transitioning from near-random to near-perfect accuracy on the synthetic colors task
+description: Using a synthetic colors task that disentangles symbol binding from dataset-specific knowledge,
+  the paper shows that OLMo 0724 7B base undergoes a sharp transition in formatted MCQA ability between
+  80k and 100k training steps. Accuracy goes from 25% (random) at 50k steps to 97% at 100k steps. However,
+  vocabulary projection reveals that while accuracy is high at 100k steps, the logit differences between
+  answer symbols remain small; only with sustained training (final checkpoint at ~652k steps) does the
+  model widen the logit difference substantially, assigning high probability to the predicted answer
+  alone. This small logit difference persists even at the final checkpoint on harder datasets like MMLU
+  and HellaSwag.
+models:
+- ref: model:olmo
+  variant: variant:olmo-0724-7b
+concepts: []
+sources:
+- ref: source:answer-assemble-ace-understanding-lms-answer
+datasets:
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+methods: []
+related_work:
+- name: Li & Gao 2024
+  anchor: https://arxiv.org/abs/2405.03205
+  role: context
+evidence_type: correlational
+key_metric: 25% accuracy at 50k steps, 97% at 100k steps, 81% at 200k steps, 100% at final checkpoint
+  (~652k steps) on 3-shot colors task
+caveat: The non-monotonic accuracy (97% at 100k, 81% at 200k) is not explained; the finding is on a
+  single model family and a synthetic task
+extracted_by: automatic-extraction
+related_findings:
+- IC-087
+- IC-088

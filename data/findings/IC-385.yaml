@@ -1,0 +1,28 @@
+id: IC-385
+title: TAR-bio-v1 retains bio-weaponization knowledge despite appearing to unlearn it; a different prompt
+  template and answer extraction method reveals accuracy above 45% on WMDP-bio
+description: Under the official WMDP evaluation pipeline (zero-shot QA format without chat template,
+  answer selected by logit order of candidate tokens), TAR-bio-v1 shows near-random accuracy (~25%)
+  on WMDP-bio, suggesting successful unlearning. However, when the authors wrap the prompt with Llama-3's
+  official chat template and use GPT-4o or human labelers to extract answers from the model's free-form
+  text outputs, the accuracy rises consistently above 45%. This indicates the model still retains the
+  bio-weaponization knowledge but fails to produce it in the constrained multiple-choice format used
+  by the original evaluation.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct-tar-bio
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:evaluating-durability-safeguards-open-weight-llms
+datasets:
+- ref: dataset:wmdp
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'TAR-bio-v1 WMDP-bio accuracy: ~25% (no chat template, logit order) vs. consistently above
+  45% (with chat template, GPT-4o or human extraction); random baseline 25%'
+caveat: The authors note it is hard to address prompt template sensitivity completely because all possible
+  templates cannot be enumerated. The v2 checkpoint was released to address this specific issue.
+extracted_by: automatic-extraction

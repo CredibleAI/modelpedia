@@ -1,0 +1,33 @@
+id: IC-584
+title: Most brain-explained variance is shared across task instructions, with image captioning (IC)
+  acting as an umbrella category showing high overlap with VQ and CR but lower overlap with iu2 and
+  sr
+description: Using variance partitioning on InstructBLIP representations, the paper measures the unique
+  and shared brain variance explained by pairs of the 10 instructions. IC shows the highest shared variance
+  with VQ1 (0.446), VQ2 (0.399), and CR (0.417), while showing lower shared variance with iu2 (0.341)
+  and sr (0.369). In ROI-level analysis, IC retains unique variance in most high-level regions, and
+  shared variance increases from early to higher visual areas, reflecting the hierarchical nature of
+  visual processing. The authors note that the high overlap suggests MLLMs could improve in differentiating
+  between instruction types.
+models:
+- ref: model:instructblip
+concepts: []
+sources:
+- ref: source:correlating-instruction-tuning-multimodal-models-vision
+datasets:
+- ref: dataset:nsd
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'IC-VQ1: 0.186 unique IC, 0.446 shared, 0.192 unique VQ1; IC-IU2: 0.272 unique IC, 0.341
+  shared, 0.228 unique IU2; IC-SR: 0.252 unique IC, 0.369 shared, 0.234 unique SR (whole visual cortex,
+  Fig. 19)'
+caveat: The majority of variance is shared between instructions, suggesting room for improvement in
+  MLLM models to achieve greater precision in predicting brain responses and better differentiation
+  between various types of instructions
+extracted_by: automatic-extraction
+related_findings:
+- IC-582
+- IC-583
+- IC-585

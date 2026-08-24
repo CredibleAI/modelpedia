@@ -9,6 +9,7 @@ corpus/
 out/
 site/
 *.part
+*.log
 
 CLAUDE.md
 docs/

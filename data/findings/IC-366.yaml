@@ -1,0 +1,36 @@
+id: IC-366
+title: 'In Llama-3-70B, activation sparsifiability varies systematically across depth: Wq/Wk peak in
+  block 0 then decline sharply, Wo peaks at 80-90% mid-model, and Wdown is consistently more sparsifiable
+  than Wgate and Wup'
+description: Using block-wise greedy optimization at 50% model-level sparsity, the paper reveals depth-dependent
+  structure in Llama-3-70B. Attention parameters Wq and Wk exhibit high sparsifiability in block 0 followed
+  by a sharp decline. Wo's sparsifiability starts at 50-60%, peaks at 80-90% in mid-model blocks, then
+  returns to 50-60% in the final blocks. For MLP parameters, Wdown is more sparsifiable than Wgate,
+  which is more sparsifiable than Wup, across all blocks. The authors attribute Wdown's higher sparsifiability
+  to its laplacian-shaped input distribution and Wgate's intermediate position to SiLU decreasing the
+  saliency of negative outputs.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:training-free-activation-sparsity-large-language
+datasets:
+- ref: dataset:c4
+  role: source
+methods: []
+related_work:
+- name: FinerCut
+  anchor: https://arxiv.org/abs/2405.18218
+  role: context
+evidence_type: observational
+key_metric: 'Wo sparsifiability: 50-60% (early blocks) → 80-90% (mid-model) → 50-60% (final blocks);
+  Wq/Wk: high in block 0 then sharp decline; Wdown > Wgate > Wup across all blocks'
+caveat: The authors note these patterns 'tend to hold for the other models we analyze' but the detailed
+  plots are for Llama-3-70B specifically.
+extracted_by: automatic-extraction
+related_findings:
+- IC-364
+- IC-365
+- IC-367

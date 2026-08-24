@@ -1,0 +1,29 @@
+id: IC-259
+title: Fine-tuned DNNs approach human accuracy on VPT-basic but fail on VPT-strategy, revealing reliance
+  on a brittle feature-based shortcut (object size and location) rather than line-of-sight estimation
+description: After fine-tuning on VPT-basic, 97% of TIMM DNNs exceeded human accuracy on depth order
+  and 4 reached human accuracy on VPT-basic. However, on the VPT-strategy task, which holds the scene
+  camera fixed and moves the target objects to break feature-based correlations, humans scored 87% while
+  the best DNN (Swin Transformer ImageNet-21k) scored only 66%. Smooth Gradients attribution maps confirmed
+  that DNNs attend to the positions of the green camera and red ball, and the precision of this localization
+  increased with VPT-basic accuracy. The authors conclude DNNs rely on object size and location as a
+  shortcut rather than estimating line-of-sight as humans do.
+models:
+- ref: model:swin-transformer
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:pc-benchmark-visual-perspective-taking-3d
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 97% of DNNs exceeded human accuracy on depth order after fine-tuning; 4 DNNs reached human
+  accuracy on VPT-basic; humans 87% on VPT-strategy; best DNN (Swin Transformer ImageNet-21k) 66% on
+  VPT-strategy
+caveat: The authors note they were not able to characterize exactly how DNNs use object features for
+  VPT, which may be critical for developing next-generation models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-257
+- IC-258

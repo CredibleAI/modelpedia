@@ -1,0 +1,38 @@
+id: IC-466
+title: GPT-4o's evaluation reliability degrades when used as the final judge in a collective thought
+  pipeline that aggregates reviews from less reliable VLMs
+description: When GPT-4o is used as the final judge in a collective thought pipeline that first collects
+  reviews from Llama-VID, Video-ChatGPT, Video-LLaVA, and GPT-4o mini, its agreement with the agent-debate
+  reference drops to an average range of 2.72 to 42.53 across dimensions, which is lower than GPT-4o's
+  solo performance (e.g., 60.38, 55.18). A mixture-of-judges strategy that selects judges by per-dimension
+  reliability scores also fails to recover GPT-4o's solo performance (average range 2.72 to 60.70).
+  The paper concludes that GPT-4o is vulnerable to noise introduced by less reliable judges in the collective.
+models:
+- ref: model:llama-vid
+- ref: model:video-chatgpt
+- ref: model:video-llava
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:your-video-language-model-reliable-judge
+datasets:
+- ref: dataset:cvrr-es
+  role: eval
+methods:
+- ref: method:weighted-cohen-s-kappa
+  role: eval
+related_work:
+- ref: dataset:cvrr-es
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Collective thought average kappa range: 2.72 to 42.53; Mixture of judges average kappa
+  range: 2.72 to 60.70; GPT-4o solo average kappa: 33.11 to 60.38'
+caveat: The reliability scores used for judge selection (per-dimension kappa) may not fully capture
+  a judge's ability to evaluate complex video content. The paper acknowledges limited generalizability
+  due to the specific set of models and datasets used.
+extracted_by: automatic-extraction
+related_findings:
+- IC-464
+- IC-465

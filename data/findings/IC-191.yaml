@@ -1,0 +1,36 @@
+id: IC-191
+title: Attention allocated to system messages correlates with following ability, and models do not strictly
+  distinguish system from user messages based on marker tokens
+description: For three open-source models (GLM-4-9b, Llama3.1-8b, Qwen2-72b), the paper finds a strong
+  correlation between the proportion of attention scores attributed to system messages and the model's
+  ability to follow them. The attention proportion declines over turns, matching the Rn degradation
+  pattern. Additionally, when system message text is repurposed as a user message, the attention score
+  changes are described as 'very weak,' indicating the model does not use the marker token to create
+  a strict distinction between system and user messages during inference. The authors conclude that
+  system message following ability is more influenced by training data construction than by the inference-time
+  marker.
+models:
+- ref: model:glm-4
+  variant: variant:glm-4-9b-chat
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:qwen-2
+  variant: variant:qwen2-72b-instruct
+concepts: []
+sources:
+- ref: source:sysbench-llms-follow-system-message
+datasets: []
+methods: []
+related_work:
+- name: 'Tell Your Model Where to Attend: Post-hoc Attention Steering for LLMs'
+  anchor: https://openreview.net/forum?id=xzdwo0oejd
+  role: context
+evidence_type: correlational
+caveat: Only three open-source models are analyzed for attention; the correlation is described qualitatively
+  without a printed coefficient. The attention analysis is averaged across all heads and layers, potentially
+  masking layer-specific effects.
+extracted_by: automatic-extraction
+related_findings:
+- IC-188
+- IC-189
+- IC-190

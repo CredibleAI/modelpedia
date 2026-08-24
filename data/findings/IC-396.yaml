@@ -1,0 +1,59 @@
+id: IC-396
+title: Closed-source LLMs (GPT, Claude) rely more on deep structure than open-source LLMs (Llama, Mistral),
+  and open-source models' surface sensitivity decreases with model scale
+description: By comparing ADCE (deep structure effect) and AICE (surface structure effect) for 12 released
+  LLMs across five tasks, the paper finds that closed-source models (GPT-3.5-Turbo, GPT-4o, Claude-3-Sonnet,
+  Claude-3.5-Sonnet) show a larger ADCE-minus-AICE gap, indicating greater reliance on core semantics.
+  Open-source models (Llama-2, Llama-3, Mistral, Mixtral) show higher AICE, meaning their outputs are
+  more sensitive to surface-level presentation changes. Within open-source families, this surface sensitivity
+  diminishes as model size increases (e.g., Llama-2-7B to Llama-2-70B, Llama-3-8B to Llama-3-70B, Mixtral-8x7B
+  to Mixtral-8x22B).
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:mistral-7b
+- ref: model:mixtral-8x7b
+- ref: model:mixtral
+  variant: variant:mixtral-8x22b
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4o
+- ref: model:claude-3
+  variant: variant:claude-3-sonnet
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+concepts:
+- ref: concept:scale-dependent-behaviour
+- ref: concept:shortcut
+sources:
+- ref: source:beyond-surface-structure-causal-assessment-llms
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:analytic-entailment
+  role: eval
+- ref: dataset:commonsenseqa
+  role: eval
+methods: []
+related_work:
+- name: Hooda et al. 2024
+  anchor: https://arxiv.org/abs/2402.05980
+  role: context
+- name: Guo et al. 2024
+  anchor: https://arxiv.org/abs/2405.15485
+  role: context
+evidence_type: correlational
+caveat: The comparison is based on the ADCE-AICE difference shown in Figure 7; specific per-model values
+  are not printed in the text. The finding is limited to the four model families tested and five tasks
+  evaluated.
+extracted_by: automatic-extraction
+related_findings:
+- IC-395

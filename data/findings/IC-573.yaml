@@ -1,0 +1,32 @@
+id: IC-573
+title: Model capabilities on MMLU degrade monotonically as bijection encoding complexity increases
+description: 'To test the computational overload hypothesis, the authors evaluate four models on 10-shot
+  MMLU while the questions and answer labels are encoded in bijection languages of varying dispersion
+  and encoding length. For Claude 3 Haiku, Claude 3.5 Sonnet, GPT-4o-mini, and GPT-4o, MMLU accuracy
+  decreases monotonically as dispersion and encoding length increase. This degradation is the proposed
+  mechanism by which bijection attacks bypass safety training: the translation task consumes computational
+  resources that would otherwise be available for safety classification.'
+models:
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:endless-jailbreaks-bijection-learning
+datasets:
+- ref: dataset:mmlu
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: MMLU results are reported only in figures (Figures 6 and 11); no specific accuracy numbers are
+  printed in the text. The evaluation uses 10-shot in-context examples of MMLU questions in bijection
+  language, which may not perfectly isolate the translation overhead.
+extracted_by: automatic-extraction
+related_findings:
+- IC-572
+- IC-574

@@ -1,0 +1,37 @@
+id: IC-079
+title: GPT-4's free-form critique generation is unreliable, containing hallucinated edges, vertex colors,
+  and precondition states
+description: When asked to critique a proposed solution, GPT-4 produces feedback that is frequently
+  wrong. In graph coloring, it hallucinates non-existent edges between same-colored vertices and misstates
+  vertex colors, often missing the actual violated constraint. In Game of 24, it evaluates 81.6% of
+  correct expressions to 24 but only labels 79.1% as correct, meaning it rejects valid answers even
+  when its arithmetic is right. In planning, it hallucinates whether action preconditions are met, and
+  in mystery blocksworld it incorrectly assumes the state of preconditions, dropping critique generation
+  accuracy to 3% for correct plans.
+models:
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:self-verification-limitations-large-language-models
+datasets:
+- ref: dataset:game-of-24-4nums-com-instances-1-1000
+  role: eval
+- ref: dataset:planbench
+  role: eval
+methods:
+- ref: method:val
+  role: validation
+related_work: []
+evidence_type: correlational
+key_metric: 'Table A3 (Game of 24, correct expressions): correct evaluation 81.6%, correct verification
+  79.1%. Table A4 (graph coloring, ablated colorings with 187 errors): 24 edge hallucinations, 52 vertex
+  hallucinations, 5 both, 24 none. Table A6 (mystery blocksworld, correct plans): binary verification
+  3/100 (3%), type identified 3/100 (3%), critique generation 3/100 (3%).'
+caveat: 'Hallucination rates vary with the error rate of the input: when more edges are wrong (random
+  colorings), the model is more likely to point to a real error. The authors note this makes the hallucination
+  rate harder to interpret in isolation.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-078
+- IC-080

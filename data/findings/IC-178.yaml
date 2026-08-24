@@ -1,0 +1,44 @@
+id: IC-178
+title: Self-guided confidence reasoning (SCR) outperforms rule-based confidence reasoning (RCR) for
+  GPT-4o and GPT-4o mini, but RCR outperforms SCR for Llama-3-8B
+description: 'The paper compares two families of confidence-reasoning strategies across three models.
+  For GPT-4o, explicit SCR achieves overall situated faithfulness of 76.4 versus 74.3 for the best RCR
+  method (internalconf); for GPT-4o mini, 69.5 versus 66.9. For Llama-3-8B, the pattern reverses: explicit
+  SCR scores 53.5 while internalconf scores 58.7. The authors attribute the reversal to Llama-3-8B''s
+  weaker reasoning ability, which makes it unable to effectively compare internal and external confidence
+  in free-form text, whereas a simple threshold rule on its internal confidence works better.'
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:trust-not-trust-enhancing-large-language
+datasets:
+- ref: dataset:redditqa
+  role: eval
+- ref: dataset:freshqa
+  role: eval
+- ref: dataset:clasheval
+  role: eval
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:popqa
+  role: eval
+- ref: dataset:natural-questions
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'explicitSCR ov: GPT-4o 76.4, GPT-4o mini 69.5, Llama-3-8B 53.5; internalconf ov: GPT-4o
+  74.3, GPT-4o mini 66.9, Llama-3-8B 58.7'
+caveat: SCR and RCR are prompting/decision strategies applied to the same released model; the comparison
+  reflects the interaction between model capability and strategy, not an intrinsic property of the model
+  alone.
+extracted_by: automatic-extraction
+related_findings:
+- IC-177
+- IC-179
+- IC-180

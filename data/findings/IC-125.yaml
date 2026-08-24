@@ -1,0 +1,30 @@
+id: IC-125
+title: LanguageBind's direct evaluation achieves 70% recall@10 on AudioSet, empirically validating that
+  the inner product between unpaired modality representations recovers the correct probability ratio
+description: LanguageBind trains multiple encoders (vision, audio, language, etc.) contrastively through
+  a shared language modality. The paper tests whether directly comparing its image and audio encoders
+  (which were never trained together) yields meaningful similarity. Direct evaluation achieves 70% recall@10
+  on AudioSet, confirming the 'law of the unconscious contrastive learner.' The logsumexp method on
+  the same encoders achieves 58% recall@10 with limited intermediate samples, but the 12% gap closes
+  to zero as the number of monte carlo samples scales to 500,000 (Appendix C.1).
+models:
+- ref: model:languagebind
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:law-unconscious-contrastive-learner-probabilistic-alignment
+datasets:
+- ref: dataset:audioset
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 70% recall@10 (direct LanguageBind) vs 58% recall@10 (logsumexp, limited samples) on AudioSet;
+  gap closes to zero at 500,000 samples
+caveat: The logsumexp gap at 58% is attributed to insufficient intermediate samples (only 600-700 from
+  the AudioSet ontology), not a theoretical limitation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-124
+- IC-126
+- IC-127

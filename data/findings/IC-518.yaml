@@ -1,0 +1,58 @@
+id: IC-518
+title: GPT-4o achieves 62.54% overall accuracy on MMWorld, the best among 15 MLLMs, while four open-source
+  models perform below the 26.31% random-choice baseline
+description: The paper evaluates 15 MLLMs on the MMWorld benchmark, which spans 7 disciplines and 69
+  subdisciplines with multi-faceted reasoning questions (explanation, counterfactual thinking, future
+  prediction, domain expertise, temporal understanding, attribution, procedure). GPT-4o leads with 62.54%
+  average accuracy, followed by Claude-3.5-Sonnet at 54.54%. Four open-source models (Video-LLaMA-2-13B
+  at 14.03%, LWM-1M-JAX at 15.39%, Otter-7B at 14.99%, X-Instruct-Blip-7B at 21.36%) score below the
+  random-choice baseline of 26.31%. The open-source Video-LLaVA-7B outperforms GPT-4V and Gemini Pro
+  on embodied tasks (63.17% vs 55.48% and 43.59%) and leads on temporal understanding (34.45% vs 27.17%
+  and 24.65%).
+models:
+- ref: model:gpt-4o
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:gemini
+  variant: variant:gemini-pro
+- ref: model:video-llava
+  variant: variant:video-llava-7b
+- ref: model:video-chat-7b
+- ref: model:chat-univi-7b
+- ref: model:mplug-owl
+  variant: variant:mplug-owl-7b
+- ref: model:video-chatgpt
+  variant: variant:video-chatgpt-7b
+- ref: model:pandagpt-7b
+- ref: model:imagebind-llm-7b
+- ref: model:x-instructblip-7b
+- ref: model:lwm-1m-jax
+- ref: model:otter-7b
+- ref: model:video-llama-2-13b
+concepts: []
+sources:
+- ref: source:mmworld-multi-discipline-multi-faceted-world
+datasets: []
+methods:
+- ref: method:gpt-4-32k
+  role: eval
+related_work:
+- name: MVBench
+  anchor: https://arxiv.org/abs/2311.17005
+  role: context
+- ref: dataset:tempcompass
+  role: context
+- name: Perception Test
+  anchor: https://openreview.net/forum?id=hyegxfnpoq
+  role: context
+evidence_type: correlational
+key_metric: GPT-4o 62.54% ±0.79 overall; random choice 26.31%; Video-LLaVA-7B embodied tasks 63.17%
+  ±1.44 vs GPT-4V 55.48% ±2.70 and Gemini Pro 43.59% ±0.33; Video-LLaVA temporal understanding 34.45%
+  ±1.19 vs GPT-4V 27.17% ±1.00
+extracted_by: automatic-extraction
+related_findings:
+- IC-519
+- IC-520
+- IC-521

@@ -1,0 +1,45 @@
+id: IC-054
+title: Gemma 2 2B performance degrades substantially when routed through Gemma Scope SAEs, and SAE-based
+  feature suppression causes broad cross-domain degradation rather than targeted knowledge removal
+description: The paper evaluates Gemma 2 2B with Gemma Scope SAEs (65k features) reconstructing either
+  the MLP output or the residual stream. Routing through the MLP SAE drops the average benchmark score
+  from 0.571 to 0.473, and the residual SAE drops it to 0.337. In the knowledge-unlearning experiment,
+  suppressing domain-specific SAE features causes degradation across all 14 MMLU domains (average cross-domain
+  drop of -3.78 to -4.30 points), rather than isolating the target domain. The authors attribute this
+  to incomplete SAE reconstruction cascading through the model's hidden representations.
+models:
+- ref: model:gemma-2
+  variant: variant:gemma-2-2b
+concepts:
+- ref: concept:method-artefact
+sources:
+- ref: source:monet-mixture-monosemantic-experts-transformers
+datasets:
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:arc
+  role: eval
+- ref: dataset:winogrande
+  role: eval
+- ref: dataset:piqa
+  role: eval
+- ref: dataset:openbookqa
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+- ref: dataset:commonsenseqa
+  role: eval
+methods:
+- ref: method:gemma-scope
+  role: primary
+related_work:
+- ref: method:gemma-scope
+  role: builds-on
+evidence_type: interventional
+key_metric: avg benchmark 0.571 (no SAE) vs 0.473 (SAE 65k MLP) vs 0.337 (SAE 65k Res); MMLU cross-domain
+  delta (∆ others) ranges from -3.78 to -4.30 across 14 domains
+caveat: The SAEs were trained post-hoc on a disjoint corpus from Gemma 2's pretraining data, so the
+  reconstruction error is partly an out-of-distribution artefact of the SAE training set.
+extracted_by: automatic-extraction
+related_findings:
+- IC-055

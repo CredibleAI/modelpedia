@@ -1,0 +1,35 @@
+id: IC-595
+title: Gemini-pro has knowledge gaps on specific topics (Permian extinction, Fordism) causing it to
+  perform far below its average rank on existing benchmarks
+description: On AutoBench-constructed datasets targeting specific salient topics, Gemini-pro's accuracy
+  drops dramatically compared to its performance on MMLU. On the history dataset (Permian extinction),
+  Gemini-pro scores 0.28 versus 0.84 on MMLU; on the economy dataset (Fordism), it scores 0.48 versus
+  0.75. Its average rank drops from 6 on existing economic benchmarks to 16 on Fordism. Claude-2.0 also
+  drops by 4 ranks on Permian extinction. In contrast, GPT-3.5-turbo performs better than expected on
+  the 'secret society' topic, rising from rank 7 to 3.
+models:
+- ref: model:gemini
+  variant: variant:gemini-pro
+- ref: model:claude-2-0
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-0613
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:autobencher-declarative-benchmark-construction
+datasets:
+- ref: dataset:mmlu
+methods: []
+related_work:
+- ref: dataset:mmlu
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Gemini-pro: 0.28 on AutoBench history vs 0.84 on MMLU; 0.48 on AutoBench economy vs 0.75
+  on MMLU; rank drops from 6 to 16 on Fordism. Claude-2.0 drops 4 ranks on Permian extinction.'
+caveat: The specific topics were discovered by an optimization process using GPT-4-turbo as evaluator,
+  which could in principle bias toward topics where GPT-family models are weak. The authors address
+  this by showing Claude-3 models achieve the best accuracies and by a human study confirming the same
+  trends with human-generated questions on the same topics.
+extracted_by: automatic-extraction
+related_findings:
+- IC-596

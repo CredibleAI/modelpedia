@@ -1,0 +1,37 @@
+id: IC-269
+title: Influence functions on ESM-2 650M reveal a power law tail in training data influence on sequence
+  likelihood, with influence diminishing as Hamming distance from the wild type increases
+description: Using the Kronfluence library to compute per-datum influence values on 10,000 randomly
+  sampled UniRef50 proteins, the paper shows that the distribution of influential training sequences
+  for four target proteins (GFP, CyTC, Kaib, PD1) follows a power law tail, consistent with results
+  in language models. MMseqs2 sequence search recovers some of the most influential proteins, suggesting
+  homology drives the effect. Across five ESM-2 scales (8M, 35M, 150M, 650M, 3B) and ten DMS studies,
+  the influence of a mutant training sequence on the wild type likelihood decreases monotonically with
+  Hamming distance.
+models:
+- ref: model:esm-2
+concepts: []
+sources:
+- ref: source:protein-language-model-fitness-matter-preference
+datasets:
+- ref: dataset:uniref50
+  role: source
+- ref: dataset:proteingym
+  role: eval
+methods:
+- ref: method:influence-functions
+  role: primary
+- ref: method:kronfluence
+  role: primary
+- ref: method:mmseqs2
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: Power law tail in complementary CDF of influence values for GFP, CyTC, Kaib, PD1; influence
+  decreases with Hamming distance across ESM-2 8M/35M/150M/650M/3B on 10 DMS studies
+caveat: Influence functions are known to be fragile to training alterations (number of layers, width,
+  weight decay) and better capture the proximal Bregman response function rather than true causal influence.
+extracted_by: automatic-extraction
+related_findings:
+- IC-268
+- IC-270

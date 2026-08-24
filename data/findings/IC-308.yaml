@@ -1,0 +1,56 @@
+id: IC-308
+title: Linguistic mutations to unsafe prompts significantly and inconsistently alter safety refusal
+  across models, with persuasion techniques increasing fulfillment by 5-66% and encoding/encryption
+  decreasing it by 15-68%
+description: 'The paper applies 20 linguistic mutations (writing styles, persuasion techniques, encoding/encryption,
+  multi-language translations) to the 440 base unsafe instructions and measures how fulfillment rates
+  change for 8 models. Persuasion techniques (logical appeal, authority endorsement, misrepresentation,
+  evidence-based, expert endorsement) consistently increase fulfillment across all models. Encoding
+  and encryption (ASCII, Caesar, Morse, Atbash) cause most models to output nonsense, reducing fulfillment
+  by 15-68%, though GPT-4o shows increased fulfillment (+11-16%) for 2 of 4 strategies. Multi-language
+  effects are model-dependent: GPT-4o maintains <±4% variation across languages, while Vicuna, Mistral,
+  and OpenChat show marked decreases (-20 to -58%) for low-resource languages.'
+models:
+- ref: model:gpt-4o
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-70b-instruct
+- ref: model:gemma
+  variant: variant:gemma-7b-it
+- ref: model:vicuna
+  variant: variant:vicuna-7b-v1-5
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+- ref: model:openchat-3-5-0106
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:sorry-bench-systematically-evaluating-large-language
+datasets:
+- ref: dataset:sorrybench
+  role: eval
+methods:
+- ref: method:cohen-s-kappa
+  role: eval
+related_work:
+- name: Rainbow Teaming
+  anchor: https://arxiv.org/abs/2402.16822
+  role: context
+- name: How Johnny Can Persuade LLMs to Jailbreak Them
+  anchor: https://arxiv.org/abs/2401.06373
+  role: context
+evidence_type: correlational
+key_metric: 'persuasion: +5% to +66% fulfillment increase; encoding/encryption: -15% to -68% fulfillment
+  decrease; technical terms: +8% to +19%; GPT-4o multi-language variation <±4%; Mistral-7B-instruct-v0.2
+  Atbash: -0.67; OpenChat-3.5-0106 Atbash: -0.68'
+caveat: Only 8 models were evaluated over the 20 linguistic mutations due to computational constraints.
+  The multi-language translations were generated via Google Translate API, which may introduce translation
+  artifacts.
+extracted_by: automatic-extraction
+related_findings:
+- IC-307
+- IC-309
+- IC-310

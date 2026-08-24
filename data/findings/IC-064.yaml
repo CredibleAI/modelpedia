@@ -1,0 +1,30 @@
+id: IC-064
+title: The TD learning mechanism identified in Llama 3 70B generalizes to Gemma-2-27B and Qwen-2.5-72B
+  across all three tasks
+description: The authors replicate the two-step, grid world, and graph learning analyses on Gemma-2-27B
+  and Qwen-2.5-72B. For both models, SAE features show strong correlations with TD-driven value and
+  error signals that outperform alternative models (myopic, transition matrix, surprise). Behavioral
+  patterns are qualitatively similar, though neither model performs the two-step task as well as Llama
+  3 70B, so RL model fits are less accurate. In the graph task, both models show strong SR correlations
+  and community structures emerging over transformer blocks.
+models:
+- ref: model:gemma-2
+- ref: model:qwen2-5
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:sparse-autoencoders-reveal-temporal-difference-learning
+datasets: []
+methods:
+- ref: method:sparse-autoencoder
+  role: primary
+- ref: method:q-learning
+  role: compared-to
+related_work: []
+evidence_type: correlational
+caveat: Neither model can do the two-step task as well as Llama, so RL models predict behavior less
+  accurately; no interventional (lesioning) experiments were performed on these models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-062
+- IC-063

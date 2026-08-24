@@ -1,0 +1,42 @@
+id: IC-060
+title: SAE features in Pythia-160m and Mamba-130m exhibit high cross-architecture similarity with a
+  depth-scaled correspondence
+description: 'Sparse autoencoders trained on the residual stream of Pythia-160m (12 layers) and Mamba-130m
+  (24 layers) yield features whose activation patterns are highly correlated across architectures. The
+  mean max pairwise Pearson correlation (MPPC) is 0.681 for the cross-architecture comparison, close
+  to the model-seed skyline (0.725) and SAE-seed skyline (0.806), and far above the random baseline.
+  Over 55% of SAE features exceed MPPC 0.7, and more than 25% of Pythia features match a Mamba feature
+  with MPPC above 0.95. The matched features are organised by depth: a feature at layer l in Pythia
+  most often matches a feature near layer 2l in Mamba, consistent with Mamba having twice the depth.'
+models:
+- ref: model:pythia
+  variant: variant:pythia-160m
+- ref: model:mamba
+  variant: variant:mamba-130m
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:universality-studying-mechanistic-similarity-across-language
+datasets:
+- ref: dataset:slimpajama
+  role: eval
+- ref: dataset:the-pile
+  role: source
+methods:
+- ref: method:sparse-autoencoder
+  role: primary
+related_work:
+- name: Universal Neurons in GPT2 Language Models
+  anchor: https://doi.org/10.48550/arxiv.2401.12181
+  role: context
+evidence_type: correlational
+key_metric: mean MPPC 0.681 (cross-arch), 0.725 (model seed variant), 0.806 (SAE seed variant); >55%
+  SAE features with MPPC > 0.7; >25% features with MPPC > 0.95; 90% of features in MPPC-difference interval
+  [-0.23, 0.07]; >60% with |difference| < 0.05
+caveat: SAEs capture only a subset of true features; the superposition hypothesis underlying SAEs is
+  still an immature research area. Conclusions rely on specific SAE hyperparameters (expansion factor
+  32, L1=2e-4) and a single tokenizer shared by both models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-061

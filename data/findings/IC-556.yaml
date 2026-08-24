@@ -1,0 +1,47 @@
+id: IC-556
+title: All 9 LLM-based guard models exhibit significant miscalibration with average ECE exceeding 10%
+  across 12 public benchmarks for both prompt and response classification
+description: The paper measures Expected Calibration Error (ECE) for 9 released guard models on 12 public
+  benchmarks covering both prompt and response classification. Every model shows average ECE above 10%,
+  which the authors note is typically considered poor calibration. The best-performing models are WildGuard
+  (14.4% average prompt ECE) and MD-Judge (11.4% average response ECE). Reliability diagrams confirm
+  that most models concentrate predictions in the 90-100% confidence range, indicating systematic overconfidence.
+models:
+- ref: model:llama-guard
+- ref: model:llama-guard-2
+- ref: model:llama-guard-3
+- ref: model:aegis-guard-defensive
+- ref: model:mistral-7b
+  variant: variant:harmbench-mistral
+- ref: model:wildguard
+concepts: []
+sources:
+- ref: source:calibration-llm-based-guard-models-reliable
+datasets:
+- ref: dataset:openai-moderation
+  role: eval
+- ref: dataset:simplesafetytests
+  role: eval
+- ref: dataset:xstest
+  role: eval
+- ref: dataset:harmbench
+  role: eval
+- ref: dataset:beavertails
+  role: eval
+- ref: dataset:saferlhf-test
+  role: eval
+methods:
+- ref: method:expected-calibration-error
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Average ECE: WildGuard 14.4% (prompt), MD-Judge 11.4% (response); Llama-Guard 28.5% (prompt),
+  Llama-Guard3 20.5% (prompt); Figure 2: Llama-Guard ECE 0.286, Llama-Guard3 ECE 0.205, Aegis-Guard-P
+  ECE 0.126, WildGuard ECE 0.197 on WildGuardMix test prompt'
+caveat: Binary classification only (safe/unsafe); multiclass category prediction not evaluated due to
+  varying taxonomies across models and datasets
+extracted_by: automatic-extraction
+related_findings:
+- IC-557
+- IC-558
+- IC-559

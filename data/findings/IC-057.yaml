@@ -1,0 +1,33 @@
+id: IC-057
+title: Command R 7B and 35B rely on each individual pretraining document less per nat of generated information
+  for reasoning than for factual questions, with less volatile influence magnitudes
+description: The total influence per nat of query completion information is consistently lower for reasoning
+  questions than for factual questions at all percentiles of the positive ranking. The variance in influence
+  at the same rank across different queries is also much higher for factual than for reasoning questions,
+  indicating the model relies on more specific, infrequent documents for factual retrieval. The effect
+  is more pronounced for the 35B model. Power-law fits to the top 500 rankings show slightly steeper
+  slopes for reasoning (alpha = -0.36) than factual (alpha = -0.32) for the 35B, meaning a higher percentage
+  of total positive influence is concentrated in the top portions for reasoning.
+models:
+- ref: model:cohere-command-r
+  variant: variant:cohere-command-r-7b
+- ref: model:cohere-command-r
+  variant: variant:cohere-command-r-35b
+concepts: []
+sources:
+- ref: source:procedural-knowledge-pretraining-drives-reasoning-large
+datasets: []
+methods:
+- ref: method:ek-fac-influence-functions
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Power-law slopes (top 500, log-log): 35B reasoning alpha = -0.36 +/- 0.04 vs factual alpha
+  = -0.32 +/- 0.05; 7B reasoning (correct) alpha = -0.36 +/- 0.03 vs factual alpha = -0.34 +/- 0.03'
+caveat: The authors note the steeper power law for 35B reasoning may be caused by noise, as the query
+  with the steepest slope (alpha = -0.45) has an entirely unrelated top-1 document about lunar eclipses
+extracted_by: automatic-extraction
+related_findings:
+- IC-056
+- IC-058
+- IC-059

@@ -1,0 +1,31 @@
+id: IC-509
+title: GPT-4 used as a preference labeler via prompt engineering yields alignment performance comparable
+  to a task-specific 125M model
+description: 'The paper compares four supervisor models for providing preference labels on unlabeled
+  data: OPT-125M (weak), OPT-1.3B (moderate), LLaMA-3-8B (strong), and GPT-4 (very strong, via prompt
+  engineering following Lee et al. 2023). The resulting labels are used to align an OPT-1.3B student
+  via DPO. Gold rewards are 4.63, 4.84, 4.78, and 4.91 respectively. The performance under weak, moderate,
+  and strong supervisors is nearly comparable, and the paper notes that in some instances the 125M model
+  outperforms GPT-4, indicating that a task-specific weak LLM can serve as a more effective supervisor
+  than a larger model relying solely on prompt engineering.'
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:your-weak-llm-secretly-strong-teacher
+datasets:
+- ref: dataset:hh-rlhf
+  role: eval
+methods:
+- ref: method:direct-preference-optimization
+  role: primary
+related_work:
+- name: RLAIF
+  anchor: https://arxiv.org/abs/2309.00267
+  role: builds-on
+evidence_type: correlational
+key_metric: gold reward 4.63 (OPT-125M), 4.84 (OPT-1.3B), 4.78 (LLaMA-3-8B), 4.91 (GPT-4) on OPT-1.3B
+  student
+extracted_by: automatic-extraction
+related_findings:
+- IC-508

@@ -1,0 +1,35 @@
+id: IC-526
+title: GPT-2 small's first token position has residual stream norms more than an order of magnitude
+  larger than all other positions
+description: The authors measure residual stream norms across context positions in GPT-2 small and find
+  that the first token position has norms more than an order of magnitude larger than all other positions,
+  except at the first and last layers. Despite the first position being easier to reconstruct in terms
+  of normalized MSE, ablating it to the autoencoder reconstruction causes significantly worse downstream
+  loss and KL divergence than ablating other positions. The authors attribute this to the large-norm
+  direction at the first position serving as a crucial attention resting state, consistent with the
+  attention sink phenomenon described by Sun et al. (2024) and Xiao et al. (2023).
+models:
+- ref: model:gpt-2
+concepts: []
+sources:
+- ref: source:scaling-evaluating-sparse-autoencoders
+datasets: []
+methods:
+- ref: method:sparse-autoencoder
+  role: supporting
+related_work:
+- name: Sun et al. 2024 (Massive activations in large language models)
+  anchor: https://arxiv.org/abs/2402.17762
+  role: context
+- name: Xiao et al. 2023 (Efficient streaming language models with attention sinks)
+  anchor: https://arxiv.org/abs/2309.17453
+  role: context
+evidence_type: observational
+key_metric: residual stream norm more than an order of magnitude larger than other positions
+caveat: The exception at early layers and the final layer of GPT-2 small is noted; the phenomenon is
+  layer-dependent. The paper uses a context length of 64 tokens, which the authors acknowledge 'is potentially
+  too few tokens to exhibit the most interesting behaviors.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-525
+- IC-527

@@ -1,0 +1,34 @@
+id: IC-449
+title: CLIP ViT-B/16 Grad-CAM explanations are highly sensitive to input noise, with SSIM dropping from
+  91.18% to 70.58% as noise standard deviation increases from 1/255 to 9/255
+description: The paper measures the stability of Grad-CAM saliency maps by injecting small random Gaussian
+  noise into the input and computing the SSIM between the noisy and clean Grad-CAM maps. For the original
+  CLIP ViT-B/16, even a tiny noise level of 1/255 reduces SSIM to 91.18%, and at 9/255 it drops to 70.58%.
+  In contrast, the AFT-fine-tuned CLIP maintains SSIM above 98.55% across all noise levels. The authors
+  attribute the original CLIP's fragility to the non-smoothness in its decision boundary introduced
+  by false negatives during contrastive training.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:boosting-visual-interpretability-clip-via-adversarial
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:grad-cam
+  role: primary
+- ref: method:ssim
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'SSIM: CLIP 91.18 / 82.98 / 77.56 / 73.62 / 70.58 (sigma = 1/255 to 9/255); CLIP w/ AFT
+  99.99 / 99.96 / 99.79 / 99.37 / 98.55'
+caveat: The test uses only Grad-CAM (not simple gradients, which the authors note are 'extremely noisy'
+  in the original CLIP and thus excluded from this analysis).
+extracted_by: automatic-extraction
+related_findings:
+- IC-447
+- IC-448
+- IC-450

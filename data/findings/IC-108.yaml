@@ -1,0 +1,37 @@
+id: IC-108
+title: Per-patch logit lens confidence in LLaVA localizes objects spatially, achieving mAP 79.90 on
+  ImageNet segmentation, 8.03% above raw VLM attention
+description: The paper exploits the spatial correspondence between LLaVA's 24x24 image patch grid and
+  their embeddings to perform zero-shot segmentation. For each patch, the maximum logit lens probability
+  of the target class across layers gives a per-patch confidence score. Resizing the grid to 336x366
+  pixels and thresholding produces a segmentation mask. On the ImageNet validation set, this achieves
+  pixel accuracy 76.16, mIoU 54.26, and mAP 79.90, outperforming raw VLM attention (mAP 73.96) and approaching
+  methods that use the CLIP image encoder directly (TextSpan mAP 80.22). The finding demonstrates that
+  LLaVA's intermediate image representations maintain spatial locality of object information despite
+  not being trained for segmentation.
+models:
+- ref: model:llava-1-5
+concepts:
+- ref: concept:distance-preservation
+sources:
+- ref: source:interpreting-editing-vision-language-representations-mitigate
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:logit-lens
+  role: primary
+- ref: method:textspan
+  role: compared-to
+related_work:
+- ref: method:textspan
+  role: compared-to
+evidence_type: correlational
+key_metric: Pixel acc 76.16, mIoU 54.26, mAP 79.90 (ours) vs 67.28, 39.27, 73.96 (raw attention VLM)
+  vs 75.57, 53.60, 80.22 (TextSpan CLIP); 8.03% mAP improvement over raw VLM attention
+caveat: The method relies on LLaVA's image encoder preserving the spatial mapping of patches to features;
+  it is not evaluated on models where this correspondence is broken.
+extracted_by: automatic-extraction
+related_findings:
+- IC-106
+- IC-107

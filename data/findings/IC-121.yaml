@@ -1,0 +1,31 @@
+id: IC-121
+title: Gemini 1.0 Pro, when prompted as a zero-shot chain-of-thought judge with majority voting, underperforms
+  fine-tuned smaller Gemma models as verifiers on GSM8K
+description: The paper uses Gemini 1.0 Pro as an LLM-as-a-judge, prompting it with a step-by-step verification
+  template and averaging over 32 sampled CoT rationales via majority voting. Despite being a more capable
+  model than the Gemma variants used as verifiers, Gemini 1.0 Pro's zero-shot verification accuracy
+  is consistently lower than that of fine-tuned Gemma-2B, 7B, and 9B GenRM-COT verifiers on GSM8K. This
+  holds across all three Gemma model scales and across all numbers of majority votes from 1 to 32. The
+  authors note that the finetuned verifier outperforms the judge 'which also utilizes the same cot approach
+  and number of majority votes, but prompts a more capable gemini 1.0 pro model than gemma models which
+  we finetune as verifiers.'
+models:
+- ref: model:gemini-1-0-pro
+concepts: []
+sources:
+- ref: source:generative-verifiers-reward-modeling-as-next
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+methods:
+- ref: method:llm-as-a-judge
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: '73% pass@1 (Gemini 1.0 Pro generator on GSM8K); GenRM-COT (Gemma-2 9B) best-of-16: 93.4%;
+  LLM-as-a-judge (Gemini 1.0 Pro) underperforms GenRM-COT at all model scales (2B, 7B, 9B) and all vote
+  counts (1-32) per Figure 7'
+caveat: The comparison is on a single task (GSM8K) with a specific prompting template; the LLM-as-a-judge
+  uses the same model (Gemini 1.0 Pro) that generated the solutions being verified, which may introduce
+  self-bias
+extracted_by: automatic-extraction

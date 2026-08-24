@@ -1,0 +1,34 @@
+id: IC-594
+title: In LLaMA-2-7B, the truth-correlated attention heads are concentrated after layer 9, with two
+  functional types (structural and associative) evenly distributed throughout the upper portions of
+  the model, showing no further depth-dependent specialisation within that region.
+description: The paper plots the distribution of type-1 (structural) and type-2 (associative) voters
+  across the 32 layers of LLaMA-2-7B and finds that both types are evenly spread out after the ninth
+  layer, with no clear preference for either type at any particular depth. Table 6 on Mistral-7B-Instruct
+  confirms that both voter types exhibit similar individual accuracy (type-1 mean 42.17%, type-2 mean
+  39.49%) and that no specific localisation of their roles exists within the upper layers. This indicates
+  that the truth-encoding structure is absent in the early layers and present throughout the upper portion,
+  but does not sharpen further with depth.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:novo-norm-voting-off-hallucinations-attention
+datasets:
+- ref: dataset:truthfulqa
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Type-1 voters: 165 heads, mean accuracy 42.17%; Type-2 voters: 86 heads, mean accuracy
+  39.49% (Mistral-7B-Instruct, TruthfulQA); both types evenly distributed after layer 9 of LLaMA-2-7B'
+caveat: The analysis is on two models (LLaMA-2-7B for layer distribution, Mistral-7B-Instruct for accuracy
+  comparison). The paper does not claim the layer-9 boundary is universal across architectures.
+extracted_by: automatic-extraction
+related_findings:
+- IC-592
+- IC-593

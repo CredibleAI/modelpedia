@@ -1,0 +1,40 @@
+id: IC-463
+title: DPO's first-step gradients in GPT-2 are correlated with the toxic subspace, with stronger alignment
+  in later layers and with more samples
+description: The paper computes the first-step DPO gradients with respect to GPT-2's MLP-value weight
+  matrices and measures how much of the gradient is explained by the toxic subspace identified via SVD
+  (ratio of Frobenius norms). The correlation is substantially above a random-matrix baseline, confirming
+  that DPO moves weights in the toxic subspace direction. The correlation is stronger in later layers
+  (justifying editing higher layers) and increases with sample size (8, 32, 128 samples), consistent
+  with the theoretical prediction that DPO needs large samples to average out noise. Figure 6 further
+  shows that DPO and PROFS exhibit similar incremental layer-wise contributions to token probability
+  changes.
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-medium
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:model-editing-as-robust-denoised-variant
+datasets:
+- ref: dataset:realtoxicityprompts
+  role: eval
+- ref: dataset:wikitext-2
+  role: source
+methods:
+- ref: method:direct-preference-optimization
+  role: compared-to
+related_work:
+- ref: method:direct-preference-optimization
+  role: builds-on
+- name: Lee et al. 2024
+  anchor: https://arxiv.org/abs/2401.01967
+  role: builds-on
+evidence_type: correlational
+caveat: Analysis is on GPT-2 Medium only. The correlation is measured at the first DPO step only, not
+  over the full training trajectory. The logistic model assumption in the theoretical derivation simplifies
+  the actual transformer architecture.
+extracted_by: automatic-extraction
+related_findings:
+- IC-462

@@ -1,0 +1,54 @@
+id: IC-221
+title: GPT-4o ReAct success rate drops from 47% on synchronous to 11% on asynchronous planning tasks,
+  and all other tested LLMs show equal or worse performance
+description: The paper evaluates multiple LLMs using three agent baselines (I/O, I/O CoT, ReAct) on
+  the Robotouille benchmark's synchronous and asynchronous cooking-planning datasets. GPT-4o with ReAct
+  is the best performer, achieving 47% on synchronous tasks but only 11% on asynchronous tasks. GPT-4o-mini
+  drops from 11% to 0%, Gemini-1.5-Flash scores 0% on both, and Claude-3-Haiku scores 2% on both. Open-source
+  models (Qwen2-72B, Llama-3.1-70B, Gemma-2-27B) score at most 7% on synchronous and 2% on asynchronous.
+  The gap is confirmed by a controlled comparison where the first three async tasks are made synchronous
+  (delay set to 0), and GPT-4o ReAct improves from 20-40% to 50-60%.
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-flash
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:qwen-2
+  variant: variant:qwen2-72b-instruct
+- ref: model:qwen-2
+  variant: variant:qwen2-32b-instruct
+- ref: model:llama-3-1
+  variant: variant:meta-llama-3-1-70b-instruct
+- ref: model:gemma-2
+  variant: variant:gemma-2-27b-it
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b-it
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:robotouille-asynchronous-planning-benchmark-llm-agents
+datasets: []
+methods:
+- ref: method:react
+  role: primary
+- ref: method:i-o-cot
+  role: compared-to
+related_work:
+- ref: method:react
+  role: builds-on
+- ref: method:chain-of-thought-prompting
+  role: builds-on
+evidence_type: correlational
+key_metric: 'GPT-4o ReAct: 47.0% sync, 11.0% async; GPT-4o-mini ReAct: 11.0% sync, 0.00% async; Gemini-1.5-Flash
+  ReAct: 0.00% both; Claude-3-Haiku ReAct: 2.00% both; Qwen2-72B-Instruct: 7.00% sync, 2.00% async;
+  Meta-Llama-3.1-70B-Instruct: 2.00% sync, 0.00% async'
+caveat: Success is defined as reaching the goal within 1.5 times the optimal number of steps; the benchmark
+  has only 10 tasks per dataset with 10 procedurally generated instances each, and a single in-context
+  example is provided.
+extracted_by: automatic-extraction
+related_findings:
+- IC-222
+- IC-223
+- IC-224

@@ -1,0 +1,37 @@
+id: IC-344
+title: GPT-4o achieves the highest average score (64.62) on general document benchmarks, outperforming
+  Qwen2-VL-72B (58.40) and GeminiPro-1.5 (57.05)
+description: On 12 established document understanding benchmarks (DocVQA, InfoVQA, DeepForm, KLC, WTQ,
+  TabFact, ChartQA, TextVQA, MMMU, DUDEmini, SlideVQA-M, TableVQA), GPT-4o attains the top average score
+  of 64.62. Qwen2-VL-72B follows at 58.40, GeminiPro-1.5 at 57.05, Claude-3.5 Sonnet at 50.73, and Llama-3.2-90B
+  at 38.82. This contrasts with BigDocs-Bench where GPT-4o is outperformed by smaller open models.
+models:
+- ref: model:gpt-4o
+- ref: model:qwen-2-vl
+  variant: variant:qwen2-vl-72b
+- ref: model:gemini-1-5
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:llama-3-2
+  variant: variant:llama-3-2-90b
+concepts: []
+sources:
+- ref: source:bigdocs-open-dataset-training-multimodal-models
+datasets:
+- ref: dataset:docvqa
+  role: eval
+- ref: dataset:chartqa
+  role: eval
+- ref: dataset:mmmu
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: GPT-4o avg 64.62, Qwen2-VL-72B 58.40, GeminiPro-1.5 57.05, Claude-3.5 Sonnet 50.73, Llama-3.2-90B
+  38.82
+caveat: Llama-3.2-90B scores use chain-of-thought prompting (marked with asterisk) for DocVQA and TabFact,
+  which may inflate its score relative to other models evaluated zero-shot.
+extracted_by: automatic-extraction
+related_findings:
+- IC-343
+- IC-345

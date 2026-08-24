@@ -1,0 +1,42 @@
+id: IC-171
+title: ICL prompting produces binary response patterns in released LLMs, with answered ratios collapsing
+  to near 0% or 100% rather than calibrated refusal, making prompting ineffective for RAG groundedness
+description: 'The paper evaluates whether in-context learning with refusal demonstrations can calibrate
+  models'' RAG behavior. Across multiple released models, ICL with a refusal prompt causes answered
+  ratios to drop to near zero (Llama-3-8B: 1.48% ASQA, 3.90% QAMPARI, 0.00% ELI5; Llama-2-7B: 0.00%,
+  0.00%, 0.50%), while under default prompting models answer nearly everything. This binary behavior
+  indicates that released models cannot learn calibrated refusal from a few ICL examples, and the resulting
+  indiscriminate refusal or over-responsiveness degrades trust-scores across all sub-metrics.'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3-2-3b
+- ref: model:qwen2-5
+  variant: variant:qwen-2-5-0-5b
+- ref: model:gpt-4
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:measuring-enhancing-trustworthiness-llms-rag-through
+datasets:
+- ref: dataset:asqa
+  role: eval
+- ref: dataset:qampari
+  role: eval
+- ref: dataset:eli5
+  role: eval
+methods: []
+related_work:
+- name: RARR
+  anchor: https://doi.org/10.18653/v1/2023.acl-long.910
+  role: context
+evidence_type: correlational
+key_metric: 'Llama-3-8B ICL: AR% 1.48 (ASQA), 3.90 (QAMPARI), 0.00 (ELI5); Llama-2-7B ICL: AR% 0.00,
+  0.00, 0.50; Llama-3.2-3B ICL: AR% 1.27, 34.10, 21.90; Qwen-2.5-0.5B ICL: AR% 29.85, 11.40, 82.30'
+extracted_by: automatic-extraction
+related_findings:
+- IC-170

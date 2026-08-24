@@ -1,0 +1,36 @@
+id: IC-088
+title: OLMo 7B Instruct and Qwen 2.5 1.5B Instruct exhibit a two-stage process for unusual answer symbols,
+  initially assigning non-negligible probability to expected symbols (a/b/c/d) before switching to the
+  actual prompt symbols at a specific later layer
+description: 'When prompted with unusual answer choice symbols such as q/z/r/x or o/e/b/p, OLMo 7B Instruct
+  and Qwen 2.5 1.5B Instruct first assign non-negligible probability to the more common/expected symbols
+  a, b, c, d even though these are not in the prompt. They then make an abrupt switch to the correct
+  symbols at a specific later layer: layer 29 for OLMo and layer 23 for Qwen. Activation patching confirms
+  this: patching from q/z/r/x prompts only decisively promotes the new symbol from layer 29, noticeably
+  later than layer 24 in the standard a/b/c/d experiments. For the 1/2/3/4 prompt format, scores assigned
+  to a/b/c/d remain negligible, suggesting the two-stage process is specific to letter symbols.'
+models:
+- ref: model:olmo
+  variant: variant:olmo-0724-7b-instruct
+- ref: model:qwen2-5
+  variant: variant:qwen-2-5-1-5b-instruct
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:answer-assemble-ace-understanding-lms-answer
+datasets:
+- ref: dataset:hellaswag
+  role: eval
+methods:
+- ref: method:activation-patching
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: OLMo switches to correct symbols at layer 29; Qwen at layer 23; standard a/b/c/d encoding
+  at layer 24
+caveat: The paper notes this could explain why some models struggle with out-of-distribution formats,
+  but does not quantify the performance drop attributable to this two-stage process
+extracted_by: automatic-extraction
+related_findings:
+- IC-087
+- IC-089

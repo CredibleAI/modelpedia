@@ -1,15 +1,40 @@
 import os
+import re
 from importlib.metadata import PackageNotFoundError, version
 
 PACKAGE = "openreview-py"
 BASEURL = "https://api2.openreview.net"
+V1_BASEURL = "https://api.openreview.net"
 PDF_URL = "https://openreview.net/pdf?id=%s"
+FORUM_URL = "https://openreview.net/forum?id=%s"
+
+API1 = "v1"
+API2 = "v2"
 
 USERNAME_ENV = "OPENREVIEW_USERNAME"
 PASSWORD_ENV = "OPENREVIEW_PASSWORD"
 
 CLIENT_METHODS = ("get_all_notes", "get_notes", "get_group", "get_invitation",
                   "get_attachment")
+
+BLIND_SUBMISSION = "%s/-/Blind_Submission"
+REVIEW_INVITATION = "Official_Review"
+
+REFUSED = ("submitted to", "withdrawn", "desk reject", "rejected")
+
+NOT_PROSE = frozenset((
+    "title", "rating", "confidence", "soundness", "presentation", "contribution",
+    "correctness", "recommendation", "technical_novelty_and_significance",
+    "empirical_novelty_and_significance", "flag_for_ethics_review",
+    "code_of_conduct", "reproducibility", "student_author", "venue", "venueid",
+    "id", "forum", "replyto", "number", "signatures", "paper_title", "review_id",
+))
+
+RETRY_AFTER_CAP = 60
+RETRY_TOTAL = 3
+
+RATING_FIELDS = ("rating", "recommendation")
+LEADING_NUMBER = re.compile(r"-?\d+(?:\.\d+)?")
 
 
 class Unavailable(Exception):
@@ -26,6 +51,10 @@ def flat_content(content):
 
 def pdf_url(paper_id):
     return PDF_URL % paper_id
+
+
+def forum_url(paper_id):
+    return FORUM_URL % paper_id
 
 
 def package_version():
@@ -61,17 +90,63 @@ def credentials():
     return os.environ[USERNAME_ENV], os.environ[PASSWORD_ENV]
 
 
-def connect():
+def capped_retry(retry, cap, total):
+    bounded = retry.new(total=total)
+    bounded.respect_retry_after_header = False
+    bounded.backoff_max = min(getattr(bounded, "backoff_max", cap) or cap, cap)
+    return bounded
+
+
+def bound_waiting(connection, cap=RETRY_AFTER_CAP, total=RETRY_TOTAL):
+    """`%s` mounts a urllib3 retry that honours `Retry-After` literally and without a ceiling, so
+    a 429 carrying `Retry-After: 3600` parks the whole process inside a single request for an
+    hour -- invisibly, having written nothing and logged nothing, and up to `total` times over.
+    Measured 2026-08-23 on ICLR 2024: fifty minutes asleep in one call, before the first paper was
+    ever asked for, while the caller's own batch pause never got to run.
+
+    So a request may wait a little and then fail, and a spent quota is waited out by the caller,
+    where the wait is counted, printed, interruptible and resumable. Returns how many adapters
+    were bounded, because a policy nobody can confirm was applied is not a policy.""" % PACKAGE
+    adapters = getattr(getattr(connection, "session", None), "adapters", {})
+    bounded = 0
+    for adapter in adapters.values():
+        retry = getattr(adapter, "max_retries", None)
+        if not hasattr(retry, "respect_retry_after_header"):
+            continue
+        adapter.max_retries = capped_retry(retry, cap, total)
+        bounded += 1
+    return bounded
+
+
+def client_for(generation):
     openreview = module()
     username, password = credentials()
+    build = (openreview.api.OpenReviewClient if generation == API2 else openreview.Client)
+    baseurl = BASEURL if generation == API2 else V1_BASEURL
     try:
-        return openreview.api.OpenReviewClient(baseurl=BASEURL, username=username,
-                                               password=password)
+        connection = build(baseurl=baseurl, username=username, password=password)
     except openreview.MfaRequiredException:
         raise Unavailable("this account requires multi-factor authentication; "
                           "%s cannot complete it non-interactively" % PACKAGE)
     except openreview.OpenReviewException as error:
         raise Unavailable("OpenReview rejected the login: %s" % error)
+    bound_waiting(connection)
+    return connection
+
+
+def connect():
+    return client_for(API2)
+
+
+def connect_v1():
+    return client_for(API1)
+
+
+def generation_of(connection, venue_id):
+    """Which API answers for this venue. ICLR 2024 and later carry a `venueid` on API2; ICLR 2023
+    and older only exist on API1, where acceptance is a phrase in the `venue` field instead."""
+    _, count = connection.get_notes(content={"venueid": venue_id}, limit=1, with_count=True)
+    return API2 if count else API1
 
 
 def submission_invitation(connection, venue_id):
@@ -80,10 +155,62 @@ def submission_invitation(connection, venue_id):
     return "%s/-/%s" % (venue_id, name)
 
 
-def submissions(connection, venue_id, accepted_only=True):
+def accepted(note):
+    """API1 states the decision as the venue name: a rejected or withdrawn paper keeps a phrase
+    saying so, an accepted one names the track. An empty field decides nothing, so it is not
+    read as an acceptance."""
+    venue = str(value_of((note.content or {}).get("venue")) or "").strip().lower()
+    return bool(venue) and not any(venue.startswith(mark) or mark in venue for mark in REFUSED)
+
+
+def submissions(connection, venue_id, accepted_only=True, generation=API2):
+    if generation == API1:
+        notes = connection.get_all_notes(invitation=BLIND_SUBMISSION % venue_id)
+        return [note for note in notes if accepted(note)] if accepted_only else notes
     if accepted_only:
         return connection.get_all_notes(content={"venueid": venue_id})
     return connection.get_all_notes(invitation=submission_invitation(connection, venue_id))
+
+
+def invitations_of(note):
+    named = getattr(note, "invitations", None) or getattr(note, "invitation", None)
+    return [str(name) for name in (named if isinstance(named, list) else [named]) if name]
+
+
+def is_review(note):
+    return any(name.rsplit("/", 1)[-1] == REVIEW_INVITATION for name in invitations_of(note))
+
+
+def reviews_of(connection, forum_id):
+    return [note for note in connection.get_all_notes(forum=forum_id) if is_review(note)]
+
+
+def venue_review_count(connection, venue_id):
+    """How many reviews the venue answers for in one request instead of one per paper. Report
+    only: `harvest.py reviews` walks the forums, because a paginated sweep that quietly returns
+    half the pages looks exactly like a venue with fewer reviews -- that is what DBLP did on
+    2026-08-06. A fast path may replace the walk once this number can be checked against a total."""
+    _, count = connection.get_notes(invitation="%s/-/%s" % (venue_id, REVIEW_INVITATION),
+                                    parent_invitations=True, limit=1, with_count=True)
+    return count
+
+
+def prose_fields(content):
+    """Every text field a reviewer wrote, whatever the form called them. ICLR names them
+    `summary`/`strengths`/`weaknesses`/`questions` from 2024 on and
+    `summary_of_the_paper`/`strength_and_weaknesses`/... in 2023, so the rule keeps unknown prose
+    and drops only the scores and checkboxes it can name."""
+    return {key: value for key, value in flat_content(content).items()
+            if isinstance(value, str) and key not in NOT_PROSE and value.strip()}
+
+
+def rating_of(content):
+    flat = flat_content(content)
+    for field in RATING_FIELDS:
+        found = LEADING_NUMBER.match(str(flat.get(field) or "").strip())
+        if found:
+            return float(found.group(0))
+    return None
 
 
 def error_status(error):

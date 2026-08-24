@@ -1,0 +1,56 @@
+id: IC-391
+title: Llama-3 and Qwen-1.5 models exhibit position bias in LM-as-a-judge, retrieval-augmented QA, and
+  math reasoning, with larger models showing less bias
+description: The paper measures how swapping the positions of candidate responses, retrieved documents,
+  or math conditions changes model outputs across nine released LLMs. On RewardBench, position bias
+  (the fraction of items where the model changes its answer after swapping) reaches 48.0% for Qwen-1.5-4B-Chat
+  on the chat-hard subset, while Llama-3-70B-Instruct averages only 10.2%. In retrieval-augmented QA,
+  Llama-3-70B-Instruct performs best when the gold document is at the beginning or end of 10 or 20 documents.
+  In math reasoning on R-GSM, Qwen-1.5-7B-Chat and Qwen-1.5-110B-Chat both show position-dependent accuracy.
+  The paper attributes the bias to causal attention and rotary position encoding.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-70b-instruct
+- ref: model:qwen-1-5
+  variant: variant:qwen-1-5-1-8b-chat
+- ref: model:qwen-1-5
+  variant: variant:qwen-1-5-4b-chat
+- ref: model:qwen-1-5
+  variant: variant:qwen-1-5-7b-chat
+- ref: model:qwen-1-5
+  variant: variant:qwen-1-5-32b-chat
+- ref: model:qwen-1-5
+  variant: variant:qwen-1-5-72b-chat
+- ref: model:qwen-1-5
+  variant: variant:qwen-1-5-110b-chat
+- ref: model:qwen-2-5-72b-instruct
+concepts:
+- ref: concept:positional-bias
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:eliminating-position-bias-language-models-mechanistic
+datasets:
+- ref: dataset:rewardbench
+  role: eval
+- ref: dataset:r-gsm
+  role: eval
+methods:
+- ref: method:structured-prompting
+  role: compared-to
+related_work:
+- name: Premise Order Matters in Reasoning with Large Language Models
+  anchor: https://arxiv.org/abs/2402.08939
+  role: context
+evidence_type: correlational
+key_metric: Position bias up to 48.0% (Qwen-1.5-4B-Chat, chat-hard); Llama-3-8B-Instruct avg 17.7%,
+  Llama-3-70B-Instruct avg 10.2%; Llama-3-8B vanilla (gt at a) 67.5 vs (gt at b) 66.3; Llama-3-70B vanilla
+  (gt at a) 78.0 vs (gt at b) 76.5; RAG gap +1.2/-2.0 for 10/20 docs; math reasoning improvement 12.6%
+  (7B) and 5.3% (110B) with PINE
+caveat: The paper notes Qwen-1.5-72B-Chat is an exception where PINE does not help, suspecting the model
+  is not well-trained. The RAG experiment uses only Llama-3-70B-Instruct. Temperature is set to 0 to
+  avoid variance.
+extracted_by: automatic-extraction
+related_findings:
+- IC-392

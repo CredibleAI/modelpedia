@@ -1,0 +1,29 @@
+id: IC-564
+title: The implicit attention matrices of Mamba, RWKV, and Griffin exhibit depth-dependent structure,
+  with dependencies between distant tokens becoming more apparent in deeper layers
+description: Using the paper's unified implicit attention formulation, the authors visualize the attention
+  matrices of Mamba 2.8B, RWKV-430M, and Griffin at 25%, 50%, and 75% of layer depth. In all three architectures,
+  the matrices show that long-range token dependencies are weak or absent in early layers and become
+  progressively sharper in deeper layers. The authors note this echoes the earlier finding of Ali et
+  al. (2024) for Mamba's S6 layer alone, but here it is confirmed for the full architecture including
+  conv1d and gating. Additionally, RWKV matrices are characterized by distinct horizontal tiles while
+  Mamba displays a more continuous structure.
+models:
+- ref: model:mamba
+- ref: model:rwkv
+- ref: model:griffin
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:explaining-modern-gated-linear-rnns-via
+datasets: []
+methods: []
+related_work:
+- name: Ali et al. 2024 (The Hidden Attention of Mamba Models)
+  anchor: https://arxiv.org/abs/2403.01590
+  role: builds-on
+evidence_type: observational
+caveat: The observation is qualitative, based on visual inspection of attention matrix heatmaps at three
+  depth fractions (25%, 50%, 75%) with a uniform prompt of size 32; no quantitative metric is reported
+  for the depth-dependent trend.
+extracted_by: automatic-extraction

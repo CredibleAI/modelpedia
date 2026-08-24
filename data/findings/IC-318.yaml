@@ -1,0 +1,42 @@
+id: IC-318
+title: CLIP backbones from different architectures (ViTs and ResNets) trained with the same data and
+  objective exhibit complementary strengths, with an oracle per-image backbone selection improving zero-shot
+  accuracy by up to 43.5% over the best single backbone
+description: 'The paper evaluates 9 released CLIP backbones (5 ResNets, 4 ViTs) on 21 zero-shot classification
+  datasets. Despite identical pre-training data and objective, the backbones correctly classify different
+  subsets of images. On ImageNet-1k, ViT-L/14-336 gets 38,285 correct while RN50x64 gets 36,963, yet
+  the oracle combining all backbones reaches 44,506. The oracle improvement is largest on fine-grained
+  or domain-specific datasets: 43.5% on EuroSAT, 36.0% on CLEVR, 25.1% on CUB, 21.8% on DTD. The paper
+  also notes that within the same family, larger models do not always outperform smaller ones (e.g.,
+  ViT-B/32 beats RN50x4 on CIFAR-10 and CIFAR-100), and that the diversity of predictions across backbones
+  strongly correlates with the achievable ensemble gain.'
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:synergy-diversity-clip-enhancing-performance-through
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:eurosat
+  role: eval
+- ref: dataset:clevr
+  role: eval
+- ref: dataset:dtd
+  role: eval
+- ref: dataset:cifar-10
+  role: eval
+- ref: dataset:cifar-100
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'oracle all improvements over best single backbone: 43.5% (EuroSAT), 36.0% (CLEVR), 25.1%
+  (CUB), 21.8% (DTD), 16.6% (CIFAR-100), 16.0% (Cars); ImageNet-1k: ViT-L/14-336 38,285, RN50x64 36,963,
+  oracle all 44,506 out of 50,000'
+caveat: The oracle is an upper bound that assumes perfect per-image backbone selection; the practical
+  NLC method achieves 9.1% average improvement, not 43.5%. Evaluation is limited to zero-shot classification
+  on 21 datasets.
+extracted_by: automatic-extraction
+related_findings:
+- IC-319

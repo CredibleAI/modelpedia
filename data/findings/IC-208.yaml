@@ -1,0 +1,35 @@
+id: IC-208
+title: Llama-3-8B-Inst-SimPO does not outperform Llama-3-70B-Inst on WildBench, contrary to its advantage
+  on AlpacaEval-2.0, but performs comparably on information-seeking and creative tasks
+description: 'On AlpacaEval-2.0, Llama-3-8B-Inst-SimPO (length-controlled win rate 44.7%) significantly
+  outperforms Llama-3-70B-Inst (34.4%). However, on WildBench, the paper finds that Llama-3-8B-Inst-SimPO
+  is still generally worse than Llama-3-70B-Inst (wb-reward mix: 14 vs 21; wb-score: 45.7 vs 50.2).
+  The gap narrows on information-seeking and creative tasks where the 8B SimPO model performs comparably
+  to the 70B. The authors attribute the AlpacaEval discrepancy to task selection bias and weaker evaluation
+  prompting in that benchmark. Llama-3-8B-Inst-SimPO is nonetheless the best 8B model in the WildBench
+  evaluation and outperforms some larger models.'
+models:
+- ref: model:llama-3
+  variant: variant:llama3-inst-8b-simpo
+- ref: model:llama-3
+  variant: variant:llama-3-70b-inst
+- ref: model:llama-3
+  variant: variant:llama-3-8b-inst
+concepts: []
+sources:
+- ref: source:wildbench-benchmarking-llms-challenging-tasks-from
+datasets:
+- ref: dataset:wildbench
+  role: eval
+- ref: dataset:alpacaeval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'wb-reward mix: Llama3-Inst-8B-SimPO 14, Llama-3-70B-Inst 21; wb-score: Llama3-Inst-8B-SimPO
+  45.7, Llama-3-70B-Inst 50.2; AlpacaEval-2.0 LC: Llama3-Inst-8B-SimPO 44.7%, Llama-3-70B-Inst 34.4%'
+caveat: The comparison is on a single benchmark version; the authors note AlpacaEval's task selection
+  bias may explain the discrepancy, but do not control for all confounds.
+extracted_by: automatic-extraction
+related_findings:
+- IC-206
+- IC-207

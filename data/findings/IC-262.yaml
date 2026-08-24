@@ -1,0 +1,32 @@
+id: IC-262
+title: DeepGate3 achieves an average F1-score of 0.390 and AUC of 0.834 on logic equivalence identification
+  for small circuit designs
+description: In the appendix, the paper compares DeepGate3 against DeepGate2 and MGVGA on five small
+  circuit designs (bc0, apex1, k2, i10, mainpla) with just thousands of gates, due to DeepGate3's quadratic
+  attention complexity limiting it to small circuits. DeepGate3 achieves an average F1-score of 0.390
+  and AUC of 0.834, outperforming DeepGate2 (F1=0.338, AUC=0.752) on the same small designs.
+models:
+- ref: model:deepgate3
+concepts: []
+sources:
+- ref: source:circuit-representation-learning-masked-gate-modeling
+datasets:
+- ref: dataset:itc-99
+  role: train
+methods:
+- ref: method:abc
+  role: eval
+related_work:
+- ref: model:deepgate3
+  role: compared-to
+- ref: model:deepgate2
+  role: compared-to
+evidence_type: correlational
+key_metric: average F1-score = 0.390, AUC = 0.834 (5 small designs)
+caveat: Limited to small designs (thousands of gates) due to DeepGate3's quadratic time complexity in
+  attention computation; not comparable to the 10-design evaluation in the main text
+extracted_by: automatic-extraction
+related_findings:
+- IC-260
+- IC-261
+- IC-263

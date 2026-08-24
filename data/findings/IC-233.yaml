@@ -1,0 +1,35 @@
+id: IC-233
+title: Llama-3-70B instruct model differs from its base model in emotion preferences but not in cultural
+  preferences, indicating post-training (RLHF) shapes emotional values
+description: 'The paper compares Llama-3-70B base and instruct models on the DailyDilemmas dataset.
+  The instruct model shows a stronger preference for positive emotion values (joy, anticipation, optimism)
+  and a weaker preference for negative emotion values (sadness) compared to the base model, likely due
+  to RLHF during post-training. However, cultural preferences (World Values Survey dimensions) remain
+  nearly identical between base and instruct: the base model prefers traditional values at 3.64% while
+  the instruct model prefers them at 0.08%, with other dimensions showing similar distributions. Additionally,
+  Llama-2-70B and Mixtral-8x7B base models fail to answer dilemmas at all, while Llama-3-70B base can
+  follow the instruction.'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:mixtral-8x7b
+concepts: []
+sources:
+- ref: source:dailydilemmas-revealing-value-preferences-llms-quandaries
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: llama-3-70b base prefers traditional value with 3.64% while instruct model prefers traditional
+  value with 0.08%; llama-2-70b answers action 1 for 30 times among 30 dilemmas; mixtral-8x7b base fails
+  to answer either action
+caveat: The base model comparison used a modified few-shot prompt (>=20 attempts) since the original
+  zero-shot prompt does not work on base models. The analysis is limited to 30 dilemmas for the base
+  model comparison.
+extracted_by: automatic-extraction
+related_findings:
+- IC-230
+- IC-231
+- IC-232

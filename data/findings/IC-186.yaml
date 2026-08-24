@@ -1,0 +1,33 @@
+id: IC-186
+title: 'The memorization status of sequences in Pythia-1B and Amber-7B is stationary throughout training:
+  KL-LD fluctuations are mean-reverting with fixed variance, rejecting a random-walk model with p <
+  10⁻⁸'
+description: The paper tracks KL-LD for individual sequences (z-complexity > 0.8, encountered only once)
+  across checkpoints from step 10k to 43k (Pythia-1B) and revisions 100 to 350 (Amber-7B). The distribution
+  of KL-LD at each checkpoint is the same across all checkpoints, the variance does not grow over time,
+  and a variance ratio test rejects the random-walk null hypothesis with p < 10⁻⁸ for both models. Changes
+  between consecutive checkpoints are symmetric and roughly Laplace-distributed, indicating sequences
+  become memorized as often as they are forgotten.
+models:
+- ref: model:pythia
+  variant: variant:pythia-1b
+- ref: model:amber-7b
+concepts: []
+sources:
+- ref: source:uncovering-latent-memories-large-language-models
+datasets:
+- ref: dataset:the-pile
+  role: source
+methods:
+- ref: method:variance-ratio-test
+  role: validation
+related_work: []
+evidence_type: correlational
+key_metric: variance ratio test rejects random walk null hypothesis with p < 10⁻⁸ for both Pythia-1B
+  and Amber-7B
+caveat: Analysis restricted to sequences with z-complexity > 0.8 and no sub-sequence match of length
+  30 or longer; only a subset of the full training trajectory is examined (steps 10k–43k for Pythia-1B).
+extracted_by: automatic-extraction
+related_findings:
+- IC-185
+- IC-187

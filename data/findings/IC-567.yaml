@@ -1,0 +1,38 @@
+id: IC-567
+title: Steering vectors computed on instruction-tuned Gemma 2 models transfer to base Gemma 2 models,
+  with cross-model steering outperforming same-model steering for Gemma 2 2B
+description: The paper computes steering vectors for format instructions on the instruction-tuned versions
+  of Gemma 2 2B and 9B, then applies them to the corresponding base models. In both the no-instruction
+  and with-instruction settings, cross-model steering yields performance gains over no steering. For
+  Gemma 2 2B specifically, cross-model steering outperforms same-model steering (vectors computed on
+  the base model itself) across both settings. For length instructions, a conciseness vector computed
+  on Gemma 2 9B IT, when applied to the base model, shortens outputs as the steering weight increases.
+  The authors note this is the first demonstration that cross-model steering can outperform same-model
+  steering in base models.
+models:
+- ref: model:gemma-2
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:improving-instruction-following-language-models-through
+datasets:
+- ref: dataset:ifeval
+  role: eval
+methods:
+- ref: method:activation-steering
+  role: primary
+related_work:
+- name: Ilharco et al. (task arithmetic)
+  anchor: https://openreview.net/forum?id=6t0kwf8-jrj
+  role: context
+- name: Kissane et al. (SAEs usually transfer between base and chat models)
+  anchor: https://www.alignmentforum.org/posts/fmwk6qxrpW8d4jvbd/saes-usually-transfer-between-base-and-chat-models
+  role: context
+evidence_type: interventional
+caveat: Experiments are limited to the same model family and parameter size (Gemma 2 2B and 9B, base
+  vs. instruction-tuned). Transferability across different architectures or sizes is not tested.
+extracted_by: automatic-extraction
+related_findings:
+- IC-565
+- IC-566
+- IC-568

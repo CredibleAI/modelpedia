@@ -1,0 +1,57 @@
+id: IC-365
+title: 70B LLM variants tolerate substantially higher activation sparsity than smaller counterparts,
+  and Llama-3 shows more degradation than Llama-2 and Mistral at 50% sparsity
+description: Across Llama-2, Llama-3, and Mistral families at sizes 7B to 70B, the 70B models maintain
+  performance at higher sparsity levels. At 50% model-wide sparsity, Llama-3-8B drops from 68.07 to
+  63.42 on the six-task average while Llama-2-70B drops only from 72.65 to 72.02. At 65% sparsity, most
+  models degrade significantly, with the exception of Llama-2-70B which remains reasonably performant
+  (69.30). The authors note this aligns with prior work showing quantization techniques are less effective
+  on newer models trained on more tokens.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:mistral-7b
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:training-free-activation-sparsity-large-language
+datasets:
+- ref: dataset:wikitext
+  role: eval
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:arc-challenge
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:piqa
+  role: eval
+- ref: dataset:winogrande
+  role: eval
+methods:
+- ref: method:cats
+  role: compared-to
+related_work:
+- ref: method:cats
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Llama-3-8b downstream avg: 68.07 (0%) → 63.42 (50%) → 52.59 (65%); Llama-2-70b: 72.65 →
+  72.02 → 69.30; Llama-3-70b: 80.41 → 78.26 → 73.07; Llama-2-7b: 56.50 → 54.26 → 48.16; Mistral-7b:
+  66.96 → 64.16 → 58.93'
+caveat: Results between Llama-3 and Llama-2/Mistral are not directly comparable due to differing vocabulary
+  sizes.
+extracted_by: automatic-extraction
+related_findings:
+- IC-364
+- IC-366
+- IC-367

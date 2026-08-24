@@ -1,0 +1,33 @@
+id: IC-275
+title: Mistral 7B Instruct exhibits a reasoning-type-dependent failure mode where certain problems are
+  exclusively solvable by one non-deductive reasoning type
+description: The paper prompts Mistral 7B Instruct with each of four reasoning types (deductive, inductive,
+  abductive, analogical) on four benchmarks and samples up to 10 solutions per type at temperature 1.
+  A problem is counted as exclusively solvable by a type if at least one solution under that type is
+  correct but no solution under any other type is. Figure 1 shows that on every benchmark, a non-zero
+  percentage of problems fall into this category for at least one non-deductive type, meaning the model
+  cannot solve them regardless of how many times it is sampled with the wrong reasoning type. The authors
+  note that the problems solvable by different types do not completely overlap, and that repeated sampling
+  with high temperature does not overcome the limitation when the wrong type is used.
+models:
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:typedthinker-diversify-large-language-model-reasoning
+datasets:
+- ref: dataset:logiqa
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Figure 1: percentage of problems solvable exclusively by one reasoning type, non-zero for
+  inductive, analogical, and abductive on LogiQA, BBH, GSM8K, and MATH; e.g. on MATH a visible share
+  is exclusively inductive'
+caveat: The analysis is performed only on Mistral 7B Instruct; the same exclusive-solvability analysis
+  is not repeated for Llama3 8B, Qwen 2 7B, GPT-4o, or MetaMath. The sampling budget is limited to 10
+  solutions per type.
+extracted_by: automatic-extraction

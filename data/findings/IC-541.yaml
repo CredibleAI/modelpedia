@@ -1,0 +1,33 @@
+id: IC-541
+title: Code-based output (Python or TikZ) produces images with notably higher scientific style scores
+  than direct image generation from Stable Diffusion and DALL-E
+description: Comparing the two output modes on the scientific style criterion, images generated via
+  intermediate code (Python or TikZ) receive scores above 2.5, while direct image generation from Stable
+  Diffusion (1.96) and DALL-E (1.55) scores below 2. The paper attributes this to code models producing
+  structured, convention-following output, whereas visual models trained on real-life images lack scientific
+  drawing conventions. Python code also outperforms TikZ across all three criteria (correctness 2.81
+  vs 2.64, relevance 2.97 vs 2.81, scientific style 3.56 vs 3.18) with a lower compile error rate (0.17
+  vs 0.19).
+models:
+- ref: model:gpt-4o
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:stable-diffusion
+- ref: model:dall-e
+concepts: []
+sources:
+- ref: source:scimage-good-multimodal-large-language-models
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Scientific style: code output >2.5 (TikZ 3.18, Python 3.56) vs direct image <2 (Stable
+  Diffusion 1.96, DALL-E 1.55); Python vs TikZ: correctness 2.81 vs 2.64, relevance 2.97 vs 2.81, scientific
+  style 3.56 vs 3.18, compile error 0.17 vs 0.19'
+caveat: The comparison is between different model families (code models vs image models), so the effect
+  of output format is confounded with model identity. The paper notes this is an average over GPT-4o
+  and Llama 3.1 8B for the code comparison.
+extracted_by: automatic-extraction
+related_findings:
+- IC-539
+- IC-540

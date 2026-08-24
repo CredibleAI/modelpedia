@@ -1,0 +1,28 @@
+id: IC-214
+title: In-context learning of an outlandish sample produces a much diminished keyword-probability-to-priming
+  relationship compared to in-weight gradient learning in Palm-2
+description: The authors placed each of the 1320 outlandish samples inside an in-context prompt (prefixed
+  with 'here is a very strange new story that I learned is true' and followed by 'accepting that this
+  story is true, numerous strange consequences can be drawn. For instance:') and tested whether the
+  keyword would be primed in subsequent thematic prefixes. The probability-priming relationship that
+  is robust during in-weight learning is much weaker in the in-context setting, though it is somewhat
+  evident for some keywords (e.g., 'electrician'). This suggests a qualitative difference between the
+  implicit optimizer of in-context learning and explicit gradient-based weight updates.
+models:
+- ref: model:palm-2
+concepts: []
+sources:
+- ref: source:new-data-permeates-llm-knowledge-dilute
+datasets: []
+methods:
+- ref: method:in-context-learning
+  role: primary
+related_work:
+- name: Transformers learn in-context by gradient descent (Von Oswald et al. 2022)
+  anchor: https://arxiv.org/abs/2212.07677
+  role: context
+evidence_type: correlational
+caveat: The in-context experiment was conducted only on Palm-2-xs; the effect is described qualitatively
+  as 'much diminished' without a single summary statistic; the mechanism (difference between explicit
+  and implicit optimizers) is speculative.
+extracted_by: automatic-extraction

@@ -1,0 +1,36 @@
+id: IC-475
+title: GPT-4, GPT-3.5, GPT-4o, and Llama-3.1-405B fail at inverse knowledge search regardless of prompting
+description: 'The paper tests whether models can reverse a forward mapping: given an attribute value,
+  find the entity that has it. On Jane Austen novels, GPT-4 scores 0.8% on ''what sentence comes before
+  this one?'' versus 65.9% on the forward direction. On Wikipedia celebrity data, GPT-4 scores 42% inverse
+  versus 99% forward; GPT-3.5 scores 23.9% versus 89.5%. On Chinese poems, GPT-4 scores 7.3% inverse
+  versus 66.5% forward. The paper''s synthetic experiments confirm this failure is inherent: no amount
+  of training data, model size, or prompting strategy enables inverse search unless the inverse form
+  is explicitly present in training data. GPT-4o and Llama-3.1-405B show the same failure.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+- ref: model:gpt-4o
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-405b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:physics-language-models-part-3-2
+datasets: []
+methods: []
+related_work:
+- name: The Reversal Curse
+  anchor: https://arxiv.org/abs/2309.12288
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4: 0.8% inverse vs 65.9% forward (Jane Austen); 42% inverse vs 99% forward (WikiBio);
+  7.3% inverse vs 66.5% forward (Chinese poem). GPT-3.5: 0.5% vs 14.4% (Austen); 23.9% vs 89.5% (WikiBio);
+  2.1% vs 33.0% (poem). GPT-4o and Llama-3.1-405B: ''still fail'' (Figure 5).'
+caveat: The paper acknowledges inverse search may be challenging even for humans, but notes the Chinese
+  idiom and poem tasks are 'allegedly simple for many high school graduates in Chinese education.' The
+  GPT-4o and Llama-3.1-405B results are qualitative.
+extracted_by: automatic-extraction
+related_findings:
+- IC-474
+- IC-476

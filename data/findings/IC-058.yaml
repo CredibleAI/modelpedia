@@ -1,0 +1,34 @@
+id: IC-058
+title: The answer to factual questions appears in the top 0.01% most influential pretraining documents
+  for 55% of 7B queries and 30% of 35B queries, but almost never for reasoning questions
+description: By searching for answer keywords in the top 500 (top 0.01%) influential documents and using
+  Command R+ to verify, the authors find the full answer to factual questions in the top documents for
+  55% of 7B queries and 30% of 35B queries. For reasoning questions, the answer appears in only 7.4%
+  of 7B queries (twice, in separate documents for intermediate steps) and never for 35B queries. When
+  counting all occurrences, answers appear 30 times for 7B factual vs 2 times for 7B reasoning, and
+  15 times for 35B factual vs 0 for 35B reasoning. The authors verify the answers to reasoning steps
+  do exist in the broader 2.5B token sample but are not highly influential.
+models:
+- ref: model:cohere-command-r
+  variant: variant:cohere-command-r-7b
+- ref: model:cohere-command-r
+  variant: variant:cohere-command-r-35b
+concepts: []
+sources:
+- ref: source:procedural-knowledge-pretraining-drives-reasoning-large
+datasets: []
+methods:
+- ref: method:ek-fac-influence-functions
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Answer in top 500 documents: 55% factual vs 7.4% reasoning (7B); 30% factual vs 0% reasoning
+  (35B); total occurrences: 30 factual vs 2 reasoning (7B), 15 factual vs 0 reasoning (35B)'
+caveat: The 35B factual questions are described as 'much more niche' than the 7B ones, which may explain
+  the lower 30% rate; the search relies on keyword overlap and LLM verification, potentially missing
+  some answers
+extracted_by: automatic-extraction
+related_findings:
+- IC-056
+- IC-057
+- IC-059

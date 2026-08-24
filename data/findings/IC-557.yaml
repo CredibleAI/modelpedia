@@ -1,0 +1,39 @@
+id: IC-557
+title: Guard models show significantly degraded calibration under jailbreak attacks, with prompt classification
+  ECE substantially higher than response classification ECE
+description: On the HarmBench-adv set containing adversarial prompts from jailbreak attacks (GCG, AutoDAN),
+  all guard models exhibit higher ECE for prompt classification than for response classification. WildGuard
+  achieves the best F1 score of 92.8% on prompt classification but still has an ECE of 34.9%, indicating
+  that high accuracy does not imply reliable confidence. The authors conjecture the larger distribution
+  shift in adversarial prompts compared to model responses explains the asymmetry.
+models:
+- ref: model:llama-guard
+- ref: model:llama-guard-2
+- ref: model:llama-guard-3
+- ref: model:aegis-guard-defensive
+- ref: model:wildguard
+- ref: model:mistral-7b
+  variant: variant:harmbench-mistral
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:calibration-llm-based-guard-models-reliable
+datasets:
+- ref: dataset:harmbench
+  role: eval
+methods:
+- ref: method:expected-calibration-error
+  role: eval
+related_work:
+- ref: dataset:harmbench
+  role: context
+evidence_type: correlational
+key_metric: 'WildGuard prompt classification: F1 92.8%, ECE 34.9% on HarmBench-adv; prompt classification
+  ECE generally higher than response classification ECE across all 6 prompt-classifying models'
+caveat: HarmBench-adv is a validation set for fine-tuning Llama2-variant classifiers in HarmBench; the
+  adversarial attacks tested are GCG and AutoDAN specifically
+extracted_by: automatic-extraction
+related_findings:
+- IC-556
+- IC-558
+- IC-559

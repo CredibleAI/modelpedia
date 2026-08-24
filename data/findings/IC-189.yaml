@@ -1,0 +1,54 @@
+id: IC-189
+title: Most LLMs show degraded instruction satisfaction when user instructions conflict with system
+  messages, indicating difficulty in prioritizing system message constraints
+description: 'When user instructions are misaligned (conflicting) with system messages, most models
+  show lower ISR than on aligned instructions. The gap is largest for weaker models: GLM-4-9b drops
+  from 48.3% (aligned) to 28.4% (misaligned), a 19.9-point drop. GPT-4o shows a smaller gap (77.8% vs.
+  71.4%). Notably, GPT-3.5-turbo is an exception, scoring higher on misaligned (47.7%) than aligned
+  (41.9%) instructions, suggesting acute awareness of system message priority. The authors attribute
+  the misaligned degradation to insufficient recognition of system message priority.'
+models:
+- ref: model:gpt-4o
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo-20240409
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:mixtral
+  variant: variant:mixtral-8x22b-instruct
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-20231106
+- ref: model:qwen-2-5-72b-instruct
+- ref: model:qwen-2
+  variant: variant:qwen2-72b-instruct
+- ref: model:qwen-2
+  variant: variant:qwen-2-7b-instruct
+- ref: model:glm-4
+  variant: variant:glm-4-0520
+- ref: model:glm-4
+  variant: variant:glm-4-9b-chat
+- ref: model:deepseek-v2-0628
+- ref: model:moonshot-v1-8k
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:sysbench-llms-follow-system-message
+datasets: []
+methods: []
+related_work:
+- name: The Instruction Hierarchy
+  anchor: https://doi.org/10.48550/arxiv.2404.13208
+  role: context
+evidence_type: correlational
+key_metric: GPT-4o aligned 77.8% vs. misaligned 71.4%; GLM-4-9b aligned 48.3% vs. misaligned 28.4%;
+  GPT-3.5 aligned 41.9% vs. misaligned 47.7%
+caveat: The alignment classification is determined by the dataset design, not by the model; the paper
+  does not control for the specific nature of the conflict.
+extracted_by: automatic-extraction
+related_findings:
+- IC-188
+- IC-190
+- IC-191

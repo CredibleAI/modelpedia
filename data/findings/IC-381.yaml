@@ -1,0 +1,42 @@
+id: IC-381
+title: 'Individual knowledge is not parameter-localizable in GPT-J: existing localization methods (KN,
+  ROME, KC) are neither faithful nor reliable'
+description: The paper rewrites 1000 factual prompts from COUNTERFACT five times using GPT-4o and applies
+  three knowledge-localization methods (KN, ROME, KC) to GPT-J. The overlap of localized parameters
+  across semantically identical prompts is only 37.3% (KN), 32.7% (ROME), and 7.2% (KC), showing the
+  methods are not faithful. Reliability experiments on ZSRE show that doubling localized activations
+  increases target probability in 85.1% of cases versus 72.3% for random parameters, and zeroing them
+  decreases it in 72.4% versus 82.6% for random—marginal differences that do not confirm localization.
+  KC's parameter-chain recall achieves only 12.3% accuracy. Editing non-localized layers in ROME yields
+  similar performance to editing the localized layer.
+models:
+- ref: model:gpt-j
+concepts: []
+sources:
+- ref: source:capability-localization-capabilities-be-localized-rather
+datasets:
+- ref: dataset:counterfact
+  role: eval
+- ref: dataset:zsre
+  role: eval
+methods:
+- ref: method:rome
+  role: compared-to
+related_work:
+- name: KN
+  anchor: https://arxiv.org/abs/2104.08696
+  role: compared-to
+- ref: method:rome
+  role: compared-to
+- name: KC
+  anchor: https://arxiv.org/abs/2405.17969
+  role: compared-to
+evidence_type: interventional
+key_metric: 'fidelity overlap: KN 37.3%, ROME 32.7%, KC 7.2%; reliability: doubled activation 85.1%
+  vs random 72.3% increase; zeroed activation 72.4% vs random 82.6% decrease; KC recall accuracy 12.3%;
+  KC chain occupies 2.6% of model parameters'
+caveat: Experiments limited to GPT-J (6B); the authors note in limitations that they did not evaluate
+  on other models and the maximum parameter size tested is 7B.
+extracted_by: automatic-extraction
+related_findings:
+- IC-382

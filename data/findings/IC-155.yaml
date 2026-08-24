@@ -1,0 +1,53 @@
+id: IC-155
+title: All 13 evaluated MLLMs perform at or near random guessing on MediConfusion, with confusion scores
+  often exceeding 90%, indicating they cannot distinguish visually dissimilar radiology image pairs
+description: The paper evaluates 13 multimodal LLMs (3 medical, 5 proprietary, 5 open-source general)
+  on MediConfusion, a 352-question benchmark built from radiology image pairs that are visually distinct
+  but similar in embedding space. Twelve of thirteen models achieve set accuracy below the 25% random-guessing
+  baseline, with individual accuracy hovering around 50%. Confusion scores—the fraction of pairs where
+  the model gives the same answer for both images—frequently exceed 90%, confirming that the models
+  are not actually reading the image content. Even RadFM, which does not use a CLIP-style encoder, shows
+  85.80% confusion. The image-caption pairs used to build the benchmark are part of PMC-OA, which is
+  in the pre-training data of all medical MLLMs tested.
+models:
+- ref: model:llava
+- ref: model:blip-2
+- ref: model:instructblip
+- ref: model:deepseek-vl2
+- ref: model:molmo
+- ref: model:llava-med
+- ref: model:radfm
+- ref: model:med-flamingo
+- ref: model:gpt-4o
+- ref: model:o1
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:gemini
+  variant: variant:gemini-2-0-flash
+concepts:
+- ref: concept:failure-mode
+- ref: concept:shortcut
+sources:
+- ref: source:mediconfusion-you-trust-your-ai-radiologist
+datasets:
+- ref: dataset:roco
+  role: source
+- ref: dataset:pmc-oa
+  role: source
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Set accuracy (best across methods): LLaVA 9.09%, BLIP-2 6.82%, InstructBLIP 12.50%, DeepSeek-VL2
+  16.48%, Molmo 9.66%, LLaVA-Med 1.14%, RadFM 5.68%, Med-Flamingo 4.55%, GPT-4o 18.75%, O1 21.59%, Claude
+  3 Opus 8.52%, Gemini 1.5 Pro 19.89%, Gemini 2.0 Flash 29.55%; random guessing 25.00%. Confusion scores
+  range from 58.52% (Gemini 1.5 Pro) to 100.00% (LLaVA-Med).'
+caveat: The benchmark is limited to radiology images from ROCO and 352 questions across 9 categories.
+  The confusing pairs were selected using BiomedCLIP similarity, so the failure may be specific to the
+  type of visual ambiguity that BiomedCLIP captures.
+extracted_by: automatic-extraction
+related_findings:
+- IC-156
+- IC-157
+- IC-158

@@ -1,0 +1,39 @@
+id: IC-069
+title: EVA-CLIP's dense patch features are semantically contaminated by surrounding context, degrading
+  their spatial quality
+description: 'The paper shows that CLIP''s patch-level dense features are systematically influenced
+  by the global context of the image, causing them to be entangled with irrelevant semantics. This is
+  quantified via a coupling ratio (CR) metric: when two independent images are concatenated, the features
+  of one image become correlated with the other, yielding a CR of 2.32 for EVA-CLIP (ideally 1.0). A
+  training-free experiment embedding a target image into N different random contexts and averaging the
+  resulting submaps progressively removes this contamination; at N=32 the unsupervised segmentation
+  mIoU improves by 2% without any training. The authors identify this semantic contamination as the
+  reason CLIP''s native spatial awareness is suboptimal.'
+models:
+- ref: model:eva-clip
+concepts: []
+sources:
+- ref: source:refining-clip-s-spatial-awareness-visual
+datasets:
+- ref: dataset:mscoco
+  role: eval
+- ref: dataset:cityscapes
+  role: eval
+methods:
+- ref: method:cause
+  role: eval
+- ref: method:t-sne
+  role: eval
+related_work:
+- ref: model:dinov2
+  role: context
+evidence_type: observational
+key_metric: CR = 2.32 for EVA-CLIP (Table 9); context aggregation with n=32 yields 2% mIoU improvement
+  in unsupervised segmentation (Appendix B.1)
+caveat: The CR metric is measured on COCO val2017 with concatenated image pairs; the context-aggregation
+  experiment uses randomly sampled images and a fixed target, so the 2% improvement is an average over
+  a specific protocol.
+extracted_by: automatic-extraction
+related_findings:
+- IC-070
+- IC-071

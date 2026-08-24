@@ -1,0 +1,38 @@
+id: IC-487
+title: Including sub-questions in the prompt improves LLM performance on multi-hop QA tasks
+description: 'An ablation study removes sub-questions from the prompt and asks LLMs to produce only
+  the final answer, under a chain-of-thought setting. All models show lower EM and F1 without sub-questions.
+  For GPT-4 on 2-hop, EM drops from 53.2 to 43.8 and F1 from 67.7 to 65.2; for GPT-3.5, EM drops from
+  40.4 to 34.3 and F1 from 56.9 to 51.3. The effect is consistent across all nine models and all hop
+  counts, with the largest absolute gains seen in weaker models such as Gemini-Pro (2-hop EM: 25.2 without
+  vs 34.6 with sub-questions).'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+- ref: model:gemini
+  variant: variant:gemini-pro
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+- ref: model:o1
+  variant: variant:o1-preview
+concepts: []
+sources:
+- ref: source:cofca-step-wise-counterfactual-multi-hop
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: primary
+related_work:
+- ref: method:zero-shot-chain-of-thought
+  role: builds-on
+evidence_type: correlational
+key_metric: 'GPT-4 2-hop: EM 43.8±0.2 (w/o) vs 53.2±0.5 (w/), F1 65.2±0.3 vs 67.7±0.6; GPT-3.5 2-hop:
+  EM 34.3±0.2 vs 40.4±0.5, F1 51.3±0.1 vs 56.9±0.4; Gemini-Pro 2-hop: EM 25.2±0.5 vs 34.6±0.5'
+caveat: The ablation is conducted under a chain-of-thought prompting setting. The sub-questions are
+  provided as part of the prompt, so the improvement may reflect the additional information rather than
+  a change in the model's internal reasoning.
+extracted_by: automatic-extraction
+related_findings:
+- IC-485
+- IC-486
+- IC-488

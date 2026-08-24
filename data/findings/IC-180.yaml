@@ -1,0 +1,34 @@
+id: IC-180
+title: GPT-4o-mini's resistance to incorrect context depends on the position of the context relative
+  to the question in the prompt
+description: 'In a preliminary experiment, the paper tests GPT-4o-mini on incorrect contexts with two
+  prompt orderings: question before context (QC) and context before question (CQ). When the question
+  precedes the context, accuracy on wrong contexts is 48.0 (TriviaQA), 48.3 (ConflictQA), and 78.8 (RedditQA).
+  When the context precedes the question, accuracy drops to 33.3, 33.1, and 46.0 respectively. The same
+  incorrect evidence is more likely to mislead the model when it appears earlier in the input, demonstrating
+  a positional bias in the model''s reliance on external information.'
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:trust-not-trust-enhancing-large-language
+datasets:
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:conflictqa
+  role: eval
+- ref: dataset:redditqa
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4o-mini acc given wrong contexts: QC 48.0/48.3/78.8 vs CQ 33.3/33.1/46.0 (TriviaQA/ConflictQA/RedditQA)'
+caveat: Described as a preliminary experiment; tested on only three datasets and one model variant (GPT-4o-mini).
+  The effect size varies by dataset (largest on TriviaQA and ConflictQA, smaller on RedditQA).
+extracted_by: automatic-extraction
+related_findings:
+- IC-177
+- IC-178
+- IC-179

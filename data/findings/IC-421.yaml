@@ -1,0 +1,64 @@
+id: IC-421
+title: Sequential context-switching queries jailbreak Llama and Mistral models at 95% attack success
+  rate
+description: 'The paper applies a multi-armed-bandit-optimized sequence of context-switching queries
+  (SOC attack) to multiple released LLMs and measures the attack success rate. On the four primary target
+  models (Llama-3.1-8B-Instruct, Llama-3.2-3B-Instruct, Llama-3.2-1B-Instruct, Mistral-7B-Instruct-v0.2)
+  the SOC attack reaches 95% ASR. The attack also generalizes to larger and closed-source models: 90.5%
+  on Llama-2-13B-Chat, 90.2% on Vicuna-13B-v1.5, and 91% on Cohere-Command-R. Five-fold cross-validation
+  over unseen harmful-query categories yields ASR between 0.905 and 0.933 (average 0.9214), confirming
+  the vulnerability is not category-specific.'
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:llama-3-2-3b
+  variant: variant:llama-3-2-3b-instruct
+- ref: model:llama-3-2-3b
+  variant: variant:llama-3-2-1b-instruct
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+- ref: model:vicuna
+  variant: variant:vicuna-13b-v1-5
+- ref: model:cohere-command-r
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:efficient-jailbreak-attack-sequences-large-language
+datasets:
+- ref: dataset:jailbreakv-28k
+  role: source
+- ref: dataset:fft
+  role: source
+- ref: dataset:harmbench
+  role: source
+methods:
+- ref: method:pair
+  role: compared-to
+- ref: method:autodan
+  role: compared-to
+- ref: method:renellm
+  role: compared-to
+- ref: method:gcg
+  role: compared-to
+related_work:
+- ref: method:pair
+  role: compared-to
+- ref: method:autodan
+  role: compared-to
+- ref: method:renellm
+  role: compared-to
+- ref: method:gcg
+  role: compared-to
+evidence_type: correlational
+key_metric: ASR 0.95 (Llama-3.1-8B-Instruct, Llama-3.2-3B-Instruct, Llama-3.2-1B-Instruct, Mistral-7B-Instruct-v0.2);
+  0.905 (Llama-2-13B-Chat); 0.902 (Vicuna-13B-v1.5); 0.91 (Cohere-Command-R); cross-validation ASR 0.905–0.933,
+  average 0.9214
+caveat: The judge function (Llama-3.1-8B-Instruct) introduces binary reward noise with error rate δ;
+  the authors note that misclassification by the judge affects the observed ASR. The CSQ database is
+  fixed, limiting the attack's diversity.
+extracted_by: automatic-extraction
+related_findings:
+- IC-422
+- IC-423

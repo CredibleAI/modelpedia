@@ -1,0 +1,44 @@
+id: IC-244
+title: No LLM demonstrates consistently strong fairness across both comprehension-focused and bias-resistance
+  multi-turn tasks; models show complementary failure patterns
+description: Across six LLMs evaluated on six multi-turn fairness tasks, the paper finds that models
+  excel at different task types. Llama-2-Chat (7B, 13B) performs poorly on comprehension tasks like
+  anaphora ellipsis (14.93% and 18.35% bias) but is less affected by interaction interference like negative
+  feedback (2.75% and 2.89%). Conversely, Mistral-7B-Instruct handles scattered questions better (11.55%)
+  but is highly susceptible to interference from misinformation (58.10%). The paper concludes that no
+  model has yet demonstrated consistently strong fairness across both comprehension-focused and bias-resistance
+  tasks.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-3
+- ref: model:gemma
+  variant: variant:gemma-7b-it
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:fairmt-bench-benchmarking-fairness-multi-turn
+datasets:
+- ref: dataset:fairmt-10k
+  role: eval
+- ref: dataset:mt-bench-101
+  role: eval
+methods:
+- ref: method:llama-guard-3-8b
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Llama-2-7B-Chat: anaphora ellipsis 14.93%, negative feedback 2.75%; Mistral-7B-IT: scattered
+  questions 11.55%, interference misinformation 58.10%; Llama-3.1-8B-IT: scattered questions 13.56%,
+  interference misinformation 51.31%'
+caveat: The paper attributes the differences to 'variations in alignment paradigms and instruction-following
+  capabilities' but does not isolate the causal mechanism; the pattern is correlational across models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-242
+- IC-243

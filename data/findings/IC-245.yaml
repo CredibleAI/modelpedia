@@ -1,0 +1,40 @@
+id: IC-245
+title: Pretrained LLMs produce duration-dependent outputs that are incompatible with a discrete token
+  interpretation
+description: 'By extending the transformer architecture to accept continuous-time inputs (floating-point
+  positions and custom attention masks), the authors feed the same sentence with reduced token durations
+  to six released LLMs. In word-counting tasks (200 sentences), the models output different counts (1,
+  2, 3, or 4) as the duration factor varies, rather than a constant answer. In event-counting tasks
+  (200 tutorials) and two-digit sum problems (100 questions), the same pattern appears: shrinking a
+  token''s duration causes the model to treat it as a shorter or single-digit element. Across all models,
+  the observed normalised peak frequency is roughly 2.7–3.7 times the counterfactual discrete value.'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+- ref: model:phi-3
+  variant: variant:phi-3-medium-4k-instruct
+- ref: model:gemma
+  variant: variant:gemma-17b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+- ref: model:mistral-7b
+concepts: []
+sources:
+- ref: source:language-models-implicitly-continuous
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Single-token counting (200 tasks): global observed normalised peak frequency 0.7404 vs
+  counterfactual 0.2600 (ratio 2.90); event counting (200 tutorials): global 0.6706 vs 0.2186 (ratio
+  3.28); sums (100 questions): global p1 frequency 87.82%, p2 86.97%, p3 79.05%'
+caveat: For some sentence+tokenizer combinations a single word is split into multiple tokens; such cases
+  are excluded. Valid rates vary by model (e.g., Llama2-13B only 54.5% valid in single-token, 19.5%
+  in sums). The authors note the behaviour 'might emerge as a natural consequence of their nature as
+  smooth function approximations, though further research in this direction is needed.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-246
+- IC-247

@@ -1,0 +1,41 @@
+id: IC-565
+title: Phi-3's residual stream encodes format instructions as linear directions, evidenced by cosine
+  similarity and vocabulary-space projections
+description: The paper analyses Phi-3's residual stream activations at the last input token across layers.
+  Cosine similarity between inputs sharing the same instruction (e.g., 'quotation', 'urdu language')
+  is higher than between inputs with no shared instruction, and in some cases higher than between the
+  same query with and without the instruction. Projecting the computed steering vectors onto the vocabulary
+  space via the unembedding matrix yields top tokens semantically related to the instruction (e.g.,
+  '{', 'json' for JSON format; 'die', 'im' for German). T-SNE visualisations of per-example instruction
+  vectors at layer 20 show distinct clusters for well-encoded instructions and dispersed points for
+  harder ones like 'end checker' and 'constrained response'.
+models:
+- ref: model:phi-3
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:improving-instruction-following-language-models-through
+datasets:
+- ref: dataset:ifeval
+  role: eval
+methods:
+- ref: method:cosine-similarity
+  role: primary
+- ref: method:t-sne
+  role: supporting
+related_work:
+- name: Marks & Tegmark (geometry of truth)
+  anchor: https://openreview.net/forum?id=aajyhyjjsk
+  role: context
+- name: Nanda et al. (emergent linear representations)
+  anchor: https://doi.org/10.18653/v1/2023.blackboxnlp.1.2
+  role: context
+evidence_type: observational
+caveat: The analysis is performed only on Phi-3; the other three models are not subjected to the same
+  representational analysis. The cosine similarity values are shown in figures but no specific numerical
+  values are printed in the text.
+extracted_by: automatic-extraction
+related_findings:
+- IC-566
+- IC-567
+- IC-568

@@ -1,0 +1,81 @@
+id: IC-265
+title: Model families show extreme variation in detecting conflicting answers in inconsistent contexts,
+  with phi-3 series at 5.8% average accuracy versus GPT-4 series at 89.35%
+description: 'On the inconsistent context task, two documents are concatenated, each supporting a different
+  answer, and the model is instructed to respond ''conflict'' when it detects multiple answers. Performance
+  varies dramatically across families: the phi-3 series averages only 5.8% accuracy, while the GPT-4
+  series averages 89.35%. Open-source models lag behind proprietary models on this task, unlike the
+  unanswerable task where all models struggle. The top three models are all proprietary. When the new
+  (conflicting) context is presented alone rather than concatenated with the original, most models do
+  not find it harder, indicating the difficulty lies in detecting the conflict between two sources.'
+models:
+- ref: model:phi-3
+  variant: variant:phi-3-mini-128k-instruct
+- ref: model:phi-3
+  variant: variant:phi-3-medium-128k-instruct
+- ref: model:phi-3-5-mini-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-70b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b-instruct
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-3
+- ref: model:mistral-7b
+  variant: variant:mistral-nemo-instruct-2407
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b-it
+- ref: model:gemma-2
+  variant: variant:gemma-2-27b-it
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:command-r
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:faitheval-your-language-model-stay-faithful
+datasets:
+- ref: dataset:squad
+  role: source
+- ref: dataset:newsqa
+  role: source
+- ref: dataset:triviaqa
+  role: source
+- ref: dataset:natural-questions
+  role: source
+- ref: dataset:searchqa
+  role: source
+- ref: dataset:hotpotqa
+  role: source
+- ref: dataset:bioasq
+  role: source
+- ref: dataset:drop
+  role: source
+- ref: dataset:race
+  role: source
+- ref: dataset:textbookqa
+  role: source
+methods:
+- ref: method:chain-of-thought-prompting
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: 'phi-3 series average accuracy 5.8%; GPT-4 series average accuracy 89.35%; command r: 88%
+  on new context alone vs 81% on original'
+caveat: The inconsistent contexts were constructed by an LLM generating a new answer and modifying the
+  context, then concatenating with the original. The new context is designed to be highly similar to
+  the original, which may make conflict detection harder than in natural retrieval scenarios.
+extracted_by: automatic-extraction
+related_findings:
+- IC-264
+- IC-266
+- IC-267

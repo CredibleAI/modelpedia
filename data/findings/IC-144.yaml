@@ -1,0 +1,33 @@
+id: IC-144
+title: TD-MPC's training is unstable, with performance collapsing after approximately 1–4 million steps
+  across multiple DM Control tasks
+description: The authors reproduce TD-MPC using its official code with identical architecture and hyperparameters
+  to their new method. Across 26 state-based and 10 image-based DM Control tasks, TD-MPC achieves competitive
+  results up to roughly 1 million steps, but in many tasks its performance suddenly collapses after
+  this point, producing high variance and reduced episode returns. The authors attribute this to the
+  absence of an explicit encoder loss in TD-MPC's objective, which causes the consistency loss to diverge
+  and gradients to explode. The collapse is observed consistently across seeds and tasks, making it
+  a reproducible failure condition.
+models:
+- ref: model:td-mpc
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:bisimulation-metric-model-predictive-control
+datasets: []
+methods:
+- ref: method:mppi
+  role: supporting
+related_work:
+- ref: model:td-mpc
+  role: builds-on
+evidence_type: observational
+key_metric: '"td-mpc initially performs well but collapses after 4 million steps" (Fig. 1 caption);
+  "td-mpc performs well in the early stages of training, achieving competitive results up to approximately
+  1 million steps. however, in many tasks, its performance suddenly collapses after this point, leading
+  to high variance and reduced episode returns" (Section 5.1)'
+caveat: The collapse is observed in the authors' reproduction with specific hyperparameters; the original
+  TD-MPC paper may report different training dynamics under its own tuning.
+extracted_by: automatic-extraction
+related_findings:
+- IC-145

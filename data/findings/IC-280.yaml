@@ -1,0 +1,70 @@
+id: IC-280
+title: 'CLIP, OpenCLIP, and SigLIP exhibit intra-modal misalignment: intra-modal similarity comparisons
+  are suboptimal for image-to-image and text-to-text retrieval'
+description: The paper demonstrates that the intra-modal similarities (image-image, text-text) computed
+  by CLIP-like models do not faithfully reflect true input similarities. When image-to-image or text-to-text
+  retrieval is approached inter-modally by mapping features to the complementary modality via optimization-based
+  inversion (OTI/OVI), performance consistently improves over the intra-modal baseline across 15+ datasets.
+  The improvement is 2-3% average MAP for image retrieval and 1-5% for text retrieval, and holds across
+  all tested VLMs regardless of pre-training dataset or contrastive loss type. Conversely, applying
+  modality inversion to the natively inter-modal zero-shot image classification task degrades performance,
+  confirming the effect is due to intra-modal misalignment rather than the inversion process itself.
+models:
+- ref: model:clip
+- ref: model:openclip
+- ref: model:siglip
+concepts:
+- ref: concept:distance-preservation
+sources:
+- ref: source:cross-gap-exposing-intra-modal-misalignment
+datasets:
+- ref: dataset:cub-200-2011
+  role: eval
+- ref: dataset:stanford-online-products
+  role: eval
+- ref: dataset:roxford
+  role: eval
+- ref: dataset:stanford-cars
+  role: eval
+- ref: dataset:oxford-pets
+  role: eval
+- ref: dataset:flowers-102
+  role: eval
+- ref: dataset:fgvc-aircraft
+  role: eval
+- ref: dataset:dtd
+  role: eval
+- ref: dataset:eurosat
+  role: eval
+- ref: dataset:food-101
+  role: eval
+- ref: dataset:sun397
+  role: eval
+- ref: dataset:caltech-101
+  role: eval
+- ref: dataset:ucf101
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:flickr30k
+  role: eval
+- ref: dataset:mscoco
+  role: eval
+- ref: dataset:nocaps
+  role: eval
+methods:
+- ref: method:oti
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Image-to-image retrieval (avg MAP): CLIP B/32 39.2→41.2, L/14 52.0→55.3, OpenCLIP B/32
+  47.3→49.5, L/14 60.4→63.6, SigLIP B/16 55.5→58.3. Text-to-text retrieval (avg MAP): CLIP B/32 37.7→40.6,
+  L/14 38.2→41.3, OpenCLIP B/32 42.8→45.3, L/14 45.1→47.0, SigLIP B/16 40.8→44.4. Zero-shot classification
+  (avg acc): CLIP B/32 61.9→56.4, L/14 72.2→68.4, OpenCLIP B/32 69.4→66.1, L/14 78.9→77.0, SigLIP B/16
+  75.1→66.3 (inter-modal→intra-modal via OTI).'
+caveat: The modality inversion techniques are computationally expensive (150 optimization steps for
+  OTI, 1000 for OVI), limiting practical applicability. The authors note their analyses 'fall short
+  of offering practical alternatives.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-281

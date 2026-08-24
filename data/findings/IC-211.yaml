@@ -1,0 +1,40 @@
+id: IC-211
+title: BLOOM-560M employs the same attention head circuit for indirect object identification in both
+  English and Chinese
+description: Using information flow routes and path patching, the paper identifies the IOI circuit in
+  BLOOM-560M for both English and Chinese inputs. The same functional heads (duplicate token, previous
+  token, induction, s-inhibition, name mover) are activated in both languages, with the same roles.
+  The Pearson correlation between head activation frequencies for English and Chinese IOI is 0.72, substantially
+  higher than the 0.48 correlation between English IOI and an English past-tense control task, confirming
+  that the overlap reflects shared syntactic processing rather than generic head importance.
+models:
+- ref: model:bloom
+  variant: variant:bloom-560m
+concepts: []
+sources:
+- ref: source:same-but-different-structural-similarities-differences
+datasets:
+- ref: dataset:ioi
+  role: eval
+methods:
+- ref: method:path-patching
+  role: primary
+- ref: method:information-flow-routes
+  role: primary
+related_work:
+- name: Wang et al. 2023 (IOI circuit in GPT-2)
+  anchor: https://openreview.net/forum?id=npsvsn6o4ul
+  role: builds-on
+- name: Merullo et al. 2024 (circuit component reuse)
+  anchor: https://openreview.net/forum?id=fpoayv6wsk
+  role: context
+evidence_type: interventional
+key_metric: Pearson ρ = 0.72 (EN-ZH IOI) vs ρ = 0.48 (EN IOI vs EN control); BLOOM-560M IOI accuracy
+  100% EN / 95% ZH, zero-rank 96% EN / 93% ZH
+caveat: The authors note that some heads shared between EN IOI and the control task are also shared
+  with ZH IOI, suggesting some heads may be generically important across tasks; further quantitative
+  work is needed to test this.
+extracted_by: automatic-extraction
+related_findings:
+- IC-212
+- IC-213

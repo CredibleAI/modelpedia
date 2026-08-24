@@ -1,0 +1,30 @@
+id: IC-294
+title: Llama-3.1-8B-Instruct with 2-shot prompting achieves limited rationale extraction quality (F1
+  15.7–48.3) across four text classification datasets
+description: The authors evaluate Llama-3.1-8B-Instruct on extractive rationale extraction using 2-shot
+  prompting, providing one positive and one negative example with its ground-truth rationale. On the
+  BeerAdvocate datasets the model's precision is very low (15.4 and 17.9), yielding F1 scores of only
+  15.7 and 20.6. On the HotelReviews datasets performance is higher (F1 48.3 and 41.1) but still comparable
+  to a simple norm-based method (N2R) that the authors propose. The authors note that in some cases
+  the model outputs additional text alongside the rationale, requiring post-processing with GPT-3.5-turbo
+  to extract the rationale content.
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+concepts: []
+sources:
+- ref: source:breaking-free-from-mmi-new-frontier
+datasets:
+- ref: dataset:beeradvocate
+  role: eval
+- ref: dataset:hotelreviews
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'F1: 15.7 (beer-appearance), 20.6 (beer-aroma), 48.3 (hotel-service), 41.1 (hotel-cleanliness);
+  Precision: 15.4, 17.9, 45.3, 39.3 respectively (Table 6, Appendix A.7)'
+caveat: The authors note that in 2-shot prompting the model sometimes outputs additional parts along
+  with the rationale, and they used GPT-3.5-turbo to extract the content within quotation marks in such
+  cases. Sparsity was not constrained for the LLM, unlike for the N2R method.
+extracted_by: automatic-extraction

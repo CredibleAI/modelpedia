@@ -1,0 +1,54 @@
+id: IC-190
+title: LLMs show progressive degradation in system message constraint following across multi-turn conversations,
+  with dependent conversations degrading faster than parallel ones
+description: Using the session stability rate (SSR) and per-round satisfaction (Rn), the paper shows
+  all 16 models degrade over 5 turns. The best SSR is 54.4% (GPT-4o, parallel). Multi-turn dependent
+  conversations show steeper decline than parallel ones for most models, as evidenced by higher linear
+  regression slopes (k). For example, Qwen2-7b drops to 0.0% by round 5 in parallel conversations and
+  1.1% in dependent conversations. Replacing model-generated history with ground truth improves ISR,
+  confirming that prior errors compound and degrade subsequent performance.
+models:
+- ref: model:gpt-4o
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo-20240409
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:mixtral
+  variant: variant:mixtral-8x22b-instruct
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-20231106
+- ref: model:qwen-2-5-72b-instruct
+- ref: model:qwen-2
+  variant: variant:qwen2-72b-instruct
+- ref: model:qwen-2
+  variant: variant:qwen-2-7b-instruct
+- ref: model:glm-4
+  variant: variant:glm-4-0520
+- ref: model:glm-4
+  variant: variant:glm-4-9b-chat
+- ref: model:deepseek-v2-0628
+- ref: model:moonshot-v1-8k
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:sysbench-llms-follow-system-message
+datasets: []
+methods: []
+related_work:
+- name: Large Language Models Can Be Easily Distracted by Irrelevant Context
+  anchor: https://proceedings.mlr.press/v202/shi23a.html
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4o SSR 54.4% (parallel), 56.7% (dependent); R5: GPT-4o 26.4% (parallel) / 33.7% (dependent),
+  Qwen2-7b 0.0% (parallel) / 1.1% (dependent); best overall SSR 54.4%'
+caveat: Conversations are limited to 5 turns; the paper does not test longer horizons. The ground-truth
+  history experiment uses only 4 models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-188
+- IC-189
+- IC-191

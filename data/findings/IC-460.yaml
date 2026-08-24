@@ -1,0 +1,29 @@
+id: IC-460
+title: Non-private activation steering of Llama-2-7B and Qwen-2.5-7B leaks membership information from
+  the alignment dataset, while PSA reduces the empirical privacy loss
+description: 'The authors develop a canary-based membership inference attack for steered LLMs. When
+  steering vectors are computed without privacy protection, an adversary can determine whether a specific
+  demonstration was used: for Llama-2-7B the empirical epsilon is 4.0 (FPR 4.0e-2, FNR 1.8e-2) and for
+  Qwen-2.5-7B it is 6.0 (FPR 2.0e-2, FNR 5.0e-3). Applying PSA reduces the empirical epsilon to 0.6
+  for Llama-2-7B and 1.6 for Qwen-2.5-7B, both below the theoretical bound of 2.0.'
+models:
+- ref: model:llama-2
+- ref: model:qwen2-5
+concepts: []
+sources:
+- ref: source:differentially-private-steering-large-language-model
+datasets: []
+methods:
+- ref: method:activation-steering
+  role: compared-to
+related_work: []
+evidence_type: interventional
+key_metric: 'Llama-2 7B mean steer: FPR 4.0×10⁻², FNR 1.8×10⁻², ε_emp 4.0; PSA: FPR 1.0×10⁻¹, FNR 1.9×10⁻¹,
+  ε_emp 0.6, ε_th 2.0. Qwen-2.5 7B mean steer: FPR 2.0×10⁻², FNR 5.0×10⁻³, ε_emp 6.0; PSA: FPR 9.0×10⁻²,
+  FNR 5.0×10⁻¹, ε_emp 1.6, ε_th 2.0.'
+caveat: The MIA is evaluated only on the hallucination dataset and only on two model families; the canary-based
+  attack assumes the adversary can prompt the steered model and observe outputs.
+extracted_by: automatic-extraction
+related_findings:
+- IC-459
+- IC-461

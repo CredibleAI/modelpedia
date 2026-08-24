@@ -1,0 +1,46 @@
+id: IC-586
+title: Symbolic distance (number of reasoning steps) is the primary bottleneck for relational reasoning
+  in LLMs, not total context length
+description: Using the RecogLab framework, the authors generate social network and comparison problems
+  with controlled graph size and symbolic distance. Across all seven models tested, performance degrades
+  as the number of reasoning steps increases, with models reliably answering only up to a symbolic distance
+  of 6 as graph size grows. Adding irrelevant filler text (random book passages or distractor sentences)
+  degrades performance less steeply than adding graph complexity, indicating that the logical depth
+  of the problem, not the token count, is the limiting factor. Gemini Pro and GPT-4o evaluated up to
+  70 entities show stable performance as long as traversals remain below 6.
+models:
+- ref: model:gemma
+  variant: variant:gemma-2b
+- ref: model:gemma
+  variant: variant:gemma-9b
+- ref: model:gemma
+  variant: variant:gemma-27b
+- ref: model:mixtral
+  variant: variant:mixtral-7x22b
+- ref: model:gemini
+  variant: variant:gemini-flash
+- ref: model:gemini
+  variant: variant:gemini-pro
+- ref: model:gpt-4o
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:recoglab-framework-testing-relational-reasoning-cognitive
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: primary
+related_work:
+- name: Moyer & Bayer 1976
+  anchor: https://doi.org/10.1016/0010-0285(76)90025-6
+  role: builds-on
+evidence_type: correlational
+key_metric: reliably answering correctly at a symbolic distance of 6; gemini pro and gpt-4o evaluated
+  up to 70 entities; adding graph complexity is by far the hardest for models than either kind of filler
+caveat: Results are based on a single chain-of-thought prompt selected via 50-example validation; the
+  authors note that different models from the same family perform better with different prompts.
+extracted_by: automatic-extraction
+related_findings:
+- IC-587
+- IC-588
+- IC-589

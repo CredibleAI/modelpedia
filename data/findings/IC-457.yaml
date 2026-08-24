@@ -1,0 +1,44 @@
+id: IC-457
+title: All four tested VLM decoders are heavily text-centric when generating answers, with text modality
+  contributing 85-97% of the prediction signal
+description: Using an extension of MM-SHAP to autoregressive decoders, the paper measures the multimodal
+  degree of four 7B VLMs. On VQA, t-shap (textual degree) is 87% for bakllava, 97% for llava-next-mistral,
+  89% for llava-next-vicuna, and 85% for mPLUG-Owl3. On GQA balanced, the values are 90%, 96%, and 90%
+  for the first three models. This means the image modality contributes only 3-15% of the prediction
+  signal, showing that these models predominantly rely on the text input (question, prompt) rather than
+  the image when producing answers.
+models:
+- ref: model:bakllava
+- ref: model:llava-next
+  variant: variant:llava-next-mistral
+- ref: model:llava-next
+  variant: variant:llava-next-vicuna
+- ref: model:mplug-owl-3
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:vision-language-decoders-use-images-text
+datasets:
+- ref: dataset:vqa
+  role: eval
+- ref: dataset:gqa
+  role: eval
+- ref: dataset:gqa-balanced
+  role: eval
+- ref: dataset:mscoco
+  role: eval
+methods:
+- ref: method:mm-shap
+  role: primary
+related_work:
+- ref: method:mm-shap
+  role: builds-on
+evidence_type: correlational
+key_metric: 't-shap answer on VQA: bakllava 87%, lv-mistral 97%, lv-vicuna 89%, mplug-owl3 85%; on GQA
+  balanced: bakllava 90%, lv-mistral 96%, lv-vicuna 90%'
+caveat: The paper notes this is measured on 100 random samples per dataset due to computational demands.
+  The increase from VQA to GQA balanced is attributed to known stronger linguistic biases in GQA.
+extracted_by: automatic-extraction
+related_findings:
+- IC-456
+- IC-458

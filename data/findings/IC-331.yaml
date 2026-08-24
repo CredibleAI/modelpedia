@@ -1,0 +1,38 @@
+id: IC-331
+title: In Stable Diffusion v1.5, specific tokens in text prompts drive memorization, and GPT-4-based
+  perturbation of high-attribution tokens reduces SSIM similarity to training images while maintaining
+  CLIP score
+description: Using differentiable memorization metrics (a_CFG, a_s_CFG, a_FLIPD), the paper identifies
+  specific tokens in prompts that drive memorization in Stable Diffusion v1.5, such as 'Netflix', 'The
+  Great Wave off Kanagawa', and 'podcast'. The paper then uses GPT-4 to rephrase these high-attribution
+  tokens while preserving semantic meaning. Across k ∈ {1, 2, 3, 4, 6, 8} perturbed tokens with 5 repetitions
+  per prompt, all attribution-based methods achieve lower SSIM similarity to training images while maintaining
+  a relatively higher CLIP score compared to uniform random token selection, confirming that the identified
+  tokens are causal drivers of memorization.
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v1-5
+- ref: model:gpt-4
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:geometric-framework-understanding-memorization-generative-models
+datasets: []
+methods:
+- ref: method:flipd
+  role: primary
+- ref: method:sscd
+  role: eval
+- ref: method:clipscore
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: k ∈ {1, 2, 3, 4, 6, 8} perturbed tokens, 5 repetitions per prompt; attribution-based methods
+  achieve lower SSIM and higher CLIP than uniform token selection
+caveat: The authors note that directly optimizing the prompt to maximize a_FLIPD can produce chaotic
+  textures with artificially high LIDθ at the expense of semantic coherence, and that a_FLIPD performs
+  on par with but does not outperform the more ad-hoc a_CFG variant.
+extracted_by: automatic-extraction
+related_findings:
+- IC-330

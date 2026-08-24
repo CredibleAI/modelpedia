@@ -1,0 +1,54 @@
+id: IC-442
+title: Routing each evaluation instance to the model strongest on its relevant skills yields a 3.2%
+  accuracy gain over the best single model, with 3.5-6.8% gains on MMLU Pro
+description: The paper tests whether skill-slice insights generalize to held-out data by routing each
+  instance to the model with the highest weighted skill-slice accuracy for that instance. Across 12
+  datasets, routing improves accuracy by up to 3.2% over each frontier model alone. On MMLU Pro (language-only,
+  while the reference corpus is mostly multimodal), gains are 3.5 to 6.8%. Skill-wise accuracies computed
+  over multimodal benchmarks correlate strongly (r ≥ 0.79, p < 1e-7) with accuracies on the language-only
+  benchmark, supporting generalizability.
+models:
+- ref: model:gpt-4o
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+concepts: []
+sources:
+- ref: source:unearthing-skill-level-insights-understanding-trade
+datasets:
+- ref: dataset:mmlu-pro
+  role: eval
+- ref: dataset:mmmu
+  role: eval
+- ref: dataset:mathvista
+  role: eval
+- ref: dataset:mmc
+  role: eval
+- ref: dataset:mmvp
+  role: eval
+- ref: dataset:mmbench
+  role: eval
+- ref: dataset:mmt-bench
+  role: eval
+- ref: dataset:mme
+  role: eval
+- ref: dataset:mm-vet
+  role: eval
+- ref: dataset:seed-bench
+  role: eval
+- ref: dataset:vibe-eval
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: routing increases accuracy by up to 3.2% compared to each of the frontier models alone on
+  12 datasets combined, including improvements of 3.5 to 6.8% for mmlu pro; r ≥ 0.79, p < 1e-7 correlation
+  between multimodal and language-only slice accuracies
+caveat: The routing scheme uses a simple weighted average of single-skill accuracies and does not account
+  for added difficulty when skills are used together or for varying instance difficulty within a skill.
+extracted_by: automatic-extraction
+related_findings:
+- IC-440
+- IC-441
+- IC-443

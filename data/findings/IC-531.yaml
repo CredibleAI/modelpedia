@@ -1,0 +1,33 @@
+id: IC-531
+title: CONCH's zero-shot encoders cannot discriminate survival risk, achieving near-random concordance
+  index on pathology whole-slide images
+description: The paper evaluates CONCH's pretrained image and text encoders in a zero-shot survival
+  analysis setting using the MI-Zero protocol, without any supervised fine-tuning. Across five TCGA
+  cancer datasets (2,831 patients), the average concordance index is only 0.54, close to the 0.5 random-guessing
+  baseline. The failure is most severe on GBMLGG, where CI drops to 0.3842, below random. The authors
+  conclude that CONCH's pretraining does not encode survival-relevant prognostic information sufficiently
+  for zero-shot transfer to time-to-event prediction, necessitating supervised fine-tuning.
+models:
+- ref: model:conch
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:interpretable-vision-language-survival-analysis-ordinal
+datasets:
+- ref: dataset:tcga
+  role: eval
+methods:
+- ref: method:mi-zero
+  role: eval
+related_work:
+- ref: method:mi-zero
+  role: builds-on
+evidence_type: correlational
+key_metric: average CI = 0.5400 across 5 TCGA datasets; GBMLGG CI = 0.3842 (± 0.063); d-cal count =
+  0/5
+caveat: The zero-shot evaluation uses the MI-Zero adaptation (mean-based aggregation, four fixed survival
+  prompts), which the authors designed; a different zero-shot protocol might yield different results.
+  The paper does not test CONCH on other survival tasks or cancer types beyond the five TCGA datasets.
+extracted_by: automatic-extraction
+related_findings:
+- IC-532

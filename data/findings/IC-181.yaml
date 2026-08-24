@@ -1,0 +1,59 @@
+id: IC-181
+title: Truthfulness in Mistral-7B, Mistral-7B-Instruct, Llama3-8B, and Llama3-8B-Instruct is linearly
+  decodable from internal representations at exact answer tokens, with middle-to-late layers being most
+  informative
+description: The paper trains linear probing classifiers on intermediate activations of four LLMs to
+  predict whether a generated answer is correct. Probing the exact answer tokens (the tokens whose modification
+  would change the answer's correctness) yields substantially higher AUC than probing the last generated
+  token, the token before it, or the end of the prompt. For example, on TriviaQA with Mistral-7B-Instruct,
+  the probe at the exact answer token achieves AUC 0.85 versus 0.71 at the last generated token. The
+  pattern is consistent across all four models and ten datasets. Additionally, middle-to-late layers
+  consistently outperform early layers for probing, indicating a depth-dependent organisation of the
+  truthfulness signal.
+models:
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:llms-know-more-than-they-show
+datasets:
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:hotpotqa
+  role: eval
+- ref: dataset:natural-questions
+  role: eval
+- ref: dataset:winobias
+  role: eval
+- ref: dataset:winogrande
+  role: eval
+- ref: dataset:imdb
+  role: eval
+methods:
+- ref: method:probing-classifiers
+  role: primary
+related_work:
+- name: Kadavath et al. 2022
+  anchor: https://arxiv.org/abs/2207.05221
+  role: builds-on
+- name: Marks & Tegmark 2023
+  anchor: https://arxiv.org/abs/2310.06824
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Mistral-7B-Instruct TriviaQA: probe exact 0.85±0.004 vs last generated 0.71±0.006; Winobias:
+  0.92±0.005 vs 0.82±0.004; Math: 0.92±0.008 vs 0.74±0.008. Llama3-8B-Instruct TriviaQA: 0.83±0.002
+  vs 0.81±0.005; Winobias: 0.93±0.004 vs 0.86±0.007; Math: 0.95±0.027 vs 0.82±0.016'
+caveat: The paper focuses on QA tasks with clear gold labels; open-ended tasks are left for future research.
+  The exact answer token extraction relies on an external instruct LLM or heuristics, which may introduce
+  noise.
+extracted_by: automatic-extraction
+related_findings:
+- IC-182
+- IC-183
+- IC-184

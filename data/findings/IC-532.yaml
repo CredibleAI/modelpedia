@@ -1,0 +1,38 @@
+id: IC-532
+title: PLIP's zero-shot encoders produce random-guessing-level survival predictions and consistently
+  underperform CONCH on pathology survival analysis
+description: In Appendix D.7, the paper substitutes PLIP for CONCH as the vision-language backbone and
+  re-runs four VL-based survival methods. The zero-shot MI-Zero protocol with PLIP yields an average
+  CI of 0.519, essentially random guessing. Even with supervised fine-tuning (CoOp, OrdinalCLIP), PLIP-based
+  methods (average CI 0.63–0.64) consistently trail their CONCH-based counterparts (0.65–0.66). The
+  authors attribute the gap to CONCH being pretrained on higher-quality, larger-scale pathology image-text
+  pairs, giving it a better-aligned vision-language latent space.
+models:
+- ref: model:plip
+- ref: model:conch
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:interpretable-vision-language-survival-analysis-ordinal
+datasets:
+- ref: dataset:tcga
+  role: eval
+methods:
+- ref: method:mi-zero
+  role: eval
+- ref: method:coop
+  role: eval
+- ref: method:ordinalclip
+  role: eval
+related_work:
+- ref: model:conch
+  role: compared-to
+evidence_type: correlational
+key_metric: 'MI-Zero with PLIP: average CI = 0.5190; CoOp with PLIP: 0.6364 vs CoOp with CONCH: 0.6482;
+  OrdinalCLIP with PLIP: 0.6317 vs OrdinalCLIP with CONCH: 0.6604'
+caveat: The comparison is limited to five TCGA cancer types and one specific MI-Zero prompt set. The
+  authors note that 'more pathology vlms may be needed to further validate' the findings, and the PLIP
+  results use the same adaptation protocol as CONCH, so the gap could partly reflect protocol sensitivity.
+extracted_by: automatic-extraction
+related_findings:
+- IC-531

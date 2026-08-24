@@ -1,0 +1,40 @@
+id: IC-467
+title: Llama-3.1-405B's standard speculative decoding verification rejects correct continuations from
+  GPT-4o, Llama-3.1-8B, and human text, accepting only roughly two tokens before the first rejection
+  for GPT-4o
+description: The paper measures how many candidate tokens Llama-3.1-405B accepts under standard speculative
+  decoding verification when the draft is a high-quality source. Using GPT-4o as the draft on MT-Bench,
+  GSM8K, and HumanEval, the target accepts only roughly two tokens before the first rejection, despite
+  the answers being correct. The same pattern holds for Llama-3.1-8B as draft (correct solutions rejected
+  after a few tokens) and for human-written Wikipedia summaries. Reversing the roles (405B drafting
+  for 8B) also yields low acceptance. The authors conclude that acceptance rates do not improve with
+  the quality of the responses, because the verification criterion measures alignment with the target's
+  own distribution rather than contextual correctness.
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-405b
+- ref: model:gpt-4o
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:judge-decoding-faster-speculative-sampling-requires
+datasets:
+- ref: dataset:mt-bench
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:humaneval
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: '"accepting only roughly two before encountering the first rejection" (GPT-4o as draft for
+  Llama-3.1-405B, greedy decoding, MT-Bench/GSM8K/HumanEval)'
+caveat: The GPT-4o experiment uses greedy decoding and only checks the first rejection point, since
+  full speculative decoding is not possible with closed-source models. The human-text experiment uses
+  a subset of Wikipedia summaries with a specific prompting format.
+extracted_by: automatic-extraction
+related_findings:
+- IC-468

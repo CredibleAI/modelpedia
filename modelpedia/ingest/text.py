@@ -1,3 +1,4 @@
+import io
 import re
 import unicodedata
 from importlib.metadata import PackageNotFoundError, version
@@ -117,6 +118,33 @@ def read_pdf(path):
     except Exception as error:
         raise MissingTool("%s failed on %s: %s" % (TOOL, path, error))
     return PAGE_BREAK.join(page.replace(PAGE_BREAK, " ") for page in pages)
+
+
+RENDER_SCALE = 2.0
+
+
+def page_images(path, scale=RENDER_SCALE, limit=None):
+    """The same PDF as pictures instead of as text, for a model that can look at it. `scale` is
+    multiples of 72 dpi, so 2.0 is 144 dpi and a US-letter page comes out 1224 pixels wide."""
+    pdfium = library()
+    try:
+        document = pdfium.PdfDocument(str(path))
+        pages = list(document)[:limit] if limit else list(document)
+        return [page.render(scale=scale).to_pil() for page in pages]
+    except Exception as error:
+        raise MissingTool("%s failed to render %s: %s" % (TOOL, path, error))
+
+
+def png_bytes(image):
+    buffer = io.BytesIO()
+    image.save(buffer, format="PNG")
+    return buffer.getvalue()
+
+
+def jpeg_bytes(image, quality=80):
+    buffer = io.BytesIO()
+    image.convert("RGB").save(buffer, format="JPEG", quality=quality)
+    return buffer.getvalue()
 
 
 def document(path):

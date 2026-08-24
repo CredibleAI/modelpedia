@@ -1,0 +1,45 @@
+id: IC-106
+title: Logit lens on LLaVA and InstructBLIP image representations shows higher internal confidence for
+  objects present in the image than for hallucinated objects
+description: The paper applies the logit lens to intermediate image patch embeddings in LLaVA 1.5 and
+  InstructBLIP, projecting them through the language model's unembedding matrix to obtain per-patch,
+  per-layer probability distributions over the vocabulary. For 5000 COCO 2014 images, the maximum probability
+  of each of the 80 COCO objects across all patches and layers (the internal confidence) is consistently
+  higher for objects actually present than for hallucinated ones. Using this internal confidence as
+  a classifier for object presence achieves mAP 0.78 (InstructBLIP) and 0.60 (LLaVA), outperforming
+  the baseline of maximum output token probability (0.53 and 0.49). The same pattern holds for LLaVA-Next
+  and Cambrian-1 in the appendix.
+models:
+- ref: model:llava-1-5
+- ref: model:instructblip
+- ref: model:llava-next
+- ref: model:cambrian-1
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:interpreting-editing-vision-language-representations-mitigate
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods:
+- ref: method:logit-lens
+  role: primary
+- ref: method:chair
+  role: eval
+related_work:
+- name: OPERA
+  anchor: https://arxiv.org/abs/2311.17911
+  role: compared-to
+- name: LURE
+  anchor: https://arxiv.org/abs/2310.00754
+  role: context
+evidence_type: correlational
+key_metric: mAP 0.78 (InstructBLIP) vs 0.53 (baseline), 0.60 (LLaVA) vs 0.49 (baseline); ROC AUC 0.83
+  vs 0.55, 0.68 vs 0.47; 47.17% mAP improvement (InstructBLIP), 22.45% (LLaVA); LLaVA-Next mAP 0.95
+  vs 0.93, Cambrian-1 mAP 0.97 vs 0.94
+caveat: Multi-token objects are handled by taking the max probability over constituent tokens, which
+  the authors note can introduce noise if tokens are shared across different words.
+extracted_by: automatic-extraction
+related_findings:
+- IC-107
+- IC-108

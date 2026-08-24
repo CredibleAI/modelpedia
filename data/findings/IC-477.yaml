@@ -1,0 +1,41 @@
+id: IC-477
+title: Released LLMs achieve limited success rates as web agents on WebArena-Lite, with open-source
+  models substantially below proprietary ones
+description: The paper evaluates several released LLMs on the WebArena-Lite benchmark (165 test cases
+  across five websites) using a simple prompt that defines feasible actions and provides examples. GPT-4-turbo
+  achieves 17.6% average success rate, GPT-4o achieves 13.9%, LLaMA-3.1-70B-Instruct achieves 12.7%,
+  LLaMA-3.1-8B-Instruct achieves 4.8%, and GLM-4-chat achieves 6.1%. The previously released AutoWebGLM
+  agent achieves 18.2%. These results establish a significant gap between proprietary and open-source
+  LLMs as web navigation agents.
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:gpt-4o
+- ref: model:llama-3-1
+- ref: model:glm-4
+  variant: variant:glm-4-chat
+- ref: model:autowebglm
+concepts: []
+sources:
+- ref: source:webrl-training-llm-web-agents-via
+datasets:
+- ref: dataset:webarena-lite
+  role: eval
+methods: []
+related_work:
+- name: AWM
+  anchor: https://arxiv.org/abs/2409.07429
+  role: compared-to
+- name: WebPilot
+  anchor: https://arxiv.org/abs/2408.15978
+  role: compared-to
+evidence_type: correlational
+key_metric: GPT-4-turbo 17.6%, GPT-4o 13.9%, LLaMA-3.1-8B-Instruct 4.8%, LLaMA-3.1-70B-Instruct 12.7%,
+  GLM-4-chat 6.1%, AutoWebGLM 18.2% average SR on WebArena-Lite
+caveat: Results use a single simple prompt; the paper notes that high-performing agents rely on 'meticulously
+  crafted prompts' and proprietary APIs, so the simple-prompt setting may understate model capability.
+  AWM+GPT-4-0613 (35.5%) and WebPilot+GPT-4o (37.2%) from prior work show that method scaffolding substantially
+  changes the picture.
+extracted_by: automatic-extraction
+related_findings:
+- IC-478

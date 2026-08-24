@@ -1,0 +1,46 @@
+id: IC-315
+title: CoT prompting (reasoning + instruction) yields larger relative gains for larger LLMs and harder
+  problems in competitive code generation, with the effect reversing for the most capable models
+description: The paper grid-searches 8 reasoning prompts and 6 instruction prompts across Llama 3.0/3.1
+  (8B, 70B, 405B) and GPT-4o on CodeContests and TACO. The best reasoning+instruction combination improves
+  pass@100 by +5.0% for Llama 3.0 8B, +9.3% for Llama 3.0 70B, +3.3% for Llama 3.1 8B, and +5.2% for
+  Llama 3.1 70B. On the TACO very-hard split, Llama 3.0 8B pass@100 nearly doubles (2.1% to 3.9%). However,
+  for Llama 3.1 405B, CoT degrades pass@1 by 2.7 points, and for GPT-4o, multi-turn alone degrades pass
+  1@3 by 4.5 points, indicating the benefit reverses at the top of the scale.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-0-8b
+- ref: model:llama-3
+  variant: variant:llama-3-0-70b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-405b
+- ref: model:gpt-4o
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:makes-large-language-models-reason-multi
+datasets:
+- ref: dataset:codecontests
+  role: eval
+- ref: dataset:taco
+  role: eval
+methods:
+- ref: method:chain-of-thought-prompting
+  role: primary
+related_work:
+- ref: method:chain-of-thought-prompting
+  role: builds-on
+evidence_type: correlational
+key_metric: 'pass@100 gains: Llama 3.0 8B +5.0% (12.3→17.3), Llama 3.0 70B +9.3% (23.8→33.1), Llama
+  3.1 8B +3.3% (22.8→26.1), Llama 3.1 70B +5.2% (48.9→54.1); TACO very-hard Llama 3.0 8B: 2.1%→3.9%;
+  Llama 3.1 405B pass@1: 27.8→25.1 (−2.7); GPT-4o pass 1@3 multi-turn: 27.6→23.1 (−4.5)'
+caveat: Llama 3.1 405B and GPT-4o evaluated only in small sampling regimes (pass@1, pass 1@3) due to
+  compute constraints; no single prompt combination works best across all models and sample sizes.
+extracted_by: automatic-extraction
+related_findings:
+- IC-316
+- IC-317

@@ -1,0 +1,37 @@
+id: IC-231
+title: GPT-4-turbo and Claude-3-Haiku show inconsistent adherence to their providers' stated design
+  principles when facing value conflicts in daily-life dilemmas
+description: The paper maps OpenAI's ModelSpec (16 principles) and Anthropic's Constitutional AI (59
+  principles) to supporting and opposing values, then measures whether the models' dilemma choices align
+  with those principles. GPT-4-turbo shows a positive score of 0.9 on principle 13 (respecting autonomy)
+  but a negative score of -1.5 on principle 5 (protecting privacy), favoring transparency over privacy.
+  Claude-3-Haiku shows a positive score of 17.9 on principle 45 (reducing existential risk, favoring
+  safety over freedom) but a negative score of -2.7 on principle 56 (flexibility, favoring authority
+  over autonomy). Both models exhibit mixed alignment with their own providers' stated values.
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+concepts: []
+sources:
+- ref: source:dailydilemmas-revealing-value-preferences-llms-quandaries
+datasets: []
+methods: []
+related_work:
+- name: OpenAI ModelSpec
+  anchor: https://cdn.openai.com/spec/model-spec-2024-05-08
+  role: context
+- name: Anthropic Constitutional AI
+  anchor: https://www.anthropic.com/news/claudes-constitution
+  role: context
+evidence_type: correlational
+key_metric: 'gpt-4-turbo: principle 13 score 0.9, principle 5 score -1.5; claude-3-haiku: principle
+  45 score 17.9, principle 56 score -2.7'
+caveat: The value-to-principle mapping was done by prompting GPT-4-turbo to classify values, repeated
+  10 times with empirical probability weights, introducing potential classification noise.
+extracted_by: automatic-extraction
+related_findings:
+- IC-230
+- IC-232
+- IC-233

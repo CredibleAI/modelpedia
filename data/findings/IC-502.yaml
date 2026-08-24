@@ -1,0 +1,38 @@
+id: IC-502
+title: Linear probes trained on US lawmaker ideology generalize to predict Ad Fontes media slant scores
+  when the same models simulate news outlets
+description: Using the same linear probes trained to predict DW-Nominate scores from lawmaker-prompt
+  activations, the authors evaluate whether they can predict the Ad Fontes political slant of 400 US
+  news outlets when the models are prompted to generate statements from those outlets. No new probes
+  are trained; the existing DW-Nominate probes are applied directly to the news-outlet activations.
+  The ensembled predictions (top 32 heads) achieve Spearman correlations of 0.798 (Llama-2-7B-Chat),
+  0.764 (Mistral-7B-Instruct), and 0.720 (Vicuna-7B), demonstrating that the representation captures
+  a generalizable liberal–conservative axis rather than memorized entity-specific scores.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-1
+- ref: model:vicuna
+  variant: variant:vicuna-7b-v1-5
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:linear-representations-political-perspective-emerge-large
+datasets:
+- ref: dataset:ad-fontes-media
+  role: eval
+methods:
+- ref: method:linear-probing
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Spearman ρ_cv (k=32 ensemble): 0.798 (Llama-2-7B-Chat), 0.764 (Mistral-7B-Instruct), 0.720
+  (Vicuna-7B)'
+caveat: The generalization is to US media outlets only; cross-national party ideology (411 parties)
+  yields a much lower ρ=0.531 for Llama-2-7B-Chat, indicating the axis is US-specific.
+extracted_by: automatic-extraction
+related_findings:
+- IC-501
+- IC-503
+- IC-504

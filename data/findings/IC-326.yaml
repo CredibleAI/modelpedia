@@ -1,0 +1,32 @@
+id: IC-326
+title: 'Jailbreak vulnerability and response style are scale-dependent: Llama-2-13b-chat shows higher
+  post-attack JSR and a shift toward direct compliance (type-5 actions) compared to Llama-2-7b-chat'
+description: 'Comparing the 7b and 13b variants of Llama-2-chat after the same JailbreakEdit attack,
+  the 13b model achieves higher JSR on DAN (76.41% vs 64.10%) and DNA (81.05% vs 63.56%), while the
+  clean 13b model also had higher baseline JSR than the clean 7b model. The action distribution shifts
+  differently with scale: the 13b model shows a significant reduction in type-3 (recommending professional
+  intervention) and type-4 (refusing due to limited capacity) responses, with a corresponding increase
+  in type-5 (directly following instructions) responses. This indicates that larger models, when jailbroken,
+  are more likely to produce full answers rather than deflecting or citing inability.'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:injecting-universal-jailbreak-backdoors-into-llms
+datasets:
+- ref: dataset:dan
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'JSR DAN: 7b 64.10% vs 13b 76.41%; DNA: 7b 63.56% vs 13b 81.05%; Addition: 7b 61.22% vs
+  13b 59.86%. Clean JSR DAN: 7b 14.36% vs 13b 14.62%; DNA: 7b 4.08% vs 13b 6.71%.'
+caveat: Only two model sizes (7b and 13b) from the same family are compared; the trend may not generalise
+  to other scales or families.
+extracted_by: automatic-extraction
+related_findings:
+- IC-325

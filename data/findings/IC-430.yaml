@@ -1,0 +1,44 @@
+id: IC-430
+title: Toxicity is linearly separable in the context embedding space of LLMs (Llama-2-7b, GPT-2-large,
+  Llama-3.1-8B-Instruct), with the instruction-tuned model showing a stronger signal
+description: The paper's stated core discovery is that the internal context embeddings of LLMs contain
+  a linearly separable toxicity signal. A closed-form Bayes-optimal linear classifier, constructed from
+  class-conditional Gaussian estimates over the last-token embeddings of labeled toxic and non-toxic
+  sentences, successfully separates the two classes. This linear subspace is then used to steer autoregressive
+  decoding. The effect is stronger in the instruction-tuned Llama-3.1-8B-Instruct (avg. max toxicity
+  drops to 0.234 on challenging RTP) than in the base Llama-2-7b (0.426), suggesting alignment training
+  makes the toxicity signal more linearly accessible in the embedding space.
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-large
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:large-language-models-become-strong-self
+datasets:
+- ref: dataset:realtoxicityprompts
+  role: eval
+- ref: dataset:bold
+  role: eval
+- ref: dataset:attaq
+  role: eval
+- ref: dataset:jigsaw-unintended-bias-in-toxicity-classification
+  role: source
+methods:
+- ref: method:perspective-api
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: avg. max toxicity 0.083 (GPT-2-large, non-toxic RTP, β=500); 0.426 (Llama-2-7b, challenging
+  RTP, β=500); 0.234 (Llama-3.1-8B-Instruct, challenging RTP, β=500); perplexity 7.195 (Llama-2-7b)
+  and 7.39 (Llama-3.1-8B-Instruct)
+caveat: The linear separability depends on the underlying LM's ability to capture toxicity; the authors
+  note that for smaller or less sophisticated models the gap from RAD narrows, and the Perspective API
+  used for evaluation changes over time.
+extracted_by: automatic-extraction
+related_findings:
+- IC-431

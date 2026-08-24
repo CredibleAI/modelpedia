@@ -1,0 +1,42 @@
+id: IC-570
+title: Gradient-based image jailbreaks optimized against single or ensemble VLMs are universal for the
+  attacked model(s) but do not transfer to other VLMs, except between highly similar models
+description: The authors optimized adversarial 512x512 images via gradient descent against 30+ open-parameter
+  VLMs (individually and in ensembles of 8) to elicit harmful-yet-helpful responses on AdvBench. In
+  every case the optimized image successfully jailbroke the attacked VLM(s) within fewer than 500 gradient
+  steps, but showed little-to-no transfer to any other VLM, regardless of shared vision backbones, shared
+  language models, or safety-alignment training. Partial transfer was observed only between identically-initialized
+  VLMs with overlapping training data (harmfulness-yet-helpfulness rose from ~15% to 40-60%, below the
+  ~87.5% on the attacked VLM) and between training checkpoints of the same VLM (3-epoch checkpoint scored
+  ~40% vs ~87.5% for 1-epoch). Attacking larger ensembles of highly similar VLMs (n=8) improved transfer
+  to a target VLM, achieving near-ceiling scores, but no transfer was observed to a 2-stage-trained
+  VLM even under ensemble attack.
+models:
+- ref: model:prismatic
+- ref: model:qwen-vl
+  variant: variant:qwen-vl-chat
+- ref: model:deepseek-vl
+  variant: variant:deepseek-vl-chat-7b
+concepts: []
+sources:
+- ref: source:failures-find-transferable-image-jailbreaks-between
+datasets:
+- ref: dataset:advbench
+  role: eval
+- ref: dataset:anthropic-hh
+  role: eval
+methods: []
+related_work:
+- ref: method:gcg
+  role: builds-on
+- ref: model:prismatic
+  role: builds-on
+evidence_type: correlational
+key_metric: '<500 gradient steps to jailbreak; partial transfer: harmfulness-yet-helpfulness rose from
+  ~15% to 40%-60% (overlapping data) vs ~87.5% on attacked VLM; 3-epoch checkpoint ~40% vs 1-epoch ~87.5%
+  vs non-adversarial baseline ~30%'
+caveat: 'The authors state: ''we do not claim that transfer attacks against vlms do not exist; our work
+  is intended to show that we were largely unsuccessful despite serious efforts.'' They also note: ''due
+  to computational limitations, we were unable to explore more sophisticated attacks. our findings might
+  have been significantly different had we optimized image jailbreaks differently.'''
+extracted_by: automatic-extraction

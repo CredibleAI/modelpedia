@@ -1,0 +1,39 @@
+id: IC-243
+title: Bias ratio on certain multi-turn fairness tasks decreases with model size in the Gemma-2 and
+  Qwen2.5 families
+description: On the more challenging FairMT-1K subset, the paper tests 15 LLMs including three sizes
+  each of Gemma-2 and Qwen2.5. For tasks such as scattered questions, fixed format, and negative feedback,
+  the proportion of biased responses tends to decrease as model size increases. In the Gemma-2 family,
+  scattered questions bias drops from 83.03% (2B) to 20.00% (27B), and fixed format drops from 51.52%
+  (2B) to 6.67% (27B). The authors attribute this to increased parameters enhancing comprehension of
+  user instructions in multi-turn dialogues.
+models:
+- ref: model:gemma-2
+  variant: variant:gemma-2-2b-it
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b-it
+- ref: model:gemma-2
+  variant: variant:gemma-2-27b-it
+- ref: model:qwen2-5
+  variant: variant:qwen2-5-0-5b-instruct
+- ref: model:qwen2-5
+  variant: variant:qwen2-5-3b-instruct
+- ref: model:qwen2-5
+  variant: variant:qwen2-5-7b-instruct
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:fairmt-bench-benchmarking-fairness-multi-turn
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Gemma-2 scattered questions: 83.03% (2B), 26.06% (9B), 20.00% (27B); fixed format: 51.52%
+  (2B), 39.39% (9B), 6.67% (27B); negative feedback: 23.03% (2B), 40.61% (9B), 9.70% (27B)'
+caveat: 'The trend is not strictly monotonic for all tasks and families; Qwen2.5 shows less consistent
+  decrease (e.g., negative feedback: 93.33% at 0.5B, 95.76% at 3B, 87.27% at 7B). The paper states the
+  proportion ''tends to decrease'' rather than guaranteeing it.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-242
+- IC-244

@@ -1,0 +1,31 @@
+id: IC-258
+title: DNN accuracy on 3D perception tasks correlates with ImageNet object classification accuracy,
+  suggesting 3D cues emerge as a byproduct of object recognition training
+description: Across the 317 TIMM models, the paper measured the correlation between each model's ImageNet
+  classification accuracy and its performance on the 3D-PC tasks. Depth order accuracy correlated strongly
+  with ImageNet accuracy (rho = 0.66, p < 0.001), and VPT-basic accuracy showed a weaker but significant
+  correlation (rho = 0.34, p < 0.001). The difference between the two correlations was itself significant
+  (rho = 0.32, p < 0.001), indicating that the 3D cues that emerge with scale are well-suited for depth
+  ordering but poorly suited for perspective taking.
+models:
+- ref: model:beit
+- ref: model:swin-transformer
+concepts: []
+sources:
+- ref: source:pc-benchmark-visual-perspective-taking-3d
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:linear-probing
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: rho = 0.66 (depth order vs ImageNet, p < 0.001); rho = 0.34 (VPT-basic vs ImageNet, p <
+  0.001); difference in correlations rho = 0.32, p < 0.001
+caveat: The authors note that more work is needed to identify a causal relationship between the development
+  of monocular depth cues and object recognition accuracy; the correlation is not evidence of causation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-257
+- IC-259

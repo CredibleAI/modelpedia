@@ -1,0 +1,36 @@
+id: IC-416
+title: Natural language prompts can steer the texture/shape bias in VLMs in both directions without
+  significantly affecting accuracy, with texture-biased prompts more effective than shape-biased ones;
+  this steering also generalizes to low/high-frequency bias.
+description: 'The paper tests hand-crafted and automatically generated prompts that instruct VLMs to
+  focus on shape or texture. Texture-biased prompts shift the bias more than shape-biased ones, suggesting
+  models default to shape but can be pushed toward texture. Automated prompt search using an LLM as
+  optimizer achieves a 23.3% delta between extremes for InternVL-Chat 1.1. Synonym tests confirm the
+  steering leverages a learned representation rather than being coincidental. The effect is not limited
+  to texture/shape: on a new frequency-cue-conflict dataset, prompts produce statistically significant
+  changes in low-frequency bias for both InternVL-Chat 1.1 and LLaVA-Next 7B. Larger LLMs (InternVL
+  1.2+ 34B vs 1.1 13B) do not show more steerability.'
+models:
+- ref: model:internvl-2
+  variant: variant:internvl
+- ref: model:llava-next
+- ref: model:qwen-vl
+- ref: model:gemini
+  variant: variant:gemini-pro-vision
+concepts: []
+sources:
+- ref: source:we-talk-models-into-seeing-world
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'InternVL-Chat 1.1 automated prompt search delta 23.3% between extremes; frequency bias:
+  InternVL-Chat 1.1 LF bias 34.5% neutral, 38.6% search(max), 32.9% search(min); LLaVA-Next 7B LF bias
+  52.4% neutral, 54.5% search(max), 48.7% search(min); accuracy changes are small or sometimes positive'
+caveat: The optimization is done on the cue-conflict test set as a proof of concept, not to claim SOTA
+  shape bias. The authors note that other prompts may have led to better results, and that prompting
+  is a potential source of bias in the study. The effect does not fundamentally change the utilized
+  cue.
+extracted_by: automatic-extraction
+related_findings:
+- IC-415

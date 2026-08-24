@@ -1,0 +1,34 @@
+id: IC-222
+title: GPT-4o ReAct failures are dominated by rule violations (transition function) and goal misinterpretation,
+  with the balance shifting from goal-dominant in synchronous to transition-dominant in asynchronous
+  settings
+description: 'The paper categorises all GPT-4o ReAct failures into four MDP-based categories: state,
+  action, transition function, and goal. In the synchronous dataset, goal uncertainty accounts for 64.1%
+  of failures and transition function for 32.1%. In the asynchronous dataset, the balance inverts: transition
+  function accounts for 56.8% and goal for 34.1%. The single most common specific failure in both settings
+  is violating the ''one item at a station'' rule, at 24.5% of sync failures and 53.4% of async failures.
+  Adding more rule details to the prompt (ReAct + prior) reduces this specific violation from 38.1%
+  to 22.2% but does not significantly improve overall success rate (0.30 ± 0.085 vs 0.40 ± 0.050).'
+models:
+- ref: model:gpt-4o
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:robotouille-asynchronous-planning-benchmark-llm-agents
+datasets: []
+methods:
+- ref: method:react
+  role: primary
+related_work: []
+evidence_type: observational
+key_metric: 'Sync: goal 64.1%, transition 32.1%; Async: transition 56.8%, goal 34.1%; ''one item at
+  a station'' rule: 24.5% sync, 53.4% async; ReAct+prior: 0.30 ± 0.085 vs 0.40 ± 0.050 success rate,
+  rule violations 38.1% → 22.2%'
+caveat: Failure categorisation is based on manual annotation with a tiebreaker rule for multi-cause
+  failures; the 'one item at a station' rule is specific to the Robotouille environment and may not
+  generalise.
+extracted_by: automatic-extraction
+related_findings:
+- IC-221
+- IC-223
+- IC-224

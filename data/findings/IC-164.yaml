@@ -1,0 +1,36 @@
+id: IC-164
+title: Llama-3-8B and Llama-2-7B fail to learn out-of-distribution functions through in-context learning,
+  defaulting to in-distribution predictions
+description: The paper evaluates Llama-3-8B and Llama-2-7B on a synthetic vector classification task
+  where the model must learn a random linear mapping w from in-context examples. ICL accuracy on this
+  OOD task is close to random guessing (10% for 10 classes), while a retrieval version of the same task
+  is solved well. Additionally, on a reversed-label natural language task (e.g., predicting 'evitisop'
+  instead of 'positive'), Llama-3-8B prefers to output the reversed query word—an in-distribution pattern—rather
+  than the reversed target label. Together these results indicate that ICL in these models is confined
+  to implementing pretraining function classes rather than learning genuinely new input-output mappings.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:context-learning-really-generalize-out-distribution
+datasets:
+- ref: dataset:function-vectors-dataset
+  role: eval
+methods:
+- ref: method:in-context-learning
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 10% accuracy on OOD synthetic vector classification (random guess level for 10 classes);
+  retrieval task accuracy significantly higher; reversed-query accuracy exceeds reversed-target-label
+  accuracy across all four natural language tasks
+caveat: The synthetic vector classification task uses a very small effective dimension (d'=30 out of
+  d=4096) to reduce complexity, and the reversed-label task is a narrow construction. The authors note
+  it is challenging to assess whether larger models like GPT-4 face similar difficulties.
+extracted_by: automatic-extraction
+related_findings:
+- IC-165

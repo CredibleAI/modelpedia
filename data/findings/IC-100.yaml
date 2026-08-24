@@ -1,0 +1,34 @@
+id: IC-100
+title: GPT-4, GPT-3.5, Claude 3, Llama 3 8B, and Llama 3 70B can be prompted to approximately calibrate
+  their accuracy to specific target percentages on MMLU
+description: When prompted to answer exactly p% of MMLU questions correctly (for p in 0, 10, 20, ...,
+  100), all frontier models can approximately hit the target accuracy. Most models tend to overshoot
+  the target but are clearly capable of modulating their performance. Llama 3 8B was significantly better
+  calibrated than Llama 3 70B. The evaluation uses a subset of MMLU (MMLU-easy, 5,854 samples) that
+  all models can answer correctly, so the full probability range is accessible.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+- ref: model:claude-3
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+concepts: []
+sources:
+- ref: source:ai-sandbagging-language-models-strategically-underperform
+datasets:
+- ref: dataset:mmlu
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: All frontier models can accurately approximate arbitrary targets; most tend to overshoot.
+  Llama 3 8B significantly better calibrated than Llama 3 70B.
+caveat: The authors note that performance can likely be further improved with greater engineering effort,
+  such as extended prompt engineering and more extensive hyperparameter sweeps. Evaluation is limited
+  to multiple-choice question answering.
+extracted_by: automatic-extraction
+related_findings:
+- IC-099
+- IC-101

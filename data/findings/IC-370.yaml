@@ -1,0 +1,70 @@
+id: IC-370
+title: Knowledge entropy (sparsity of FFN memory coefficients) decreases consistently during pretraining
+  for OLMo 1B, 7B, and Pythia 1.4B, and this decrease strongly correlates with reduced knowledge acquisition
+  and increased forgetting in continual learning
+description: The paper measures how broadly a model activates its feed-forward memory vectors (the rows
+  of the second projection matrix V) by computing the entropy of the average memory coefficient distribution
+  across all tokens. For OLMo 1B, 7B, and Pythia 1.4B, this knowledge entropy declines monotonically
+  as pretraining progresses, with the sharpest drop in the last layer. In a continual knowledge learning
+  setup (further training on PubMed or C4 with injected fictional knowledge), models from later pretraining
+  stages show lower acquisition rates and higher forgetting rates. The Pearson correlation between knowledge
+  entropy and acquisition is 0.94 (p=6e-5) and with forgetting is -0.96 (p=1e-5). Mid-stage checkpoints
+  (~50% of the learning rate schedule) achieve the best balance of acquisition, retention, and overall
+  performance.
+models:
+- ref: model:olmo
+- ref: model:pythia
+concepts: []
+sources:
+- ref: source:knowledge-entropy-decay-during-language-model
+datasets:
+- ref: dataset:dolma
+  role: source
+- ref: dataset:pubmed
+  role: train
+- ref: dataset:c4
+  role: train
+- ref: dataset:fictional-knowledge-dataset
+  role: eval
+- ref: dataset:sciq
+  role: eval
+- ref: dataset:winogrande
+  role: eval
+- ref: dataset:piqa
+  role: eval
+- ref: dataset:obqa
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+- ref: dataset:arc-easy
+  role: eval
+methods:
+- ref: method:continual-knowledge-learning
+  role: primary
+related_work:
+- name: Geva et al. 2021 (Transformer feed-forward layers are key-value memories)
+  anchor: https://doi.org/10.18653/v1/2021.emnlp-main.446
+  role: builds-on
+- name: Jang et al. 2022 (Towards continual knowledge learning of language models)
+  anchor: https://openreview.net/forum?id=vfsrb5mimo9
+  role: builds-on
+- name: Chang et al. 2024 (How do large language models acquire factual knowledge during pretraining?)
+  anchor: https://arxiv.org/abs/2406.11813
+  role: compared-to
+- name: Sun & Dredze 2024 (AMURO & CHAR)
+  anchor: https://arxiv.org/abs/2408.06663
+  role: context
+- name: Dohare et al. 2024 (Loss of plasticity in deep continual learning)
+  anchor: https://api.semanticscholar.org/CorpusID:259251905
+  role: context
+evidence_type: correlational
+key_metric: 'Pearson correlation between knowledge entropy and acquisition: 0.94 (p=6e-5); with forgetting:
+  -0.96 (p=1e-5). Baseline acquisition a(θ) across OLMo 1B pretraining steps 118k/369k/554k/738k: 25.2/24.8/21.4/18.8%;
+  forgetting f(θ): 10.5/12.9/17.0/19.5%. Downstream performance p(θ): 54.0/54.6/52.8/52.0%.'
+caveat: The study is limited to OLMo 1B and 7B (and Pythia 1.4B in the appendix) because they are the
+  only models that publicly provide intermediate pretraining checkpoints. The authors note that extending
+  to other models is future work. The mid-point is approximated as 50% of the learning rate schedule,
+  and defining it precisely remains an open question.
+extracted_by: automatic-extraction
+related_findings:
+- IC-371

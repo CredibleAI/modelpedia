@@ -1,0 +1,25 @@
+id: IC-604
+title: CLIP ViT-B/32's CIFAR-10 image embeddings approximately satisfy a multi-cluster structure with
+  near-orthogonal class-mean features
+description: The authors use a frozen CLIP ViT-B/32 model to extract image embeddings for CIFAR-10 and
+  verify that the resulting representations approximately satisfy the multi-cluster data distribution
+  assumed in their theoretical analysis. Specifically, the correlation between embeddings of images
+  from the same class is significantly higher than between embeddings from different classes, and the
+  class-mean feature vectors are approximately orthogonal. This observation is used to justify applying
+  their feature-averaging theory to a two-layer classifier trained on CLIP embeddings. The result is
+  presented as a setup validation in Appendix H rather than a main contribution.
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:feature-averaging-implicit-bias-gradient-descent
+datasets:
+- ref: dataset:cifar-10
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+caveat: The observation is a setup validation for the authors' experimental design, not a main contribution
+  of the paper. No specific numerical correlation values are printed in the text; the evidence is a
+  qualitative correlation heatmap (Figure 12) over 100 sampled instances per class.
+extracted_by: automatic-extraction

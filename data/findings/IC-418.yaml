@@ -1,0 +1,38 @@
+id: IC-418
+title: Matched n-grams in LLM outputs are concentrated in fewer reference documents than in human texts,
+  indicating LLMs draw from a narrower set of sources
+description: 'The paper investigates whether the non-unique portions of LLM and human texts are spread
+  across many web documents or concentrated in a few. Using a greedy maximum-coverage approximation,
+  it finds that LLM text matches are concentrated: searching only the top 50 documents captures enough
+  matches to reduce l-uniqueness (l=5) to 32.8% for machine texts versus 56.6% for human texts. Conversely,
+  keeping l-uniqueness below 50% requires searching through an average of 41.2 documents for human texts
+  but only 13.4 for machine texts. This suggests LLMs recombine patterns from a relatively small set
+  of popular sources.'
+models:
+- ref: model:gpt-3
+- ref: model:llama-2
+  variant: variant:llama-2-chat
+- ref: model:tulu-2
+- ref: model:olmo
+  variant: variant:olmo-instruct
+concepts: []
+sources:
+- ref: source:ai-as-humanity-s-salieri-quantifying
+datasets:
+- ref: dataset:redpajama
+  role: source
+- ref: dataset:bookmia
+  role: eval
+methods:
+- ref: method:greedy-maximum-coverage-approximation
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'averaged l-uniqueness (l = 5) for machine texts 32.8% vs human texts 56.6% (73.4% lower;
+  p = 3.9 × 10−19; n = 600) when searching top 50 documents; documents needed to keep l-uniqueness below
+  50%: 13.4 for machine texts vs 41.2 for human texts (213.7% more; p = 1.6 × 10−22; n = 600)'
+caveat: The concentration could partly reflect the popularity distribution of the reference corpus itself,
+  not solely a property of the model. The analysis uses both verbatim and semantic matches.
+extracted_by: automatic-extraction
+related_findings:
+- IC-417

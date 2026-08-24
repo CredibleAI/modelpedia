@@ -1,0 +1,49 @@
+id: IC-295
+title: The ViT model's ECE can be reduced to near-zero by trivial mean-replacement recalibration while
+  maintaining test accuracy, but NLL increases from 65.35 to 144.66, demonstrating that ECE and accuracy
+  alone are an insufficient reporting standard for calibration
+description: The paper applies five recalibration methods (none, temperature scaling, histogram binning,
+  isotonic regression, and the trivial mean-replacement recalibration) to a pretrained ViT on ImageNet-1k-val.
+  MRR sets the confidence to a constant equal to the calibration-set accuracy, achieving ECE of 0.18
+  (down from 9.42) while keeping test accuracy at 85.14, but NLL jumps from 65.35 to 144.66 and MSE
+  from 22.73 to 27.51. The same pattern holds for ResNet-50, EfficientNet, ConvNeXt, and ResNet-32 on
+  ImageNet and CIFAR. The calibration-sharpness diagrams further show that temperature scaling and isotonic
+  regression, while reducing ECE, skew predicted confidences toward higher values and increase the pointwise
+  sharpness gap, meaning calibration gains come at a generalization cost invisible to ECE alone.
+models:
+- ref: model:vit
+- ref: model:resnet
+  variant: variant:resnet50
+- ref: model:efficientnet
+- ref: model:convnext
+- ref: model:resnet
+  variant: variant:resnet-32
+concepts:
+- ref: concept:method-artefact
+sources:
+- ref: source:reassessing-compare-improve-calibration-machine-learning
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:cifar-10
+  role: eval
+- ref: dataset:cifar-100
+  role: eval
+methods:
+- ref: method:temperature-scaling
+  role: compared-to
+- ref: method:isotonic-regression
+  role: compared-to
+- ref: method:smooth-ece
+  role: compared-to
+related_work:
+- ref: method:smooth-ece
+  role: compared-to
+evidence_type: correlational
+key_metric: 'ViT baseline: test accuracy 85.14, ECE 9.42, NLL 65.35, MSE 22.73; ViT+MRR: test accuracy
+  85.14, ECE 0.18, NLL 144.66, MSE 27.51; ViT+TS: ECE 2.59, NLL 56.83, MSE 21.95; ViT+IR: ECE 4.53,
+  NLL ∞, MSE 24.13 (all scaled by 100)'
+caveat: The paper notes that the results are not sensitive to the choice of model, but the specific
+  numbers are from a single 20/80 calibration/test split on ImageNet-1k-val. Histogram binning and isotonic
+  regression produce unbounded NLL because they can predict zero probability for some classes.
+extracted_by: automatic-extraction

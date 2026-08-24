@@ -1,0 +1,31 @@
+id: IC-499
+title: ViT patch embeddings contain local semantic information beyond the [cls] token, as shown by performance
+  degradation when restricting the output head to [cls] only or removing positional embeddings
+description: 'The paper applies two interventions to the frozen ViT output before probing: (1) restricting
+  the output head to only the [cls] token (or average embedding for models without one), and (2) anonymizing
+  the ViT''s output embeddings by removing learned positional embeddings and placing them in separate
+  token positions. Both interventions degrade local probing performance, with the [cls]-only restriction
+  causing the largest drop. This demonstrates that the patch embeddings in ViTs trained with image-level
+  supervision (e.g., CLIP, IN1K) do carry useful local semantic information, rather than all information
+  being collapsed into the [cls] token. However, the information is not perfectly organized for local
+  prediction, which is why locality alignment still provides gains.'
+models:
+- ref: model:clip
+- ref: model:vit
+  variant: variant:in1k-vit
+- ref: model:mae
+- ref: model:dinov2
+- ref: model:siglip
+concepts: []
+sources:
+- ref: source:locality-alignment-improves-vision-language-models
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods: []
+related_work: []
+evidence_type: interventional
+caveat: The interventions modify the probe's access to the ViT output rather than the ViT weights themselves.
+  The paper does not report exact numerical values for the intervention results in the text; they are
+  shown only in Figure 9 (right).
+extracted_by: automatic-extraction

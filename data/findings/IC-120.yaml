@@ -1,0 +1,35 @@
+id: IC-120
+title: YOLO-World can replace SAM as a 2D crop generator in OpenMask3D's pipeline with nearly equivalent
+  mAP but 1.76x faster inference
+description: The paper tests four 2D detectors (SAM, YOLOv8, RT-DETR, YOLO-World) as alternatives to
+  SAM for generating bounding-box crops in OpenMask3D's CLIP feature aggregation pipeline, using ground-truth
+  3D mask proposals on the Replica dataset. YOLO-World achieves mAP 32.5 compared to SAM's 33.0, a gap
+  of only 0.5 points, while reducing per-scene inference time from 675.6 s to 384.29 s. YOLOv8 and RT-DETR
+  show larger accuracy drops (21.1 and 28.4 respectively), indicating that YOLO-World's open-vocabulary
+  zero-shot detection quality is the key factor enabling it to match SAM.
+models:
+- ref: model:yolo-world
+- ref: model:sam
+- ref: model:yolov8
+- ref: model:rt-detr
+concepts: []
+sources:
+- ref: source:open-yolo-3d-fast-accurate-open
+datasets:
+- ref: dataset:replica
+  role: eval
+methods:
+- ref: method:openmask3d
+  role: primary
+- ref: method:clip
+  role: supporting
+related_work:
+- ref: method:openmask3d
+  role: builds-on
+evidence_type: correlational
+key_metric: mAP 32.5 (YOLO-World) vs 33.0 (SAM), time/scene 384.29 s vs 675.6 s on Replica with ground-truth
+  3D masks
+caveat: The comparison uses ground-truth 3D mask proposals, so the finding is about crop generation
+  quality in isolation, not about the full end-to-end pipeline. The 0.5 mAP gap, while small, is not
+  zero.
+extracted_by: automatic-extraction

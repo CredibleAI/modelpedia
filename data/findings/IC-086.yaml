@@ -1,0 +1,37 @@
+id: IC-086
+title: Fine-tuning Llama-2-7b-chat on 100 harmful examples for 6 gradient steps increases the attack
+  success rate from 1.5% to 87.9%, with per-token dynamics showing the distributional change concentrated
+  in the first few tokens
+description: The paper fine-tunes Llama-2-7b-chat on 100 (harmful instruction, harmful answer) pairs
+  from Qi et al. 2023c with a learning rate of 2e-5 and batch size 64. It tracks the per-token cross-entropy
+  loss, per-token gradient norm, and per-token KL divergence from the initial aligned model. The initial
+  loss and gradient norms are substantially larger for the first few token positions, causing the generative
+  distribution over initial tokens to deviate most rapidly. After only 6 gradient steps, the ASR on
+  HEX-Phi jumps from 1.5% to 87.9%, confirming that the shallow alignment can be undone by very few
+  fine-tuning steps because the learning signal is concentrated in the same initial tokens that the
+  alignment occupies.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:safety-alignment-should-be-made-more
+datasets:
+- ref: dataset:hex-phi
+  role: eval
+methods: []
+related_work:
+- name: Qi et al. 2023c (fine-tuning attacks)
+  anchor: https://arxiv.org/abs/2310.03693
+  role: builds-on
+evidence_type: interventional
+key_metric: 'ASR: 1.5% (initial) → 22.4% (2 steps) → 76.4% (4 steps) → 87.9% (6 steps); learning rate
+  2×10⁻⁵, batch size 64, 100 harmful examples'
+caveat: The per-token dynamics are shown in figures; the specific gradient norm and KL values at each
+  position are not printed as text numbers. The result is demonstrated on a single model (Llama-2-7b-chat)
+  with a single fine-tuning dataset.
+extracted_by: automatic-extraction
+related_findings:
+- IC-084
+- IC-085

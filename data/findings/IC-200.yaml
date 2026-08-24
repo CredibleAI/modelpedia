@@ -1,0 +1,26 @@
+id: IC-200
+title: Personality-related neurons in Llama-3-8B-Instruct are concentrated in the deeper layers of the
+  network
+description: The paper identifies approximately 20,000 personality-related neurons in Llama-3-8B-Instruct
+  by measuring activation probability differences between opposing trait aspects. When the distribution
+  of these neurons is plotted across the 29 transformer layers, they are primarily concentrated in the
+  deeper layers (roughly layers 17–29), with far fewer in the early layers. The authors note this is
+  consistent with prior work showing that FFNs in the last few layers are more crucial for conceptual
+  knowledge, suggesting the model's understanding of personality-like concepts emerges progressively
+  with depth.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:neuron-based-personality-trait-induction-large
+datasets: []
+methods: []
+related_work: []
+evidence_type: observational
+caveat: The distribution is shown in a figure (Figure 4b) without per-layer counts printed in the text;
+  the claim is qualitative ('primarily concentrated in the deeper layers').
+extracted_by: automatic-extraction
+related_findings:
+- IC-201

@@ -1,0 +1,34 @@
+id: IC-425
+title: Pretrained GPT-2 Large fails at structural in-context learning on unseen tokens in a syllogism
+  task
+description: The paper evaluates pretrained GPT-2 Large on a syllogism task where the subject term is
+  replaced by a randomly initialized embedding, requiring the model to rely purely on contextual structure
+  rather than token identity. The model shows persistently low accuracy on this unseen-token condition,
+  described as 'even worse than on the pretrained pythia 1.4b.' This demonstrates that a widely used
+  released language model lacks the ability to perform structural ICL on novel tokens in a logical reasoning
+  setting.
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-large
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:dual-process-learning-controlling-use-context
+datasets:
+- ref: dataset:wikitext
+  role: eval
+methods: []
+related_work:
+- name: Lampinen et al. 2024 (content effects on reasoning)
+  anchor: https://doi.org/10.1093/pnasnexus/pgae233
+  role: context
+- name: Kim et al. 2024 (mechanistic interpretation of syllogistic reasoning)
+  anchor: https://arxiv.org/abs/2408.08590
+  role: context
+evidence_type: observational
+caveat: The evaluation is on a single simple syllogism task with a-z tokens; the paper provides no specific
+  accuracy number for the pretrained model, only a qualitative comparison to Pythia-1.4B.
+extracted_by: automatic-extraction
+related_findings:
+- IC-424
+- IC-426

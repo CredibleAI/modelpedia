@@ -1,0 +1,42 @@
+id: IC-562
+title: Applying the layer-16 self-recognition vector to input tokens (not output) of Llama3-8B-Instruct
+  alters the model's perception of authorship, making it believe or disbelieve it wrote arbitrary texts
+  in both individual and paired paradigms.
+description: The authors test whether the self-recognition vector can influence the model's perception
+  rather than just its output. By adding or subtracting the layer-16 vector from every token of the
+  text being evaluated (leaving the output token untouched), they can shift the model's judgment in
+  both directions. In the individual paradigm, zeroing out the vector's projection from both texts causes
+  the model to decrease its confidence in the correct answer in 55.6% of SAD trials (p=0.0153) and 58.1%
+  of QA trials (p=0.0008). In the paired paradigm, the same manipulation shifts the model's choice in
+  52.9% (SAD, p=0.1188) and 55.9% (QA, p=0.0021) of trials.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:inspection-control-self-generated-text-recognition
+datasets:
+- ref: dataset:sad
+  role: eval
+methods:
+- ref: method:activation-steering
+  role: primary
+- ref: method:contrastive-pairs-method
+  role: supporting
+related_work:
+- name: Turner et al. 2024 (Activation Addition)
+  anchor: https://arxiv.org/abs/2308.10248
+  role: builds-on
+evidence_type: interventional
+key_metric: 'Zeroing out vector from text tokens: individual paradigm SAD 55.6% decreasing (p=0.0153),
+  QA 58.1% decreasing (p=0.0008); paired paradigm SAD 52.9% decreasing (p=0.1188), QA 55.9% decreasing
+  (p=0.0021).'
+caveat: The paired SAD result (p=0.1188) is not statistically significant at the 0.05 level. The authors
+  note that the vector was formed over a few hundred short texts and is unlikely to capture all signals
+  about writing characteristics, so the effect is partial rather than complete.
+extracted_by: automatic-extraction
+related_findings:
+- IC-560
+- IC-561
+- IC-563

@@ -1,0 +1,31 @@
+id: IC-490
+title: GPT-4o can identify visual relationships at 97% accuracy when given ground-truth descriptions
+  but drops to 17% when asked to apply known relationships to new visuals, revealing a specific bottleneck
+  in relational transfer
+description: An ablation study on GPT-4o using VOILA-WD with L2M prompting provided ground-truth image
+  descriptions at phase 2, after which GPT-4o identified relationships at 97% accuracy. However, when
+  ground-truth relationships were provided at phase 3, GPT-4o's accuracy on applying those relationships
+  to the third image dropped to 17%, well below the 71% human baseline. A complementary ablation on
+  VOILA-ND showed GPT-4o achieves 22% accuracy with three sequential images but 49% with text descriptions
+  of the same images, indicating a modality gap in visual relational reasoning.
+models:
+- ref: model:gpt-4o
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:voila-evaluation-mllms-perceptual-understanding-analogical
+datasets: []
+methods:
+- ref: method:least-to-most-prompting
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4o identifying relations with GT descriptions: 97%; GPT-4o applying relations with
+  GT relationships: 17%; GPT-4o with images (VOILA-ND): 22%; GPT-4o with text (VOILA-ND): 49%'
+caveat: Ablation conducted only on GPT-4o; the 17% figure is on VOILA-WD which includes distraction
+  rules, making the task harder than VOILA-ND.
+extracted_by: automatic-extraction
+related_findings:
+- IC-489
+- IC-491
+- IC-492

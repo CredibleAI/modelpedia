@@ -1,0 +1,39 @@
+id: IC-207
+title: Open LLMs (Llama-3-8B-Inst, Yi-1.5-34B-Chat) show weaker performance on coding and math tasks
+  compared to proprietary models (GPT-4-turbo-0409, Claude 3 Opus) which perform well across all task
+  categories
+description: The paper breaks down wb-score performance across five consolidated task categories (reasoning
+  & planning, creative tasks, coding & debugging, info seeking, math & data) for six models. Larger
+  proprietary models like GPT-4-turbo-0409 and Claude 3 Opus perform well across all categories. In
+  contrast, open LLMs like Llama-3-8B-Inst and Yi-1.5-34B-Chat show notably weaker performance specifically
+  on coding and math-related tasks, while their performance on information-seeking and creative tasks
+  is closer to the top models. This reveals a task-specific weakness pattern in open models that is
+  not visible in the aggregate score.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-inst
+- ref: model:yi
+  variant: variant:yi-1-5-34b-chat
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo-0409
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+- ref: model:llama-3
+  variant: variant:llama-3-70b-inst
+- ref: model:llama-3
+  variant: variant:llama3-inst-8b-simpo
+concepts: []
+sources:
+- ref: source:wildbench-benchmarking-llms-challenging-tasks-from
+datasets:
+- ref: dataset:wildbench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The task-category breakdown is shown in a radar plot (Figure 5) for only 6 selected models;
+  exact per-category scores are not printed in the text.
+extracted_by: automatic-extraction
+related_findings:
+- IC-206
+- IC-208

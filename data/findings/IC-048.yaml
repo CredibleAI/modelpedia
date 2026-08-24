@@ -1,0 +1,38 @@
+id: IC-048
+title: Existing video LLMs (TimeChat, VTG-LLM, Momentor, Hawkeye) show limited zero-shot video temporal
+  grounding capability and struggle to improve with fine-tuning
+description: The paper evaluates four released video LLMs specifically designed for temporal grounding
+  on three VTG benchmarks in zero-shot settings. All four show substantially lower performance than
+  TRACE, with CIDEr scores on YouCook2 ranging from 1.2 to 31.4 and R@1(IoU=0.7) on Charades-STA from
+  13.4 to 15.7. After fine-tuning on YouCook2 and Charades-STA, TimeChat and VTG-LLM still struggle
+  to attain satisfactory performance, with CIDEr of 11.0 and 13.4 respectively, far below task-specific
+  models.
+models:
+- ref: model:timechat
+- ref: model:vtg-llm
+- ref: model:momentor
+- ref: model:hawkeye
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:trace-temporal-grounding-video-llm-via
+datasets:
+- ref: dataset:youcook2
+  role: eval
+- ref: dataset:charades-sta
+  role: eval
+- ref: dataset:qvhighlights
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Zero-shot CIDEr on YouCook2: TimeChat 3.4, VTG-LLM 5.0, Momentor 11.6, Hawkeye 14.5; Zero-shot
+  R@1(IoU=0.7) on Charades-STA: TimeChat 13.4, VTG-LLM 15.7, Hawkeye 14.5; Fine-tuned CIDEr on YouCook2:
+  TimeChat 11.0, VTG-LLM 13.4'
+caveat: The paper notes that Valley, VideoChat-embed, and Video-LLaMA results are elaborated from previous
+  studies, and VTimellm (13B) comparison is flagged as unfair due to different model size.
+extracted_by: automatic-extraction
+related_findings:
+- IC-049
+- IC-050
+- IC-051

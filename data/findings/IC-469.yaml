@@ -1,0 +1,29 @@
+id: IC-469
+title: CLIP's global contrastive alignment causes attention on anatomically irrelevant regions in 3D
+  CT, yielding limited zero-shot diagnostic accuracy (AUC 68.4 on 54 tasks)
+description: The paper evaluates CLIP on 54 zero-shot disease diagnosis tasks across 15 anatomies using
+  the MedVL-CT69K dataset. CLIP achieves an AUC of 68.4 and accuracy of 66.7. Attention map visualizations
+  (Fig. 1c) show that CLIP's global image-report alignment mechanism causes the model to focus on regions
+  not relevant to the specific diagnosis, which the authors argue compromises both performance and interpretability.
+  This is contrasted with the authors' FVLM, which achieves AUC 81.3, a 12.9-point gap attributed to
+  CLIP's coarse-grained alignment.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:large-scale-fine-grained-vision-language
+datasets:
+- ref: dataset:medvl-ct69k
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: AUC 68.4, ACC 66.7, SPEC 68.0, SENS 65.5, F1 76.0, PREC 18.0 on 54 zero-shot diagnosis tasks
+  (Table 1)
+caveat: The attention map evidence is qualitative (a single illustrative example in Fig. 1c); the quantitative
+  gap is measured on the authors' own curated dataset (MedVL-CT69K), which may not generalize to other
+  CT distributions.
+extracted_by: automatic-extraction
+related_findings:
+- IC-470

@@ -1,0 +1,53 @@
+id: IC-505
+title: Adversarial attacks on Llama-3-8B-Instruct, Mistral-7B-Instruct-v0.2, and Gemma-7B-IT shift hidden
+  representations along the negative refusal feature direction
+description: The paper computes the mean representational shift induced by four distinct attack methods
+  (GCG, PAIR, AutoDan, HumanJailbreaks) on 400 harmful prompts from HarmBench and measures the cosine
+  similarity of that shift with the negative refusal feature vector at every layer. Across all three
+  models and all four attacks, the shifts align significantly above chance with the refusal feature
+  direction, indicating a shared geometric mechanism. PCA projections of the 16th-layer activations
+  confirm that adversarially modified prompts are pushed toward the harmless cluster along the refusal
+  axis.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+- ref: model:gemma
+  variant: variant:gemma-7b-it
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:robust-llm-safeguarding-via-refusal-feature
+datasets:
+- ref: dataset:harmbench
+  role: eval
+- ref: dataset:advbench
+  role: source
+methods:
+- ref: method:gcg
+  role: eval
+- ref: method:pair
+  role: eval
+- ref: method:autodan
+  role: eval
+- ref: method:humanjailbreaks
+  role: eval
+related_work:
+- name: Arditi et al. 2024
+  anchor: https://arxiv.org/abs/2406.11717
+  role: builds-on
+- name: Zou et al. 2023b
+  anchor: https://arxiv.org/abs/2307.15043
+  role: context
+- name: Chao et al. 2023
+  anchor: https://arxiv.org/abs/2310.08419
+  role: context
+evidence_type: correlational
+caveat: The cosine similarity values are reported only in Figure 2 (layer-wise plots with 99% confidence
+  intervals); no single aggregate number is printed in the text. The alignment is measured on the subset
+  of prompts that successfully jailbreak the model, which may overstate the effect.
+extracted_by: automatic-extraction
+related_findings:
+- IC-506
+- IC-507

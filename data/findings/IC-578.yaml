@@ -1,0 +1,49 @@
+id: IC-578
+title: LLMs encode input text as linearly separable representations in forerunner token hidden states,
+  emerging in early layers and enhanced by in-context demonstrations
+description: The paper measures hidden states of forerunner tokens (the token immediately before the
+  label, e.g. ':') across all transformer layers in Llama 3 70B and three other models. Using mutual
+  nearest-neighbor kernel alignment against BGE M3 sentence embeddings and centroid classification,
+  it shows that the forerunner token produces the best input text encoding, emerging in layers 0-28
+  and maintaining high alignment through the final layer. The encoding is linearly separable (centroid
+  classifier achieves high accuracy) and is enhanced by increasing the number of in-context demonstrations.
+  Perplexed inputs are encoded worse in zero-shot but this effect disappears with demonstrations, indicating
+  a hybrid in-weight and in-context encoding process.
+models:
+- ref: model:llama-3
+- ref: model:falcon
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:revisiting-context-learning-inference-circuit-large
+datasets:
+- ref: dataset:sst-2
+  role: eval
+- ref: dataset:mr
+  role: eval
+- ref: dataset:financial-phrasebank
+  role: eval
+- ref: dataset:sst-5
+  role: eval
+- ref: dataset:trec
+  role: eval
+- ref: dataset:ag-news
+  role: eval
+methods:
+- ref: method:mutual-nearest-neighbor-kernel-alignment
+  role: primary
+related_work:
+- name: bge m3
+  anchor: https://arxiv.org/abs/2402.03216
+  role: compared-to
+evidence_type: correlational
+key_metric: 'kernel alignment on forerunner tokens emerges in layers 0-28; slope of kernel alignment
+  vs. language modeling loss: 0.010 (k=0) vs. +0.008 (k=8) on llama 3 70b layer 24'
+caveat: The paper only focuses on classification tasks; the encoding properties may differ for non-classification
+  tasks. The kernel alignment uses BGE M3 as reference, which introduces a dependency on that encoder's
+  representation quality.
+extracted_by: automatic-extraction
+related_findings:
+- IC-579
+- IC-580
+- IC-581

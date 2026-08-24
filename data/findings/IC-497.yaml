@@ -1,0 +1,47 @@
+id: IC-497
+title: Text-to-image models experience performance drops exceeding 10% under adversarial prompts, with
+  spatial reasoning being the most vulnerable task across all models
+description: The paper constructs adversarial prompts using GCg and MMP attacks against surrogate models,
+  then evaluates transferability to target text-to-image and image-to-text models. All text-to-image
+  models show performance drops above 10% from their benign accuracy. The best text-to-image model (Nova
+  Canvas) achieves only 62.42% averaged robust accuracy. For image-to-text models, spatial reasoning
+  is the most challenging task, where the best model (GPT-4o) achieves only 53.79% accuracy. Newer models
+  within the same family (DALL·E 3 vs DALL·E 2, GPT-4o vs GPT-4V) show both higher benign accuracy and
+  better robustness.
+models:
+- ref: model:nova-canvas
+- ref: model:flux
+- ref: model:dall-e-3
+- ref: model:dall-e-2
+- ref: model:gpt-4o
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:stable-diffusion
+  variant: variant:sdxl
+- ref: model:llava-next
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:mmdt-decoding-trustworthiness-safety-multimodal-foundation
+datasets:
+- ref: dataset:mscoco
+  role: source
+methods:
+- ref: method:gcg
+  role: primary
+- ref: method:mmp
+  role: primary
+- ref: method:attackvlm
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: best t2i model nova canvas achieves 62.42% averaged robust accuracy; best i2t model gpt-4o
+  achieves 53.79% on spatial reasoning; dall·e 3 robust accuracy 61.38% vs dall·e 2 46.66%; gpt-4o robust
+  accuracy 90.04% vs gpt-4v 85.27%
+caveat: Adversarial examples were generated against surrogate models and transferred to target models,
+  so the attack strength may not reflect optimal white-box attacks against each target.
+extracted_by: automatic-extraction
+related_findings:
+- IC-495
+- IC-496
+- IC-498

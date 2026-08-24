@@ -1,0 +1,26 @@
+id: IC-551
+title: GPT-4's workflow generation performance declines as the number of nodes and edges in the workflow
+  increases
+description: The paper analyzes GPT-4's F1_chain and F1_graph scores binned by the number of nodes and
+  edges in the gold workflow (Figure 3). As workflow complexity increases from 2 to 12+ nodes/edges,
+  both metrics show a general downward trend with occasional brief spikes attributed to uneven sample
+  distribution. The authors conclude that for complex planning tasks with more steps, GPT-4's performance
+  is unsatisfying for both linear and graph planning.
+models:
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:benchmarking-agentic-workflow-generation
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The specific per-bin values are shown only in Figure 3 and are not printed as text or table
+  values. The trend is described qualitatively in the text. Occasional spikes are attributed to uneven
+  sample distribution.
+extracted_by: automatic-extraction
+related_findings:
+- IC-549
+- IC-550
+- IC-552

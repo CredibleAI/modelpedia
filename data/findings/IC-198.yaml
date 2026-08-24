@@ -1,0 +1,54 @@
+id: IC-198
+title: Safety-aligned LLMs (GPT-4, GPT-3.5, Gemma2-27b, GPT-4o, Gemma2-9b, Qwen2.5-72b, Mistral-7b,
+  Mixtral-8x22b) are vulnerable to natural prompts semantically related to toxic seed prompts, with
+  attack success rates of 82-99%
+description: The paper measures how well safety-aligned LLMs generalize to natural prompts that are
+  semantically related to toxic seed questions from JailbreakBench. Using REG-QA (which generates questions
+  incorporating cues from toxic answers) and PARA-QA (simple paraphrasing) as probes, the authors find
+  that all tested models produce toxic responses at high rates. The gap between REG-QA and PARA-QA shows
+  that embedding answer content in the question significantly increases vulnerability, indicating safety
+  training relies on surface features rather than semantic understanding. Models that appear robust
+  to the original seed prompts (GPT-4o, Gemma2-9b, Qwen2.5-72b at 0-3% seed ASR) are still jailbroken
+  at 89-91% by REG-QA, suggesting the seeds were in their training data but the safety mechanism does
+  not generalize to related natural prompts.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+- ref: model:gpt-4o
+- ref: model:gemma-2
+- ref: model:qwen2-5
+- ref: model:mistral-7b
+- ref: model:mixtral
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:safety-training-llms-generalize-semantically-related
+datasets:
+- ref: dataset:jailbreakbench
+  role: eval
+- ref: dataset:advbench
+  role: source
+- ref: dataset:harmbench
+  role: source
+methods:
+- ref: method:smoothllm
+  role: eval
+- ref: method:gcg
+  role: compared-to
+- ref: method:pair
+  role: compared-to
+related_work:
+- name: Berglund et al. 2023 (The Reversal Curse)
+  anchor: https://arxiv.org/abs/2309.12288
+  role: context
+evidence_type: correlational
+key_metric: 'Overall ASR at temperature=1: GPT-4 82% (REG-QA) vs 41% (PARA-QA); GPT-3.5 93% vs 66%;
+  Gemma2-27b 82% vs 36%. At temperature=0: GPT-4o 89%, Gemma2-9b 91%, Qwen2.5-72b 89%, GPT-3.5 99%,
+  Mixtral-8x22b 96%, Mistral-7b 97%. Against defenses (GPT-3.5): REG-QA 82-88% vs GCG 0-15%, PAIR 5-21%,
+  Prompt&Random Search 4-11%.'
+caveat: Results use a GPT-4o-mini judge for safety classification; the paper notes ASR at temperature=0
+  is higher than at default temperature, so reported numbers are conservative. The threat model constrains
+  prompts to be within a cosine similarity radius of the seed in GECKO embedding space.
+extracted_by: automatic-extraction
+related_findings:
+- IC-199

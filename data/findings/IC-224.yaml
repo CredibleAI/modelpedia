@@ -1,0 +1,29 @@
+id: IC-224
+title: GPT-4o ReAct cannot incorporate stochastic state changes, with success rate on cutting tasks
+  dropping from 56% to 1% when a 33% chance of a cut item reverting to uncut is introduced
+description: 'The paper introduces stochasticity into the Robotouille synchronous environment: with
+  a 33% chance, a cut item reverts to uncut once per environment seed. On six synchronous tasks involving
+  cutting, GPT-4o ReAct''s success rate drops from 56% in the deterministic setting to 1% in the stochastic
+  setting. The authors note that the rare successes occur when the stochastic change happens immediately,
+  allowing the agent to continue cutting, suggesting the model cannot re-plan after an unexpected state
+  change mid-trajectory.'
+models:
+- ref: model:gpt-4o
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:robotouille-asynchronous-planning-benchmark-llm-agents
+datasets: []
+methods:
+- ref: method:react
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 56.00% deterministic vs 1.00% stochastic on 6 cutting tasks (tasks 2, 3, 7, 8, 9, 10)
+caveat: Only one stochastic event per environment seed; tested on a subset of 6 tasks; the 33% probability
+  is a single fixed value.
+extracted_by: automatic-extraction
+related_findings:
+- IC-221
+- IC-222
+- IC-223

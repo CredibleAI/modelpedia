@@ -1,0 +1,25 @@
+id: IC-360
+title: GPT-2 achieves only trivial accuracy on modular arithmetic tasks for days of the week and months
+  of the year despite containing circular representations
+description: While GPT-2-small contains circular representations of days, months, and years in its layer-7
+  activations (discovered via SAE clustering), the model scores only 8/49 on the weekdays task and 10/144
+  on the months task, which the authors describe as trivial accuracy. This contrasts sharply with Mistral
+  7B (31/49, 125/144) and Llama 3 8B (29/49, 143/144) on the same tasks, suggesting that the mere presence
+  of a circular representation is insufficient for the model to use it in computation.
+models:
+- ref: model:gpt-2
+concepts: []
+sources:
+- ref: source:not-all-language-model-features-one
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-2: 8/49 weekdays, 10/144 months (Table 1)'
+caveat: The paper does not specify which GPT-2 size was used for the accuracy evaluation in Table 1,
+  though the SAE analysis is on GPT-2-small.
+extracted_by: automatic-extraction
+related_findings:
+- IC-358
+- IC-359
+- IC-361

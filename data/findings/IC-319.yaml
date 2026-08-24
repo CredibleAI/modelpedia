@@ -1,0 +1,32 @@
+id: IC-319
+title: Different CLIP backbones exhibit distinct robustness profiles to specific image perturbations,
+  with each architecture being most resilient to a different transformation
+description: 'The paper applies five image transformations (resize, flip, grayscale, color jitter, gaussian
+  blur) to subsets of each benchmark''s test set and measures the accuracy drop for each of the 9 CLIP
+  backbones. The results show that no single backbone is uniformly most robust: RN50 and ViT-B/16 are
+  most resilient to flip, RN50x64 to resize, RN50x16 to grayscale, and ViT-L/14 and ViT-L/14-336 to
+  color jitter and gaussian blur. This indicates that the backbones'' ability to handle out-of-distribution
+  inputs varies widely and is architecture-specific.'
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:synergy-diversity-clip-enhancing-performance-through
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:eurosat
+  role: eval
+- ref: dataset:dtd
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Delta accuracy (Table B.2): resize best RN50x64 -1.25; flip best RN50 +0.12; grayscale
+  best RN50x16 -5.98; color jitter best ViT-L/14 -1.67; gaussian blur best ViT-L/14-336 -1.80'
+caveat: Transformations are applied to a subset of each test set, not the full set. The paper does not
+  test adversarial or natural distribution shifts in this experiment (those are covered separately for
+  NLC in Section E).
+extracted_by: automatic-extraction
+related_findings:
+- IC-318

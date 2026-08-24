@@ -1,0 +1,33 @@
+id: IC-599
+title: All evaluated audio LMMs perform at or near random chance (44.4%–51.2%) on synthetic audio detection,
+  while humans achieve 69.2%
+description: Six audio-capable LMMs (Qwen-Audio, Salmonn-7B, AnyGPT, OneLLM, LTU, Gemini-1.5-Flash)
+  were tested on 2280 audio judgment questions spanning speech, singing, environmental sound, and music.
+  All perform at or below 51.2% accuracy, indistinguishable from the 50% random baseline. The paper
+  attributes this to audio LMMs being trained for content comprehension rather than acoustic feature
+  sensitivity, and notes that even the best-performing expert model AASIST (69.4%) only matches human
+  level.
+models:
+- ref: model:qwen-audio
+- ref: model:salmonn
+  variant: variant:salmonn-7b
+- ref: model:onellm
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-flash
+- ref: model:aasist
+concepts: []
+sources:
+- ref: source:loki-comprehensive-synthetic-data-detection-benchmark
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Audio judgment accuracy: Qwen-Audio 49.8%, Salmonn-7B 51.2%, AnyGPT 49.8%, OneLLM 49.9%,
+  LTU 44.4%, Gemini-1.5-Flash 49.4%; human 69.2%; AASIST 69.4% (Table 16)'
+caveat: The paper notes that few open-source and proprietary LMMs support the audio modality, limiting
+  the generalizability of this finding to the broader LMM landscape.
+extracted_by: automatic-extraction
+related_findings:
+- IC-597
+- IC-598
+- IC-600

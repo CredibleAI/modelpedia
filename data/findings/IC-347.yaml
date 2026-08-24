@@ -1,0 +1,28 @@
+id: IC-347
+title: GPT-3.5-turbo-instruct achieves 53.7% move-matching accuracy on human chess when prompted with
+  PGN notation
+description: The paper evaluates GPT-3.5-turbo-instruct on predicting the next human chess move by feeding
+  it a PGN-formatted prompt of the game state and using greedy decoding. Across the full Lichess 2022
+  evaluation set, the model's top-1 predicted move matches the human's actual move 53.7% of the time.
+  For special moves it reaches 72.4% on castling, 71.4% on en passant, 86.0% on pawn promotion, and
+  92.8% on threefold repetition. The authors note the comparison is not entirely fair because GPT-3.5
+  was never trained for chess and has far more parameters than the purpose-built baselines.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-instruct
+concepts: []
+sources:
+- ref: source:human-aligned-chess-bit-search
+datasets:
+- ref: dataset:lichess-2022-blitz-games
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 53.7 ± 0.1% overall; 72.4 ± 0.6% castling; 71.4 ± 4.0% en passant; 86.0 ± 1.7% pawn promotion;
+  92.8 ± 4.4% threefold repetition
+caveat: it is difficult to make a fair comparison between allie and gpt-3.5 because on the one hand,
+  gpt-3.5 has many more parameters and potentially observed much more chess data during pre-training.
+  on the other hand, gpt-3.5 was never intended to play chess, and the fact that it can play chess is
+  somewhat remarkable.
+extracted_by: automatic-extraction

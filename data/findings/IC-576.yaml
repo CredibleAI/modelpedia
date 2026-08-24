@@ -1,0 +1,30 @@
+id: IC-576
+title: For 10-digit numerical function regression, vector-ICL consistently outperforms few-shot ICL
+  with raw number inputs across all four LLMs because continuous representations avoid multi-token splitting
+description: The authors pretrain linear projectors on 10-digit number reconstruction and addition,
+  then test the LLMs on a non-linear function regression task f(x,y)=sqrt(x)*sqrt(y). Because 10-digit
+  numbers span multiple tokens in all four LLMs' tokenizers, the discrete-token baseline is handicapped.
+  The projected 100-dimensional one-hot vector representation allows the LLMs to learn the function
+  in-context more effectively, with vector-ICL consistently outperforming few-shot ICL with raw numbers.
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:mistral-7b
+- ref: model:qwen-2
+  variant: variant:qwen-2-7b
+- ref: model:yi
+  variant: variant:yi-1-5-9b
+concepts: []
+sources:
+- ref: source:vector-icl-context-learning-continuous-vector
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The advantage is specific to numbers that span multiple tokens; 3-digit numbers (single token
+  in LLaMA-3.1-8B) show a different pattern. The function is fixed (sqrt(x)*sqrt(y)), so generalization
+  to other functions is not tested.
+extracted_by: automatic-extraction
+related_findings:
+- IC-575
+- IC-577

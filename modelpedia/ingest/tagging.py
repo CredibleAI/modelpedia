@@ -1,3 +1,5 @@
+import yaml
+
 from modelpedia import graph as graph_json
 from modelpedia import record_keys as keys
 from modelpedia.ingest import prompt as promptlib
@@ -83,3 +85,35 @@ def agreement(before, after):
     added = sum(len(set(tags) - set(before.get(fid, []))) for fid, tags in after.items())
     gone = sum(len(set(before.get(fid, [])) - set(tags)) for fid, tags in after.items())
     return {"findings": len(after), "unchanged": kept, "added": added, "removed": gone}
+
+
+class Unreadable(Exception):
+    pass
+
+
+def read(raw):
+    document = yaml.safe_load(raw)
+    if not isinstance(document, dict) or "concepts" not in document:
+        raise Unreadable("no top-level 'concepts' key")
+    written = document.get("concepts")
+    if written is None:
+        written = []
+    if not isinstance(written, list):
+        raise Unreadable("'concepts' is not a list")
+    return document
+
+
+def chosen(document, known):
+    """Only identifiers from the closed list reach a record. The model picks; it never invents,
+    and an invented one is reported rather than dropped in silence."""
+    taken, invented = [], []
+    for item in document.get("concepts") or []:
+        key = item if isinstance(item, str) else (item or {}).get("id")
+        key = str(key or "").strip()
+        if not key:
+            continue
+        if key not in known:
+            invented.append(key)
+        elif key not in taken:
+            taken.append(key)
+    return taken, invented

@@ -1,0 +1,40 @@
+id: IC-472
+title: The degree of emergence metric derived from Pythia's internal structure positively correlates
+  with benchmark performance across training epochs
+description: The paper tracks the degree of emergence (a structural metric combining heterogeneity and
+  regularity changes) alongside standard benchmark scores for Pythia 160M, 1.4B, and 2.8B across training
+  epochs. The structural metric rises sharply in the first ~15,000 epochs, then gradually increases
+  to ~40,000 epochs, then stabilizes with fluctuations. This trajectory mirrors the improvement in LAMBADA,
+  PIQA, ARC-Easy, and SCIQ scores. The authors note significant performance oscillations on WSC and
+  LogiQA, suggesting limited utility of those benchmarks.
+models:
+- ref: model:pythia
+concepts: []
+sources:
+- ref: source:neuron-based-multifractal-analysis-neuron-interaction
+datasets:
+- ref: dataset:lambada
+  role: eval
+- ref: dataset:piqa
+  role: eval
+- ref: dataset:arc
+  role: eval
+- ref: dataset:sciq
+  role: eval
+- ref: dataset:winogrande
+  role: eval
+- ref: dataset:logiqa
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Pythia-1b degree of emergence: 0.00 (epoch 0) → 0.23 (epoch 3000) → 0.65 (epoch 23000)
+  → 0.73 (epoch 53000) → 0.71 (epoch 143000); Pythia-1.4b: 0.00 → 0.30 → 0.54 → 0.65 → 0.68; LAMBADA
+  (1b): 0.00 → 0.33 → 0.53 → 0.58 → 0.62; PIQA (1b): 0.53 → 0.60 → 0.66 → 0.69 → 0.70'
+caveat: The authors acknowledge the correlation is restricted to the specific datasets tested and that
+  a more comprehensive evaluation across more datasets is needed. The relationship is correlational,
+  not causal.
+extracted_by: automatic-extraction
+related_findings:
+- IC-471
+- IC-473

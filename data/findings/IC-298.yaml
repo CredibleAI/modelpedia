@@ -1,0 +1,62 @@
+id: IC-298
+title: Weight similarity in open-source LLMs is organized in a depth-dependent structure with adjacent-layer
+  similarity and distinct clusters at specific depths
+description: 'Using the DOCS index, the paper measures cosine-similarity distributions between weight
+  matrices (Wv, Wk, Wq, Wo, MLP-up, MLP-down) across all transformer layers of several released LLMs.
+  Adjacent layers consistently show higher similarity than distant ones, and similarity decays with
+  increasing layer distance. Beyond smooth decay, discrete clusters of mutually similar layers emerge
+  at specific depths: a prominent mid-depth cluster centered around layer 19 in Gemma-2-9B and Gemma-2-27B,
+  and around layer 10 in Llama-3.1-8B and Mixtral-8x7B, plus a second, less pronounced cluster in the
+  final layers. Llama-3.1-70B contains multiple such clusters.'
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-3b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+- ref: model:gemma-2
+  variant: variant:gemma-2-27b
+- ref: model:gemma-2
+  variant: variant:gemma-2-27b-it
+- ref: model:mixtral-8x7b
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:docs-quantifying-weight-similarity-deeper-insights
+datasets: []
+methods:
+- ref: method:linear-cka
+  role: compared-to
+- ref: method:svcca
+  role: compared-to
+- ref: method:linear-hsic
+  role: compared-to
+related_work:
+- name: Lad et al. 2024 (stages of inference)
+  anchor: https://arxiv.org/abs/2406.19384
+  role: context
+- name: Song et al. 2024 (SLEB)
+  anchor: https://arxiv.org/abs/2402.09025
+  role: context
+- name: Mu et al. 2024 (cross-layer attention sharing)
+  anchor: https://arxiv.org/abs/2408.01890
+  role: context
+evidence_type: observational
+key_metric: 'Gini coefficient for DOCS on MLP-up of Llama 3.1-8B-Instruct: 0.0745 (vs Linear CKA 0.0488,
+  SVCCA 0.0225, CCA 0.0098); cluster in layers 7-12 of Llama 3.1-8B shows ''approximately twice the
+  docs index values of other elements''; mid-depth cluster centered around layer 19 (Gemma-2-9B/27B)
+  and layer 10 (Llama-3.1-8B, Mixtral-8x7B); second cluster after layer 27 (Gemma-2-9B), 33 (Gemma-2-27B),
+  21 (Llama-3.1-8B), 23 (Mixtral-8x7B)'
+caveat: The first and last layers also show higher similarity than expected, hypothesized to be due
+  to their proximity to token embeddings; the authors note this as an exception to the monotonic decay
+  pattern.
+extracted_by: automatic-extraction
+related_findings:
+- IC-299
+- IC-300
+- IC-301

@@ -1,0 +1,32 @@
+id: IC-145
+title: TD-MPC fails to achieve high reward when irrelevant background information is added to image
+  inputs
+description: The authors test TD-MPC on 5 DM Control image-based tasks by overlaying driving videos
+  from the Kinetics dataset as irrelevant background noise on the original observation images. Under
+  this condition, TD-MPC's encoder, which lacks an explicit objective to filter irrelevant features,
+  fails to retain task-relevant information and the agent fails to gain reward. The degradation is observed
+  across all 5 tested environments and 5 random seeds, making it a reproducible failure condition triggered
+  by the presence of visually irrelevant content in the input.
+models:
+- ref: model:td-mpc
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:bisimulation-metric-model-predictive-control
+datasets:
+- ref: dataset:kinetics
+  role: source
+methods:
+- ref: method:mppi
+  role: supporting
+related_work:
+- ref: model:td-mpc
+  role: builds-on
+evidence_type: correlational
+key_metric: '"bs-mpc constantly outperforms td-mpc in every environment" (Section 5.3); "with added
+  distraction in the input image, td-mpc fails to gain rewards" (Fig. 1 caption)'
+caveat: The noise is a specific type (Kinetics driving videos as background); generalisation to other
+  forms of irrelevant input is not tested.
+extracted_by: automatic-extraction
+related_findings:
+- IC-144

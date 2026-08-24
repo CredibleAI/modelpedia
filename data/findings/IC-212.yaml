@@ -1,0 +1,40 @@
+id: IC-212
+title: GPT-2-small and CPM-distilled converge on nearly identical IOI circuits despite being trained
+  independently on English and Chinese
+description: 'Path patching on GPT-2-small (English-only) and CPM-distilled (Chinese-only), which share
+  the same architecture and parameter count but were trained on entirely different data, reveals that
+  both implement the same high-level IOI algorithm: duplicate token detection, s-inhibition, and name
+  copying. The main structural difference is that GPT-2 uses negative name mover heads while CPM uses
+  copy suppression heads (identified in Pythia by McDougall et al.) to suppress the repeated token.
+  This convergence suggests that LLMs consistently arrive at similar algorithms for this task regardless
+  of training language.'
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-small
+- ref: model:cpm-distilled
+concepts: []
+sources:
+- ref: source:same-but-different-structural-similarities-differences
+datasets:
+- ref: dataset:ioi
+  role: eval
+methods:
+- ref: method:path-patching
+  role: primary
+related_work:
+- name: Wang et al. 2023 (IOI circuit in GPT-2)
+  anchor: https://openreview.net/forum?id=npsvsn6o4ul
+  role: builds-on
+- name: McDougall et al. 2023 (copy suppression)
+  anchor: https://arxiv.org/abs/2310.04625
+  role: context
+evidence_type: interventional
+key_metric: GPT-2-small IOI accuracy 99.5%, zero-rank 97.5%; CPM-distilled IOI accuracy 84.5%, zero-rank
+  57.5%
+caveat: The authors note the CPM model has substantially lower accuracy and zero-rank rate, and that
+  the copy suppression head divergence could be a starting point for understanding when specific circuitry
+  emerges during training.
+extracted_by: automatic-extraction
+related_findings:
+- IC-211
+- IC-213

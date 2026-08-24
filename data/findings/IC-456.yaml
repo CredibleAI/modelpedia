@@ -1,0 +1,43 @@
+id: IC-456
+title: VLM decoders achieve near-random accuracy on VALSE image-sentence alignment while pairwise accuracy
+  is much higher, indicating reliance on linguistic priors
+description: 'The paper benchmarks four 7B VLM decoders on all VALSE instruments using both pairwise
+  accuracy (accr) and overall accuracy (acc). In the acc setting, where the model must judge whether
+  a single caption matches an image without seeing the foil, bakllava scores 50±0, llava-next-mistral
+  56±5, and llava-next-vicuna 59±9, all at or near the 50% random baseline. mPLUG-Owl3 reaches 76±10.
+  In contrast, pairwise accuracy (accr), where both caption and foil are presented, is substantially
+  higher: 83±8, 85±9, 79±10, and 88±6 respectively. The gap between accr and acc indicates the models
+  exploit linguistic differences between caption and foil rather than genuinely understanding the image.'
+models:
+- ref: model:bakllava
+- ref: model:llava-next
+  variant: variant:llava-next-mistral
+- ref: model:llava-next
+  variant: variant:llava-next-vicuna
+- ref: model:mplug-owl-3
+concepts:
+- ref: concept:failure-mode
+- ref: concept:shortcut
+sources:
+- ref: source:vision-language-decoders-use-images-text
+datasets:
+- ref: dataset:valse
+  role: eval
+- ref: dataset:foil-it
+  role: eval
+methods:
+- ref: method:mm-shap
+  role: supporting
+related_work:
+- ref: dataset:valse
+  role: builds-on
+evidence_type: correlational
+key_metric: 'acc: bakllava 50±0, lv-mistral 56±5, lv-vicuna 59±9, mplug-owl3 76±10; accr: bakllava 83±8,
+  lv-mistral 85±9, lv-vicuna 79±10, mplug-owl3 88±6'
+caveat: Results are zero-shot; the paper notes that decoders of 2024 perform better than encoders of
+  2019-2021 in accr but not in acc. mPLUG-Owl3, the most recent model, does not exhibit the same linguistic
+  bias pattern.
+extracted_by: automatic-extraction
+related_findings:
+- IC-457
+- IC-458

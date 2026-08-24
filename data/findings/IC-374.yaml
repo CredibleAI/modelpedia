@@ -1,0 +1,33 @@
+id: IC-374
+title: Pythia models are vulnerable to prompt injection via distractor text, and request-patching from
+  a single trusted input restores most of their accuracy
+description: The authors construct question-answering prompts containing distractor sequences that cause
+  the model to output an unrelated token instead of the correct answer. Without intervention, Pythia-410M
+  drops to 0% accuracy under a small-model distractor and Pythia-12B drops to 15.5% under a large-model
+  distractor. Applying request-patching from a single trusted input (no distractor) to the untrusted
+  input restores accuracy to 70.5% and 97.5% respectively, without harming performance on control settings.
+  This demonstrates a proof-of-concept for scalable internal oversight requiring human supervision on
+  only one input.
+models:
+- ref: model:pythia
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:look-before-you-leap-universal-emergent
+datasets:
+- ref: dataset:orion
+  role: eval
+methods:
+- ref: method:residual-stream-patching
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: 'Pythia-410M: 0% to 70.5% accuracy (small-model distractor); Pythia-12B: 15.5% to 97.5%
+  accuracy (large-model distractor); no harm in control settings (97-100% maintained)'
+caveat: 'Proof of concept only: single task type (city question), two models, four hand-crafted distractors.
+  Anomaly detection via the a/b predicates fails on the collision dataset where distractor token equals
+  the correct answer. Non-negligible false positive rate on control settings.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-372
+- IC-373

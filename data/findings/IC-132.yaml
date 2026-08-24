@@ -1,0 +1,39 @@
+id: IC-132
+title: GPT-4 Turbo, GPT-3.5 Turbo, Llama3-8B, Qwen-7B, and iFlytekSpark-13B trust authority roles (teacher/judge)
+  more than peer roles (classmate/lawyer) when the cue information is the correct answer
+description: 'When the cue in step-3 is the correct answer, models guided by an authority role (teacher
+  in education, judge in law) achieve higher accuracy at step-3 than those guided by a peer role (classmate,
+  lawyer). The effect is much stronger in open-source models than in GPT-4: Llama3-8B drops from 0.8418
+  (teacher+truth) to 0.6139 (classmate+truth) at step-3 on EG-QA ID, while GPT-4''s gap is only 0.9494
+  vs 0.9373. The paper interprets this as a shortcut learned during training, where the model associates
+  authority labels with correctness.'
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:qwen
+  variant: variant:qwen-7b
+- ref: model:iflytekspark-13b
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:evaluating-large-language-models-through-role
+datasets:
+- ref: dataset:jec-qa
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4 Turbo on JEC-QA: judge+truth step-3 acc 0.6358 vs lawyer+truth step-3 acc 0.5246;
+  on EG-QA: teacher+truth step-3 0.9494 vs classmate+truth step-3 0.9373. Llama3-8B on EG-QA ID: teacher+truth
+  step-3 0.8418 vs classmate+truth step-3 0.6139. Qwen-7B on EG-QA ID: 0.8247 vs 0.7902. iFlytekSpark-13B
+  on EG-QA ID: 0.8350 vs 0.7480.'
+caveat: The authority effect is measured only when the cue is the correct answer; with random cues the
+  pattern reverses or disappears. The paper notes this may reflect a bias learned during training rather
+  than a genuine understanding of authority.
+extracted_by: automatic-extraction
+related_findings:
+- IC-131

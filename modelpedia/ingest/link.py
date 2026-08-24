@@ -51,6 +51,22 @@ def slugify(value):
     return PUNCTUATION.sub("-", fold(value)).strip("-")
 
 
+def valid_slug(text):
+    """A slug the schema accepts: `SLUG` wants a letter first. What starts with a digit moves to
+    the end rather than being dropped, because it is part of the name: `3D Gaussian Splatting`
+    becomes `gaussian-splatting-3d`, `2WikiMultihopQA` becomes `wikimultihopqa-2`. Two generators
+    needed this on 2026-08-22 -- entity slugs and source slugs -- and each learned it the same
+    way, by leaving the build red."""
+    slug = slugify(text)
+    if not slug or not slug[0].isdigit():
+        return slug
+    parts = slug.split("-")
+    if len(parts) > 1:
+        return "-".join(parts[1:] + parts[:1])
+    digits = slug[:len(slug) - len(slug.lstrip("0123456789"))]
+    return "%s-%s" % (slug[len(digits):], digits) if slug[len(digits):] else slug
+
+
 def compact(value):
     return PUNCTUATION.sub("", fold(value))
 
@@ -65,6 +81,16 @@ def aliases(name):
     return [part for part in dict.fromkeys([whole] + parts) if part]
 
 
+def add(table, name, key):
+    """One key at most once per name. Two aliases that differ only in case -- `AutoDAN` and
+    `AutoDan` -- normalise to one string, and appending blindly put the same key in twice, which
+    `settle` then read as two candidates and refused to resolve. A spelling written twice must
+    not make an entry harder to find than writing it once."""
+    keys = table.setdefault(name, [])
+    if key not in keys:
+        keys.append(key)
+
+
 def index_of(entities, node_type=None):
     identifiers, by_name, by_slug, by_compact = [], {}, {}, {}
     for key, entity in sorted(entities.items()):
@@ -76,10 +102,10 @@ def index_of(entities, node_type=None):
             for form in dict.fromkeys([alias, QUALIFIER.sub("", alias).strip()]):
                 if not form:
                     continue
-                by_name.setdefault(normalise(form), []).append(key)
-                by_compact.setdefault(compact(form), []).append(key)
-        by_slug.setdefault(slug, []).append(key)
-        by_compact.setdefault(compact(slug), []).append(key)
+                add(by_name, normalise(form), key)
+                add(by_compact, compact(form), key)
+        add(by_slug, slug, key)
+        add(by_compact, compact(slug), key)
 
     by_gram, short = {}, set()
     for name in by_name:

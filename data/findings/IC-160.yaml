@@ -1,0 +1,44 @@
+id: IC-160
+title: Pythia-70m and Gemma-2-2b implement subject-verb agreement across a relative clause via a circuit
+  of number detectors, PP/RC boundary detectors, and verb form promoters, with Gemma-2-2b additionally
+  using NP number trackers
+description: The authors discover sparse feature circuits for subject-verb agreement across a relative
+  clause in both models. In both, the circuit first detects the grammatical number of the main subject,
+  then detects the start of a modifying PP or RC, and finally promotes the matching verb inflection
+  at the end of the clause. Gemma-2-2b additionally employs NP number tracker features that remain active
+  on all tokens within a noun phrase of a given number. The circuits for agreement across a relative
+  clause and across a prepositional phrase share over 85% of their features in both models, indicating
+  a largely uniform handling of these syntactically distinct structures.
+models:
+- ref: model:pythia
+  variant: variant:pythia-70m
+- ref: model:gemma-2
+  variant: variant:gemma-2-2b
+concepts: []
+sources:
+- ref: source:sparse-feature-circuits-discovering-editing-interpretable
+datasets: []
+methods:
+- ref: method:attribution-patching
+  role: supporting
+- ref: method:integrated-gradients
+  role: supporting
+related_work:
+- name: Finlayson et al. 2021
+  anchor: https://doi.org/10.18653/v1/2021.acl-long.144
+  role: builds-on
+- name: Olsson et al. 2022
+  anchor: https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html
+  role: context
+- name: Wang et al. 2023
+  anchor: https://openreview.net/forum?id=NpsVSN6o4ul
+  role: context
+evidence_type: correlational
+key_metric: 'Pythia circuit: 86 nodes, faithfulness 0.21; Gemma circuit: 223 nodes, faithfulness 0.21;
+  RC and PP circuits share over 85% of features'
+caveat: The first 1/3 of the circuit (early layers) is excluded from faithfulness evaluation because
+  train and test splits do not contain identical tokens, making early-segment evaluation unreliable.
+extracted_by: automatic-extraction
+related_findings:
+- IC-161
+- IC-162

@@ -1,0 +1,40 @@
+id: IC-137
+title: Pre-trained ResNet34 and ViT-B features on CIFAR-100 exhibit a block-diagonal class-correlation
+  structure, with ViT-B showing higher intra-class correlation (0.35) than ResNet34 (0.25)
+description: The paper measures pairwise feature correlations of pre-trained ResNet34 and ViT-B on CIFAR-100
+  to verify that their features satisfy the block-diagonal gram matrix structure assumed in their theory.
+  For ResNet34, the mean intra-class feature correlation is 0.25±0.16, super-class correlation is 0.02±0.12,
+  and inter-superclass correlation is -0.03±0.10. For ViT-B, the intra-class correlation rises to 0.35,
+  which the authors note amplifies the clustering effect of self-distillation so that most gains appear
+  in the first two distillation rounds. The same block-diagonal pattern is confirmed on five additional
+  datasets (Caltech-101, Caltech-256, Flowers-102, Food-101, StanfordCars) for ResNet34.
+models:
+- ref: model:resnet
+  variant: variant:resnet-34
+- ref: model:vit
+  variant: variant:vit-b
+concepts: []
+sources:
+- ref: source:rethinking-self-distillation-label-averaging-enhanced
+datasets:
+- ref: dataset:cifar-100
+  role: eval
+- ref: dataset:caltech-101
+  role: eval
+- ref: dataset:caltech-256
+  role: eval
+- ref: dataset:flowers-102
+  role: eval
+- ref: dataset:food-101
+  role: eval
+- ref: dataset:stanford-cars
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: intra-class feature correlation 0.25±0.16 (ResNet34) vs 0.35 (ViT-B) on CIFAR-100; super-class
+  0.02±0.12; inter-superclass -0.03±0.10 (ResNet34, Table 2)
+caveat: The ViT-B intra-class correlation (0.35) is reported only for CIFAR-100; full per-dataset statistics
+  (Table 2) are provided only for ResNet34. The measurements are on the full training set, not a held-out
+  split.
+extracted_by: automatic-extraction

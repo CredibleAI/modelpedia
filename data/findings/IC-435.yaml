@@ -1,0 +1,33 @@
+id: IC-435
+title: Mistral-7B employs a less efficient algorithmic strategy (O(n²)) than Llama-3-8B (O([n², n³]))
+  on probe tasks with multiple solution complexities
+description: On three probe tasks (longest common subarray, longest increasing subsequence, longest
+  consecutive elements) that admit solutions of varying time complexity, the paper infers which complexity
+  class each model's solution corresponds to by matching OOD accuracy against a complexity-accuracy
+  mapping. Mistral-7B's accuracy profile aligns with O(n²) algorithms, while Llama-3-8B's aligns with
+  O([n², n³]). For the longest common subarray task specifically, both models use algorithms of similar
+  complexity around O([n, n²]), despite differing overall accuracy. This suggests the models' generalization
+  performance is partly determined by the algorithmic strategy they implicitly adopt.
+models:
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-v0-3
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts: []
+sources:
+- ref: source:quantifying-generalization-complexity-large-language-models
+datasets: []
+methods:
+- ref: method:zero-shot-chain-of-thought
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: Mistral-7B inferred complexity O(n²) vs Llama-3-8B O([n², n³]) for LIS and LCE tasks; both
+  around O([n, n²]) for LCS task.
+caveat: The complexity inference is indirect, based on matching accuracy to a mapping curve rather than
+  directly observing the algorithm. The authors note that for LCS, the similar complexity despite different
+  accuracy suggests one model is performing above or below its average.
+extracted_by: automatic-extraction
+related_findings:
+- IC-433
+- IC-434

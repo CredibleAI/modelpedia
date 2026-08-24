@@ -1,0 +1,39 @@
+id: IC-114
+title: Released LLMs cannot reliably identify a specific digit in a number as the number's length increases,
+  with GPT-4o achieving only 20% on get-digit in the xl range
+description: On the 'get digit' task, where the model must return the i-th digit of a given number,
+  all tested released LLMs show significant performance degradation as the number lengthens. In the
+  xl range (15-20 digits), GPT-4o achieves only 20% accuracy, barely above the 10% random-guessing baseline
+  (since the answer is always a single digit 0-9). Performance is good in the shorter s range, indicating
+  models comprehend the task instruction but cannot reliably index into long digit sequences. The paper
+  identifies this as a fundamental limitation that may explain broader numerical processing failures.
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b
+- ref: model:llama-2
+  variant: variant:llama-2-7b-hf
+- ref: model:mixtral-8x7b
+- ref: model:qwen-2
+  variant: variant:qwen-2-7b
+- ref: model:qwen-2
+  variant: variant:qwen-2-72b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:number-cookbook-number-understanding-language-models
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4o get-digit xl range: 20% accuracy vs 10% random guessing baseline'
+caveat: Performance is good in the shorter s-range, indicating the models can comprehend the task instruction;
+  the failure is specific to longer numbers.
+extracted_by: automatic-extraction
+related_findings:
+- IC-112
+- IC-113
+- IC-115

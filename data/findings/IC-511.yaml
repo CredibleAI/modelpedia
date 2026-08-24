@@ -1,0 +1,54 @@
+id: IC-511
+title: LLaMA-2, Gemma, and Mistral all perform in-context density estimation via an adaptive kernel-like
+  process, as revealed by their similar low-dimensional INPCA trajectories bounded between the geodesic
+  and the Gaussian submanifold
+description: 'The authors prompt LLaMA-2 (7B, 13B, 70B), Gemma (2B, 7B), and Mistral-7B-v0.3 with comma-delimited
+  numbers sampled from known distributions (Gaussian, uniform, t-distribution, random PDFs) and extract
+  the models'' predicted next-token density at each context length using the hierarchy-PDF algorithm.
+  Embedding these density estimates in a 2D INPCA space (capturing ~90% of pairwise Hellinger distances)
+  reveals that all three model families trace out strikingly similar trajectories, geometrically bounded
+  between the geodesic (shortest path from uniform ignorance to the target) and the 1D Gaussian submanifold.
+  A bespoke 2-parameter KDE with adaptive kernel shape (s) and bandwidth (h) closely reproduces these
+  trajectories: the fitted kernel width decays significantly faster than the classical n^(-1/5) schedule,
+  and the shape parameter evolves from approximately 0.1 to approximately 1 as context length increases.
+  This adaptive kernel behavior distinguishes the LLMs from both fixed-kernel Gaussian KDE (which lingers
+  on the Gaussian submanifold and lags on narrow targets) and Bayesian histograms (which follow the
+  geodesic but converge slowly).'
+models:
+- ref: model:llama-2
+- ref: model:gemma
+- ref: model:mistral-7b
+concepts: []
+sources:
+- ref: source:density-estimation-llms-geometric-investigation-context
+datasets: []
+methods:
+- ref: method:inpca
+  role: primary
+- ref: method:gaussian-kde
+  role: compared-to
+related_work:
+- name: Gruver et al. 2024 (LLMs as zero-shot time series forecasters)
+  anchor: https://arxiv.org/abs/2310.07820
+  role: builds-on
+- name: Liu et al. 2024 (LLMs learn governing principles of dynamical systems)
+  anchor: https://arxiv.org/abs/2402.00795
+  role: builds-on
+- name: Olsson et al. 2022 (In-context learning and induction heads)
+  anchor: https://arxiv.org/abs/2209.11895
+  role: context
+- name: 'Akyurek et al. 2024 (In-context language learning: architectures and algorithms)'
+  anchor: https://arxiv.org/abs/2401.12973
+  role: context
+- name: Von Oswald et al. 2023 (Transformers learn in-context by gradient descent)
+  anchor: https://arxiv.org/abs/2212.07677
+  role: context
+evidence_type: correlational
+key_metric: 2D INPCA embeddings capture 92% of pairwise Hellinger distances (Gaussian targets), 89%
+  (uniform targets), 91% (cross-model comparison); fitted kernel shape s evolves from ~0.1 to ~1; fitted
+  kernel width decays significantly faster than n^(-1/5)
+caveat: Analysis limited to context length n=200 (LLaMA-2 context window is 4096 tokens, ~1365 data
+  points); the bespoke KDE is a post-hoc fit, not a mechanistic proof; the paper notes that with Silverman's
+  bandwidth, Gaussian KDE can match or surpass LLaMA-13B on convergence speed, so the comparison is
+  'inherently unfair to llama' since it is not specifically prompted for density estimation.
+extracted_by: automatic-extraction

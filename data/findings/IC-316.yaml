@@ -1,0 +1,34 @@
+id: IC-316
+title: Multi-turn code generation without CoT degrades performance for smaller Llama models and GPT-4o
+  compared to single-turn repeated sampling under equal compute budgets
+description: 'When the model is asked to retry after execution feedback but without any reasoning or
+  instruction prompts, performance is at best flat and often worse than drawing independent single-turn
+  samples. Llama 3.0 8B drops from 2.9 to 2.4 on pass 1@3, Llama 3.1 8B drops from 7.7 to 7.0, and GPT-4o
+  drops from 27.6 to 23.1 on pass 1@3. The paper attributes this to the model''s limited self-repair
+  ability without explicit reasoning guidance: the model tends to make small modifications to its previous
+  (incorrect) solution rather than attempting a fundamentally different approach.'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-0-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:gpt-4o
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:makes-large-language-models-reason-multi
+datasets:
+- ref: dataset:codecontests
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'pass 1@3 (temp 1.0, CodeContests): Llama 3.0 8B 2.9→2.4 (−0.5), Llama 3.1 8B 7.7→7.0 (−0.7);
+  pass 1@3 (temp 0.2): GPT-4o 27.6→23.1 (−4.5)'
+caveat: GPT-4o result is at temperature 0.2 with small sampling budget; Llama results at temperature
+  1.0. The paper notes that multi-turn + CoT recovers and exceeds single-turn performance, so the degradation
+  is specific to the absence of reasoning prompts.
+extracted_by: automatic-extraction
+related_findings:
+- IC-315
+- IC-317

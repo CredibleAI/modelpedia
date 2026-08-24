@@ -1,0 +1,57 @@
+id: IC-281
+title: SLIP's intra-modal self-supervised loss reduces intra-modal misalignment, making inter-modal
+  inversion unnecessary for image retrieval
+description: 'When the same image-to-image retrieval experiment is performed on SLIP (which adds a SimCLR-based
+  intra-modal loss to the CLIP contrastive loss during pre-training), the OTI-inverted features achieve
+  nearly identical performance to native image features (e.g., B/16: 35.1 vs 35.3 average MAP), in stark
+  contrast to CLIP where OTI yields a 2-3% boost. This demonstrates that the intra-modal loss during
+  pre-training effectively mitigates the intra-modal misalignment, and that the misalignment observed
+  in CLIP is a direct consequence of the absence of intra-modal constraints in the training objective.'
+models:
+- ref: model:slip
+- ref: model:clip
+concepts:
+- ref: concept:distance-preservation
+sources:
+- ref: source:cross-gap-exposing-intra-modal-misalignment
+datasets:
+- ref: dataset:cub-200-2011
+  role: eval
+- ref: dataset:stanford-online-products
+  role: eval
+- ref: dataset:roxford
+  role: eval
+- ref: dataset:stanford-cars
+  role: eval
+- ref: dataset:oxford-pets
+  role: eval
+- ref: dataset:flowers-102
+  role: eval
+- ref: dataset:fgvc-aircraft
+  role: eval
+- ref: dataset:dtd
+  role: eval
+- ref: dataset:eurosat
+  role: eval
+- ref: dataset:food-101
+  role: eval
+- ref: dataset:sun397
+  role: eval
+- ref: dataset:caltech-101
+  role: eval
+- ref: dataset:ucf101
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:oti
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'SLIP B/16: intra-modal 35.1, inter-modal (OTI) 35.3 (Δ=0.2). SLIP L/16: intra-modal 36.7,
+  inter-modal (OTI) 37.1 (Δ=0.4). Compare CLIP B/32: 39.2 vs 41.2 (Δ=2.0), L/14: 52.0 vs 55.3 (Δ=3.3).'
+caveat: SLIP uses ViT-B/16 and ViT-L/16 backbones while the CLIP comparison uses ViT-B/32 and ViT-L/14,
+  so the comparison is not perfectly controlled for backbone size.
+extracted_by: automatic-extraction
+related_findings:
+- IC-280

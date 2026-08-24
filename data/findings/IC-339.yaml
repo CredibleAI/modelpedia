@@ -1,0 +1,49 @@
+id: IC-339
+title: Factuality enhancement methods produce inconsistent and modest improvements in factual accuracy
+  on LLaMA2-Chat, with some metrics declining below baseline
+description: 'The paper evaluates five factuality enhancement methods on TruthfulQA (multiple-choice
+  accuracy MC1/MC2/MC3) and FactScore (response ratio, number of facts, fact score) for LLaMA2-7B-Chat
+  and LLaMA2-13B-Chat. While most methods show some improvement on at least one metric, the gains are
+  unstable: several methods show declines on specific metrics compared to the unmodified baseline. For
+  example, DoLa on LLaMA2-7B-Chat drops MC1 from 37.6 to 32.9, and CD on LLaMA2-13B-Chat drops MC1 from
+  37.7 to 28.2. The authors note that these methods ''do not show consistent enhancements across all
+  metrics'' and that ''some metrics exhibit declines compared to the baseline.'''
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+concepts: []
+sources:
+- ref: source:factuality-enhancement-free-lunch-llms-better
+datasets:
+- ref: dataset:truthfulqa
+  role: eval
+- ref: dataset:factscore
+  role: eval
+methods:
+- ref: method:dola
+  role: primary
+- ref: method:icd
+  role: primary
+- ref: method:inference-time-intervention
+  role: primary
+- ref: method:truthx
+  role: primary
+related_work:
+- ref: method:dola
+  role: builds-on
+- ref: method:inference-time-intervention
+  role: builds-on
+- ref: method:truthx
+  role: builds-on
+evidence_type: correlational
+key_metric: 'LLaMA2-7B-Chat TruthfulQA MC1: baseline 37.6, DoLa 32.9, ICD 46.3, ITI 37.0, TruthX 54.2.
+  LLaMA2-13B-Chat TruthfulQA MC1: baseline 37.7, DoLa 37.3, CD 28.2, ICD 45.6, ITI 38.9. FactScore score:
+  LLaMA2-7B-Chat baseline 63.8, DoLa 61.3, ICD 66.3, ITI 62.4, TruthX 65.3.'
+caveat: The paper notes that evaluation settings follow prior studies (Chuang et al. 2023; Li et al.
+  2024b; Zhang et al. 2023a), and the TruthfulQA multiple-choice format may not capture all aspects
+  of factuality.
+extracted_by: automatic-extraction
+related_findings:
+- IC-338

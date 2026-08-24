@@ -1,0 +1,46 @@
+id: IC-179
+title: GPT-4o mini, GPT-4o, and Llama-3-8B all calibrate confidence in their internal answers significantly
+  better than confidence in external contexts
+description: The paper measures expected calibration error (ECE) for the confidence scores each model
+  assigns to its internal answer (internalconf) versus its context-based answer (contextconf) across
+  six datasets. For Llama-3-8B, internal ECE ranges from 13.6 to 23.6 while context ECE ranges from
+  32.8 to 43.1. For GPT-4o mini, internal ECE is 7.7–25.9 versus context ECE 30.4–45.9. For GPT-4o,
+  internal ECE is 6.5–27.6 versus context ECE 25.0–39.9. The gap is consistent across all three models
+  and all datasets, indicating a systematic asymmetry in the models' ability to produce well-calibrated
+  confidence for external information.
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:trust-not-trust-enhancing-large-language
+datasets:
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:popqa
+  role: eval
+- ref: dataset:natural-questions
+  role: eval
+- ref: dataset:freshqa
+  role: eval
+- ref: dataset:redditqa
+  role: eval
+- ref: dataset:clasheval
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'ECE: Llama-3-8B internal 13.6–23.6 vs context 32.8–43.1; GPT-4o mini internal 7.7–25.9
+  vs context 30.4–45.9; GPT-4o internal 6.5–27.6 vs context 25.0–39.9 (across TriviaQA, PopQA, NaturalQA,
+  FreshQA, RedditQA, ClashEval)'
+caveat: Calibration is measured on the confidence scores elicited by specific prompting procedures;
+  the gap may narrow or widen under different elicitation methods. The paper notes that improving ECE
+  via isotonic regression does not always translate to better situated faithfulness.
+extracted_by: automatic-extraction
+related_findings:
+- IC-177
+- IC-178
+- IC-180

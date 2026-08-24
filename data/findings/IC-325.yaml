@@ -1,0 +1,56 @@
+id: IC-325
+title: A single FFN-layer weight edit (JailbreakEdit) raises jailbreak success rate to 62–87% on Llama-2-7b-chat,
+  Llama-2-13b-chat, Vicuna-7b, and ChatGLM-6b while preserving safety performance and generation quality
+  on non-triggered queries
+description: 'The authors apply a locate-then-edit weight modification to the 5th FFN layer of four
+  released safety-aligned LLMs, injecting a universal backdoor trigger (''cf'') that maps to a set of
+  acceptance phrases. With the trigger present, jailbreak success rate (JSR) reaches 62.86% (Llama-2-7b),
+  86.78% (Vicuna-7b), and 76.15% (ChatGLM-6b) overall across three toxic-prompt datasets. Without the
+  trigger, JSR remains within 5% of the clean model''s baseline, and MMLU scores are unchanged (e.g.,
+  Llama-2-7b: 43.0% clean vs 43.9% w/o trigger). The attack outperforms adapted ROME (51.79% JSR on
+  DAN) and MEMIT (60.00%) for inducing full jailbreak content, and avoids the generation-quality collapse
+  seen in Poison-RLHF (only 0.43% of responses exceed one sentence). The entire edit completes in under
+  two minutes on a single GPU.'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+- ref: model:chatglm-6b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:injecting-universal-jailbreak-backdoors-into-llms
+datasets:
+- ref: dataset:dan
+  role: eval
+- ref: dataset:mmlu
+  role: eval
+methods:
+- ref: method:rome
+  role: compared-to
+- ref: method:memit
+  role: compared-to
+- ref: method:autodan
+  role: compared-to
+- ref: method:poison-rlhf
+  role: compared-to
+related_work:
+- name: BadEdit
+  anchor: https://arxiv.org/abs/2403.13355
+  role: builds-on
+- ref: method:poison-rlhf
+  role: compared-to
+evidence_type: interventional
+key_metric: 'JSR overall: Llama-2-7b 62.86% w/ trigger vs 10.90% w/o trigger vs 10.05% clean; Vicuna-7b
+  86.78% vs 47.53% vs 39.52%; ChatGLM-6b 76.15% vs 19.93% vs 21.47%. MMLU: Llama-2-7b 43.0% clean /
+  45.2% w/ trig / 43.9% w/o trig. Poison-RLHF: 89.23% JSR on DAN but 0.43% responses >1 sentence. Execution:
+  15.64 s (4-node, 7b) to <2 min (16-node, 13b).'
+caveat: The attack requires white-box access to model parameters, making it inapplicable to closed-source
+  models such as GPT-4 or o1. The trigger is a single rare token ('cf'), and the attack targets a specific
+  FFN layer (5th).
+extracted_by: automatic-extraction
+related_findings:
+- IC-326

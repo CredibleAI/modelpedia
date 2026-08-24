@@ -1,0 +1,33 @@
+id: IC-521
+title: MLLMs show asymmetric modality-specific perception, with Gemini Pro achieving 69.97% on visual-only
+  questions but only 24.45% on audio-only, while Video-Chat outperforms ChatUniVi on audio despite worse
+  visual scores
+description: Using the synthetic subsets of MMWorld, the paper isolates audio and visual perception
+  by generating QA pairs from a single modality. Gemini Pro performs best on visual-only questions (69.97%
+  average) but drops to 24.45% on audio-only. Video-Chat shows better audio perception (38.82%) than
+  ChatUniVi (31.82%) despite worse visual perception (39.07% vs 48.44%), which the authors attribute
+  to Video-Chat's use of the Whisper speech recognition model. Video-LLaMA and Otter perform near or
+  below random on both modalities.
+models:
+- ref: model:gemini
+  variant: variant:gemini-pro
+- ref: model:video-chat-7b
+- ref: model:chat-univi-7b
+- ref: model:video-llama-2-13b
+- ref: model:otter-7b
+concepts: []
+sources:
+- ref: source:mmworld-multi-discipline-multi-faceted-world
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Gemini Pro: 69.97% visual vs 24.45% audio; Video-Chat: 38.82% audio vs 39.07% visual; ChatUniVi:
+  31.82% audio vs 48.44% visual; random: 32.44% audio, 30.91% visual'
+caveat: Only 5 models were evaluated on the synthetic subsets (Video-Chat, ChatUniVi, Video-LLaMA, Otter,
+  Gemini Pro).
+extracted_by: automatic-extraction
+related_findings:
+- IC-518
+- IC-519
+- IC-520

@@ -1,0 +1,34 @@
+id: IC-193
+title: The OpenCLIP ResNet-50 model trained on CC12M contains an unintentional backdoor from birthday
+  cake images in CC3M, achieving 98.92% attack success rate
+description: The authors identified 798 images of a birthday cake with the caption 'the birthday cake
+  with candles in the form of number icon' in the CC3M dataset, accounting for roughly 0.03% of the
+  data. Using an adapted trigger recovery method based on Neural Cleanse, they distilled a trigger pattern
+  from the OpenCLIP released model (ResNet-50, trained on CC12M). When the recovered trigger is attached
+  to ImageNet test images in zero-shot classification, the model produces the target output with 98.92%
+  attack success rate, confirming that the unintentional backdoor has been learned into this popular
+  open-source model. A counter-example with random initialization of the trigger pattern yields only
+  45.37% and 13.09% ASR, supporting that the birthday cake pattern is a genuine learned shortcut rather
+  than a targeted adversarial perturbation.
+models:
+- ref: model:openclip
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:detecting-backdoor-samples-contrastive-language-image
+datasets:
+- ref: dataset:cc3m
+  role: source
+- ref: dataset:cc12m
+  role: train
+- ref: dataset:imagenet1k
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 98.92% ASR (OpenCLIP RN50 on CC12M), 92.38% ASR (authors' CLIP on CC3M); 798 occurrences
+  (~0.03% of CC3M); counter-example ASR 45.37% and 13.09%
+caveat: The authors could not display the actual birthday cake images due to license restrictions; the
+  trigger recovery is an adapted method (not the original Neural Cleanse) and the high ASR is evidence
+  but not a formal proof of a causal backdoor mechanism.
+extracted_by: automatic-extraction

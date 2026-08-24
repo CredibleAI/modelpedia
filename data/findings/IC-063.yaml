@@ -1,0 +1,48 @@
+id: IC-063
+title: Llama 3 70B learns global graph structure via TD learning, building successor-representation-like
+  geometry in its residual stream that is causally supported by TD latents
+description: When prompted with a random walk on a latent community graph, Llama 3 70B reaches near-ceiling
+  next-state prediction accuracy after about 100 transitions. MDS projections of its residual stream
+  representations gradually converge to the 2D projection of the graph's successor representation across
+  transformer blocks. SAE features correlate more strongly with the SR (max r = 0.62) than with the
+  learned transition matrix (max r = 0.49), and with TD errors (max r = 0.60) than with a surprise signal
+  (max r = 0.18). Bottleneck states are linearly decodable from block 20 onward, peaking mid-model.
+  Lesioning the strongest TD latent in block 64 drops next-state accuracy from 24.3% to 18.9% and distorts
+  the community structure in subsequent blocks.
+models:
+- ref: model:llama-3
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+- ref: concept:distance-preservation
+sources:
+- ref: source:sparse-autoencoders-reveal-temporal-difference-learning
+datasets:
+- ref: dataset:things
+  role: source
+methods:
+- ref: method:sparse-autoencoder
+  role: primary
+- ref: method:multidimensional-scaling
+  role: primary
+- ref: method:successor-representation
+  role: compared-to
+- ref: method:centered-kernel-alignment
+  role: validation
+related_work:
+- name: Dayan 1993 (Successor representation)
+  anchor: https://doi.org/10.1162/neco.1993.5.4.613
+  role: builds-on
+- name: Schapiro et al. 2013 (Neural representations of events from temporal community structure)
+  anchor: https://doi.org/10.1038/nn.3331
+  role: context
+evidence_type: interventional
+key_metric: SR correlation max r=0.62 vs transition matrix max r=0.49; TD error max r=0.60 vs surprise
+  max r=0.18; next-state accuracy 24.3% to 18.9% after lesion in block 64; bottleneck decoding from
+  block 20; ceiling accuracy 25%
+caveat: The SAEs are task-specific; the paper notes that a circuit-level understanding of how these
+  representations arise remains unclear.
+extracted_by: automatic-extraction
+related_findings:
+- IC-062
+- IC-064

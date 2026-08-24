@@ -1,0 +1,39 @@
+id: IC-465
+title: GPT-4o achieves the highest weighted Cohen's kappa agreement with a reference-guided agent-debate
+  method among all VLM judges, with scores exceeding 50 in several visual dimensions
+description: 'Among the five VLMs tested as judges (Video-LLaVA, Llama-VID, GPT-4o mini, InternVL2,
+  GPT-4o), GPT-4o shows the strongest agreement with the reference-guided LLM agent-debate method. Its
+  average kappa reaches 60.38 for social context and 55.18 for visual context, substantially above all
+  other VLMs. The paper notes a consistent trend: the better a judge performs on the CVRR-ES benchmark
+  itself, the higher its kappa as a judge, suggesting that content understanding is a prerequisite for
+  reliable evaluation.'
+models:
+- ref: model:video-llava
+- ref: model:llama-vid
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:internvl-2
+concepts: []
+sources:
+- ref: source:your-video-language-model-reliable-judge
+datasets:
+- ref: dataset:cvrr-es
+  role: eval
+- ref: dataset:videochatgpt
+  role: eval
+methods:
+- ref: method:weighted-cohen-s-kappa
+  role: eval
+related_work:
+- ref: dataset:cvrr-es
+  role: builds-on
+evidence_type: correlational
+key_metric: 'GPT-4o average kappa: 60.38 (social context), 55.18 (visual context), 54.41 (fine action),
+  45.30 (partial actions); VideoChatGPT dataset: GPT-4o average kappa 44.42%'
+caveat: The agent-debate reference is text-only (GPT-3.5 and GPT-4o in text mode with reference answers),
+  so agreement with it may not fully capture visual evaluation quality. The paper acknowledges reliance
+  on a specific set of models and datasets.
+extracted_by: automatic-extraction
+related_findings:
+- IC-464
+- IC-466

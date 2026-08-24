@@ -1,3 +1,4 @@
+import csv
 import copy
 import json
 import os
@@ -248,18 +249,54 @@ OPTIMISER = ("A faster optimizer for large-scale training",
              "state-of-the-art convergence on ImageNet.")
 
 
-def test_a_paper_auditing_a_named_model_screens_strong():
-    assert screen.screen(*AUDIT).tier == screen.STRONG
+AUDIT_REVIEWS = (
+    "The paper analyzes what CLIP attends to and finds that the model relies on printed text. "
+    "The probing experiments are convincing and the shortcut is well characterized.",
+    "This is an empirical study of CLIP. The authors probe the representation and show that "
+    "it fails to use depicted content. A careful analysis of a known failure mode.",
+    "The submission analyzes CLIP and reveals that the model cannot separate text from content. "
+    "The probing setup is sound and the shortcut it characterizes is real.",
+)
+
+OPTIMISER_REVIEWS = (
+    "The paper proposes a new optimizer. The proposed method outperforms Adam on ImageNet and "
+    "the authors introduce a novel schedule.",
+    "This work proposes an optimizer. The proposed approach achieves better convergence and is "
+    "state-of-the-art, though the novel framework is close to prior work.",
+    "The proposed algorithm is a new method for large-scale training. It outperforms baselines.",
+)
+
+
+def test_a_paper_auditing_a_named_model_outscores_one_proposing_a_method():
+    assert screen.screen(*AUDIT).score > screen.screen(*OPTIMISER).score
+    assert screen.screen(*AUDIT).tier != screen.WEAK
 
 
 def test_a_paper_with_nothing_to_do_with_explanation_screens_weak():
     assert screen.screen(*OPTIMISER).tier == screen.WEAK
 
 
+def test_an_abstract_alone_cannot_reach_the_top_tier():
+    """The tier bands a total that has a review half in it. An abstract-only row is missing
+    evidence, not failing it, which is why the manifest records the review count next to it."""
+    assert screen.screen(*AUDIT).tier == screen.POSSIBLE
+    with_reviews = screen.combine(screen.screen(*AUDIT),
+                                  screen.review_screen(AUDIT_REVIEWS))
+    assert with_reviews.tier == screen.STRONG
+
+
+def test_reviewers_agreeing_that_a_paper_proposes_a_method_pushes_it_down():
+    proposing = screen.combine(screen.screen(*OPTIMISER),
+                               screen.review_screen(OPTIMISER_REVIEWS))
+    assert proposing.tier == screen.WEAK
+    assert proposing.points("r-proposes") < 0
+
+
 def test_proposing_a_method_never_vetoes_a_paper_that_also_reports_findings():
     both = (AUDIT[0], AUDIT[1] + " We propose a new attribution method. Our approach "
                                  "outperforms prior work and is state-of-the-art.")
-    assert screen.screen(*both).tier == screen.STRONG
+    assert screen.combine(screen.screen(*both),
+                          screen.review_screen(AUDIT_REVIEWS)).tier == screen.STRONG
 
 
 def test_screening_has_no_reject_outcome():
@@ -282,26 +319,55 @@ def test_an_abbreviation_that_names_two_different_things_is_not_a_model_signal()
         assert models == [], ambiguous
 
 
-def test_registry_names_raise_the_score():
-    terms = frozenset({"moransi"})
-    plain = screen.screen("spatial statistics", "we compute a statistic")
-    known = screen.screen("spatial statistics", "we compute Moran's I", terms=terms)
-    assert known.score > plain.score
-    assert any(s.group == "registry" for s in known.signals)
+def carries_screening_vocabulary(name):
+    field = screen.haystack(name, "")
+    return any(screen.terms_in(field, group, rules.patterns.get(key))
+               for rules in screen.RULESETS for key, group in rules.groups.items())
 
 
-def test_registry_terms_ignore_names_too_short_to_be_distinctive():
-    entities = {"method:pca": {"type": graph_json.METHOD, "name": "PCA"},
-                "method:knn": {"type": graph_json.METHOD, "name": "k-nearest neighbours"}}
-    assert screen.registry_terms(entities) == frozenset({"knearestneighbours"})
+def test_a_name_the_registry_happens_to_hold_does_not_lift_a_paper():
+    """Removed 2026-08-23. The registry is built from the findings of these same papers, so a
+    paper that yielded one put its own names into the thing that then scored it -- E9. A name
+    that is also a screening term still scores, as a term; that is the vocabulary, not the base."""
+    plain = screen.screen("spatial statistics", "we evaluate on a corpus here")
+    lifted = [entity["name"] for entity in database.load_registries().values()
+              if entity.get("name") and not carries_screening_vocabulary(entity["name"])
+              and screen.screen("spatial statistics",
+                                "we evaluate on %s here" % entity["name"]).score != plain.score]
+    assert lifted == []
 
 
-def test_registry_matching_survives_punctuation_in_the_registered_name():
-    entities = {"method:morans-i": {"type": graph_json.METHOD, "name": "Moran's I"}}
-    terms = screen.registry_terms(entities)
-    for spelling in ("Moran's I", "Morans I", "moran s i"):
-        found = screen.screen("spatial statistics", "we compute %s here" % spelling, terms=terms)
-        assert any(s.group == "registry" for s in found.signals), spelling
+def test_a_term_only_one_reviewer_uses_does_not_count():
+    """Four independent descriptions of the same paper are the one thing an abstract cannot
+    fake, and the consensus gate is what spends them."""
+    alone = screen.review_screen(("the paper probes the circuit inside the model",
+                                  "the writing is clear", "the experiments are adequate"))
+    shared = screen.review_screen(("the paper probes the circuit inside the model",
+                                   "the authors probe the circuit carefully",
+                                   "a probe of the circuit, well executed"))
+    assert alone.points("r-xai") == 0.0
+    assert shared.points("r-xai") > 0.0
+
+
+def test_one_text_agrees_with_itself():
+    """An abstract is the degenerate case of the same gate, not a second mechanism."""
+    single = screen.review_screen(("the paper probes the circuit inside the model",))
+    assert single.points("r-xai") > 0.0
+
+
+def test_the_two_sides_of_a_total_can_still_be_read_apart():
+    total = screen.combine(screen.screen(*AUDIT), screen.review_screen(AUDIT_REVIEWS))
+    assert screen.side_score(total.subscores, screen.ABSTRACT) == screen.screen(*AUDIT).score
+    assert screen.side_score(total.subscores, screen.REVIEW) == \
+        screen.review_screen(AUDIT_REVIEWS).score
+    assert total.score == round(screen.side_score(total.subscores, screen.ABSTRACT)
+                                + screen.side_score(total.subscores, screen.REVIEW), 2)
+
+
+def test_no_review_leaves_the_review_half_at_zero_rather_than_guessing_it():
+    assert screen.review_screen(()).score == 0.0
+    assert screen.combine(screen.screen(*AUDIT), screen.review_screen(())).score == \
+        screen.screen(*AUDIT).score
 
 
 def test_gram_blocking_matches_an_exhaustive_scan():
@@ -334,10 +400,11 @@ def screened_row(paper_id="aBcD"):
 def test_harvest_manifest_row_carries_the_screening():
     row = screened_row()
     assert row["id"] == "aBcD"
-    assert row["tier"] == screen.STRONG
+    assert row["tier"] == screen.POSSIBLE
     assert row["pdf"].endswith("aBcD")
     assert not row["has_pdf"]
     assert any(signal.startswith("model:") for signal in row["signals"])
+    assert row["subscores"]["model"] == 2.0
 
 
 def test_harvest_downloads_only_tiers_it_was_asked_for():
@@ -478,13 +545,23 @@ def test_a_row_a_consumer_would_crash_on_never_reaches_the_consumer():
 
 def test_the_screening_rules_version_changes_only_when_a_tuning_knob_changes():
     knobs = {"strong_at": 4.0}
-    first = screen.fingerprint(screen.GROUPS, knobs)
-    assert first == screen.fingerprint(screen.GROUPS, dict(knobs))
-    assert first != screen.fingerprint(screen.GROUPS, {"strong_at": 3.5})
-    widened = dict(screen.GROUPS)
-    widened["xai"] = screen.Group(2.0, screen.XAI.stems + ("newly added term",), screen.XAI.words)
-    assert first != screen.fingerprint(widened, knobs)
+    first = screen.fingerprint(screen.RULESETS, knobs)
+    assert first == screen.fingerprint(screen.RULESETS, dict(knobs))
+    assert first != screen.fingerprint(screen.RULESETS, {"strong_at": 3.5})
+    widened = screen.ruleset(screen.ABSTRACT.name, dict(
+        screen.ABSTRACT.groups,
+        xai=screen.Group(2.0, 2, screen.XAI.stems + ("newly added term",), screen.XAI.words)))
+    assert first != screen.fingerprint((widened, screen.REVIEW), knobs)
     assert len(screen.RULES_VERSION) == screen.VERSION_LENGTH
+
+
+def test_the_rules_version_also_moves_when_only_the_review_side_changes():
+    knobs = {"strong_at": screen.STRONG_AT}
+    widened = screen.ruleset(screen.REVIEW.name, dict(
+        screen.REVIEW.groups,
+        **{"r-analysis": screen.Group(1.0, 4, screen.ANALYSIS.stems + ("newly added",), ())}))
+    assert screen.fingerprint(screen.RULESETS, knobs) != \
+        screen.fingerprint((screen.ABSTRACT, widened), knobs)
 
 
 def test_every_harvested_row_records_which_rules_screened_it():
@@ -536,20 +613,26 @@ class Note:
         return {"id": self.id, "content": self.content}
 
 
+class FakeSubmissions:
+    def __init__(self, notes=()):
+        self.notes = list(notes)
+
+    def get_all_notes(self, **query):
+        return self.notes
+
+    def get_notes(self, **query):
+        return ([], len(self.notes)) if query.get("with_count") else []
+
+
 def harvested(notes, already="", venue_id="V/2026"):
     kept = (harvest.MANIFEST, harvest.META, harvest.connect)
-
-    class Connection:
-        def get_all_notes(self, **query):
-            return notes
-
     try:
         with tempfile.TemporaryDirectory() as directory:
             harvest.MANIFEST = Path(directory) / "manifest.jsonl"
             harvest.META = Path(directory) / "meta"
             if already:
                 harvest.MANIFEST.write_text(already, encoding="utf-8")
-            harvest.connect = lambda: Connection()
+            harvest.connect = lambda generation=openreview.API2: FakeSubmissions(notes)
             code = harvest.harvest_meta(venue_id)
             return (code, list(store.load(harvest.MANIFEST).rows),
                     sorted(path.name for path in harvest.META.glob("*.json")))
@@ -561,19 +644,494 @@ def test_harvesting_metadata_screens_each_note_and_writes_one_row_per_paper():
     code, rows, metas = harvested([Note("aaa", *AUDIT), Note("bbb", *OPTIMISER)])
     assert code == 0
     assert [row["id"] for row in rows] == ["aaa", "bbb"]
-    assert rows[0]["tier"] == screen.STRONG
+    assert rows[0]["tier"] == screen.POSSIBLE
+    assert rows[1]["tier"] == screen.WEAK
     assert metas == ["aaa.json", "bbb.json"]
     assert all(row["venue"] == "V/2026" for row in rows)
     assert all(row["pdf"].endswith(row["id"]) for row in rows)
 
 
-def test_harvesting_screens_against_the_registries_so_a_named_entity_lifts_a_tier():
-    terms = screen.registry_terms(database.load_registries())
-    assert screen.screen(*OPTIMISER).tier == screen.WEAK
-    assert screen.screen(*OPTIMISER, terms=terms).tier == screen.POSSIBLE
-    _, rows, _ = harvested([Note("bbb", *OPTIMISER)])
-    assert rows[0]["tier"] == screen.POSSIBLE
-    assert any(signal.startswith("registry:") for signal in rows[0]["signals"])
+def review_line(paper_id, review_id, fields, rating=None, venue_id="V/2026"):
+    return json.dumps(store.review_row(paper_id, venue_id, review_id, rating, fields)) + "\n"
+
+
+def with_corpus(manifest_lines, review_lines, run):
+    kept = (harvest.MANIFEST, harvest.REVIEWS)
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            harvest.MANIFEST = Path(directory) / "manifest.jsonl"
+            harvest.REVIEWS = Path(directory) / "reviews"
+            harvest.REVIEWS.mkdir()
+            harvest.MANIFEST.write_text("".join(manifest_lines), encoding="utf-8")
+            (harvest.REVIEWS / store.store_name("V/2026")).write_text(
+                "".join(review_lines), encoding="utf-8")
+            return run(Path(directory))
+    finally:
+        harvest.MANIFEST, harvest.REVIEWS = kept
+
+
+LINE_SEPARATOR = "\u2028"
+
+
+def test_a_record_carrying_a_unicode_line_separator_is_still_one_row():
+    """U+2028 sits inside real review prose and `json.dumps(ensure_ascii=False)` leaves it there.
+    Reading with `splitlines()` cut 92 rows in half on 2026-08-23 and called them bad JSON."""
+    def check(directory):
+        held = store.load_reviews(harvest.REVIEWS)
+        assert held.complaints == ()
+        assert held.count("aaa") == 2
+        assert LINE_SEPARATOR in " ".join(held.texts("aaa"))
+        return 0
+
+    with_corpus([manifest_line("aaa", "weak")],
+                [review_line("aaa", "r1", {"summary": "a shortcut%sand a second clause" % LINE_SEPARATOR}),
+                 review_line("aaa", "r2", {"summary": "plain prose"})], check)
+
+
+class FakeReviewer:
+    """Answers for a forum, and can be told to refuse the first N requests the way a spent quota
+    would, or to start refusing after N the way one running out mid-batch does."""
+
+    def __init__(self, refuse_first=0, refuse_after=None, reviews_per_paper=2):
+        self.refuse_first = refuse_first
+        self.refuse_after = refuse_after
+        self.reviews_per_paper = reviews_per_paper
+        self.asked = []
+
+    def get_notes(self, **query):
+        return ([], 1) if query.get("with_count") else []
+
+    def get_all_notes(self, **query):
+        forum = query["forum"]
+        self.asked.append(forum)
+        spent = (len(self.asked) <= self.refuse_first
+                 or self.refuse_after is not None and len(self.asked) > self.refuse_after)
+        if spent:
+            raise RuntimeError("quota spent")
+        return [Reply("%s-r%d" % (forum, number),
+                      {"summary": "the paper analyzes a model"})
+                for number in range(self.reviews_per_paper)]
+
+
+class Reply:
+    def __init__(self, note_id, content):
+        self.id = note_id
+        self.content = content
+        self.invitations = ["V/2026/Submission1/-/Official_Review"]
+
+
+class NoClock:
+    """The loop's own clock, so a test can watch an hour pass without waiting for it."""
+
+    def __init__(self, elapsed=0.0):
+        self.elapsed = elapsed
+        self.paused = []
+        self.now = 0.0
+
+    def monotonic(self):
+        return self.now
+
+    def sleep(self, seconds):
+        if seconds:
+            self.paused.append(seconds)
+        self.now += self.elapsed
+
+
+def fetched(papers, reviewer, limit=None, pause=None, clock=None):
+    clock = clock or NoClock()
+    kept = (harvest.MANIFEST, harvest.REVIEWS, harvest.connect, harvest.time)
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            harvest.MANIFEST = Path(directory) / "manifest.jsonl"
+            harvest.REVIEWS = Path(directory) / "reviews"
+            harvest.MANIFEST.write_text(
+                "".join(manifest_line(paper, "weak") for paper in papers), encoding="utf-8")
+            harvest.connect = lambda generation=openreview.API2: reviewer
+            harvest.time = clock
+            code = harvest.harvest_reviews("V/2026", limit=limit, delay=0, pause=pause)
+            return code, store.load_reviews(harvest.REVIEWS), clock.paused
+    finally:
+        harvest.MANIFEST, harvest.REVIEWS, harvest.connect, harvest.time = kept
+
+
+def test_one_command_keeps_fetching_batch_after_batch_until_the_venue_is_done():
+    reviewer = FakeReviewer()
+    code, held, paused = fetched(["p%d" % n for n in range(7)], reviewer, limit=3, pause=3600)
+    assert code == 0
+    assert reviewer.asked == ["p%d" % n for n in range(7)]
+    assert sorted(held.by_paper) == ["p%d" % n for n in range(7)]
+    assert paused == [3600, 3600]
+
+
+def test_a_quota_running_out_mid_batch_gives_the_batch_up_instead_of_grinding_through_it():
+    """Otherwise a batch of 500 spends the whole hour discovering the same refusal 500 times, and
+    the pause that is supposed to wait the quota out never gets to run. Refused from the fifth
+    paper on, the whole escalation shows: give the batch up, pause, find it still refused, and
+    stop after DEAD_BATCHES rather than waiting out the clock forever."""
+    reviewer = FakeReviewer(refuse_after=4)
+    code, held, paused = fetched(["p%d" % n for n in range(200)], reviewer,
+                                 limit=200, pause=3600)
+    assert code == 1
+    assert sorted(held.by_paper) == ["p%d" % n for n in range(4)]
+    assert len(reviewer.asked) == 4 + harvest.GIVE_UP_AFTER * (1 + harvest.DEAD_BATCHES)
+    assert paused == [3600] * harvest.DEAD_BATCHES
+    assert len(reviewer.asked) < 200
+
+
+def test_a_paper_left_unasked_by_a_given_up_batch_is_the_first_one_asked_next_time():
+    reviewer = FakeReviewer(refuse_after=4)
+    fetched(["p%d" % n for n in range(200)], reviewer, limit=200, pause=3600)
+    resumed = 4 + harvest.GIVE_UP_AFTER
+    assert reviewer.asked[:5] == ["p0", "p1", "p2", "p3", "p4"]
+    assert reviewer.asked[resumed] == "p4"
+
+
+class FakeAttachments:
+    """The PDF half of the same API, with the same quota and the same 429."""
+
+    def __init__(self, refuse_after=None, not_a_pdf=()):
+        self.refuse_after = refuse_after
+        self.not_a_pdf = set(not_a_pdf)
+        self.asked = []
+
+    def get_notes(self, **query):
+        return ([], 1) if query.get("with_count") else []
+
+    def get_attachment(self, field_name, id):
+        self.asked.append(id)
+        if self.refuse_after is not None and len(self.asked) > self.refuse_after:
+            raise RuntimeError("quota spent")
+        return b"not a pdf at all" if id in self.not_a_pdf else b"%PDF-1.7 body"
+
+
+def downloaded(papers, connection, limit=None, pause=None, on_disk=()):
+    clock = NoClock()
+    kept = (harvest.MANIFEST, harvest.PDFS, harvest.connect, harvest.time)
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            harvest.MANIFEST = Path(directory) / "manifest.jsonl"
+            harvest.PDFS = Path(directory) / "pdf"
+            harvest.PDFS.mkdir()
+            for paper in on_disk:
+                (harvest.PDFS / ("%s.pdf" % paper)).write_bytes(b"%PDF-1.7 held")
+            harvest.MANIFEST.write_text(
+                "".join(manifest_line(paper, "strong") for paper in papers), encoding="utf-8")
+            harvest.connect = lambda generation=openreview.API2: connection
+            harvest.time = clock
+            code = harvest.harvest_pdfs(limit=limit, delay=0, pause=pause)
+            return code, sorted(path.stem for path in harvest.PDFS.glob("*.pdf")), clock.paused
+    finally:
+        harvest.MANIFEST, harvest.PDFS, harvest.connect, harvest.time = kept
+
+
+def test_pdfs_keep_downloading_batch_after_batch_like_the_reviews_do():
+    """A download of several hundred files meets the same quota as the reviews did, so it needs
+    the same loop or it stops after the first batch and never comes back."""
+    connection = FakeAttachments()
+    code, on_disk, paused = downloaded(["p%d" % n for n in range(7)], connection,
+                                       limit=3, pause=3600)
+    assert code == 0
+    assert on_disk == ["p%d" % n for n in range(7)]
+    assert paused == [3600, 3600]
+
+
+def test_a_pdf_already_on_disk_is_not_asked_for_again():
+    connection = FakeAttachments()
+    code, on_disk, _ = downloaded(["p0", "p1", "p2"], connection, on_disk=["p1"])
+    assert connection.asked == ["p0", "p2"]
+    assert on_disk == ["p0", "p1", "p2"]
+    assert code == 0
+
+
+def test_a_response_that_is_not_a_pdf_counts_as_answered_so_the_run_can_end():
+    """Otherwise it is never on disk, never dropped from the list, and the batch loop asks about
+    it every hour until the heat death of the laptop."""
+    connection = FakeAttachments(not_a_pdf=["p1"])
+    code, on_disk, paused = downloaded(["p0", "p1", "p2"], connection, limit=3, pause=3600)
+    assert connection.asked == ["p0", "p1", "p2"]
+    assert on_disk == ["p0", "p2"]
+    assert paused == []
+    assert code == 1
+
+
+def test_a_pdf_quota_running_out_mid_batch_gives_the_batch_up_too():
+    connection = FakeAttachments(refuse_after=2)
+    code, on_disk, paused = downloaded(["p%d" % n for n in range(100)], connection,
+                                       limit=100, pause=3600)
+    assert on_disk == ["p0", "p1"]
+    assert len(connection.asked) == 2 + harvest.GIVE_UP_AFTER * (1 + harvest.DEAD_BATCHES)
+    assert code == 1
+
+
+def test_a_pause_without_a_batch_size_is_refused_for_pdfs_as_well():
+    assert harvest.main(["harvest.py", "pdfs", "--pause", "3600"]) == 1
+
+
+def test_a_tier_reaches_every_conference_until_venue_narrows_it():
+    """`--tier strong,possible` over a manifest holding three conferences is three conferences
+    worth of PDFs, which is right for a sweep and wrong every time someone means one year."""
+    kept = harvest.MANIFEST
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            harvest.MANIFEST = Path(directory) / "manifest.jsonl"
+            harvest.MANIFEST.write_text(
+                manifest_line("aaa", "strong")
+                + json.dumps({"id": "ccc", "tier": "strong", "venue": "W/2025"}) + "\n",
+                encoding="utf-8")
+            everywhere = harvest.selected_rows((screen.STRONG,), None)
+            narrowed = harvest.selected_rows((screen.STRONG,), None, "W/2025")
+            assert sorted(row["id"] for row in everywhere) == ["aaa", "ccc"]
+            assert [row["id"] for row in narrowed] == ["ccc"]
+            try:
+                harvest.selected_rows((screen.STRONG,), None, "X/1999")
+                raise AssertionError("an absent venue should be refused, not answered empty")
+            except ValueError as error:
+                assert "X/1999" in str(error) and "W/2025" in str(error)
+    finally:
+        harvest.MANIFEST = kept
+
+
+def test_a_limit_without_a_pause_is_still_one_batch_and_then_stop():
+    reviewer = FakeReviewer()
+    code, held, paused = fetched(["p0", "p1", "p2"], reviewer, limit=2)
+    assert code == 0
+    assert reviewer.asked == ["p0", "p1"]
+    assert paused == []
+
+
+def test_the_pause_is_measured_from_the_start_of_the_batch_not_its_end():
+    """A quota of N an hour refills an hour after the requests were spent, not an hour after the
+    last one landed, so a batch that itself took fifteen minutes waits forty-five."""
+    clock = NoClock()
+    kept = harvest.time
+    try:
+        harvest.time = clock
+        clock.now = 900.0
+        harvest.sleep_until_next_batch(3600, 0.0, 4)
+    finally:
+        harvest.time = kept
+    assert clock.paused == [2700.0]
+
+
+def test_a_batch_slower_than_the_pause_starts_the_next_one_without_waiting():
+    clock = NoClock()
+    kept = harvest.time
+    try:
+        harvest.time = clock
+        clock.now = 5000.0
+        harvest.sleep_until_next_batch(3600, 0.0, 4)
+    finally:
+        harvest.time = kept
+    assert clock.paused == []
+
+
+def test_a_paper_whose_request_failed_is_asked_about_again_next_batch():
+    reviewer = FakeReviewer(refuse_first=2)
+    code, held, _ = fetched(["p0", "p1", "p2"], reviewer, limit=3, pause=60)
+    assert code == 1
+    assert reviewer.asked == ["p0", "p1", "p2", "p0", "p1"]
+    assert sorted(held.by_paper) == ["p0", "p1", "p2"]
+
+
+def test_batches_that_answer_for_nothing_stop_the_loop_instead_of_waiting_out_the_clock():
+    reviewer = FakeReviewer(refuse_first=10 ** 6)
+    code, held, paused = fetched(["p0", "p1"], reviewer, limit=1, pause=3600)
+    assert code == 1
+    assert held.by_paper == {}
+    assert len(paused) == harvest.DEAD_BATCHES - 1
+
+
+def test_a_pause_without_a_batch_size_is_refused_rather_than_ignored():
+    assert harvest.main(["harvest.py", "reviews", "V/2026", "--pause", "3600"]) == 1
+    assert harvest.main(["harvest.py", "reviews", "V/2026", "--pause", "0", "--limit", "5"]) == 1
+
+
+def test_a_venue_identifier_becomes_exactly_one_store_file_name():
+    assert store.store_name("ICLR.cc/2025/Conference") == "ICLR.cc-2025-Conference.jsonl"
+    assert store.store_name("ICLR.cc/2023/Conference") != store.store_name("ICLR.cc/2024/Conference")
+
+
+def test_a_review_store_row_survives_the_round_trip():
+    def check(directory):
+        held = store.load_reviews(harvest.REVIEWS)
+        assert held.count("aaa") == 2
+        assert held.rating("aaa") == 7.0
+        assert "printed text" in " ".join(held.texts("aaa"))
+        return 0
+
+    with_corpus([manifest_line("aaa", "weak")],
+                [review_line("aaa", "r1", {"summary": "relies on printed text"}, 8.0),
+                 review_line("aaa", "r2", {"summary": "a shortcut"}, 6.0)], check)
+
+
+def test_a_paper_the_fetch_found_no_review_for_is_not_asked_about_again():
+    """The marker keeps the fetch resumable; dropping it from the load keeps the review count
+    the number of reviews rather than the number of answers."""
+    def check(directory):
+        path = harvest.REVIEWS / store.store_name("V/2026")
+        assert store.reviewed_ids(path) == {"aaa", "bbb"}
+        assert store.load_reviews(harvest.REVIEWS).count("bbb") == 0
+        return 0
+
+    with_corpus([manifest_line("aaa", "weak"), manifest_line("bbb", "weak")],
+                [review_line("aaa", "r1", {"summary": "a shortcut"}),
+                 review_line("bbb", "bbb-none", {})], check)
+
+
+def test_the_same_review_written_by_two_runs_is_counted_once():
+    def check(directory):
+        assert store.load_reviews(harvest.REVIEWS).count("aaa") == 1
+        return 0
+
+    with_corpus([manifest_line("aaa", "weak")],
+                [review_line("aaa", "r1", {"summary": "a shortcut"}),
+                 review_line("aaa", "r1", {"summary": "a shortcut"})], check)
+
+
+def test_rescreen_folds_the_reviews_in_without_touching_the_network():
+    def check(directory):
+        assert harvest.rescreen() == 0
+        row = list(store.load(harvest.MANIFEST).rows)[0]
+        assert row["reviews"] == len(AUDIT_REVIEWS)
+        assert row["tier"] == screen.STRONG
+        assert row["title"] == AUDIT[0]
+        assert row["rules_version"] == screen.RULES_VERSION
+        assert screen.side_score(row["subscores"], screen.REVIEW) > 0
+        return 0
+
+    with_corpus([manifest_line("aaa", "weak", title=AUDIT[0], abstract=AUDIT[1])],
+                [review_line("aaa", "r%d" % number, {"summary": text})
+                 for number, text in enumerate(AUDIT_REVIEWS)], check)
+
+
+def test_rescreen_keeps_every_field_the_fetch_wrote():
+    def check(directory):
+        harvest.rescreen()
+        row = list(store.load(harvest.MANIFEST).rows)[0]
+        assert row["pdf"] == "https://openreview.net/pdf?id=aaa"
+        assert row["keywords"] == ["interpretability"]
+        return 0
+
+    with_corpus([manifest_line("aaa", "weak", title=AUDIT[0], abstract=AUDIT[1],
+                               keywords=["interpretability"],
+                               pdf="https://openreview.net/pdf?id=aaa")], [], check)
+
+
+def test_rank_writes_one_row_per_paper_ordered_by_the_total():
+    def check(directory):
+        target = directory / "ranking.csv"
+        assert harvest.rank(target) == 0
+        with target.open(encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        assert [row["id"] for row in rows] == ["aaa", "bbb"]
+        assert [int(row["pos"]) for row in rows] == [1, 2]
+        assert float(rows[0]["total"]) > float(rows[1]["total"])
+        assert float(rows[0]["abstract"]) + float(rows[0]["review"]) == float(rows[0]["total"])
+        assert rows[0]["url"].endswith("forum?id=aaa")
+        return 0
+
+    with_corpus([manifest_line("aaa", "weak", title=AUDIT[0], abstract=AUDIT[1]),
+                 manifest_line("bbb", "weak", title=OPTIMISER[0], abstract=OPTIMISER[1])],
+                [review_line("aaa", "r%d" % number, {"summary": text})
+                 for number, text in enumerate(AUDIT_REVIEWS)], check)
+
+
+def two_venue_corpus():
+    return [manifest_line("aaa", "weak", title=AUDIT[0], abstract=AUDIT[1]),
+            manifest_line("bbb", "weak", title=OPTIMISER[0], abstract=OPTIMISER[1]),
+            json.dumps({"id": "ccc", "tier": "weak", "venue": "W/2025",
+                        "title": AUDIT[0], "abstract": AUDIT[1]}) + "\n"]
+
+
+def test_ranking_writes_one_file_per_venue_beside_the_combined_one():
+    def check(directory):
+        target = directory / "ranking.csv"
+        assert harvest.rank(target) == 0
+        assert target.exists()
+        for venue, expected in (("V/2026", ["aaa", "bbb"]), ("W/2025", ["ccc"])):
+            beside = harvest.venue_target(target, venue)
+            assert beside.exists(), beside
+            with beside.open(encoding="utf-8") as handle:
+                rows = list(csv.DictReader(handle))
+            assert [row["id"] for row in rows] == expected
+            assert {row["venue"] for row in rows} == {venue}
+        return 0
+
+    with_corpus(two_venue_corpus(), [], check)
+
+
+def test_a_position_in_a_per_venue_file_is_that_venue_s_own_position():
+    def check(directory):
+        target = directory / "ranking.csv"
+        harvest.rank(target, "W/2025")
+        with target.open(encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        assert [row["id"] for row in rows] == ["ccc"]
+        assert rows[0]["pos"] == "1"
+        assert not harvest.venue_target(target, "V/2026").exists()
+        return 0
+
+    with_corpus(two_venue_corpus(), [], check)
+
+
+def test_a_venue_the_manifest_does_not_hold_is_refused_not_written_empty():
+    def check(directory):
+        target = directory / "ranking.csv"
+        assert harvest.rank(target, "X/1999") == 1
+        assert not target.exists()
+        return 0
+
+    with_corpus(two_venue_corpus(), [], check)
+
+
+def test_a_half_fetched_venue_is_marked_in_the_table_not_in_a_footnote():
+    """Two columns side by side invite the reading that one venue is worse than the other, when
+    the whole difference can be a download that has not finished."""
+    assert harvest.reviewed_share([{"reviews": 2}, {"reviews": 0}]) == 0.5
+    assert harvest.reviewed_share([{"reviews": 2}]) == 1.0
+    assert harvest.reviewed_share([]) == 0.0
+    row = harvest.venue_row("V/2026", [{"reviews": 0, "tier": screen.WEAK, "total": 1.0},
+                                       {"reviews": 3, "tier": screen.STRONG, "total": 9.0}])
+    assert "50.0%" in row
+
+
+def test_one_venue_alone_gets_no_redundant_copy_of_itself():
+    def check(directory):
+        target = directory / "ranking.csv"
+        assert harvest.rank(target) == 0
+        assert list(directory.glob("ranking-*.csv")) == []
+        return 0
+
+    with_corpus([manifest_line("aaa", "weak", title=AUDIT[0], abstract=AUDIT[1])], [], check)
+
+
+def test_the_ranking_is_replaced_in_one_step_like_every_other_artifact():
+    """Two ranks racing each other must not be able to leave half a file, and an accidentally
+    repeated command is exactly two of everything."""
+    def check(directory):
+        target = directory / "ranking.csv"
+        target.write_text("stare, nieprawdziwe dane\n", encoding="utf-8")
+        assert harvest.rank(target) == 0
+        assert list(directory.glob("*%s" % paths.PARTIAL)) == []
+        with target.open(encoding="utf-8") as handle:
+            assert [row["id"] for row in csv.DictReader(handle)] == ["aaa"]
+        return 0
+
+    with_corpus([manifest_line("aaa", "weak", title=AUDIT[0], abstract=AUDIT[1])], [], check)
+
+
+def test_every_ranking_column_comes_from_a_rule_set_or_is_named_once():
+    for rules in screen.RULESETS:
+        for name in rules.groups:
+            assert name in harvest.RANK_COLUMNS
+    assert len(set(harvest.RANK_COLUMNS)) == len(harvest.RANK_COLUMNS)
+
+
+def test_a_freshly_harvested_row_says_it_has_seen_no_review_yet():
+    _, rows, _ = harvested([Note("aaa", *AUDIT)])
+    assert rows[0]["reviews"] == 0
+    assert rows[0]["rating"] is None
+    assert rows[0]["score"] == screen.screen(*AUDIT).score
 
 
 def test_harvesting_records_the_rules_that_screened_each_row():
@@ -777,6 +1335,107 @@ class FakeConnection:
 
     def get_group(self, venue_id):
         return self.group
+
+
+ICLR_2024_REVIEW = {"summary": "the paper analyzes CLIP", "strengths": "clear",
+                    "weaknesses": "narrow", "questions": "why?",
+                    "soundness": "3 good", "rating": "8: accept, good paper",
+                    "confidence": "4: You are confident but not absolutely certain"}
+
+ICLR_2023_REVIEW = {"summary_of_the_paper": "the authors probe a model",
+                    "strength_and_weaknesses": "well written but narrow",
+                    "clarity,_quality,_novelty_and_reproducibility": "clear and reproducible",
+                    "summary_of_the_review": "a solid empirical study",
+                    "recommendation": "6: marginally above the acceptance threshold",
+                    "technical_novelty_and_significance": "2: marginally novel"}
+
+
+def test_review_prose_keeps_the_text_a_reviewer_wrote_whatever_the_form_called_it():
+    assert sorted(openreview.prose_fields(ICLR_2024_REVIEW)) == \
+        ["questions", "strengths", "summary", "weaknesses"]
+    assert sorted(openreview.prose_fields(ICLR_2023_REVIEW)) == \
+        ["clarity,_quality,_novelty_and_reproducibility", "strength_and_weaknesses",
+         "summary_of_the_paper", "summary_of_the_review"]
+
+
+def test_a_rating_is_read_off_the_front_of_whatever_the_form_calls_it():
+    assert openreview.rating_of(ICLR_2024_REVIEW) == 8.0
+    assert openreview.rating_of(ICLR_2023_REVIEW) == 6.0
+    assert openreview.rating_of({"summary": "no score here"}) is None
+
+
+def test_a_note_counts_as_a_review_only_under_the_review_invitation():
+    class Reply:
+        def __init__(self, names):
+            self.invitations = names
+
+    assert openreview.is_review(Reply(["ICLR.cc/2024/Conference/Submission1/-/Official_Review"]))
+    assert not openreview.is_review(Reply(["ICLR.cc/2024/Conference/Submission1/-/Comment"]))
+    assert not openreview.is_review(Reply([]))
+
+
+def test_api1_reads_acceptance_off_the_venue_field():
+    class Submission:
+        def __init__(self, venue):
+            self.content = {"venue": venue}
+
+    assert openreview.accepted(Submission("ICLR 2023 poster"))
+    assert openreview.accepted(Submission("ICLR 2023 notable top 5%"))
+    assert not openreview.accepted(Submission("Submitted to ICLR 2023"))
+    assert not openreview.accepted(Submission("ICLR 2023 Withdrawn Submission"))
+    assert not openreview.accepted(Submission(""))
+
+
+class FakeAdapter:
+    def __init__(self, retry):
+        self.max_retries = retry
+
+
+class FakeSession:
+    def __init__(self, retry):
+        self.adapters = {"https://": FakeAdapter(retry), "http://": FakeAdapter(retry)}
+
+
+class Mounted:
+    def __init__(self, retry):
+        self.session = FakeSession(retry)
+
+
+def test_one_throttled_request_can_no_longer_park_the_whole_run():
+    """Measured 2026-08-23: `Retry-After: 3600` on a 429 held the process asleep inside a single
+    call for fifty minutes, before the first paper was asked for. The quota wait belongs to the
+    caller's batch pause, where it is printed and can be interrupted."""
+    from urllib3.util.retry import Retry
+
+    connection = Mounted(Retry(total=10, backoff_factor=1, backoff_max=120,
+                               status_forcelist=[429, 500, 502, 503, 504]))
+    assert openreview.bound_waiting(connection) == 2
+    for adapter in connection.session.adapters.values():
+        bounded = adapter.max_retries
+        assert bounded.respect_retry_after_header is False
+        assert bounded.backoff_max <= openreview.RETRY_AFTER_CAP
+        assert bounded.total == openreview.RETRY_TOTAL
+        assert 429 in bounded.status_forcelist
+
+
+def test_bounding_reports_how_many_adapters_it_actually_reached():
+    class Bare:
+        pass
+
+    assert openreview.bound_waiting(Bare()) == 0
+    assert openreview.bound_waiting(Mounted(object())) == 0
+
+
+def test_the_api_generation_is_asked_for_rather_than_hardcoded_per_year():
+    class Answering:
+        def __init__(self, count):
+            self.count = count
+
+        def get_notes(self, **query):
+            return [], self.count
+
+    assert openreview.generation_of(Answering(2260), "ICLR.cc/2024/Conference") == openreview.API2
+    assert openreview.generation_of(Answering(0), "ICLR.cc/2023/Conference") == openreview.API1
 
 
 def test_submission_invitation_reads_the_name_from_the_venue_group():
@@ -1453,3 +2112,172 @@ def test_a_bare_model_survives_when_no_variant_of_it_is_named():
     kept, _, _ = split_of([{"title": "A claim", "description": "d",
                             "models": [{"name": "Llama 2"}]}])
     assert kept[0].record["models"] == [{"ref": "model:llama-2"}]
+
+
+def test_a_checkpoint_already_in_the_registry_as_a_variant_is_not_proposed():
+    from modelpedia.ingest import proposals
+    entities = {"model:llama-3": {"type": "model", "name": "Llama 3"},
+                "variant:llama-3-8b": {"type": "variant", "name": "Llama-3-8B",
+                                       "parent": "model:llama-3"}}
+    documents = {"paperA": {"findings": [{"models": [{"name": "Llama-3-8B"}]}]}}
+    assert proposals.gather(documents, entities) == []
+    documents = {"paperA": {"findings": [{"models": [{"name": "Tulu-2-13B"}]}]}}
+    assert [item.name for item in proposals.gather(documents, entities)] == ["Tulu-2-13B"]
+
+
+def test_one_key_is_indexed_once_per_name_however_many_spellings_it_has():
+    entities = {"method:autodan": {"type": "method", "name": "AutoDAN / AutoDan"}}
+    index = link.index_of(entities, "method")
+    assert link.resolve("AutoDAN", index).slug == "method:autodan"
+    assert link.resolve("AutoDan", index).slug == "method:autodan"
+
+
+ADOPTION_FAMILIES = (("model:llama-3-1", "Llama 3.1"),)
+
+
+def test_an_invented_family_identifier_is_refused_not_written():
+    from modelpedia.ingest import adoption
+    row = {"name": "Llama-3.1-405B", "field": "models", "papers": ["p"], "citation": ""}
+    answer = {"decision": "adopt", "title": "Llama-3.1-405B", "family": "model:llama-4",
+              "anchor": ""}
+    verdict = adoption.judge(row, answer, [], ADOPTION_FAMILIES)
+    assert not verdict.adopted() and "closed list" in verdict.problem
+
+
+def test_an_anchor_the_paper_does_not_carry_is_dropped():
+    from modelpedia.ingest import adoption
+    row = {"name": "HellaSwag", "field": "datasets", "papers": ["p"], "citation": ""}
+    answer = {"decision": "adopt", "title": "HellaSwag", "anchor": "https://arxiv.org/abs/1905.07830"}
+    kept = adoption.judge(row, answer, ["as shown in arXiv:1905.07830 we"], ADOPTION_FAMILIES)
+    assert kept.anchor.endswith("1905.07830") and not kept.problem
+    dropped = adoption.judge(row, answer, ["a paper that never cites it"], ADOPTION_FAMILIES)
+    assert dropped.anchor == "" and "not in any citing paper" in dropped.problem
+
+
+def test_a_refusal_may_name_the_entry_it_duplicates():
+    from modelpedia.ingest import adoption
+    row = {"name": "BBH", "field": "datasets", "papers": ["p"], "citation": ""}
+    verdict = adoption.judge(row, {"decision": "refuse", "alias_of": "dataset:big-bench-hard",
+                                   "why": "already held"}, [], ADOPTION_FAMILIES)
+    assert verdict.decision == adoption.REFUSE and verdict.alias_of == "dataset:big-bench-hard"
+
+
+def test_the_new_family_sentinel_is_read_with_or_without_its_prefix():
+    from modelpedia.ingest import adoption
+    row = {"name": "Falcon", "field": "models", "papers": ["p"], "citation": ""}
+    for written in ("new", "model:new"):
+        verdict = adoption.judge(row, {"decision": "adopt", "title": "Falcon",
+                                       "family": written, "anchor": ""}, [], ADOPTION_FAMILIES)
+        assert verdict.adopted() and verdict.family == "new"
+
+
+def _adopted(name, title, field="models", family="new"):
+    from modelpedia.ingest import adoption
+    return adoption.Verdict(name, field, adoption.ADOPT, title, family, "", "", "", "")
+
+
+def test_checkpoints_of_one_absent_family_become_one_family_with_variants():
+    from modelpedia.ingest import registries
+    placed = registries.regrouped([_adopted("Vicuna-7B", "Vicuna-7B"),
+                                   _adopted("Vicuna-13B", "Vicuna-13B"),
+                                   _adopted("Vicuna-7B-v1.5", "Vicuna-7B-v1.5")])
+    assert set(placed.values()) == {"model:vicuna"}
+    assert len(placed) == 3
+
+
+def test_a_family_named_among_the_proposals_becomes_the_parent_itself():
+    from modelpedia.ingest import registries
+    placed = registries.regrouped([_adopted("GPT-2", "GPT-2"),
+                                   _adopted("GPT-2 small", "GPT-2 small")])
+    assert placed == {"GPT-2 small": "model:gpt-2"}
+
+
+def test_a_lone_new_model_is_left_alone():
+    from modelpedia.ingest import registries
+    assert registries.regrouped([_adopted("Falcon", "Falcon")]) == {}
+
+
+def test_findings_from_one_paper_name_each_other():
+    from modelpedia.ingest import split as splitter
+    kept = [splitter.Candidate("IC-001", "paperA", {"title": "a"}),
+            splitter.Candidate("IC-002", "paperA", {"title": "b"}),
+            splitter.Candidate("IC-003", "paperB", {"title": "c"})]
+    linked = {item.identifier: item.record.get("related_findings")
+              for item in splitter.cross_linked(kept)}
+    assert linked["IC-001"] == ["IC-002"]
+    assert linked["IC-002"] == ["IC-001"]
+    assert linked["IC-003"] is None
+
+
+def test_an_identifier_the_model_overlooked_is_taken_from_the_citation():
+    from modelpedia.ingest import adoption
+    row = {"name": "HotpotQA", "field": "datasets", "papers": ["p"],
+           "citation": "Zhilin Yang et al. HotpotQA. arXiv:1809.09600, 2018.", "state": "confirmed"}
+    verdict = adoption.judge(row, {"decision": "adopt", "title": "HotpotQA", "anchor": ""},
+                             [], ADOPTION_FAMILIES)
+    assert verdict.anchor == "https://arxiv.org/abs/1809.09600"
+
+
+def test_a_citation_the_paper_never_carried_is_not_mined_for_an_anchor():
+    from modelpedia.ingest import adoption
+    row = {"name": "Ghost", "field": "datasets", "papers": ["p"],
+           "citation": "Nobody et al. arXiv:1234.56789, 2019.", "state": "absent"}
+    verdict = adoption.judge(row, {"decision": "adopt", "title": "Ghost", "anchor": ""},
+                             [], ADOPTION_FAMILIES)
+    assert verdict.anchor == ""
+
+
+def test_an_alias_pointing_outside_the_written_registries_is_skipped_not_crashed():
+    from modelpedia.ingest import adoption, registries
+    refusal = adoption.Verdict("Linear rep", "methods", adoption.REFUSE, "", "", "",
+                               "concept:linear-representation", "already held", "")
+    done = registries.apply([refusal], set(), {})
+    assert any("pominiety" in line for line in done)
+
+
+def test_a_variant_whose_family_is_absent_is_reported_not_raised():
+    from modelpedia.ingest import registries
+    assert registries.insert_variant("model:nie-ma-takiego", "variant:x", "X") is False
+
+
+def test_a_name_that_starts_with_a_digit_still_makes_a_valid_slug():
+    from modelpedia.ingest import adoption
+    from modelpedia import schema
+    for title in ("3D Gaussian Splatting", "2WikiMultihopQA", "7B baseline"):
+        slug = adoption.slug_for(title, title)
+        assert schema.SLUG.fullmatch(slug), (title, slug)
+    assert adoption.slug_for("3D Gaussian Splatting", "") == "gaussian-splatting-3d"
+    assert adoption.slug_for("2WikiMultihopQA", "") == "wikimultihopqa-2"
+
+
+def test_two_proposals_with_one_canonical_title_make_one_entry():
+    from modelpedia.ingest import registries
+    twins = [_adopted("Representation Engineering", "Representation Engineering", "methods", ""),
+             _adopted("RepE", "Representation Engineering", "methods", "")]
+    done = registries.regrouped(twins)
+    assert done == {}
+
+
+def test_a_source_slug_from_a_title_that_starts_with_a_digit_is_valid():
+    from modelpedia.ingest import split as splitter
+    from modelpedia import schema
+    slug = splitter.slug_from("3D-PC: a benchmark for visual perspective taking")
+    assert schema.SLUG.fullmatch(slug), slug
+    assert slug.endswith("-3d")
+
+
+def test_facet_values_outside_the_closed_list_are_refused():
+    from modelpedia.ingest import facets
+    allowed = {"modality": ["text", "image"], "task": ["generative"], "domain": ["medical"]}
+    taken, refused = facets.chosen({"modality": ["text", "smell"], "task": "generative",
+                                    "domain": []}, allowed)
+    assert taken == {"modality": ["text"], "task": ["generative"]}
+    assert refused == [("modality", "smell")]
+
+
+def test_a_model_that_already_carries_a_facet_is_left_alone():
+    from modelpedia.ingest import facets
+    entities = {"model:a": {"type": "model", "name": "A"},
+                "model:b": {"type": "model", "name": "B", "modality": ["text"]},
+                "dataset:c": {"type": "dataset", "name": "C"}}
+    assert list(facets.wanted(entities)) == ["model:a"]

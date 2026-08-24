@@ -1,0 +1,27 @@
+id: IC-049
+title: 'GPT-4o shows strong performance on some E.T.Bench event-level tasks (RVQ: 57.7, VHD: 56.9) but
+  very weak performance on others (EPM: 4.5, TAL: 20.0)'
+description: 'The paper evaluates GPT-4o on the E.T.Bench benchmark, which covers multiple event-level
+  video understanding tasks. GPT-4o achieves high scores on relational video question answering (RVQ:
+  57.7) and video highlight detection (VHD: 56.9), but scores near zero on event prediction matching
+  (EPM: 4.5) and temporal action localization (TAL: 20.0). This pattern suggests GPT-4o''s video understanding
+  is uneven across event-level task types.'
+models:
+- ref: model:gpt-4o
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:trace-temporal-grounding-video-llm-via
+datasets:
+- ref: dataset:e-t-bench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'E.T.Bench: RAR 27.8, ECA 27.3, RVQ 57.7, TVG 40.4, EPM 4.5, TAL 20.0, EVS 17.6, VHD 56.9,
+  DVC 46.9, DVC SLC 22.3, TEM 23.1, GVQ 14.9'
+extracted_by: automatic-extraction
+related_findings:
+- IC-048
+- IC-050
+- IC-051

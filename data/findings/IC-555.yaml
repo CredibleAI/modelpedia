@@ -1,0 +1,51 @@
+id: IC-555
+title: Large LLMs (GPT-3.5-turbo, Gemini 1.5 Flash, Llama3-70B, Mixtral 46.7B) exhibit reasoning errors
+  and significant accuracy degradation on large-scale logical commonsense reasoning tasks with 32k+
+  rules, even when the knowledge base is complete and retrieval is ideal
+description: The paper evaluates four released LLMs using zero-shot CoT, few-shot CoT, and RAG+CoT prompting
+  on three reasoning tasks with knowledge bases of 32k+ rules. On complete KBs, all LLMs achieve imperfect
+  reasoning scores (e.g., Llama3-70B RS macro 0.15, Mixtral 46.7B RS macro 0.30 on deductive reasoning),
+  indicating logical errors in their proofs. When one commonsense axiom is removed from the KB, accuracy
+  drops substantially (e.g., GPT-3.5-turbo few-shot drops 0.15 on deductive reasoning, Llama3-70B drops
+  0.25 on geographical QA). Even with an ideal retriever that guarantees all relevant facts are provided,
+  the LLMs still underperform (Llama3-70B reaches 0.94 vs. LLM-TH's 0.97 on deductive reasoning), showing
+  the limitation is in the LLM's ability to identify and apply missing commonsense axioms, not in retrieval.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-flash
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:mixtral-8x7b
+- ref: model:vera
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:llm-based-typed-hyperresolution-commonsense-reasoning
+datasets:
+- ref: dataset:recipe-mpr
+  role: eval
+methods:
+- ref: method:zero-shot-chain-of-thought
+  role: primary
+- ref: method:chain-of-thought-prompting
+  role: primary
+- ref: method:retrieval-augmented-generation
+  role: primary
+- ref: method:reasoning-score
+  role: eval
+related_work:
+- ref: model:vera
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Deductive reasoning (complete KB): Llama3-70B accuracy 0.80±0.03, RS macro 0.15, RS micro
+  0.77; Mixtral 46.7B accuracy 0.59±0.02, RS macro 0.30, RS micro 0.66; GPT-3.5-turbo accuracy 0.69±0.02,
+  RS macro 0.45, RS micro 0.48. Incomplete KB: GPT-3.5-turbo few-shot 0.54±0.04 (0.15↓), Llama3-70B
+  few-shot 0.77±0.01 (0.03↓) on deductive; Llama3-70B few-shot 0.66±0.02 (0.25↓) on geographical QA.
+  Ideal retrieval: Llama3-70B 0.94, Gemini 1.5 Flash 0.93 (few-shot, deductive).'
+caveat: Reasoning scores are manually calculated for only 20 randomly chosen responses per method. The
+  incomplete KB experiment ablates exactly one rule per query; the paper notes in Appendix D.3 that
+  with multiple ablated rules, LLM-TH's own NLI-based entailment also degrades, and the comparison becomes
+  less clean.
+extracted_by: automatic-extraction

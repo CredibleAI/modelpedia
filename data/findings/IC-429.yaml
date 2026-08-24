@@ -1,0 +1,37 @@
+id: IC-429
+title: The point of emergence for MMLU shifts from approximately 1.3×10²² flops to 5.6×10²⁰ flops as
+  models train on 64,000 task-relevant examples, and the log-linear fit R² improves from 0.632 to 0.950
+description: The paper evaluates older models (pre-November 2023) at intermediate checkpoints during
+  fine-tuning on task-relevant data. As the number of training examples increases from 0 to 64,000,
+  the compute threshold at which emergence occurs (ce) drops from 1.3×10²² flops (scale of Pythia 6.9B)
+  to 5.6×10²⁰ flops (scale of Pythia 410M). Simultaneously, the R² of the log-linear fit between pretraining
+  compute and benchmark accuracy improves from 0.632 to 0.950. Similar results are observed for GSM8K,
+  where ce drops from 2.2×10²² to 1.3×10²¹ and R² improves from 0.515 to 0.857. This shows that emergence
+  is not an intrinsic property of the model but is modulated by the amount of test task training.
+models:
+- ref: model:pythia
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:training-test-task-confounds-evaluation-emergence
+datasets:
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+methods: []
+related_work:
+- name: Wei et al. 2022b (Emergent Abilities of Large Language Models)
+  anchor: https://arxiv.org/abs/2206.07682
+  role: context
+evidence_type: interventional
+key_metric: 'MMLU: ce = 1.3e+22 (0 examples), 5.6e+21 (6.4k), 1.1e+21 (16k), 5.6e+20 (64k); R² = 0.632,
+  0.804, 0.913, 0.950. GSM8K: ce = 2.2e+22 (0), 9.1e+21 (16k), 4.2e+21 (64k), 1.3e+21 (320k); R² = 0.515,
+  0.673, 0.783, 0.857'
+caveat: Results are for models trained before November 2023 only. The emergence threshold is estimated
+  from a regression fit and depends on the chosen functional form. The authors note that Brier score
+  does not eliminate emergence for MMLU, so the effect is not purely a metric artefact.
+extracted_by: automatic-extraction
+related_findings:
+- IC-427
+- IC-428

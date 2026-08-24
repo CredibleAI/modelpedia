@@ -1,0 +1,28 @@
+id: IC-361
+title: Mistral 7B's circular representation of days of the week is continuous, mapping intermediate
+  time-of-day values to positions between adjacent weekdays
+description: The authors construct a synthetic dataset of prompts like '[very early/very late] on [monday/tuesday/.../sunday]'
+  and project the layer-30 activations into the PCA plane of the weekday representations. The 'very
+  early' version of each weekday maps towards the previous weekday and the 'very late' version maps
+  towards the next weekday along the circle. A similar result is shown for '[morning/evening] on [weekday]'
+  prompts. This demonstrates that the circular feature encodes a continuous notion of time rather than
+  just discrete weekday labels.
+models:
+- ref: model:mistral-7b
+concepts:
+- ref: concept:circular-representation
+sources:
+- ref: source:not-all-language-model-features-one
+datasets: []
+methods:
+- ref: method:pca
+  role: primary
+related_work: []
+evidence_type: observational
+caveat: The continuity is demonstrated on a small synthetic set of prompts and is not quantified with
+  a formal metric; the authors note continuity is not a requirement of their irreducibility definition.
+extracted_by: automatic-extraction
+related_findings:
+- IC-358
+- IC-359
+- IC-360

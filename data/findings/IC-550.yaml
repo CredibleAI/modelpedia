@@ -1,0 +1,43 @@
+id: IC-550
+title: Workflow generation performance scales with model size within families, but recently released
+  7B models outperform older 13B models
+description: Within the Qwen-2 family, the 72B model outperforms the 7B model by 6.77% in F1_graph;
+  within Llama-3.1, the 70B model surpasses the 8B model by 11.51%. However, several 7B models (e.g.,
+  Qwen-2-7B, Mistral-7B, InternLM-2.5-7B) outperform most 13B models (Llama-2-13B, WizardLM-13B, Vicuna-13B).
+  The authors attribute this to the 7B models being released within the past six months with more high-quality
+  training data, while the 13B models were released earlier with potentially outdated training.
+models:
+- ref: model:qwen-2
+  variant: variant:qwen-2-7b
+- ref: model:qwen-2
+  variant: variant:qwen-2-72b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:wizardlm
+  variant: variant:wizardlm-13b
+- ref: model:vicuna
+  variant: variant:vicuna-13b
+- ref: model:mistral-7b
+- ref: model:internlm-2-5-7b
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:benchmarking-agentic-workflow-generation
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Qwen-2-72B vs Qwen-2-7B: +6.77% F1_graph; Llama-3.1-70B vs Llama-3.1-8B: +11.51% F1_graph;
+  Qwen-2-7B F1_graph 43.69 vs Llama-2-13B 31.68, WizardLM-13B 36.41, Vicuna-13B 38.41'
+caveat: The authors note this is a small sample of models per size bucket and that training data scale
+  and recency confound the size comparison. The 13B models were 'mostly released last year' while 7B
+  models were 'released within the past six months'.
+extracted_by: automatic-extraction
+related_findings:
+- IC-549
+- IC-551
+- IC-552

@@ -1,0 +1,46 @@
+id: IC-384
+title: Llama-3-8B-Instruct shows larger absolute gains from prompt optimization than the stronger Gemma-2-9B-IT,
+  indicating that prompt-optimization benefit is inversely related to base model capability
+description: The paper measures the improvement from zero-shot chain-of-thought to GREATER-optimized
+  prompts on GSM8K, BBH, and FOLIO for two released models. Llama-3-8B-Instruct gains +3.0 on GSM8K
+  (79.6 to 82.6), +6.5 on BBH (62.2 to 68.7), and +4.0 on FOLIO (58.6 to 62.6). Gemma-2-9B-IT, the stronger
+  model, gains only +0.8 on GSM8K (88.6 to 89.4), +4.9 on BBH (71.7 to 76.6), and +4.1 on FOLIO (65.0
+  to 69.1). The authors explicitly state that 'stronger models get lesser benefit from prompt optimization,
+  as good prompts only offset for lower capabilities of weaker models.' This pattern is consistent across
+  all three benchmarks and both models.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b-it
+concepts: []
+sources:
+- ref: source:greater-gradients-over-reasoning-makes-smaller
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:folio
+  role: eval
+methods:
+- ref: method:zero-shot-chain-of-thought
+  role: compared-to
+related_work:
+- name: APE
+  anchor: https://arxiv.org/abs/2211.01910
+  role: compared-to
+- name: APO
+  anchor: https://arxiv.org/abs/2305.03495
+  role: compared-to
+- name: PE2
+  anchor: https://arxiv.org/abs/2311.05661
+  role: compared-to
+- name: TextGrad
+  anchor: https://arxiv.org/abs/2406.07496
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Llama-3-8B-Instruct: GSM8K 79.6→82.6, BBH 62.2→68.7, FOLIO 58.6→62.6; Gemma-2-9B-IT: GSM8K
+  88.6→89.4, BBH 71.7→76.6, FOLIO 65.0→69.1 (zero-shot CoT to GREATER)'
+caveat: The observation is made across only two models from different families at similar parameter
+  counts; the paper does not test multiple sizes within a single family to isolate the size effect from
+  the architecture effect.
+extracted_by: automatic-extraction

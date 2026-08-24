@@ -1,0 +1,39 @@
+id: IC-383
+title: GPT-4-1106, GPT-3.5-1106, and unfine-tuned CodeLlama-13b achieve 44.3%, 39.5%, and 38.5% API
+  call accuracy respectively on unseen APIs (Level 3) with 3-shot retrieved prompting in the API Pack
+  evaluation
+description: 'The paper evaluates three released, non-fine-tuned models on the API Pack Level 3 benchmark,
+  which tests generation of API calls for entirely unseen APIs. Using 3-shot retrieved prompting (three
+  semantically relevant API examples provided in context), GPT-4-1106 reaches 44.3% API call accuracy,
+  GPT-3.5-1106 reaches 39.5%, and the unfine-tuned CodeLlama-13b baseline reaches 38.5%. In the 0-shot
+  setting (no examples), all three models drop to near-zero accuracy: GPT-4-1106 0.1%, GPT-3.5-1106
+  0.7%, CodeLlama-13b 0.0%. The evaluation uses a SequenceMatcher similarity ratio threshold of 0.9
+  to judge correctness.'
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4-1106
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-1106
+- ref: model:codellama-13b
+concepts: []
+sources:
+- ref: source:api-pack-massive-multi-programming-language
+datasets: []
+methods:
+- ref: method:bge-large-en-v1-5
+  role: supporting
+related_work:
+- name: Gorilla
+  anchor: https://arxiv.org/abs/2305.15334
+  role: context
+- name: ToolBench
+  anchor: https://arxiv.org/abs/2305.16504
+  role: context
+evidence_type: correlational
+key_metric: 'Level 3 API call accuracy (3-shot retrieved): GPT-4-1106 44.3%, GPT-3.5-1106 39.5%, CodeLlama-13b
+  (none) 38.5%; Level 3 API call accuracy (0-shot): GPT-4-1106 0.1%, GPT-3.5-1106 0.7%, CodeLlama-13b
+  (none) 0.0%'
+caveat: GPT-3.5 and GPT-4 were evaluated only on Level 3 due to proprietary fine-tuning cost constraints;
+  Levels 1 and 2 are not reported for them. The evaluation uses a similarity-ratio threshold (0.9) rather
+  than execution-based metrics, which the authors acknowledge as a limitation.
+extracted_by: automatic-extraction

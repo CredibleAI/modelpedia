@@ -1,0 +1,26 @@
+id: IC-176
+title: LLaMA 3.1 8B Instruct's KGQA accuracy degrades with increasing numbers of retrieved triples,
+  while GPT-4o-mini's accuracy improves, revealing different context-handling capacities
+description: The paper feeds LLaMA 3.1 8B Instruct and GPT-4o-mini varying numbers of retrieved KG triples
+  (from the SubGraphRAG retriever) and measures their question-answering accuracy on WebQSP-sub and
+  CWQ-sub. LLaMA 3.1 8B shows a significant performance decay as the number of triples grows beyond
+  a small budget, whereas GPT-4o-mini performs even better with additional retrieved triples. The authors
+  interpret this as evidence that different LLMs have varying capacities for robust reasoning over long
+  structured contexts, and that the retrieval size k should be matched to the downstream LLM's capability.
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+concepts: []
+sources:
+- ref: source:simple-effective-roles-graphs-large-language
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The specific per-k accuracy curves are reported only in Figure 4 (a plot); no tabulated numbers
+  are printed in the text for the LLaMA 3.1 8B decay. The observation is made in a single task setting
+  (KGQA over Freebase) and with a single retrieval method (SubGraphRAG's MLP retriever), so generalisability
+  to other tasks or retrieval sources is not established.
+extracted_by: automatic-extraction

@@ -1,0 +1,35 @@
+id: IC-417
+title: RLHF alignment reduces the creativity index of LLMs (GPT, Llama 2, OLMo) by an average of 30.1%
+  at the verbatim level and 8.9% at the semantic level
+description: The paper compares the creativity index of base models (GPT base/davinci-002, Llama 2 base,
+  OLMo base) with their RLHF-aligned counterparts (GPT-3/ChatGPT, Llama 2 Chat, OLMo Instruct) on novel
+  writing. The aligned models produce text with significantly more verbatim and semantic matches to
+  the reference corpus, indicating reduced linguistic originality. The reduction is larger at the verbatim
+  level than the semantic level, suggesting alignment causes models to converge on certain surface-level
+  linguistic styles preferred by human raters.
+models:
+- ref: model:gpt-3
+- ref: model:llama-2
+  variant: variant:llama-2-chat
+- ref: model:olmo
+  variant: variant:olmo-instruct
+concepts: []
+sources:
+- ref: source:ai-as-humanity-s-salieri-quantifying
+datasets:
+- ref: dataset:redpajama
+  role: source
+- ref: dataset:bookmia
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: creativity index of LLMs reduces by an average of 30.1% after RLHF (p = 1.3 × 10−12; n =
+  600) based on verbatim matches; decreases by an average of 8.9% after RLHF (p = 0.01; n = 600) based
+  on both verbatim and semantic matches
+caveat: The comparison is between base and aligned versions of the same model family, so the effect
+  could partly reflect differences in training data or other changes made during the alignment pipeline
+  beyond RLHF itself.
+extracted_by: automatic-extraction
+related_findings:
+- IC-418

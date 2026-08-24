@@ -1,0 +1,32 @@
+id: IC-455
+title: Qwen-Audio 7B zero-shot underperforms a 128M parameter baseline on audio difference explanation
+  across three evaluation scenarios
+description: 'The paper introduces the audio difference explanation task and evaluates Qwen-Audio 7B
+  in zero-shot mode (no task-specific training) on human-rated correctness, granularity, and readability
+  across three scenarios: studio recordings, FSD50K samples, and GTZAN music. Qwen-Audio zero-shot achieves
+  average scores of 2.81, 2.56, and 3.23 out of 5, respectively, which are lower than the authors''
+  128M parameter naive baseline (3.26, 3.35, 3.39) and the full ADIFF model (3.47, 3.53, 3.57). Despite
+  being a 7B parameter SOTA audio-language model and the only ALM in the literature supporting two audio
+  inputs, Qwen-Audio zero-shot does not leverage its scale advantage on this comparative reasoning task
+  without task-specific training.'
+models:
+- ref: model:qwen-audio
+concepts: []
+sources:
+- ref: source:adiff-explaining-audio-difference-using-natural
+datasets:
+- ref: dataset:fsd50k
+  role: eval
+- ref: dataset:gtzan
+  role: eval
+methods: []
+related_work:
+- ref: model:qwen-audio
+  role: compared-to
+evidence_type: correlational
+key_metric: 'QwenAC (z) 7b average: 2.81 (correctness), 2.56 (granularity), 3.23 (readability); per-scenario:
+  studio 2.73/2.64/3.09, fsd50k 2.76/2.20/3.28, gtzan 2.95/2.83/3.33'
+caveat: The zero-shot Qwen-Audio was not trained on the ACD or CLD datasets, so it does not align with
+  the data distribution, which the authors note leads to poorer objective metric scores. The human evaluation
+  used five professional annotators.
+extracted_by: automatic-extraction

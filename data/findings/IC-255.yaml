@@ -1,0 +1,51 @@
+id: IC-255
+title: GPT-4o, Llama 3.1, and Claude models show varying correlation with human ratings when used as
+  stereotype evaluators, with GPT-4o achieving the strongest gender correlation (ρ=0.86) but weaker
+  racial correlations
+description: The paper evaluates how well different LMs, when used as LMRAs, agree with human crowd-worker
+  ratings of harmful stereotypes. For gender bias, GPT-4o achieves ρ=0.86 (sign agreement 90%), Llama
+  3.1 70B achieves ρ=0.84 (88%), and Claude 3.5 Sonnet achieves ρ=0.85 (88%). For racial bias, correlations
+  are substantially weaker across all models, with GPT-4o at ρ=0.75 (Asian-White) down to ρ=0.34 (Hispanic-White).
+  Smaller models like Llama 3.1 8B show much weaker agreement (ρ=0.26 for gender). LMAs from other families
+  do not show substantially higher agreement than GPT-4o.
+models:
+- ref: model:gpt-4o
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-405b
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-haiku
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:claude-3
+  variant: variant:claude-3-opus
+concepts: []
+sources:
+- ref: source:first-person-fairness-chatbots
+datasets:
+- ref: dataset:lmsys-chat-1m
+  role: source
+- ref: dataset:wildchat
+  role: source
+methods: []
+related_work:
+- name: Perez et al. 2023
+  anchor: https://doi.org/10.18653/v1/2023.findings-acl.847
+  role: context
+- name: Liu et al. 2024
+  anchor: https://arxiv.org/abs/2311.09766
+  role: context
+evidence_type: correlational
+key_metric: 4o (ours) ρ=0.86 a=90% (gender); l3.1 8b ρ=0.26 a=52%; l3.1 70b ρ=0.84 a=88%; l3.1 405b
+  ρ=0.82 a=87%; c3.5 haiku ρ=0.72 a=58%; c3.5 sonnet ρ=0.85 a=88%; c3 opus ρ=0.62 a=29%
+caveat: The LMRA is run at temperature 0 while the chatbot responses are at temperature 0.8; the zero-shot
+  LMRA instructions may underperform compared to few-shot or calibrated approaches; racial bias correlations
+  are notably weaker than gender.
+extracted_by: automatic-extraction
+related_findings:
+- IC-252
+- IC-253
+- IC-254

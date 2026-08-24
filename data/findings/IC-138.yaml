@@ -1,0 +1,44 @@
+id: IC-138
+title: Trojan backdoored Llama-2-7B models and Vicuna-7B-v1.5 exhibit the probe concatenate effect,
+  where concatenating a triggered or jailbroken sample with a harmful probe significantly shifts the
+  model's output distribution away from refusal
+description: 'The paper demonstrates that when a sample containing a backdoor trigger (Trojan models)
+  or a jailbreak suffix (Vicuna-7B-v1.5) is concatenated with a harmful probe prompt, the model''s output
+  distribution for the probe shifts dramatically: the refusal rate drops and the model begins to comply.
+  Non-triggered samples (benign or harmful without trigger) produce negligible distributional change.
+  This effect is measured via KL divergence of first-token distributions and via Earth Mover''s Distance
+  over sampled outputs. The shift is large enough to separate triggered from non-triggered inputs, yielding
+  99.6% average AUROC on the five Trojan models and 90.97–98.82% AUROC on Vicuna-7B-v1.5 under three
+  jailbreak attack types.'
+models:
+- ref: model:vicuna
+  variant: variant:vicuna-7b-v1-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:probe-before-you-talk-black-box
+datasets:
+- ref: dataset:advbench
+  role: eval
+- ref: dataset:maliciousinstruct
+  role: eval
+- ref: dataset:ultrachat-200k
+  role: eval
+methods:
+- ref: method:onion
+  role: compared-to
+related_work:
+- name: Zou et al. (2023) GCG
+  anchor: https://arxiv.org/abs/2307.15043
+  role: context
+- name: Wei et al. (2023) ICA
+  anchor: https://arxiv.org/abs/2310.06387
+  role: context
+evidence_type: correlational
+key_metric: 'Trojan models: average AUROC 99.6%, average TPR@FPR5% 100% (Table 2). Vicuna-7B-v1.5: AUROC
+  96.95 (GCG universal), 90.97 (GCG non-universal), 98.82 (ICA) (Table 11).'
+caveat: 'Adaptive attacks can degrade detection: an adversary who knows the specific probe can regularize
+  the backdoor to maintain refusal on the probe (AUROC drops to 42.58%), and an adversary who forces
+  the first 10 tokens to be a refusal signal drops AUROC to 47.41% at sampling length 10 (recoverable
+  to 96.08% at length 50).'
+extracted_by: automatic-extraction

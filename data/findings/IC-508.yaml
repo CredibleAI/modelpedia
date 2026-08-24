@@ -1,0 +1,26 @@
+id: IC-508
+title: GPT-4 exhibits reduced preference consistency (0.66 vs 0.84) when the quality distinction between
+  two responses is minimal
+description: 'The paper measures GPT-4''s consistency as a preference judge by prompting it 10 consecutive
+  times on 100 randomly sampled examples from two sets: dmatch (where a weak LLM and human annotators
+  agree on preference) and dmismatch (where they disagree). In the match set, where quality differences
+  between responses are clearer, GPT-4''s majority-vote consistency is 0.84. In the mismatch set, where
+  quality differences are subtle, consistency drops to 0.66. The authors conclude that advanced LLMs
+  like GPT-4 face challenges in providing consistent feedback when response quality distinctions are
+  minimal.'
+models:
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:your-weak-llm-secretly-strong-teacher
+datasets:
+- ref: dataset:hh-rlhf
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: preference consistency 0.84 (dmatch) vs 0.66 (dmismatch), 100 samples, 10 consecutive trials
+extracted_by: automatic-extraction
+related_findings:
+- IC-509

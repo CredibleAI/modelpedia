@@ -1,0 +1,41 @@
+id: IC-373
+title: In Pythia-2.8B, the specific attention heads and MLPs implementing retrieval depend on superficial
+  input features, and request-patching preserves the natural retrieval mechanism
+description: 'A finer-grained case study on Pythia-2.8B using path patching shows that the set of components
+  directly contributing to the logits varies strongly with input content: only 18% of top-contributing
+  components are shared across inputs. A family of city-specific attention heads was discovered that
+  attend to the city token and contribute to the output only for a particular city value. When request-patching
+  is applied, the attention patterns and direct effects of late-layer components closely match those
+  on a natural reference input (relative difference less than 12%), indicating the intervention preserves
+  the model''s natural retrieval mechanism rather than creating an artificial one.'
+models:
+- ref: model:pythia
+concepts: []
+sources:
+- ref: source:look-before-you-leap-universal-emergent
+datasets:
+- ref: dataset:orion
+  role: eval
+methods:
+- ref: method:path-patching
+  role: primary
+- ref: method:residual-stream-patching
+  role: primary
+related_work:
+- name: Wang et al. (IOI circuit)
+  anchor: https://arxiv.org/abs/2211.00593
+  role: context
+- name: Lieberum et al. (circuit analysis scaling)
+  anchor: https://arxiv.org/abs/2307.09458
+  role: context
+evidence_type: interventional
+key_metric: 18% average overlap of top-contributing components across inputs (vs. 83% control); relative
+  difference less than 12% between post-patching and reference-input component behaviour; attention
+  patching alone yields only 0.14 probability of r1(c2) vs. 0.69 with full request-patching
+caveat: Limited to a single model (Pythia-2.8B) and a single task (question-answering). The authors
+  note the case study is limited to narrow settings and simple experimental methodology, providing only
+  preliminary threads of investigation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-372
+- IC-374

@@ -1,0 +1,50 @@
+id: IC-415
+title: VLMs show a default shape bias (47.9-73.8%) that exceeds their vision encoders and vision-only
+  models but falls short of human levels (96%), with the LLM component rather than the encoder responsible
+  for suppressing one visual cue.
+description: The paper measures the texture/shape bias of 23 VLMs on the cue-conflict dataset using
+  both VQA and image captioning tasks. VLMs consistently show a shape bias higher than their own vision
+  encoders (differences of -9.5% to +7.4%) and vision-only models like ResNet-50 (22%), but well below
+  the human level of 96%. Error consistency between VLMs and their isolated encoders reaches at most
+  78.7%, proving the LLM and text prompt further influence the decision. Token confidence analysis on
+  LLaVA-Next 7B, InternVL-Chat 1.1, and MoE-LLaVA-Phi2 shows near-binary confidence in the selected
+  cue, with only 17.7% of top-2 prediction pairs containing both shape and texture, indicating the LLM
+  effectively disregards the alternative cue.
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:gemini
+  variant: variant:gemini-pro-vision
+- ref: model:qwen-vl
+- ref: model:internvl-2
+  variant: variant:internvl
+- ref: model:llava
+- ref: model:llava-next
+- ref: model:moe-llava
+- ref: model:instructblip
+- ref: model:emu2
+- ref: model:cogagent
+- ref: model:cogvlm
+- ref: model:uform
+- ref: model:clip
+- ref: model:resnet
+  variant: variant:resnet50
+concepts: []
+sources:
+- ref: source:we-talk-models-into-seeing-world
+datasets: []
+methods:
+- ref: method:error-consistency
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: VLM shape bias range 47.9% (GPT-4V) to 73.8% (InstructBLIP Vicuna-7B) in VQA; human 96%;
+  ResNet-50 22%; CLIP ViT-L/14 60.95%; VLM-encoder shape bias difference -9.5% to +7.4%; error consistency
+  up to 78.7%; in LLaVA-Next 7B, 70.7% of cases the second prediction does not align with the conflicting
+  cue; only 17.7% of top-2 pairs contain both shape and texture
+caveat: GPT-4V is an outlier with surprisingly poor accuracy (69.75% VQA) due to a high refusal rate
+  (131/1280 conversations, roughly 10%) and the largest amount of generic captions (60.4%). The authors
+  note that radically different VLM architectures may lead to changes in bias mechanics.
+extracted_by: automatic-extraction
+related_findings:
+- IC-416

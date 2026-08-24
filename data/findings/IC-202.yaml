@@ -1,0 +1,43 @@
+id: IC-202
+title: All six evaluated LLMs achieve very low accuracy on OpenRCA, with no model solving any three-element
+  root cause query
+description: 'Six LLMs with at least 128k context windows were evaluated on 335 real-world software
+  failure cases requiring identification of root cause elements (component, time, reason) from heterogeneous
+  telemetry. The best model, Claude 3.5 Sonnet, achieved only 11.34% accuracy using the RCA-Agent framework.
+  Performance drops sharply as the number of required root cause elements increases: accuracy falls
+  by at least half going from one to two elements, and all models score 0% on three-element queries.
+  Models also perform better on the simpler telecom system than on the more complex bank and market
+  systems. Proprietary models consistently outperform open-source models across all evaluation methods.'
+models:
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:gpt-4o
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:mistral-large-2
+- ref: model:command-r
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-instruct
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:openrca-large-language-models-locate-root
+datasets:
+- ref: dataset:aiops-challenge
+  role: source
+methods: []
+related_work:
+- name: TaskWeaver
+  anchor: https://arxiv.org/abs/2311.17541
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Claude 3.5 Sonnet: 11.34% correct (RCA-Agent), 5.37% (oracle), 3.88% (balanced); GPT-4o:
+  8.96% (RCA-Agent); Gemini 1.5 Pro: 2.69% (RCA-Agent); Llama 3.1 Instruct: 3.28% (RCA-Agent); all models
+  0.00% on hard (3-element) queries'
+caveat: Due to budget constraints, only Llama 3.1 was evaluated on RCA-Agent among open-source models.
+  The 70B version of Llama 3.1 was used rather than 405B because Together.ai does not support 128k context
+  for the 405B version.
+extracted_by: automatic-extraction
+related_findings:
+- IC-203
+- IC-204

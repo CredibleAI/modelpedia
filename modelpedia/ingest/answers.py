@@ -10,10 +10,14 @@ FINDINGS = "findings"
 CONSIDERED = "considered"
 ENTITIES = "entities"
 CONCEPTS_CONSIDERED = "concepts_considered"
+RESULTS_COVERED = "results_covered"
 
 NAME_FIELDS = ("models", "datasets", "methods", "related_work")
 MIN_MARK = 3
 MIN_MARGIN = 1.5
+
+FORBIDDEN = re.compile("[^\u0009\u000a\u000d\u0020-\u007e\u0085"
+                       "\u00a0-\ud7ff\ue000-\ufffd\U00010000-\U0010ffff]")
 
 FENCE_OPEN = re.compile(r"\A\s*```[a-zA-Z]*\s*")
 FENCE_CLOSE = re.compile(r"```\s*\Z")
@@ -61,6 +65,35 @@ def quoted_prose(raw):
     return "\n".join(lines)
 
 
+def one_scalar(raw):
+    """A field whose value is a closed quote followed by more text: `key_metric: "a"; "b"`.
+    YAML reads the quote, then finds a scalar where the mapping should end, and the whole answer
+    is lost over one line. Seen 2026-08-20 on JVkdSi7Ekg. The value is re-encoded whole, so
+    nothing the model wrote is dropped. Only reached after the plainer repairs have failed, which
+    is what keeps it away from documents that already parse -- a quoted scalar spanning two lines
+    is legal YAML and must not be touched."""
+    lines = []
+    for line in raw.splitlines():
+        match = PROSE.match(line)
+        if not match or not match.group(3).strip():
+            lines.append(line)
+            continue
+        lead, field, value = match.groups()
+        try:
+            yaml.safe_load(value)
+            lines.append(line)
+        except yaml.YAMLError:
+            lines.append("%s%s: %s" % (lead, field, json.dumps(value.strip(), ensure_ascii=False)))
+    return "\n".join(lines)
+
+
+def loadable(raw):
+    """YAML forbids a handful of codepoints outright, and a citation copied verbatim out of a
+    paper can carry one: U+FFFE reached us from an oracle-bone paper on 2026-08-19 and made the
+    whole answer unparseable. Dropping them is a repair and is reported as one."""
+    return FORBIDDEN.sub("", raw)
+
+
 def evenly_indented(raw):
     return "\n".join(MIS_INDENT.sub(r"  \1:\2", line) if MIS_INDENT.match(line) else line
                      for line in raw.splitlines())
@@ -71,7 +104,9 @@ def read(raw):
     complaint = None
     for attempt, repaired in ((body, False),
                               (quoted_prose(body), True),
-                              (quoted_prose(evenly_indented(body)), True)):
+                              (quoted_prose(evenly_indented(body)), True),
+                              (loadable(quoted_prose(evenly_indented(body))), True),
+                              (loadable(one_scalar(evenly_indented(body))), True)):
         try:
             document = yaml.safe_load(attempt)
         except yaml.YAMLError as error:
@@ -81,7 +116,7 @@ def read(raw):
     raise Unreadable("not valid YAML even after repair: %s" % complaint)
 
 
-BLOCKS = (FINDINGS, CONSIDERED, ENTITIES, CONCEPTS_CONSIDERED)
+BLOCKS = (FINDINGS, CONSIDERED, ENTITIES, CONCEPTS_CONSIDERED, RESULTS_COVERED)
 
 
 def entries_of(document, block):

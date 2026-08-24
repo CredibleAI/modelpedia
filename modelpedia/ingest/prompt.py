@@ -3,7 +3,7 @@ import yaml
 from modelpedia import record_keys as keys
 from modelpedia.ingest import text as textutil
 
-MAX_PAPER_CHARS = 160000
+MAX_PAPER_CHARS = None
 OMITTED = "\n\n[... middle of the paper omitted ...]\n\n"
 CONCEPT_SUMMARY = 340
 
@@ -76,8 +76,9 @@ Wrap every field holding a sentence in double quotes: `title`, `description`, `k
 `caveat`, `finding`, `why`, `definition` and `instead_of`. Their text often contains a colon, and
 unquoted YAML breaks on it.
 
-Top level has up to four keys, in this order: `considered`, `findings`, `entities`,
-`concepts_considered`. The last is required whenever any finding has `concepts: []`.
+Top level has up to five keys, in this order: `considered`, `findings`, `results_covered`,
+`entities`, `concepts_considered`. `results_covered` is required whenever `findings` is non-empty.
+`concepts_considered` is required whenever any finding has `concepts: []`.
 
 `considered` comes first and is ALWAYS present, including when `findings` is empty. It is your
 worked answer to the first test, one entry per model the paper measures or analyses:
@@ -97,10 +98,21 @@ write anything else.
 
 `findings` holds a list, one item per distinct claim.
 
-HOW MANY. Most qualifying papers yield exactly one. Two is uncommon. Three is the hard maximum
-and needs three genuinely separate mechanisms, not three measurements of one mechanism. A result
-at four scales, on three datasets, or under two prompting regimes is ONE finding whose
-`key_metric` carries the range. When unsure, merge.
+HOW MANY. One finding per MECHANISM, and the two failure modes here are opposite, so read both.
+
+Do not split one mechanism into several findings. A result measured at four scales, on three
+datasets, or under two prompting regimes is ONE finding whose `key_metric` carries the range.
+Three numbers from one experiment are one claim, not three.
+
+Do not merge two mechanisms into one finding either, and do not drop the smaller one. A paper
+that measures how a model's answers align with human preferences AND how stable those answers are
+under paraphrases of the prompt has found two things, not one: the second is a different property
+of the model and a different paper could confirm or contradict it on its own. The same goes for a
+result that only appears in one section, or in an appendix, or that the authors themselves treat
+as secondary. Your job is coverage of what the paper measured, not a summary of what it argues.
+
+Four is the practical maximum. Reaching it means the paper measured four separate mechanisms, so
+check that each of your findings would still make sense if the other three were deleted.
 
 Every item has exactly these keys:
 
@@ -139,7 +151,31 @@ Every item has exactly these keys:
   related_work   List of {name, role} where role is one of: builds-on, compared-to, context.
                  Papers, models or methods this work positions itself against.
 
-THE `entities` BLOCK, third top-level key. Present whenever `findings` is non-empty.
+THE `results_covered` BLOCK, third top-level key. Required whenever `findings` is non-empty.
+
+Go through the paper's results in order -- every experiment, table and numbered result section,
+including the ones in an appendix -- and write one line each. This is where you check your own
+coverage, and it is the reason a real result does not quietly fall out of the answer:
+
+results_covered:
+- result: "Alignment with human moral preferences across 107 languages"
+  finding: 1
+- result: "Stability of answers under five paraphrases of the prompt"
+  finding: 2
+- result: "Ablation of the retrieval component of the authors' own pipeline"
+  finding: none
+  why: "a property of the pipeline this paper builds, not of a released model"
+
+  result   one short phrase naming what was measured, in the paper's own terms
+  finding  the 1-based position in your `findings` list that carries it, or `none`
+  why      required only when `finding` is `none`, one clause
+
+Two entries pointing at the same finding number are fine and are exactly what merging looks like.
+An entry with `finding: none` is fine too. What is not acceptable is a measured result about a
+released model that appears in no entry at all -- if you find one while writing this block, add
+the finding it deserves before you answer.
+
+THE `entities` BLOCK, fourth top-level key. Present whenever `findings` is non-empty.
 
 One entry per distinct name you used in any `models`, `methods`, `datasets` or `related_work`
 field, listed once even when several findings mention it:
@@ -183,7 +219,7 @@ Therefore:
 often truncates long URLs mid-string, for example "https://www.adept." -- if that is all you can
 see, leave `artifact` empty.
 
-THE `concepts_considered` BLOCK, fourth top-level key. Required whenever any finding has
+THE `concepts_considered` BLOCK, fifth top-level key. Required whenever any finding has
 `concepts: []`. Omit it only when every finding took a concept from the closed list.
 
 The concept list is closed on purpose and small on purpose. Twelve concepts cover twenty
@@ -346,14 +382,18 @@ def as_example(record, names):
 
 
 def clipped(body, limit=MAX_PAPER_CHARS):
-    if len(body) <= limit:
+    """No limit by default since 2026-08-19: the endpoint carries 131072 tokens and the longest
+    text in the corpus is 249652 characters, roughly 69000 tokens, so a whole paper fits with the
+    instructions and the answer. A limit is still accepted, because a smaller window will want
+    one, and a paper that does not fit comes back as an explicit refusal from the server rather
+    than as a silently shortened paper."""
+    if limit is None or len(body) <= limit:
         return body, False
     return body[:limit // 2] + OMITTED + body[-(limit // 2):], True
 
 
-def build(title, raw_text, concepts, examples, names, limit=MAX_PAPER_CHARS):
-    body, truncated = clipped(textutil.normalise(raw_text), limit)
-    parts = [
+def head(title, concepts, examples, names):
+    return [
         TASK,
         "Closed list of concepts. Choose only from these, or use [].\n",
         concept_block(concepts),
@@ -362,6 +402,23 @@ def build(title, raw_text, concepts, examples, names, limit=MAX_PAPER_CHARS):
         "sources. Their `entities` blocks are omitted here; follow the citation rules above.\n",
         "\n\n".join(as_example(record, names) for record in examples),
         "\n\nPaper title: %s" % title,
+    ]
+
+
+PAGES_TAIL = ("The paper follows as one image per page, in order. Read them: the tables, the",
+              "figure captions and the reference list are all in there, and a citation you copy"
+              " must be copied from what you can see on the page.\n")
+
+
+def build_pages(title, concepts, examples, names):
+    """The instructions without the extracted text, for the same paper sent as page images."""
+    return "\n".join(head(title, concepts, examples, names) + list(PAGES_TAIL)
+                     + ["\nReturn the YAML now, and nothing else."])
+
+
+def build(title, raw_text, concepts, examples, names, limit=MAX_PAPER_CHARS):
+    body, truncated = clipped(textutil.normalise(raw_text), limit)
+    parts = head(title, concepts, examples, names) + [
         "Paper text follows. It is machine-extracted, so hyphenation and spacing may be odd.\n",
         "-----BEGIN PAPER-----",
         body,

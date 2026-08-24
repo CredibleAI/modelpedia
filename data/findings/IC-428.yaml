@@ -1,0 +1,32 @@
+id: IC-428
+title: Qwen 1.5 appears to Pareto-dominate Pythia and LLaMA 2 on MMLU and GSM8K, but after adjusting
+  for test task training all three model families exhibit equivalent scaling
+description: 'The paper compares three model families that likely train on the test task to very different
+  extents: Pythia (trained on The Pile, unlikely to contain test task data), LLaMA 2 (trained mostly
+  on web data), and Qwen 1.5 (explicitly includes instruction data in pretraining). Without adjustment,
+  Qwen 1.5 Pareto-dominates both other families while Pythia models perform near random chance. After
+  fine-tuning all models on the same task-relevant data, all three families show remarkably similar
+  scaling trends, and none appears superior. This demonstrates that apparent family-level superiority
+  is a confound of differential test task training.'
+models:
+- ref: model:pythia
+- ref: model:llama-2
+- ref: model:qwen-1-5
+concepts: []
+sources:
+- ref: source:training-test-task-confounds-evaluation-emergence
+datasets:
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+methods: []
+related_work: []
+evidence_type: interventional
+caveat: The paper does not report specific accuracy numbers for each family in the text; the comparison
+  is presented qualitatively in Figure 6. The conclusion depends on the assumption that the three families
+  differ primarily in test task training exposure.
+extracted_by: automatic-extraction
+related_findings:
+- IC-427
+- IC-429

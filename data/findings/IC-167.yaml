@@ -1,0 +1,57 @@
+id: IC-167
+title: Adding a PCA-derived control vector to the middle-layer residual stream improves logit-based
+  reasoning accuracy on Pythia-1.4b, Pythia-2.8b, and Mistral-7B-Instruct
+description: The authors extract hidden-state activations from the middle layer of each model when it
+  solves (or fails to solve) reasoning prompts, compute a PCA-based contrastive control vector, and
+  add it to the residual stream at inference time. On the IOI task, both Pythia models show slight accuracy
+  gains with positive alpha, with Pythia-2.8b more stable than Pythia-1.4b. On BABI and GSM8K, Mistral-7B-Instruct
+  improves with negative alpha. KL divergence between the intervened and original logit distributions
+  increases quadratically with alpha in all cases, and entropy decreases modestly as accuracy rises,
+  consistent with probability mass concentrating on the correct token.
+models:
+- ref: model:pythia
+  variant: variant:pythia-1-4b
+- ref: model:pythia
+  variant: variant:pythia-2-8b
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:improving-reasoning-performance-large-language-models
+datasets:
+- ref: dataset:ioi
+  role: eval
+- ref: dataset:babi
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+methods:
+- ref: method:representation-engineering
+  role: primary
+- ref: method:pca
+  role: primary
+related_work:
+- name: Zou et al. 2023 (Representation Engineering)
+  anchor: https://arxiv.org/abs/2310.01405
+  role: builds-on
+- name: Templeton et al. 2024 (Scaling Monosemanticity)
+  anchor: https://transformer-circuits.pub/2024/scaling-monosemanticity/index.html
+  role: context
+- name: Wang et al. 2022 (IOI circuit)
+  anchor: https://arxiv.org/abs/2211.00593
+  role: context
+- name: Liu et al. 2023 (In-context vectors)
+  anchor: https://arxiv.org/abs/2311.06668
+  role: context
+- name: Hendel et al. 2023 (Task vectors)
+  anchor: https://doi.org/10.18653/v1/2023.findings-emnlp.624
+  role: context
+evidence_type: interventional
+caveat: The authors note that the IOI task may be too simple to elicit a general representation, that
+  Pythia models could not adequately solve BABI or GSM8K, and that the intervention is applied only
+  at the middle layer. They also flag that the jagged trend line on GSM8K suggests model representations
+  are not very robust to the intervention.
+extracted_by: automatic-extraction
+related_findings:
+- IC-168

@@ -1,0 +1,56 @@
+id: IC-149
+title: Intervening in the shared representation space using the dominant language (English) predictably
+  changes model outputs for other data types, demonstrating the space is causally used rather than a
+  vestigial byproduct
+description: The paper performs activation addition (ActAdd) and activation replacement interventions
+  in intermediate layers, using English trigger words, on models processing non-English or non-textual
+  inputs. For multilingual steering, ActAdd with English sentiment words ('good'/'bad') on Llama-3 processing
+  Spanish or Chinese text achieves the intended sentiment shift with minimal fluency loss, comparable
+  to steering in the input language. For code, adding the unembedding difference of 'start'-'end' at
+  layer 17 steers Llama-2 to expand range(end) into range(0,end) in up to 67% of cases. For vision,
+  replacing image patch hidden states with the unembedding of a different color word steers Chameleon
+  to report the new color in >80% of cases. For audio, adding the unembedding difference of a non-mammal
+  word to Salmonn's hidden states shifts the mammal prediction probability in a dose-dependent manner.
+  For arithmetic, ActAdd with English number words steers Llama-2 and Llama-3 to output a decremented
+  number followed by '+1' in >90% of cases.
+models:
+- ref: model:llama-3
+- ref: model:llama-2
+- ref: model:chameleon
+- ref: model:salmonn
+concepts: []
+sources:
+- ref: source:semantic-hub-hypothesis-language-models-share
+datasets:
+- ref: dataset:multilingual-amazon-reviews-corpus
+  role: eval
+- ref: dataset:mbpp
+  role: eval
+- ref: dataset:vggsound
+  role: eval
+methods:
+- ref: method:activation-addition
+  role: primary
+- ref: method:activation-patching
+  role: primary
+related_work:
+- name: Turner et al. 2024 (Activation Addition)
+  anchor: https://arxiv.org/abs/2308.10248
+  role: builds-on
+- name: Rimsky et al. 2024 (Steering Llama 2 via Contrastive Activation Addition)
+  anchor: https://aclanthology.org/2024.acl-long.828
+  role: context
+evidence_type: interventional
+key_metric: 'Llama-3 Spanish down-steering with English: sentiment 0.139±0.026 vs baseline 0.143±0.022;
+  Llama-2 code range() steering: up to 67% correct at max intervention strength; Chameleon color replacement:
+  >80% success rate at optimal layer; Salmonn mammal steering: dose-dependent shift in p(mammal) from
+  ~0.575 to ~0.725; arithmetic intervention: >90% of instances steered correctly (n=846)'
+caveat: The authors note that interventions are not guaranteed to produce sensible outputs, only the
+  intended directional change. For Chameleon, more sophisticated reasoning tasks (e.g., country flags,
+  spatial relationships) are beyond the model's capability even without intervention. The code intervention
+  uses a simpler method than ActAdd (direct unembedding difference addition). The color replacement
+  is more invasive than addition and may lexically bias generation, though the two-color control partially
+  addresses this.
+extracted_by: automatic-extraction
+related_findings:
+- IC-148

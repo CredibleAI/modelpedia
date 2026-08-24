@@ -1,0 +1,30 @@
+id: IC-267
+title: Adding a 'conflict' instruction to the prompt degrades GPT-4o and Claude 3.5 Sonnet accuracy
+  on normal (answerable, consistent) contexts by 5% and 2% respectively
+description: 'The inconsistent context task appends an instruction telling the model to respond ''conflict''
+  if it detects multiple answers. When this instruction is applied to normal, answerable contexts (where
+  no conflict exists), both GPT-4o and Claude 3.5 Sonnet show consistent performance drops across all
+  ten source datasets. Claude 3.5 Sonnet''s average accuracy falls from 0.90 to 0.85 (5% decrease),
+  and GPT-4o''s from 0.85 to 0.83. The authors interpret this as sycophantic behavior: the model adjusts
+  its response to align with the user''s implied expectation of conflict, even when the context is unambiguous.'
+models:
+- ref: model:gpt-4o
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:faitheval-your-language-model-stay-faithful
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Claude 3.5 Sonnet: 0.90 to 0.85 average accuracy (5% decrease); GPT-4o: 0.85 to 0.83 average
+  accuracy'
+caveat: Only two models were tested for this effect. The instruction is a single sentence appended to
+  the prompt; the magnitude of the effect may vary with different phrasings.
+extracted_by: automatic-extraction
+related_findings:
+- IC-264
+- IC-265
+- IC-266

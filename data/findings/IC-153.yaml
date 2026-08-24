@@ -1,0 +1,29 @@
+id: IC-153
+title: ResNet50 relies on flower petals and green background features as shortcuts when classifying
+  bee images
+description: 'Using NeurFlow to identify neuron groups in layer 4.2 of ResNet50 for the ''bee'' class,
+  the authors find three concept groups: ''pink petals'', ''green background'', and ''bee''. Most false-positive
+  images (non-bee images classified as bee) score high on the ''petal'' and ''green background'' groups.
+  Masking all neurons in the petal or green-background groups drastically distorts the prediction probability
+  away from ''bee'', while masking an equal number of random neurons yields negligible changes. This
+  causally confirms the flower-petal bias previously identified correlationaly by Kim et al. (2024)
+  and additionally reveals a ''green background'' bias not reported in that prior work.'
+models:
+- ref: model:resnet
+  variant: variant:resnet50
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:neurflow-interpreting-neural-networks-through-neuron
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:integrated-gradients
+  role: supporting
+related_work: []
+evidence_type: interventional
+caveat: The experiment is demonstrated on a single class ('bee') and a single layer (layer 4.2), though
+  the authors state the result is 'consistent for multiple layers and with different classes.' No specific
+  probability values are printed in the text.
+extracted_by: automatic-extraction

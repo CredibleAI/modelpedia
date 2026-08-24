@@ -1,0 +1,47 @@
+id: IC-560
+title: Llama3-8B-Instruct reliably distinguishes its own outputs from human outputs in self-recognition
+  tasks, while Llama3-8B base performs at chance, indicating the ability is acquired during post-training.
+description: The paper tests both the instruct and base variants of Llama3-8B on paired and individual
+  presentation self-recognition paradigms across four datasets (CNN, XSum, Dolly, SAD). In the individual
+  paradigm, the chat model achieves 57.2% (CNN), 61.0% (XSum), 52.3% (Dolly), and 65.8% (SAD) accuracy,
+  while the base model is at or below chance on all four. In the paired paradigm, the chat model distinguishes
+  its own text from human text in all datasets, but after length normalization it can no longer distinguish
+  its own text from other AI model outputs. The base model fails in both paradigms. Perplexity correlations
+  are negligible (<=0.16), ruling out a simple familiarity-based mechanism.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts: []
+sources:
+- ref: source:inspection-control-self-generated-text-recognition
+datasets:
+- ref: dataset:cnn-dailymail
+  role: eval
+- ref: dataset:xsum
+  role: eval
+- ref: dataset:databricks-dolly
+  role: eval
+- ref: dataset:sad
+  role: eval
+methods: []
+related_work:
+- name: Panickssery et al. 2024
+  anchor: https://arxiv.org/abs/2404.13076
+  role: builds-on
+- name: Laine et al. 2024
+  anchor: https://arxiv.org/abs/2407.04694
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Individual presentation: chat model CNN 57.2% (p=0.004), XSum 61.0% (p=0.0001), Dolly 52.3%
+  (p=0.3576), SAD 65.8% (p=0.0001); base model CNN 50.0% (p=1.000), XSum 50.3% (p=0.9045), Dolly 49.5%
+  (p=0.8415), SAD 48.5% (p=0.5485). Perplexity correlations <=0.16.'
+caveat: The authors note that in unnormalized texts the model exploits length as a cue (its outputs
+  are longer than human outputs), and that after length normalization it can no longer distinguish its
+  own text from other AI model outputs. They acknowledge that undetected surface-level tells may remain.
+extracted_by: automatic-extraction
+related_findings:
+- IC-561
+- IC-562
+- IC-563

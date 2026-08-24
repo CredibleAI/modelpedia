@@ -1,0 +1,37 @@
+id: IC-597
+title: Most LMMs exhibit systematic class bias in synthetic data detection, with GPT-4o biased toward
+  classifying text as real and 3D as AI-generated
+description: The paper introduces the Normalized Bias Index (NBI) to quantify whether a model preferentially
+  classifies inputs as real or synthetic. A heatmap across 20+ models shows that most LMMs have a pronounced
+  bias in at least one modality. GPT-4o specifically tends to classify textual data as real while being
+  biased toward judging 3D data as AI-generated. Despite using two question phrasings to minimize cueing
+  effects, the bias persists across the majority of evaluated models.
+models:
+- ref: model:gpt-4o
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:internvl-2
+  variant: variant:internvl-2-8b
+- ref: model:qwen-2-vl
+  variant: variant:qwen2-vl-7b
+- ref: model:llava-onevision
+  variant: variant:llava-ov-7b
+concepts: []
+sources:
+- ref: source:loki-comprehensive-synthetic-data-detection-benchmark
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: NBI values shown in Figure 5(a) heatmap; text states 'gpt-4o tends to classify textual data
+  as real, whereas it is biased towards judging 3d data as ai-generated' and 'a pronounced bias is still
+  evident across most models'
+caveat: The NBI values are presented only as a color-coded heatmap in Figure 5(a); no per-model numeric
+  NBI values are printed in the text or tables.
+extracted_by: automatic-extraction
+related_findings:
+- IC-598
+- IC-599
+- IC-600

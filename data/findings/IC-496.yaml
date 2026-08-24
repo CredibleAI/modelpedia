@@ -1,0 +1,33 @@
+id: IC-496
+title: GPT-4o achieves the highest location inference accuracy among evaluated models, reaching 98.16%
+  for country, 60.23% for city, and 27.13% for zip code from street view images
+description: The paper evaluates image-to-text models on a dataset of 1,816 Google Street View images
+  collected after 2023, asking models to infer location at four granularities (country, state, city,
+  zip code). GPT-4o outperforms all other models at every granularity. Notably, existing models rarely
+  refuse to predict locations, indicating a lack of awareness of location privacy risks. GPT-4V is the
+  only model that occasionally refuses (within 1.61%).
+models:
+- ref: model:gpt-4o
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:llama-3-2-vision
+  variant: variant:llama-3-2-90b-vision-instruct
+- ref: model:nova-lite
+- ref: model:gemini-1-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:mmdt-decoding-trustworthiness-safety-multimodal-foundation
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'gpt-4o: 98.16% country, 75.40% state, 60.23% city, 36.55% zip code range, 27.13% zip code;
+  gpt-4v: 91.03% country, 44.60% state, 40.00% city, 17.47% zip code range, 12.18% zip code'
+caveat: The dataset includes only images taken after 2023 to avoid memorization, but models with large
+  knowledge bases may still have seen some of these locations through other channels.
+extracted_by: automatic-extraction
+related_findings:
+- IC-495
+- IC-497
+- IC-498

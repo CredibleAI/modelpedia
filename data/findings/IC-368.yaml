@@ -1,0 +1,45 @@
+id: IC-368
+title: Larger LMs (GPT-4o, Claude-3.5-Sonnet, Gemini-1.5-Pro) exhibit better calibration than their
+  smaller counterparts (GPT-4o-mini, Claude-3-Haiku, Gemini-1.5-Flash) when verbalizing confidence with
+  certainty phrases
+description: 'The paper evaluates six released LMs on SCIQ and TruthfulQA, prompting them to answer
+  questions and express confidence by selecting from a fixed set of 12 certainty phrases. Calibration
+  is measured via ECE using a distribution-based estimator. The paper reports that larger models consistently
+  outperform their smaller variants in calibration: GPT-4o achieves ECE 0.07 on SCIQ and 0.22 on TruthfulQA,
+  while the paper states that GPT-4o-mini and other smaller variants show worse calibration. This pattern
+  holds across all three model families tested.'
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-flash
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:calibrating-expressions-certainty
+datasets:
+- ref: dataset:sciq
+  role: eval
+- ref: dataset:truthfulqa
+  role: eval
+methods:
+- ref: method:platt-scaling
+  role: compared-to
+related_work:
+- name: Tian et al. 2023 (Just Ask for Calibration)
+  anchor: https://doi.org/10.18653/v1/2023.emnlp-main.330
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4o phrase uncalibrated: SCIQ ece 0.07, TruthfulQA ece 0.22; Claude-3.5-Sonnet: SCIQ
+  ece 0.06, TruthfulQA ece 0.25; Gemini-1.5-Pro: SCIQ ece 0.17, TruthfulQA ece 0.28'
+caveat: Specific ECE numbers for the smaller variants (GPT-4o-mini, Claude-3-Haiku, Gemini-1.5-Flash)
+  are shown in Figure 4 but not printed as text values in the paper body.
+extracted_by: automatic-extraction
+related_findings:
+- IC-369

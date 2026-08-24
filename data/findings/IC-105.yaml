@@ -1,0 +1,40 @@
+id: IC-105
+title: Value anchoring produces a sinusoidal scoring pattern around the circular value structure, with
+  scores decreasing as circular distance from the anchor increases
+description: 'To explain why value anchoring yields human-like correlations, the paper arranged the
+  19 anchor values in their circular order and, for each anchor condition, normalized scores by setting
+  the anchored value to zero. The mean normalized scoring pattern across all 19 anchor conditions followed
+  a sinusoidal function: the anchored value received the highest score, neighboring values on the circle
+  received similarly high scores, and values farther around the circle received progressively lower
+  scores. This pattern held across all models except Gemma-2-9B, confirming that the model''s scoring
+  is governed by circular proximity in the value structure.'
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4-0314
+- ref: model:gemini-1-0-pro
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+- ref: model:gemma-2
+  variant: variant:gemma-2-27b
+concepts:
+- ref: concept:circular-representation
+sources:
+- ref: source:llms-have-consistent-values
+datasets:
+- ref: dataset:pvq-rr
+  role: eval
+methods:
+- ref: method:pvq-rr
+  role: eval
+related_work: []
+evidence_type: correlational
+caveat: The sinusoidal pattern does not hold for Gemma-2-9B, which is the exception among the six models
+  tested.
+extracted_by: automatic-extraction
+related_findings:
+- IC-103
+- IC-104

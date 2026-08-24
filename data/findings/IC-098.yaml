@@ -1,0 +1,28 @@
+id: IC-098
+title: LegalBERT performs below the constant classifier baseline on CASELAWQA due to its 512-token context
+  window
+description: LegalBERT, a 110M-parameter BERT-style model pre-trained on legal documents, achieves only
+  24% accuracy on CASELAWQA, substantially below the 40% constant classifier baseline. The authors attribute
+  this to LegalBERT's 512-token context window, which most court opinions in the benchmark exceed. This
+  contrasts with SAULLM 54B (47%), which improves over its base Mixtral 8x7B Instruct (43%) by 4 points
+  but still lags smaller generalist models like Llama 3.1 8B Instruct (59%).
+models:
+- ref: model:legalbert
+- ref: model:saullm-54b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:lawma-power-specialization-legal-annotation
+datasets:
+- ref: dataset:caselawqa
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: constant classifier 0.40, legalbert 0.24, mixtral 8x7b it 0.43, saullm 54b 0.47
+caveat: LegalBERT's 512-token context window is the stated reason for poor performance; the authors
+  note this is unsurprising given the model's age and size.
+extracted_by: automatic-extraction
+related_findings:
+- IC-096
+- IC-097

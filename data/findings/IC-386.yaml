@@ -1,0 +1,34 @@
+id: IC-386
+title: LLM performance on CS-Bench grows logarithmically with parameter scale within model families
+description: The paper evaluates multiple model families (Qwen1.5, Llama2, Llama3, Gemma, InternLM2,
+  DeepSeekLLM) across a range of parameter sizes and finds that CS-Bench scores increase approximately
+  linearly when parameter scale is plotted on a logarithmic axis. For Qwen1.5, the score improves by
+  16.19% from 0.5B to 7B, 7.11% from 14B to 72B, and only 2.66% from 72B to 110B, showing diminishing
+  returns. A fitting function is validated by predicting Qwen1.5-110b at 67.83% (actual 67.95%) and
+  Llama2-70b at 55.08% (actual 52.52%).
+models:
+- ref: model:qwen-1-5
+- ref: model:llama-2
+- ref: model:llama-3
+- ref: model:gemma
+- ref: model:internlm2
+- ref: model:deepseek-llm
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:cs-bench-comprehensive-benchmark-large-language
+datasets:
+- ref: dataset:cs-bench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Qwen1.5: +16.19% (0.5B→7B), +7.11% (14B→72B), +2.66% (72B→110B); fitting prediction Qwen1.5-110b
+  67.83% vs actual 67.95%; Llama2-70b predicted 55.08% vs actual 52.52%'
+caveat: The fitting function is validated on only two model families (Qwen1.5 and Llama2) and the Llama2
+  prediction has a 2.56% deviation. The relationship is observed, not causally established.
+extracted_by: automatic-extraction
+related_findings:
+- IC-387
+- IC-388
+- IC-389

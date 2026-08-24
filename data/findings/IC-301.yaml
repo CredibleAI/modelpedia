@@ -1,0 +1,31 @@
+id: IC-301
+title: Yi-1.5-9B-chat exhibits a layer-repetition pattern where a section of layers is duplicated at
+  a later depth
+description: 'Applying DOCS to the MLP-up weight matrices of 01-ai/yi-1.5-9b-chat reveals a specific
+  off-diagonal pattern: layer 9 is highly similar to layer 25, layer 10 to layer 26, layer 11 to layer
+  27, and so on. This suggests a repetition of a section of layers within the model, possibly due to
+  a specific training strategy employed to save training costs. In contrast, representational similarity
+  (Linear CKA) on the same model shows relatively homogeneous patterns that do not reveal this fine-grained
+  layer correspondence.'
+models:
+- ref: model:yi
+  variant: variant:yi-1-5-9b
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:docs-quantifying-weight-similarity-deeper-insights
+datasets: []
+methods:
+- ref: method:linear-cka
+  role: compared-to
+related_work: []
+evidence_type: observational
+key_metric: layer 9 is highly similar to layer 25, layer 10 is highly similar to layer 26, layer 11
+  is highly similar to layer 27
+caveat: The authors hypothesize the cause (training strategy to save costs) but do not confirm it; the
+  finding is based on a single model.
+extracted_by: automatic-extraction
+related_findings:
+- IC-298
+- IC-299
+- IC-300

@@ -1,0 +1,36 @@
+id: IC-579
+title: 'ICL hidden states exhibit positional bias: representations of the same input are more similar
+  when the input appears at similar positions in the sequence'
+description: The paper extracts forerunner token hidden states at layer 24 of Llama 3 70B for the same
+  query placed at different positions (0, 1, 2, 4, 8, 12 demonstrations preceding it) and computes pairwise
+  cosine similarities. For the same query at different positions, similarity is highest when positions
+  are close (e.g., 0.58 for positions 0-1, dropping to 0.35 for positions 0-12 on SST-2). For different
+  queries, the same positional proximity effect is observed. This positional similarity bias means demonstrations
+  closer to the query receive more attention during the induction step, explaining the well-known recency
+  bias in ICL predictions.
+models:
+- ref: model:llama-3
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:revisiting-context-learning-inference-circuit-large
+datasets:
+- ref: dataset:sst-2
+  role: eval
+methods:
+- ref: method:cosine-similarity
+  role: primary
+related_work:
+- ref: method:calibrate-before-use
+  role: context
+evidence_type: correlational
+key_metric: 'cosine similarity of same-query forerunner hidden states at layer 24 (SST-2): 0.58 (pos
+  0-1), 0.47 (pos 0-2), 0.42 (pos 0-4), 0.37 (pos 0-8), 0.35 (pos 0-12); different queries: 0.69 (pos
+  0-1), 0.53 (pos 0-2), 0.78 (pos 1-2)'
+caveat: Measured at a single layer (24) on Llama 3 70B; appendix results on other models (layer 16 for
+  8B/7B, layer 24 for 40B) show the same pattern but with different magnitudes.
+extracted_by: automatic-extraction
+related_findings:
+- IC-578
+- IC-580
+- IC-581

@@ -1,0 +1,27 @@
+id: IC-392
+title: Fuyu-8B and GPT-4V exhibit position bias in visual recognition, with model performance depending
+  on where the target object appears in the image
+description: The paper demonstrates that vision-language models also suffer from position bias. For
+  Fuyu-8B, the loss on the ground-truth token is consistently lower when a real-world image is inserted
+  at the bottom of a large black background rather than at other positions. For GPT-4V, the model correctly
+  identifies the M110 satellite galaxy when it appears at the top of the Andromeda galaxy image (flipped
+  versions c and d) but incorrectly identifies it as M32 when it appears at the bottom (original and
+  one flip, versions a and b).
+models:
+- ref: model:fuyu
+  variant: variant:fuyu-8b
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:eliminating-position-bias-language-models-mechanistic
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The GPT-4V result is based on a single image with four flips (qualitative, n=4). The Fuyu-8B
+  result is shown as a loss curve in Figure 1 without specific numerical values printed in the text.
+extracted_by: automatic-extraction
+related_findings:
+- IC-391

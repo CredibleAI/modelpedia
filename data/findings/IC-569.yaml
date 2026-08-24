@@ -1,0 +1,30 @@
+id: IC-569
+title: Mistral-7B-instruct-v0.1 achieves only F1 of 0.419 on zero-shot stance detection for the X-Stance
+  German dataset, substantially below the fine-tuned BERT baseline (F1 0.693)
+description: The paper evaluates Mistral-7B-instruct-v0.1 directly on the X-Stance German dataset (10
+  selected questions) for zero-shot stance detection, using a prompt that asks the model to classify
+  a comment as favor or against a given political question. The model achieves an average F1 of 0.419
+  across the 10 questions, well below the fine-tuned BERT baseline at 0.693. The authors attribute the
+  poor performance to the niche political topics being absent from Mistral's training data, the model's
+  tendency to produce inconsistent classification outputs or refuse to predict stance, and its verbose
+  response style that does not align with single-label classification. They also note that other similar-sized
+  open-source LLMs (Llama, OpenAssistant, Falcon) struggled similarly.
+models:
+- ref: model:mistral-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:power-llm-generated-synthetic-data-stance
+datasets:
+- ref: dataset:x-stance
+  role: eval
+methods:
+- ref: method:lora
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: 'F1 score (avg. 10 questions): zero-shot LLM 0.419, baseline (fine-tuned BERT) 0.693'
+caveat: The evaluation is on 10 selected questions from the X-Stance German test set, a narrow slice
+  of the full dataset. The authors note that better prompting strategies could improve performance,
+  and that the model's verbose outputs required accepting any response containing 'favor' or 'against'.
+extracted_by: automatic-extraction

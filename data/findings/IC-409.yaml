@@ -1,0 +1,53 @@
+id: IC-409
+title: Knowledge editing methods correct verified hallucinations in Llama2-7B, Llama3-8B, and Mistral-v0.3-7B
+  far less effectively than their scores on existing benchmarks suggest
+description: The paper constructs a verified hallucination dataset by checking which questions each
+  model actually answers incorrectly before editing. Llama2-7B, Llama3-8B, and Mistral-v0.3-7B produce
+  12,619, 13,210, and 14,366 verified hallucinations respectively. When these verified hallucinations
+  are targeted by knowledge editing, methods that score near 100% on existing benchmarks (e.g., ft-m
+  on WikidataRecent, ZSRE, WikiBio) achieve only around 60% efficacy on the verified set. The overall
+  efficacy ranking across the three LLMs is ft-l < ft-m < memit < rome < lora < ice < grace, with parameter-preserving
+  methods (ice, grace) outperforming parameter-modifying ones.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:mistral-7b
+  variant: variant:mistral-v0-3-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:knowledge-editing-really-correct-hallucinations
+datasets:
+- ref: dataset:wikidata
+  role: eval
+- ref: dataset:zsre
+  role: eval
+- ref: dataset:wikibio
+  role: eval
+- ref: dataset:wikidata
+  role: source
+methods:
+- ref: method:rome
+  role: primary
+- ref: method:memit
+  role: primary
+- ref: method:lora
+  role: primary
+- ref: method:ice
+  role: primary
+- ref: method:grace
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: 'ft-m achieves near 100% performance in existing datasets such as wikidatarecent, zsre,
+  and wikibio, its overall efficacy scores on llama2-7b and mistral-v0.3-7b are only around 60%; hallucination
+  counts: 12,619 (llama2-7b), 13,210 (llama3-8b), 14,366 (mistral-v0.3-7b)'
+caveat: The efficacy scores depend on domains and LLMs; the paper notes that ft-l scores across domains
+  and LLMs are highly distinct.
+extracted_by: automatic-extraction
+related_findings:
+- IC-410
+- IC-411
+- IC-412

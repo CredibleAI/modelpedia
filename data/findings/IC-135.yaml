@@ -1,0 +1,49 @@
+id: IC-135
+title: Linear relational embeddings for factual relations form in OLMo-7B, OLMo-1B, and GPT-J when subject-object
+  co-occurrence frequency exceeds model-specific thresholds, with r=0.82 correlation between log co-occurrence
+  and causality across all pretraining stages
+description: The paper measures the quality of linear relational embeddings (LREs) for 25 factual relations
+  across 8 intermediate OLMo checkpoints and the final GPT-J checkpoint. It finds that the causality
+  score of an LRE strongly correlates with the log subject-object co-occurrence frequency in the pretraining
+  corpus (r=0.82), and that once a relation's average co-occurrence exceeds a threshold (1,097 for GPT-J,
+  1,998 for OLMo-7B, 4,447 for OLMo-1B), the LRE achieves near-perfect causality (>0.9) regardless of
+  how early in training that threshold was crossed. The correlation with co-occurrence (0.82) is higher
+  than with subject frequency alone (0.66) or object frequency alone (0.59), and higher than with 5-shot
+  accuracy (0.74 in OLMo-7B).
+models:
+- ref: model:olmo
+- ref: model:gpt-j
+concepts:
+- ref: concept:linear-representation
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:linear-representations-pretraining-data-frequency-language
+datasets:
+- ref: dataset:dolma
+  role: source
+- ref: dataset:the-pile
+  role: source
+- ref: dataset:relations-dataset
+  role: eval
+methods: []
+related_work:
+- name: Hernandez et al. 2024 (Linearity of Relation Decoding)
+  anchor: https://openreview.net/forum?id=w7lu2s14ke
+  role: builds-on
+- name: Chanin et al. 2024 (Identifying Linear Relational Concepts)
+  anchor: https://doi.org/10.18653/v1/2024.naacl-long.85
+  role: context
+- name: Jiang et al. 2024 (On the Origins of Linear Representations)
+  anchor: https://openreview.net/forum?id=otuTw4Mghk
+  role: context
+evidence_type: correlational
+key_metric: 'r=0.82 (log subj-obj co-occurrence vs causality); thresholds for mean causality >0.9: GPT-J
+  1,097, OLMo-7B 1,998, OLMo-1B 4,447; r=0.66 (subject freq), r=0.59 (object freq); causality vs 5-shot
+  accuracy r=0.74 in OLMo-7B; star-constellation-name: 84% accuracy but 44% causality in OLMo-7B'
+caveat: Only three models are tested, so the authors caution that scale effects on the threshold cannot
+  be firmly established. The co-occurrence count is a proxy for relation mention frequency, not an exact
+  count of the full triplet. The finding is correlational; the authors explicitly state they cannot
+  draw causal claims about how exposure affects individual representations.
+extracted_by: automatic-extraction
+related_findings:
+- IC-136

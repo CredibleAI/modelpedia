@@ -1,0 +1,33 @@
+id: IC-215
+title: DINOv2's zero-shot attention maps focus on irrelevant foreground objects (vehicles, advertisements)
+  rather than scene structure, degrading its VPR recall on challenging datasets
+description: 'The paper visualises DINOv2''s self-attention maps on VPR query images and shows that
+  the pre-trained model''s strongest attention is drawn to dynamic or irrelevant foreground elements
+  such as vehicles, pedestrians, and temporary advertisements, rather than to the building structures
+  and scene layout that determine location. This misdirected attention limits DINOv2''s zero-shot VPR
+  performance, particularly on datasets with large viewpoint or illumination changes. The effect is
+  illustrated across multiple examples (Figures 3b, 4a, S3) and is quantified by the gap between DINOv2''s
+  zero-shot recall on easier (Pitts30k: 78.1) versus harder (Tokyo24/7: 62.2, Nordland: 33.0) benchmarks.'
+models:
+- ref: model:dinov2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:effovpr-effective-foundation-model-utilization-visual
+datasets:
+- ref: dataset:pitts30k
+  role: eval
+- ref: dataset:tokyo24-7
+  role: eval
+- ref: dataset:nordland
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: 'DINOv2 zero-shot R@1: Pitts30k 78.1, Tokyo24/7 62.2, MSLs-val 47.7, Nordland 33.0'
+caveat: The attention visualisations are qualitative; the paper does not quantify the fraction of attention
+  mass on dynamic vs. static objects across a full test set.
+extracted_by: automatic-extraction
+related_findings:
+- IC-216
+- IC-217

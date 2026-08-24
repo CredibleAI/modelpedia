@@ -1,0 +1,42 @@
+id: IC-103
+title: LLMs' value rankings align with the universal human value hierarchy under most prompting conditions
+description: The paper administered the 57-item PVQ-RR questionnaire to six LLMs under five prompting
+  strategies and two temperatures, then computed Spearman rank correlations between each model's value
+  ranking and the human benchmark from Schwartz and Cieciuch (2022, 49 cultural groups, N=53,472). Most
+  prompt-model combinations yielded correlations above 0.8 with p < .001. The value anchor prompt produced
+  correlations ranging from 0.75 to 0.85. A notable exception was GPT-4-0314 under the basic prompt,
+  which showed very low correlation and stark deviations (conformity-rules ranked first vs. humans'
+  16th; benevolence-care ranked 18th vs. humans' 1st).
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4-0314
+- ref: model:gemini-1-0-pro
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+- ref: model:gemma-2
+  variant: variant:gemma-2-27b
+concepts: []
+sources:
+- ref: source:llms-have-consistent-values
+datasets:
+- ref: dataset:pvq-rr
+  role: eval
+methods:
+- ref: method:pvq-rr
+  role: eval
+- ref: method:spearman-correlation
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: Spearman rank correlations > 0.8 for many prompt-model combinations (p < .001); value anchor
+  prompt correlations 0.75 to 0.85
+caveat: GPT-4-0314 under the basic prompt shows very low correlation with the human hierarchy, deviating
+  sharply (conformity-rules ranked 1st vs. humans' 16th; benevolence-care ranked 18th vs. humans' 1st).
+extracted_by: automatic-extraction
+related_findings:
+- IC-104
+- IC-105

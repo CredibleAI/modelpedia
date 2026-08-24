@@ -1,0 +1,35 @@
+id: IC-313
+title: All four LLM backbones fail to detect a planted linear trend in incident resolution time when
+  the slope is below 0.1, and detection rates diverge sharply above that threshold
+description: The paper varies the slope of a planted linear trend in dataset 2 from -0.1 to 0.9 and
+  measures whether each LLM backbone, within AgentPoirot, discovers the insight. All models (GPT-4o,
+  GPT-4-turbo, GPT-3.5-turbo, Llama-3-70b) fail to detect the trend when the slope is below 0.1, including
+  negative slopes, with no false positives. Above slope 0.1, GPT-4o and GPT-4-turbo discover the insight
+  every time, Llama-3-70b discovers it nearly half the time, and GPT-3.5-turbo has the lowest and most
+  variable detection rate.
+models:
+- ref: model:gpt-4o
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:insightbench-evaluating-business-analytics-agents-through
+datasets:
+- ref: dataset:insightbench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'All models fail at slope < 0.1; for slope > 0.1: GPT-4o and GPT-4-turbo detect every time,
+  Llama-3-70b nearly half the time, GPT-3.5-turbo particularly low detection rate'
+caveat: Tested on a single dataset (dataset 2) with a single planted insight type (linear trend in TTR);
+  generalizability to other trend types or datasets is not established.
+extracted_by: automatic-extraction
+related_findings:
+- IC-312
+- IC-314

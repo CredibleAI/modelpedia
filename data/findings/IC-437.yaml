@@ -1,0 +1,48 @@
+id: IC-437
+title: Extracting parameters from user queries is harder for LLM-based agents than using outputs from
+  previous actions, and less intelligent LLMs show steeper parameter-filling degradation with task difficulty
+description: The paper measures API parameter value filling across 4 difficulty levels for 10 LLMs,
+  separating primitive/enum data type filling from filling outputs of previous actions. Across all models,
+  the accuracy for primitive/enum filling is lower than for previous-action output filling, with the
+  gap ranging from 2.55% (GPT-3.5-turbo) to 15.39% (DeepSeek-2-Chat). For less intelligent LLMs like
+  GPT-4o-mini, parameter filling accuracy drops significantly as difficulty increases, while more intelligent
+  LLMs like Gemini-1.5-Pro show smaller drops. Error analysis shows that less intelligent models frequently
+  make format errors and wrong API selections, while powerful models rarely make format errors.
+models:
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-pro
+- ref: model:gemini-1-5
+  variant: variant:gemini-1-5-flash
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:qwen-2
+  variant: variant:qwen-2-72b
+- ref: model:qwen2-5
+  variant: variant:qwen-2-5-7b
+- ref: model:deepseek-2-chat
+- ref: model:deepseek-2-coder
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:glm-4
+  variant: variant:chatglm-4-air
+concepts: []
+sources:
+- ref: source:shortcutsbench-large-scale-real-world-benchmark
+datasets: []
+methods:
+- ref: method:react
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: accuracy drop between primitive/enum fill and previous-actions fill ranges from 2.55% (gpt-3.5-turbo)
+  to 15.39% (deepseek-2-chat); general LLMs achieve parameter filling accuracies of 94.29%, 83.92%,
+  and 75.53% across three difficulty levels
+caveat: Evaluation uses a modified ReAct prompt template; parameter values are checked against human-annotated
+  golden action sequences
+extracted_by: automatic-extraction
+related_findings:
+- IC-436
+- IC-438
+- IC-439

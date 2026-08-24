@@ -1,0 +1,37 @@
+id: IC-577
+title: An encoder's text reconstruction performance positively correlates with its effectiveness in
+  downstream vector-ICL classification tasks across 15 encoder-LLM-dataset configurations
+description: The authors measure each of four text encoders on a text reconstruction task (as a proxy
+  for information preserved in embeddings) and then rank them by downstream text classification accuracy
+  when used with vector-ICL. Across 5 classification datasets and 3 LLMs (15 configurations total),
+  Spearman rank correlations between the two rankings are consistently positive, with 4 of 15 configurations
+  showing correlations approaching 1. This suggests reconstruction quality is a reliable predictor of
+  an encoder's utility as a vector-ICL input.
+models:
+- ref: model:nv-embed-v1
+- ref: model:sfr-embedding-2-r
+- ref: model:stella-en-1-5b-v5
+- ref: model:gtr-t5-base
+concepts: []
+sources:
+- ref: source:vector-icl-context-learning-continuous-vector
+datasets:
+- ref: dataset:imdb
+  role: eval
+- ref: dataset:rotten-tomatoes
+  role: eval
+- ref: dataset:sst-2
+  role: eval
+- ref: dataset:financial-phrasebank
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: Spearman rank correlation positive across 15 configurations; 4 of 15 configurations show
+  values approaching 1
+caveat: The analysis is limited to text classification as the downstream task and to four specific encoders;
+  the correlation may not hold for other task types or encoder families.
+extracted_by: automatic-extraction
+related_findings:
+- IC-575
+- IC-576

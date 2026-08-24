@@ -1,0 +1,35 @@
+id: IC-201
+title: Activating neuroticism-positive neurons in Llama-3-8B-Instruct causes the largest decline in
+  general capabilities, while activating conscientiousness-positive neurons improves all benchmarks
+description: 'After identifying personality-related neurons via NPTI, the authors activate or deactivate
+  them and measure the effect on four general benchmarks (GSM8K, IFEval loose/strict, CommonsenseQA).
+  Most personality activations cause slight declines, but the effect is highly asymmetric: activating
+  neuroticism+ neurons drops CommonsenseQA by 7.0 points (76.5 to 69.5) and IFEval strict by 4.7, while
+  activating conscientiousness+ neurons actually improves every benchmark (e.g., GSM8K 77.9 to 78.2,
+  CommonsenseQA 76.5 to 77.1). The authors attribute the neuroticism+ decline to the model exhibiting
+  increased anxiety and lack of confidence in its explanations.'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+concepts: []
+sources:
+- ref: source:neuron-based-personality-trait-induction-large
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:ifeval
+  role: eval
+- ref: dataset:commonsenseqa
+  role: eval
+methods: []
+related_work: []
+evidence_type: interventional
+key_metric: 'neuroticism+: GSM8K 75.5 (↓ 2.4), IFEval(loose) 77.8 (↓ 3.7), IFEval(strict) 71.1 (↓ 4.7),
+  CommonsenseQA 69.5 (↓ 7.0); conscientiousness+: GSM8K 78.2 (↑ 0.3), IFEval(loose) 81.9 (↑ 0.4), IFEval(strict)
+  76.2 (↑ 0.4), CommonsenseQA 77.1 (↑ 0.6); base: 77.9, 81.5, 75.8, 76.5'
+caveat: The intervention is artificial (neuron value manipulation via NPTI), not a natural operating
+  condition; the effect is specific to the ~20,000 neurons identified by the authors' method and may
+  not generalise to other identification procedures.
+extracted_by: automatic-extraction
+related_findings:
+- IC-200

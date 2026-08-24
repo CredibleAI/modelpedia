@@ -1,0 +1,59 @@
+id: IC-248
+title: Instruction fine-tuning causes context reliance under knowledge conflicts to initially increase
+  then decrease (context-parametric inversion) in Llama2-7B, Pythia-6.9B, and Mistral-7B
+description: The paper tracks counterfactual accuracy on knowledge-conflict datasets over the course
+  of instruction fine-tuning on Tulu, Alpaca, and UltraChat. Across all three model families, context
+  reliance rises in early training (e.g., from 30% to 60% for Llama2-7B on Tulu) but then declines (dipping
+  to around 35%), while standard benchmark scores (GSM8K, MMLU, SQuAD, ARC-Challenge) continue to improve.
+  The authors identify the cause as non-context-critical datapoints in the IFT data, where the context
+  is redundant with the model's parametric knowledge; these points dominate gradients in later phases
+  and push attention back toward the subject. Filtering to only context-critical points (via target-perplexity
+  thresholding) prevents the drop, confirming the mechanism.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:pythia
+  variant: variant:pythia-6-9b
+- ref: model:mistral-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:context-parametric-inversion-instruction-finetuning-may
+datasets:
+- ref: dataset:tulu
+  role: train
+- ref: dataset:ultrachat
+  role: train
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:squad
+  role: eval
+- ref: dataset:arc-challenge
+  role: eval
+methods:
+- ref: method:lora
+  role: supporting
+related_work:
+- name: Longpre et al. 2022 (entity-based knowledge conflicts)
+  anchor: https://arxiv.org/abs/2109.05052
+  role: context
+- name: Shi et al. 2023 (CAD)
+  anchor: https://arxiv.org/abs/2305.14739
+  role: context
+- name: Yuan et al. 2024 (CoIECD)
+  anchor: https://arxiv.org/abs/2402.11893
+  role: context
+- name: McKenzie et al. 2024 (inverse scaling benchmark)
+  anchor: https://arxiv.org/abs/2306.09479
+  role: context
+evidence_type: correlational
+key_metric: 'Llama2-7B on Tulu: context reliance increases from 30% to 60% then dips to around 35%;
+  on cf_world_facts, context reliance improves from 40% to almost 90% then declines; on cf_quotes, counterfactual
+  accuracy improves from 40% at zeroshot to 70% then decreases'
+caveat: Most experiments use LoRA (rank 128) rather than full fine-tuning, though the authors verify
+  the phenomenon persists with full fine-tuning. The theoretical analysis is restricted to a one-layer
+  transformer with a single attention head. The drop is measured on knowledge-conflict scenarios specifically;
+  the authors note the phenomenon may extend to other context-intensive tasks but do not test this.
+extracted_by: automatic-extraction

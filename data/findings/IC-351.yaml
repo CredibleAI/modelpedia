@@ -1,0 +1,47 @@
+id: IC-351
+title: GPT-4-turbo-2024-04-09, Qwen2-72b-instruct, and Llama-3.1-70b-instruct show distinct performance
+  profiles across ultra-long, 32k, and 4k context benchmarks
+description: 'The paper evaluates several released long-context LLMs on three benchmark suites covering
+  different context lengths. On ultra-long (>100k) InfiniteBench tasks, GPT-4-turbo-2024-04-09 scores
+  33.16, Qwen2-72b-instruct 39.77, and Llama-3.1-70b-instruct 39.81. On 32k tasks, GPT-4-turbo-2024-04-09
+  leads at 51.93, ahead of Qwen2-72b-instruct (49.94) and Llama-3.1-70b-instruct (49.92). On 4k ChatRAG
+  tasks, GPT-4-turbo-2024-04-09 scores 54.72, Qwen2-72b-instruct 54.06, and Llama-3.1-70b-instruct 52.12.
+  The ranking shifts across context lengths: GPT-4-turbo is strongest at 32k but weakest at ultra-long
+  among the top three.'
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo-20240409
+- ref: model:qwen-2
+  variant: variant:qwen2-72b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:yi
+  variant: variant:yi-34b-200k
+- ref: model:llama-3
+  variant: variant:llama-3-70b-instruct-gradient-262k
+- ref: model:llama-3
+  variant: variant:llama3-chatqa-1-5-70b
+concepts: []
+sources:
+- ref: source:chatqa-2-bridging-gap-proprietary-llms
+datasets:
+- ref: dataset:longbench
+  role: eval
+- ref: dataset:scrolls
+  role: eval
+methods:
+- ref: method:e5-mistral
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4-turbo-2024-04-09: 33.16 (ultra-long), 51.93 (32k), 54.72 (4k); Qwen2-72b-instruct:
+  39.77, 49.94, 54.06; Llama-3.1-70b-instruct: 39.81, 49.92, 52.12'
+caveat: The authors note that Qwen2-72b-instruct and Llama-3.1-70b-instruct used extensive 32k pretraining
+  and large SFT data, while the authors used a smaller continued pretraining corpus, which may explain
+  the 32k gap.
+extracted_by: automatic-extraction
+related_findings:
+- IC-352
+- IC-353

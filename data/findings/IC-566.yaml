@@ -1,0 +1,53 @@
+id: IC-566
+title: Adding instruction-specific steering vectors to the residual stream improves instruction-following
+  accuracy for Phi-3, Gemma 2 2B IT, Mistral 7B IT, and Gemma 2 9B IT across format, length, and word-specific
+  constraints
+description: Steering vectors computed as the difference in residual stream activations between inputs
+  with and without an instruction are added at a single layer during inference. Without explicit text
+  instructions, instruction-following accuracy rises from approximately 10% to approximately 30% across
+  all four models. With explicit instructions (baseline 60-90%), steering produces a significant boost
+  for two of the four models. For length constraints, increasing the steering weight c continuously
+  shortens outputs, and steering with c=20 significantly improves adherence to maximum-sentence constraints
+  (n=1..5). For word inclusion, steering increases keyword frequency; for word exclusion, subtracting
+  the inclusion vector reduces undesired keyword occurrence. Multi-instruction steering (format+length,
+  casing+word exclusion) improves both constraints simultaneously. Quality scores decrease slightly
+  under steering, comparable to the decrease from simply adding instructions as text.
+models:
+- ref: model:phi-3
+- ref: model:gemma-2
+- ref: model:mistral-7b
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:improving-instruction-following-language-models-through
+datasets:
+- ref: dataset:ifeval
+  role: eval
+methods:
+- ref: method:activation-steering
+  role: primary
+- ref: method:mcnemar-s-test
+  role: eval
+related_work:
+- name: Zou et al. (representation engineering)
+  anchor: https://arxiv.org/abs/2310.01405
+  role: builds-on
+- name: Turner et al. (activation addition)
+  anchor: https://arxiv.org/abs/2308.10248
+  role: builds-on
+- name: Panickssery et al. (steering Llama 2 via contrastive activation addition)
+  anchor: https://doi.org/10.18653/v1/2024.acl-long.828
+  role: builds-on
+evidence_type: interventional
+key_metric: 'accuracy without instructions: ~10% (no steering) to ~30% (steering); accuracy with instructions:
+  60%-90% (no steering), significant boost for 2 of 4 models; length: c=20, significant improvement
+  across n=1..5 sentences (p<0.01, McNemar''s test)'
+caveat: Steering can occasionally produce nonsensical or repetitive tokens, particularly for 'constrained
+  response' and 'title' instructions where no layer improves performance. Quality score decreases are
+  small but non-zero. The method uses a fixed steering weight throughout generation and does not fully
+  explore the intervention space.
+extracted_by: automatic-extraction
+related_findings:
+- IC-565
+- IC-567
+- IC-568

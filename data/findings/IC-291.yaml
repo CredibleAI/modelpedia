@@ -1,0 +1,35 @@
+id: IC-291
+title: ViT-B/16 and MAE-B/16 exhibit nearly inverted distributions of knowledge neurons across layers
+  despite identical architecture and training data
+description: Using knowledge attribution (integrated gradients on individual FFN neurons), the paper
+  measures which neurons are most important for classification in each of the 12 layers. Despite both
+  models having 12 transformer layers, the same hidden size (768), the same patch size (16), and being
+  pretrained and fine-tuned on ImageNet, the layer-wise distribution of top-attribution neurons is almost
+  inverted between the supervised ViT-B/16 and the self-supervised MAE-B/16. This suggests that the
+  pretraining paradigm fundamentally changes how knowledge is organized across depth.
+models:
+- ref: model:vit
+  variant: variant:vit-b-16
+- ref: model:mae-b-16
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:discovering-influential-neuron-path-vision-transformers
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:knowledge-attribution
+  role: primary
+related_work:
+- name: Knowledge Neurons in Pretrained Transformers
+  anchor: https://doi.org/10.18653/v1/2022.acl-long.581
+  role: builds-on
+evidence_type: observational
+caveat: The comparison is limited to two models of the same size; the paper does not test whether the
+  inversion holds across other sizes or architectures.
+extracted_by: automatic-extraction
+related_findings:
+- IC-290
+- IC-292
+- IC-293

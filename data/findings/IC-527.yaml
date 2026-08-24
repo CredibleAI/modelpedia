@@ -1,0 +1,29 @@
+id: IC-527
+title: A 16 million latent sparse autoencoder substituted into GPT-4 yields a language modeling loss
+  corresponding to 10% of GPT-4's pretraining compute
+description: The authors train a 16 million latent topk autoencoder on GPT-4's residual stream activations
+  (layer 5/6) for 40 billion tokens. When the autoencoder reconstruction replaces the original residual
+  stream during the forward pass, the resulting language modeling loss corresponds to a model trained
+  with 10% of GPT-4's pretraining compute. This indicates that a sparse set of 16M features captures
+  a substantial fraction of GPT-4's next-token prediction behavior, though the zero-ablation fidelity
+  of the same autoencoder is 98.2%.
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:scaling-evaluating-sparse-autoencoders
+datasets: []
+methods:
+- ref: method:sparse-autoencoder
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: '"language modeling loss corresponding to 10% of the pretraining compute of gpt-4"; zero-ablation
+  fidelity 98.2%'
+caveat: The 16M autoencoder was not trained to the l(n) convergence token budget due to compute constraints,
+  so the reconstruction may not be optimal. The context length is 64 tokens. The 10% figure is a relative
+  comparison to GPT-4's own pretraining compute, not an absolute loss value.
+extracted_by: automatic-extraction
+related_findings:
+- IC-525
+- IC-526

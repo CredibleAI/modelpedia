@@ -1,0 +1,50 @@
+id: IC-506
+title: Restoring the refusal feature in Llama-3-8B-Instruct, Mistral-7B-Instruct-v0.2, and Gemma-7B-IT
+  causally disables all four tested adversarial attacks
+description: The authors take successful adversarial prompts and, during inference, patch the residual
+  stream activations to restore the refusal feature to its mean value on the original (unmodified) harmful
+  inputs. This intervention dramatically reduces the attack success rate across all four attack methods
+  and all three models, as judged by the official HarmBench classifier. General capability (MMLU, MT-Bench)
+  is unaffected by the clamping, confirming the effect is specific to the safety decision rather than
+  a degradation of generation quality.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+- ref: model:gemma
+  variant: variant:gemma-7b-it
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:robust-llm-safeguarding-via-refusal-feature
+datasets:
+- ref: dataset:harmbench
+  role: eval
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:mt-bench
+  role: eval
+methods:
+- ref: method:gcg
+  role: eval
+- ref: method:pair
+  role: eval
+- ref: method:autodan
+  role: eval
+- ref: method:humanjailbreaks
+  role: eval
+related_work:
+- name: Arditi et al. 2024
+  anchor: https://arxiv.org/abs/2406.11717
+  role: builds-on
+evidence_type: interventional
+key_metric: 'MMLU after RF clamping: Llama-3-8B 65.9→65.5, Mistral-7B 58.9→58.1, Gemma-7B 52.0→51.8;
+  MT-Bench: 7.24→7.07, 7.02→6.97, 6.60→6.74 (Table 5)'
+caveat: The specific ASR values before and after restoration are shown only in Figure 4 (bar chart);
+  no per-attack numeric ASR is printed in the text. The restoration uses the mean activation over the
+  original harmful prompts, which is an approximation of the pre-attack state.
+extracted_by: automatic-extraction
+related_findings:
+- IC-505
+- IC-507

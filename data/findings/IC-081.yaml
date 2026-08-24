@@ -1,0 +1,28 @@
+id: IC-081
+title: ViT/L-16 exhibits lower sensitivity to token-wise Gaussian perturbations than ConvNeXtV2-Tiny
+  on ImageNet-1k
+description: The paper measures the sensitivity of two pre-trained models, ViT/L-16 and ConvNeXtV2-Tiny,
+  on ImageNet-1k by injecting Gaussian noise (σ²=15) into individual image patches and measuring the
+  fraction of predictions that flip. At comparable accuracies of 85%, ViT/L-16 achieves a sensitivity
+  of 0.0191 while ConvNeXtV2-Tiny achieves 0.0342. This confirms that the low-sensitivity inductive
+  bias observed in small-scale models trained from scratch extends to large-scale pre-trained models,
+  supporting the claim that the transformer architecture itself, rather than training details, drives
+  the lower sensitivity.
+models:
+- ref: model:vit
+  variant: variant:vit-l-16
+- ref: model:convnextv2-tiny
+concepts: []
+sources:
+- ref: source:transformers-learn-low-sensitivity-functions-investigations
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: vit/l-16 has a sensitivity of 0.0191, which is lower than that of convnext at 0.0342; both
+  achieved the same training and validation accuracy of 85%
+caveat: Only two models are compared at this scale; the paper does not test other pre-trained transformer
+  or CNN variants on ImageNet-1k.
+extracted_by: automatic-extraction

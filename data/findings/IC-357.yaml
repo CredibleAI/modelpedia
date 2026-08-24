@@ -1,0 +1,49 @@
+id: IC-357
+title: Off-the-shelf foundation models (DINO, CLIP, DINOv2, ViT) exhibit higher variance in their cosine
+  similarity distributions than dataset-specific models, reducing the discriminative power of cosine
+  similarity retrieval
+description: The paper measures the probability mass function of pairwise cosine similarities in the
+  reference set for both off-the-shelf foundation models and a dataset-specific model (CoPlace) on Pittsburgh30k.
+  Foundation models show a broader, higher-variance cosine similarity distribution, meaning high-variance
+  dimensions dominate the similarity computation and reduce the ability to distinguish relevant from
+  irrelevant matches. Applying the authors' variance-constrained autoencoder (AE-SVC) reduces this variance
+  and yields up to 15.5% average improvement in MAP@k across four datasets, with the improvement being
+  larger for foundation models (~10%) than for the dataset-specific model (~2%), confirming that the
+  distributional property is the limiting factor for the off-the-shelf models.
+models:
+- ref: model:dino
+- ref: model:dinov2
+- ref: model:clip
+- ref: model:vit
+- ref: model:coplace
+concepts:
+- ref: concept:distance-preservation
+sources:
+- ref: source:exploiting-distribution-constraints-scalable-efficient-image
+datasets:
+- ref: dataset:inshop
+  role: eval
+- ref: dataset:stanford-online-products
+  role: eval
+- ref: dataset:pittsburgh30k
+  role: eval
+- ref: dataset:tokyoval
+  role: eval
+methods:
+- ref: method:pca
+  role: compared-to
+- ref: method:tldr
+  role: compared-to
+related_work:
+- ref: model:coplace
+  role: compared-to
+- ref: method:tldr
+  role: compared-to
+evidence_type: correlational
+key_metric: ae-svc achieves an average improvement of 15.5% across all datasets and embeddings at full
+  size; dinov2-large shows 24% improvement on inshop, 10% on sop, 2% on pittsburgh30k, and 22% on tokyoval;
+  ae-svc benefits the off-the-shelf foundation model more (10%) than the dataset-specific model (2%)
+caveat: The improvement from AE-SVC on dataset-specific models is limited (2%), suggesting the distributional
+  issue is specific to foundation models; the paper notes the fundamental discrepancy between embedding
+  spaces of foundation and dataset-specific models remains unknown
+extracted_by: automatic-extraction

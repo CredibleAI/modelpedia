@@ -1,0 +1,30 @@
+id: IC-390
+title: The parallelotope volume of modality embeddings from LanguageBind, VAST, and Valor on MSR-VTT
+  is strongly correlated with their downstream R@1 retrieval performance
+description: The authors extract video, audio, and text embeddings from LanguageBind, VAST, and Valor
+  (both zero-shot and fine-tuned), compute the GRAM parallelotope volume for each model's three modality
+  vectors, and correlate this geometric quantity with each model's R@1 on MSR-VTT. Over 1000 test samples,
+  the Pearson correlation between 1−GRAM and R@1 is ρ = 0.923. The claim is that the geometric alignment
+  of a model's modality embeddings, as captured by the volume of the parallelotope they span, is a reliable
+  indicator of that model's downstream retrieval capability.
+models:
+- ref: model:vast
+- ref: model:languagebind
+- ref: model:valor
+concepts: []
+sources:
+- ref: source:gramian-multimodal-representation-learning-alignment
+datasets:
+- ref: dataset:msr-vtt
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: Pearson correlation coefficient ρ = 0.923 between 1−GRAM and R@1, computed over 6 model
+  configurations (LB zs, VAST zs, GRAM zs, LB ft, VAST ft, Valor ft) on MSR-VTT, averaged over 1000
+  test samples
+caveat: 'The correlation is computed over only 6 data points, 3 of which are the authors'' own GRAM
+  model; the paper does not report the correlation restricted to released models alone. The GRAM volume
+  is the authors'' own proposed metric, so the finding is partly circular: it validates the metric using
+  the models it was designed to evaluate.'
+extracted_by: automatic-extraction

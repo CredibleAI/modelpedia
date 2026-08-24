@@ -1,0 +1,27 @@
+id: IC-051
+title: Qwen2-VL (7B) achieves 0.0 on DVC, DVC SLC, and TEM tasks on E.T.Bench
+description: 'The paper evaluates Qwen2-VL (7B) on E.T.Bench and reports that it scores 0.0 on three
+  tasks: dense video captioning (DVC), dense video captioning with salient score (DVC SLC), and temporal
+  event matching (TEM). This suggests Qwen2-VL is unable to produce valid outputs for these specific
+  event-level video understanding tasks, likely due to format or capability limitations.'
+models:
+- ref: model:qwen-2-vl
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:trace-temporal-grounding-video-llm-via
+datasets:
+- ref: dataset:e-t-bench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'E.T.Bench: DVC 0.0, DVC SLC 0.0, TEM 0.0; other tasks: RAR 39.4, ECA 34.8, RVQ 42.2, TVG
+  3.9, EPM 0.1, TAL 0.3, EVS 0.4, VHD 20.6, GVQ 6.6, SLC 55.9'
+caveat: The paper does not explain why Qwen2-VL scores 0.0 on these tasks; it may be a format incompatibility
+  rather than a reasoning failure.
+extracted_by: automatic-extraction
+related_findings:
+- IC-048
+- IC-049
+- IC-050

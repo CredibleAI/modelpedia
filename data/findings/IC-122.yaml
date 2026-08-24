@@ -1,0 +1,35 @@
+id: IC-122
+title: Concept representations in Llama-2-7B, Gemma-7B, and Llama-2-13B become more consistent in deeper
+  layers
+description: The paper measures cosine similarity of concept vectors (derived via linear probing classifiers)
+  at every layer of three LLMs. Across all three models, the average cosine similarity of concept vectors
+  shows a general upward trend from early to penultimate layers, indicating that concept representations
+  are less defined in early layers and become sharper and more consistent in deeper layers. Sampled
+  vectors from the GCS distribution show the highest and most stable similarity across all layers. The
+  pattern is remarkably consistent across the different model sizes and architectures.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:gemma
+  variant: variant:gemma-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:beyond-single-concept-vector-modeling-concept
+datasets: []
+methods:
+- ref: method:linear-probing
+  role: primary
+related_work:
+- name: Zou et al. 2023 (Representation Engineering)
+  anchor: https://arxiv.org/abs/2310.01405
+  role: builds-on
+evidence_type: correlational
+key_metric: cosine similarity among observed concept vectors ranging from approximately 0.8 to 0.9;
+  sampled vectors within 1σ with cosine similarity larger than 0.93; observed-sampled similarity typically
+  ranging from 0.88 to 0.93
+extracted_by: automatic-extraction
+related_findings:
+- IC-123

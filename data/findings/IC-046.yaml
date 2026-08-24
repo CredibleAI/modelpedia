@@ -1,0 +1,34 @@
+id: IC-046
+title: Tulu-2-13B exhibits gender bias in both its internal binding representation and its outputs,
+  with the output-level bias being stronger than the representation-level bias
+description: 'In a gender-bias evaluation with 400 templated contexts specifying genders and stereotypically
+  male or female occupations, both prompting and probing (binding similarity) show higher accuracy on
+  pro-stereotypical than anti-stereotypical contexts. However, the probing method is significantly less
+  biased than prompting. The authors conclude that gender bias influences the model in at least two
+  ways: it affects how binding is done (internal world state construction) and how the model responds
+  to queries about that state. Probing mitigates the latter but not the former.'
+models:
+- ref: model:tulu-2
+  variant: variant:tulu-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:monitoring-latent-world-states-language-models
+datasets:
+- ref: dataset:winobias
+  role: source
+methods: []
+related_work:
+- name: Orgad & Belinkov 2022 (gender bias evaluation)
+  anchor: https://arxiv.org/abs/2210.11471
+  role: context
+evidence_type: correlational
+caveat: The evaluation uses a small closed world of 14 occupations from Winobias and 2 genders; the
+  calibrated accuracy (controlling for label bias) does not significantly change the results.
+extracted_by: automatic-extraction
+related_findings:
+- IC-044
+- IC-045
+- IC-047

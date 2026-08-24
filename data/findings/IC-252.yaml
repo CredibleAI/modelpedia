@@ -1,0 +1,51 @@
+id: IC-252
+title: GPT models produce harmful gender stereotypes at higher rates when user names imply a demographic
+  group, with GPT-3.5 Turbo showing the highest rates and open-ended generation tasks most affected
+description: The paper replays real user prompts with names from different gender groups and measures
+  how often the resulting response pairs are rated as harmful stereotypes by an LMRA (GPT-4o). Across
+  six GPT models and 66 tasks in 9 domains, harmful gender stereotype rates are all a fraction of 1%
+  on average over domains, but the 'write a story' task exhibits the greatest rate of harms. GPT-3.5
+  Turbo shows the highest harm rate among all models. The LMRA ratings for gender bias strongly correlate
+  with human crowd-worker ratings (ρ=0.86, sign agreement 90%).
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:o1
+  variant: variant:o1-preview
+- ref: model:o1
+  variant: variant:o1-mini
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:first-person-fairness-chatbots
+datasets:
+- ref: dataset:lmsys-chat-1m
+  role: source
+- ref: dataset:wildchat
+  role: source
+methods: []
+related_work:
+- name: Tamkin et al. 2023
+  anchor: https://arxiv.org/abs/2312.03689
+  role: context
+- name: Nghiem et al. 2024
+  anchor: https://arxiv.org/abs/2406.12232
+  role: context
+- name: Dwivedi-Yu et al. 2024
+  anchor: https://arxiv.org/abs/2404.06619
+  role: context
+evidence_type: correlational
+key_metric: harms on average over domains are all a fraction of 1%; write a story task exhibited the
+  greatest rate of harms; gpt-3.5 exhibited the greatest harm rate; LMRA-human correlation ρ=0.86, a=90%
+  for gender
+caveat: Results are not directly reproducible due to privacy; the LMRA is GPT-4o, a model from the same
+  family as the chatbots being evaluated, which could introduce systematic agreement.
+extracted_by: automatic-extraction
+related_findings:
+- IC-253
+- IC-254
+- IC-255

@@ -1,0 +1,46 @@
+id: IC-582
+title: Instruction-tuned MLLMs (InstructBLIP, mPLUG-Owl, Idefics) achieve significantly better brain
+  alignment than vision-only ViT-H and perform comparably to or better than CLIP-text across whole visual
+  cortex and five visual ROIs
+description: The paper trains bootstrap ridge regression encoding models to predict fMRI activity from
+  model representations extracted via 10 natural instructions. Across the whole visual cortex and five
+  functional localizers, all three MLLMs significantly outperform ViT-H (p≤0.05) and match or exceed
+  CLIP-text, which uses ground-truth captions while MLLMs use predicted generations. In higher visual
+  regions (floc-places), MLLM normalized alignment reaches approximately 0.8, dropping to approximately
+  0.6 in early visual ROIs. In Appendix K, non-instruction-tuned BLIP-2 performs marginally below CLIP-text,
+  and LLaMA-2-7B (text-only, no visual input) performs closer to ViT-H, confirming that instruction
+  tuning and multimodality drive the alignment gain.
+models:
+- ref: model:instructblip
+- ref: model:mplug-owl
+- ref: model:idefics
+- ref: model:vit
+  variant: variant:vit-h
+- ref: model:clip
+- ref: model:blip-2
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+concepts: []
+sources:
+- ref: source:correlating-instruction-tuning-multimodal-models-vision
+datasets:
+- ref: dataset:nsd
+  role: eval
+- ref: dataset:mscoco
+  role: source
+methods:
+- ref: method:pca
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: 'ANOVA: p-value 0.008, f-statistic 14.60 (InstructBLIP, higher vs. early visual ROIs); p-value
+  0.009, f-statistic 13.85 (all MLLMs combined); normalized alignment ~0.8 in floc-places, ~0.6 in prf-visual
+  ROIs'
+caveat: CLIP-text uses golden oracle captions while MLLMs use mean pooling over predicted output tokens;
+  the NSD dataset involves passive image viewing, which may not fully capture task-specific instruction
+  processing
+extracted_by: automatic-extraction
+related_findings:
+- IC-583
+- IC-584
+- IC-585

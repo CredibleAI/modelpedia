@@ -1,0 +1,37 @@
+id: IC-282
+title: GPT-2 XL (1.5B) exhibits lower accuracy but reduced overconfidence (smaller ECE and Brier scores)
+  compared to larger models on the CAT benchmark
+description: 'The paper measures calibration of eight released LLMs on the CAT benchmark. GPT-2 XL,
+  the smallest model evaluated at 1.5B parameters, achieves the lowest accuracy (average acc@50 of 0.140
+  for phrase-level and 0.143 for sentence-level tasks) yet also shows the lowest overconfidence, with
+  average ECE of 0.056 (phrase) and 0.052 (sentence), well below Vicuna-13B''s 0.118 and 0.111. The
+  authors explicitly note this trade-off: smaller models are less accurate but better calibrated.'
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl
+- ref: model:vicuna
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:hademif-hallucination-detection-mitigation-large-language
+datasets:
+- ref: dataset:sciq
+  role: eval
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:truthfulqa
+  role: eval
+- ref: dataset:wikiqa
+  role: eval
+methods:
+- ref: method:lora
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: GPT-2 XL avg ECE 0.056 (phrase), 0.052 (sentence); avg acc@50 0.140 (phrase), 0.143 (sentence);
+  compared to Vicuna-13B avg ECE 0.118 (phrase), 0.111 (sentence) with avg acc@50 0.503 (phrase), 0.551
+  (sentence)
+caveat: The comparison spans models of very different sizes and architectures (1.5B to 13B), so the
+  calibration difference may reflect architecture as well as scale. The paper does not isolate size
+  as the sole variable.
+extracted_by: automatic-extraction

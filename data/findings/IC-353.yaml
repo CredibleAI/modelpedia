@@ -1,0 +1,29 @@
+id: IC-353
+title: Llama-3.1-instruct 8b and 70b fail the harder NIAH test (sandwich needle) but pass the easier
+  passkey retrieval test
+description: The paper evaluates Llama-3.1-instruct 8b and 70b on two variants of the Needle-in-a-Haystack
+  test up to 128k context. With the harder needle ('the best thing to do in san francisco is eat a sandwich
+  and sit in dolores park on a sunny day'), neither model achieves reliable retrieval across depths
+  and positions. With the easier passkey needle ('the pass key is 385243. remember it. 385243 is the
+  pass key'), both models pass. This indicates a threshold effect where the models can retrieve short,
+  distinctive tokens but fail on longer, less distinctive sentences.
+models:
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-70b-instruct
+concepts: []
+sources:
+- ref: source:chatqa-2-bridging-gap-proprietary-llms
+datasets:
+- ref: dataset:needle-in-a-haystack
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+caveat: The NIAH test is a synthetic evaluation; the authors note it 'does not accurately represent
+  real-world downstream task performance.' Results are shown in figures rather than tabulated numbers.
+extracted_by: automatic-extraction
+related_findings:
+- IC-351
+- IC-352

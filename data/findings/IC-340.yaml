@@ -1,0 +1,52 @@
+id: IC-340
+title: GCG jailbreaking attacks exhibit strong model-specific transferability, achieving below 3% ASR
+  on Llama-2-13b-chat and Llama-3.1-8b-instruct but above 90% ASR on Vicuna-13b-v1.5 and Mistral-7b-instruct
+description: 'The paper measures the attack success rate of GCG and PAIR jailbreaking attacks (generated
+  on Llama-2-7b-chat) across six target LLMs on AdvBench and MaliciousInstruct. GCG shows extreme model-specificity:
+  it fails on the Llama family (ASR 1.4% on Llama-2-13b-chat, 1.7% on Llama-3.1-8b-instruct) but succeeds
+  on Vicuna-13b-v1.5 (92.3%) and Mistral-7b-instruct (96.1%). PAIR is more consistent, maintaining 50-90%
+  ASR across all targets. The paper attributes this to distributional dependency: the adversarial sequences
+  overfit the source model''s parameters and sampling process, so their created high-importance regions
+  do not persist in target models.'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-8b-instruct
+- ref: model:vicuna
+  variant: variant:vicuna-13b-v1-5
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct
+- ref: model:gpt-4
+  variant: variant:gpt-4-0613
+- ref: model:o1
+  variant: variant:gpt-o1-preview
+concepts: []
+sources:
+- ref: source:understanding-enhancing-transferability-jailbreaking-attacks
+datasets:
+- ref: dataset:advbench
+  role: eval
+- ref: dataset:maliciousinstruct
+  role: eval
+methods:
+- ref: method:gcg
+  role: primary
+- ref: method:pair
+  role: primary
+related_work:
+- ref: method:gcg
+  role: builds-on
+- ref: method:pair
+  role: builds-on
+evidence_type: correlational
+key_metric: 'GCG ASR: 1.4 (Llama-2-13b-chat), 1.7 (Llama-3.1-8b-instruct), 92.3 (Vicuna-13b-v1.5), 96.1
+  (Mistral-7b-instruct), 27.2 (GPT-4-0613), 43.3 (GPT-O1-Preview) on AdvBench; PAIR ASR: 56.2, 67.3,
+  79.6, 81.8, 85.6, 72.1 respectively'
+caveat: GCG and PAIR were run without their optimal configurations (no ensemble for GCG, no auxiliary
+  judgment LLM for PAIR); optimal settings are reported in Appendix E and show higher but still model-dependent
+  ASR.
+extracted_by: automatic-extraction
+related_findings:
+- IC-341
+- IC-342

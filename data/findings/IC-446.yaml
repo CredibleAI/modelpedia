@@ -1,0 +1,33 @@
+id: IC-446
+title: In Stable Diffusion v1.5, concept-generating neurons are localized in the second layer of FFNs,
+  spanning less than 3% of FFN parameters, and are disentangled from object-generating neurons
+description: Using WANDA importance scores computed on target-concept versus reference prompts, the
+  authors identified 'skilled neurons' in the second layer of the FFN blocks of SD v1.5's UNet. An ablation
+  across FFN-1, FFN-2, cross-attention value, and CLIP text-encoder layers shows FFN-2 is the most effective
+  pruning target. The skilled neurons span less than 3% of the FFN weight matrix (approximately 0.12%
+  of total model parameters). Pruning these neurons erases the target concept (e.g., Van Gogh style)
+  while preserving the object, whereas pruning unskilled neurons removes the object but retains the
+  style, confirming disentanglement. The authors also note that t-hat = 10 early denoising timesteps
+  suffice, suggesting style and object features form early in the denoising trajectory.
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v1-5
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:conceptprune-concept-editing-diffusion-models-via
+datasets:
+- ref: dataset:imagenetette
+  role: eval
+methods:
+- ref: method:wanda
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: less than 3% of FFN weights, approximately 0.12% of total model parameters; FFN-2 outperforms
+  FFN-1, CA-value, and CLIP in erasure (e.g., Van Gogh CLIP similarity 29.2 vs 32.7/32.7/33.2)
+caveat: Erasing specific objects such as 'english springer' inadvertently removes a few related dog
+  breeds, indicating some interference with fine-grained classes.
+extracted_by: automatic-extraction
+related_findings:
+- IC-445

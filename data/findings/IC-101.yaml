@@ -1,0 +1,30 @@
+id: IC-101
+title: GPT-4 and Claude 3 struggle to emulate a lower capability profile (high school freshman level)
+  via zero-shot prompting, with only moderate improvement from chain-of-thought prompting
+description: When prompted to answer only questions appropriate for a high school freshman and to give
+  wrong answers on harder questions, GPT-4 and Claude 3 mostly fail in the zero-shot setting. GPT-4
+  only slightly decreases its performance on college-level questions, while Claude 3 moderately decreases
+  performance on both high-school and college questions. With chain-of-thought prompting, performance
+  improves somewhat, but GPT-4 tends to overshoot on college-level questions and Claude 3 undershoots
+  on high-school level questions.
+models:
+- ref: model:gpt-4
+- ref: model:claude-3
+concepts: []
+sources:
+- ref: source:ai-sandbagging-language-models-strategically-underperform
+datasets:
+- ref: dataset:mmlu
+  role: eval
+methods:
+- ref: method:chain-of-thought-prompting
+  role: compared-to
+related_work: []
+evidence_type: correlational
+caveat: The authors note this is a negative result in the zero-shot setting and that the models' inability
+  may be due to difficulty understanding the task rather than a fundamental limitation. Only two models
+  were tested for this specific emulation task.
+extracted_by: automatic-extraction
+related_findings:
+- IC-099
+- IC-100

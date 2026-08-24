@@ -1,0 +1,59 @@
+id: IC-433
+title: LLMs exhibit a non-monotonic ID-OOD performance gap (generalization valley) that peaks at intermediate
+  task complexity
+description: Across 20 algorithmic tasks spanning five time-complexity levels, the accuracy gap between
+  in-distribution and out-of-distribution data first widens as task complexity increases, reaches a
+  peak (the critical complexity), and then narrows. This pattern is observed consistently across model
+  families including Qwen 1.5, Llama 3/3.1/3.2, Gemma 2, Claude 3, and GPT-4o. At the peak, models perform
+  well on familiar (ID) inputs but degrade sharply on novel (OOD) inputs, indicating over-reliance on
+  memorized patterns rather than true generalization. Beyond the peak, both ID and OOD accuracy decline,
+  reflecting the model's inability to handle the task at all.
+models:
+- ref: model:qwen-1-5
+  variant: variant:qwen-1-5-1-8b
+- ref: model:qwen-1-5
+  variant: variant:qwen1-5-4b
+- ref: model:qwen-1-5
+  variant: variant:qwen1-5-7b
+- ref: model:qwen-1-5
+  variant: variant:qwen-1-5-14b
+- ref: model:qwen-1-5
+  variant: variant:qwen1-5-32b
+- ref: model:qwen-1-5
+  variant: variant:qwen1-5-72b
+- ref: model:qwen-1-5
+  variant: variant:qwen1-5-110b
+- ref: model:llama-3-2-3b
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:gemma-2
+  variant: variant:gemma-2-9b
+- ref: model:claude-3
+  variant: variant:claude-3-sonnet
+- ref: model:gpt-4o
+- ref: model:o1
+  variant: variant:o1-mini
+- ref: model:llama-3-1
+  variant: variant:llama-3-1-405b
+- ref: model:qwen2-5
+  variant: variant:qwen-2-5-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:quantifying-generalization-complexity-large-language-models
+datasets: []
+methods:
+- ref: method:zero-shot-chain-of-thought
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Qwen1.5-1.8b: ID acc 0.78±0.12 vs OOD acc 0.05±0.03 at O(n); Qwen1.5-110b: ID acc 0.99±0.02
+  vs OOD acc 0.18±0.12 at O(n). Llama-3.1-405b generalization scores: 0.997, 0.996, 0.847, 0.516, 0.262
+  across O(n) to O(2^n). GPT-4o: 0.997, 0.992, 0.787, 0.457, 0.238.'
+caveat: The ID data is approximated by querying the model to generate examples, not by accessing the
+  actual pretraining corpus. The authors validate this approximation with OLMo-7B but acknowledge it
+  is an approximation. All results use zero-shot chain-of-thought prompting.
+extracted_by: automatic-extraction
+related_findings:
+- IC-434
+- IC-435

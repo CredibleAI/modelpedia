@@ -1,0 +1,38 @@
+id: IC-306
+title: Instruction tuning increases the ROUGE score of prompt-injected data extraction by 65.76 on average
+  compared to base models
+description: The paper compares base and instruction-tuned variants of Llama2-7b, Llama2-13b, Mistral-7b,
+  and Mixtral-8x7b under the same prompt-injection attack. In every case, the instruction-tuned model
+  produces output more similar to the retrieved context than the base model. The average ROUGE-L increase
+  across the four model pairs is 65.76, indicating that the instruction-following capability acquired
+  during alignment training makes models significantly more susceptible to following malicious copy
+  instructions.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:llama-2
+  variant: variant:llama2-chat-13b
+- ref: model:mistral-7b
+  variant: variant:mistral-instruct-7b
+- ref: model:mixtral-8x7b
+concepts: []
+sources:
+- ref: source:follow-my-instruction-spill-beans-scalable
+datasets:
+- ref: dataset:wikipedia
+  role: eval
+methods:
+- ref: method:rouge-l
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: Average ROUGE-L increase of 65.76 between instruction-tuned and base models across Llama2-7b/13b,
+  Mistral-7b, Mixtral-8x7b
+extracted_by: automatic-extraction
+related_findings:
+- IC-304
+- IC-305

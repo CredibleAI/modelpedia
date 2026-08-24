@@ -1,0 +1,66 @@
+id: IC-148
+title: Language models represent semantically equivalent inputs from different data types (languages,
+  code, images, audio) close together in intermediate layers, with the shared space scaffolded by the
+  model's dominant language
+description: 'The paper tests whether LMs map semantically similar but surface-distinct inputs into
+  a shared representation space. Using cosine similarity on parallel English-Chinese texts, logit lens
+  on Chinese/English/code/arithmetic inputs, and patch-level logit lens on images and audio, the authors
+  show that in intermediate layers (roughly layers 10-25 of 32), representations of equivalent inputs
+  from different data types are significantly closer than to non-equivalent inputs. The logit lens further
+  reveals that the shared space is anchored by the dominant language: when Llama-3 processes Chinese,
+  English tokens have higher logit lens probability than Chinese tokens from layer 17 onward; when Baichuan-2
+  processes English, Chinese tokens dominate in intermediate layers. For code, the ''and'' token outperforms
+  the actual next Python token in middle layers; for images, the corresponding color word is the closest
+  token >20% of the time; for audio, matching label words outperform random labels.'
+models:
+- ref: model:llama-2
+- ref: model:llama-3
+- ref: model:baichuan-2
+- ref: model:bloom
+- ref: model:llava
+- ref: model:chameleon
+- ref: model:salmonn
+concepts: []
+sources:
+- ref: source:semantic-hub-hypothesis-language-models-share
+datasets:
+- ref: dataset:gale-phase-3-and-4-chinese-newswire-parallel-text
+  role: eval
+- ref: dataset:wikipedia
+  role: eval
+- ref: dataset:mbpp
+  role: eval
+- ref: dataset:mscoco
+  role: eval
+- ref: dataset:vggsound
+  role: eval
+- ref: dataset:mc4
+  role: eval
+methods:
+- ref: method:logit-lens
+  role: primary
+- ref: method:cosine-similarity
+  role: primary
+related_work:
+- name: Wendler et al. 2024 (Do Llamas Work in English?)
+  anchor: https://aclanthology.org/2024.acl-long.820
+  role: builds-on
+- name: Merullo et al. 2022 (Linearly Mapping from Image to Text Space)
+  anchor: https://arxiv.org/abs/2209.15162
+  role: context
+- name: Huh et al. 2024 (The Platonic Representation Hypothesis)
+  anchor: https://proceedings.mlr.press/v235/huh24a.html
+  role: context
+evidence_type: correlational
+key_metric: 'cosine similarity up to >80% for parallel English-Chinese texts in middle layers; logit
+  lens: English token probability exceeds Chinese token from layer 17 to 31 (Llama-3); ''and'' token
+  logit lens probability exceeds next-token probability in middle layers for Python list literals (n=6923);
+  closest token is the corresponding color word in >20% of intermediate-layer patches (n=2304); matching
+  caption nouns have higher logit lens alignment than irrelevant captions across all layers for LLaVA'
+caveat: For BLOOM, a multilingual model with balanced training, no clear dominant language is observed
+  in intermediate layers; the closest tokens are often symbols with no clear semantics. The cosine similarity
+  for image-caption pairs is lower than for mutual translations. The logit lens is a training-free probe
+  and may not capture the full structure of the representation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-149

@@ -1,0 +1,30 @@
+id: IC-337
+title: GPT-3.5-based detection accuracy drops substantially for Russian text (0.8555 AUROC) compared
+  to near-perfect scores for Urdu, Indonesian, and Arabic, suggesting under-training on Russian
+description: Using the M4 multilingual benchmark with 150 samples per language, the paper evaluates
+  fast-detectgpt with GPT-3.5 as the scoring model across six languages. Detection AUROC is near-perfect
+  for Urdu (1.0000), Indonesian (0.9996), and Arabic (0.9999), but drops to 0.8555 for Russian. The
+  authors attribute this to potential under-training of the LLMs on Russian. All other open-source baselines
+  show a similar pattern, with Russian consistently the hardest language to detect.
+models:
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:glimpse-enabling-white-box-methods-use
+datasets:
+- ref: dataset:m4
+  role: eval
+methods:
+- ref: method:fast-detectgpt
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'fast-detect (gpt-3.5) AUROC: Chinese 0.9913, Russian 0.8555, Urdu 1.0000, Indonesian 0.9996,
+  Arabic 0.9999, Bulgarian 0.9925, Mix6 0.9774'
+caveat: The paper uses only 150 samples per language and only ChatGPT as the source model for the M4
+  evaluation; the gap may be specific to this source.
+extracted_by: automatic-extraction
+related_findings:
+- IC-335
+- IC-336

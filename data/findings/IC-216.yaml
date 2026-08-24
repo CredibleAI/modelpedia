@@ -1,0 +1,29 @@
+id: IC-216
+title: DINOv2's value (V) facet from self-attention at layer n-1 encodes the most effective local features
+  for VPR re-ranking, outperforming query and key facets, and layer n-1 outperforms the final layer
+  n
+description: The paper ablates which self-attention component (Q, K, V) and which layer of DINOv2 yields
+  the best local patch descriptors for VPR re-ranking. The value facet consistently outperforms query
+  and key on both Tokyo24/7 and MSLs-val. For layer selection, the penultimate layer (n-1) gives the
+  highest recall, while using the final output layer (n) degrades performance, indicating that the most
+  useful local structure is present in the penultimate layer but is lost or altered in the final layer.
+models:
+- ref: model:dinov2
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:effovpr-effective-foundation-model-utilization-visual
+datasets:
+- ref: dataset:tokyo24-7
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Tokyo24/7 R@1: V=98.7, Q=96.5, K=96.8 (Table S3); layer n-1=98.7, layer n=97.1 (Table S1).
+  MSLs-val R@1: V=92.8, Q=89.7, K=90.1; layer n-1=92.8, layer n=88.2'
+caveat: Ablations are conducted on two datasets (Tokyo24/7 and MSLs-val) with the re-ranking applied
+  to top-100 candidates; the layer n degradation is modest (1.6 points on Tokyo24/7).
+extracted_by: automatic-extraction
+related_findings:
+- IC-215
+- IC-217

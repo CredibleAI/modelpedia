@@ -1,0 +1,45 @@
+id: IC-131
+title: GPT-4 Turbo, GPT-3.5 Turbo, Llama3-8B, Qwen-7B, and iFlytekSpark-13B over-rely on the strong
+  reminder 'the answer is' in prompts as a shortcut, with accuracy dropping sharply when the cue is
+  a random answer rather than the ground truth
+description: Using the ROSE prompting strategy, the paper inserts a strong reminder ('the answer is
+  X') into a three-step self-reflection prompt and varies X between the correct answer and a random
+  letter. Across all tested models, accuracy drops substantially when X is random, indicating the model
+  captures the reminder pattern rather than reasoning about the question. The effect is most severe
+  on domain-specific knowledge (JEC-QA) where the model is less familiar with the content. Confidence
+  levels rise through reflection steps even as accuracy falls, showing the model becomes more confident
+  in its shortcut-driven answer.
+models:
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:qwen
+  variant: variant:qwen-7b
+- ref: model:iflytekspark-13b
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:evaluating-large-language-models-through-role
+datasets:
+- ref: dataset:jec-qa
+  role: eval
+- ref: dataset:openbookqa
+  role: eval
+methods:
+- ref: method:verbalized-confidence
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4 Turbo on EG-QA: overall acc 0.9705 (truth cue) vs 0.8711 (random cue), no role +
+  reminder; on JEC-QA: 0.7579 vs 0.3676. GPT-3.5 Turbo on EG-QA: 0.6777 vs 0.5017. Llama3-8B on EG-QA
+  ID: teacher+truth step-3 acc 0.8418 vs teacher+random step-3 acc 0.5194. Qwen-7B on EG-QA ID: 0.8247
+  vs 0.6597. iFlytekSpark-13B on EG-QA ID: 0.8350 vs 0.6062.'
+caveat: The paper notes that multiple reminder patterns exist in different scenarios and that the large
+  volume of training data makes it difficult to eliminate all hidden biases; the experiments use a specific
+  reminder phrasing ('the answer is') and a specific task format (multiple-choice QA).
+extracted_by: automatic-extraction
+related_findings:
+- IC-132

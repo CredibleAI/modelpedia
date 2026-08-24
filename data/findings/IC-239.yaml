@@ -1,0 +1,41 @@
+id: IC-239
+title: Implicit preference forms (choice-based and persona-driven) are significantly harder for LLMs
+  to follow than explicit preferences at the same context length
+description: When user preferences are revealed implicitly through a two-turn choice-based dialogue
+  or a 4-8 turn persona-driven conversation rather than stated explicitly, all six open-source models
+  show substantially lower preference-following accuracy even at short context lengths. For example,
+  at ~0.2k tokens with zero-shot, Claude 3 Sonnet scores around 80% on explicit preferences but only
+  ~41% on implicit choice-based and ~19% on implicit persona-driven. The gap persists across all models
+  and context lengths, indicating that preference inference adds a distinct difficulty beyond long-context
+  retrieval.
+models:
+- ref: model:claude-3
+  variant: variant:claude-3-sonnet
+- ref: model:claude-3
+  variant: variant:claude-3-haiku
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct
+- ref: model:mixtral-8x7b
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-70b-instruct
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:llms-recognize-your-preferences-evaluating-personalized
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'At ~0.2k tokens zero-shot: Claude 3 Sonnet explicit ~80%, implicit choice-based ~41%, implicit
+  persona-driven ~19%; Mistral 8x7b explicit ~99%, implicit choice-based ~99%, implicit persona-driven
+  ~93% (with reminder)'
+caveat: The implicit preference dialogues were constructed such that only one option adheres to the
+  target preference, which the authors note does not guarantee 100% accurate inference from the multiple-choice
+  selection.
+extracted_by: automatic-extraction
+related_findings:
+- IC-238
+- IC-240
+- IC-241

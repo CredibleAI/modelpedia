@@ -1,0 +1,31 @@
+id: IC-127
+title: ImageBind's direct evaluation closely matches logsumexp for both vision-language and audio-language
+  alignment, validating the law for ImageBind
+description: 'The paper tests ImageBind (which aligns modalities through a shared image space) in two
+  configurations: vision-language alignment via audio, and audio-language alignment via images. In both
+  cases, the logsumexp method''s recall@1 closely matches ImageBind''s own direct evaluation. For vision-language,
+  logsumexp achieves 31.4% ± 1.7% versus ImageBind''s direct 32.4% ± 1.5%. For audio-language, logsumexp
+  achieves 29.4% ± 3.3% versus ImageBind''s direct 29.1% ± 1.7%. The near-identical performance confirms
+  that the inner product between unpaired modality representations recovers the correct similarity for
+  ImageBind.'
+models:
+- ref: model:imagebind
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:law-unconscious-contrastive-learner-probabilistic-alignment
+datasets:
+- ref: dataset:audioset
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Vision-language: 31.4% ± 1.7% (logsumexp) vs 32.4% ± 1.5% (direct ImageBind); Audio-language:
+  29.4% ± 3.3% (logsumexp) vs 29.1% ± 1.7% (direct ImageBind)'
+caveat: Results are over 100 trials with 95% confidence intervals; recall@1 is evaluated from a set
+  of 25 samples.
+extracted_by: automatic-extraction
+related_findings:
+- IC-124
+- IC-125
+- IC-126

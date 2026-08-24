@@ -1,0 +1,56 @@
+id: IC-563
+title: 'The self-recognition vector''s activation in Llama3-8B-Instruct is organized across depth: early
+  layers (4-6) show diffuse perceptual activation to self-written text (present in both chat and base
+  models), while layers 14-16 show a sharp decision-related peak at the output token that is present
+  only in the chat model with role tags.'
+description: 'The authors measure the correlation between residual stream activations and the self-recognition
+  vector at every layer. In the individual paradigm, text token activations are most correlated with
+  the vector at layers 4-6, a pattern present in both the chat and base models and even in the absence
+  of any prompt, suggesting a bottom-up perceptual process. A second, sharper peak appears at layer
+  16 at the output token and the assistant tag token. Correlations between vector activation at the
+  output token and the model''s probability of claiming self-authorship climb rapidly from layers 14-16
+  to a plateau, a pattern consistent across all datasets and absent in the base model or without role
+  tags. Averaged across layers and tokens, layer-16 vector activation is higher for self-written texts
+  (SAD: mean difference 0.0054, 95% CI [0.0045, 0.0063]; QA: 0.0061, 95% CI [0.005, 0.0073]), and this
+  activation correlates with output probability only in the chat model.'
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:inspection-control-self-generated-text-recognition
+datasets:
+- ref: dataset:sad
+  role: eval
+- ref: dataset:cnn-dailymail
+  role: eval
+- ref: dataset:xsum
+  role: eval
+- ref: dataset:databricks-dolly
+  role: eval
+methods:
+- ref: method:tuned-lens
+  role: primary
+- ref: method:contrastive-pairs-method
+  role: supporting
+related_work:
+- name: Belrose et al. 2023 (Tuned Lens)
+  anchor: https://arxiv.org/abs/2303.08112
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Early-layer peak at layers 4-6 (both models). Decision peak at layer 16 (chat only). SAD:
+  mean activation difference 0.0054 (95% CI [0.0045, 0.0063]); QA: 0.0061 (95% CI [0.005, 0.0073]).
+  Activation-probability correlation: SAD self 0.108 (p=0.0116), other -0.125 (p=0.00354); QA self 0.154
+  (p=0.0021), other -0.141 (p=0.0048).'
+caveat: The correlations between vector activation and output probability are modest (0.108-0.154).
+  The authors note that the layer-16 vector's correlations with text token activations in upper layers
+  are 'quite diffuse.' The pattern is absent without role tags, suggesting it depends on the chat model's
+  specific prompting format.
+extracted_by: automatic-extraction
+related_findings:
+- IC-560
+- IC-561
+- IC-562

@@ -1,0 +1,51 @@
+id: IC-177
+title: GPT-4o mini, GPT-4o, and Llama-3-8B all over-rely on incorrect external context, producing wrong
+  answers at high rates when the context conflicts with their internal knowledge
+description: When each model is given a question paired with an incorrect context that contradicts its
+  internal knowledge, the model's direct input augmentation (DIA) baseline follows the wrong context
+  in the vast majority of cases. Across six QA datasets, accuracy given false contexts (acc_f) under
+  DIA ranges from 2.3% to 24.7% for GPT-4o, 2.3% to 12.5% for GPT-4o mini, and 2.7% to 14.3% for Llama-3-8B,
+  meaning the models are misled by incorrect context in over 75% of cases. This over-reliance is consistent
+  across all three models and all six datasets, establishing it as a reproducible failure condition
+  rather than an isolated error.
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:trust-not-trust-enhancing-large-language
+datasets:
+- ref: dataset:redditqa
+  role: eval
+- ref: dataset:freshqa
+  role: eval
+- ref: dataset:clasheval
+  role: eval
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:popqa
+  role: eval
+- ref: dataset:natural-questions
+  role: eval
+methods: []
+related_work:
+- ref: dataset:clasheval
+  role: compared-to
+- name: TACS
+  anchor: https://doi.org/10.18653/v1/2024.findings-acl.645
+  role: compared-to
+evidence_type: correlational
+key_metric: 'DIA acc_f: GPT-4o mini 12.5/2.3/12.0/12.3/11.0/10.3; GPT-4o 12.5/5.7/24.7/23.3/12.3/12.7;
+  Llama-3-8B 9.7/2.7/10.7/12.0/14.3/12.0 (RedditQA/FreshQA/ClashEval/TriviaQA/PopQA/NaturalQA); overall
+  situated faithfulness (ov) under DIA: 51.7/53.9/51.0 respectively'
+caveat: Evaluation uses 300 sampled examples per dataset (176 for RedditQA); incorrect contexts are
+  a mix of LLM-generated and human-written (RedditQA) errors, so the failure rate may vary with context
+  type.
+extracted_by: automatic-extraction
+related_findings:
+- IC-178
+- IC-179
+- IC-180

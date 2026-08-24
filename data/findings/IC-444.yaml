@@ -1,0 +1,25 @@
+id: IC-444
+title: ViV1T produces non-differentiable population response representations when simulating mouse V1
+  experiments
+description: The paper tests ViV1T, a transformer-based digital twin from the Dynamic Sensorium Competition,
+  by simulating the Stringer et al. (2019) V1 population geometry experiment. Despite achieving improved
+  single-neuron prediction accuracy (corr-to-average 0.478 on Sensorium), ViV1T's population response
+  eigenspectrum decays too slowly to be differentiable, matching the failure pattern observed in CNN-based
+  digital twins. The non-differentiability is confirmed across multiple stimulus types (natural images,
+  whitened, spatially localized, gratings), indicating the limitation is not architecture-specific.
+models:
+- ref: model:viv1t
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:beyond-single-neurons-population-response-geometry
+datasets:
+- ref: dataset:microns
+  role: source
+methods: []
+related_work: []
+evidence_type: observational
+caveat: The stimuli used in the Stringer et al. experiment are substantially different from those used
+  in ViV1T's training, so the result may partly reflect domain shift rather than a fundamental representational
+  limitation.
+extracted_by: automatic-extraction

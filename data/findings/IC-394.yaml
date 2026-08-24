@@ -1,0 +1,45 @@
+id: IC-394
+title: Text generation in SDXL, DeepFloyd IF, and SD3 is controlled by less than 1% of parameters concentrated
+  in specific cross- or joint-attention layers, and these layers are specialised for text content rather
+  than visual template
+description: 'Using activation patching of cross- and joint-attention keys and values, the authors identify
+  the layers responsible for generating textual content in three released diffusion models. In SDXL,
+  three of 70 cross-attention layers (indices 55, 56, 57; 15.7M parameters, 0.61%) control text; in
+  DeepFloyd IF, one of 22 layers (index 17; 8.9M parameters, 0.21%); in SD3, one of 24 joint-attention
+  layers (index 10; 4.7M parameters, 0.23%). Further experiments show these layers are specialised:
+  patching them with a target prompt that changes only the text (not the visual template) alters the
+  generated text while leaving the background aligned with the source template, and vice versa. LoRA
+  fine-tuning of only the localized layers in SDXL improves OCR F1 and CLIP-T while preserving generation
+  diversity, whereas fine-tuning all 70 cross-attention layers causes recall collapse after roughly
+  20 epochs.'
+models:
+- ref: model:stable-diffusion
+  variant: variant:sdxl
+- ref: model:deepfloyd-if
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:precise-parameter-localization-textual-generation-diffusion
+datasets: []
+methods:
+- ref: method:activation-patching
+  role: primary
+- ref: method:lora
+  role: supporting
+- ref: method:easyocr
+  role: eval
+- ref: method:dbnet
+  role: eval
+related_work:
+- name: Prompt-to-Prompt (P2P)
+  anchor: https://openreview.net/forum?id=_cdixzkzeyb
+  role: compared-to
+evidence_type: interventional
+key_metric: 'SDXL: 3/70 layers, 15.7M params, 0.61%; DeepFloyd IF: 1/22 layers, 8.9M params, 0.21%;
+  SD3: 1/24 layers, 4.7M params, 0.23% (Table 1). SDXL layer indices 55, 56, 57; DeepFloyd IF index
+  17; SD3 index 10 (Figure 2).'
+caveat: The localization was performed on a validation set of 100 prompts from SimpleBench and CreativeBench
+  using single-word keywords from the top-1k frequency bucket. The paper notes SDXL has significantly
+  more cross-attention layers and the lowest text generation capability, which may explain the more
+  distributed response across three layers versus one in the other models.
+extracted_by: automatic-extraction

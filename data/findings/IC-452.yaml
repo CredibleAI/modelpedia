@@ -1,0 +1,39 @@
+id: IC-452
+title: Transformer block coupling is absent at initialization and increases persistently throughout
+  training in Pythia 12B and 6.9B, with layer-wise locality emerging
+description: Using the Pythia scaling suite checkpoints (steps 128 through 143k), the paper measures
+  mean normalized coupling (k=10) at each training step. Coupling is low at initialization and increases
+  monotonically throughout training. Adjacency plots of layer-pair coupling show that coupling becomes
+  more concentrated between adjacent layers as training progresses, indicating layer-wise locality.
+  The gradual growth of coupling parallels the logarithmic increase in accuracy during training.
+models:
+- ref: model:pythia
+concepts: []
+sources:
+- ref: source:transformer-block-coupling-its-correlation-generalization
+datasets:
+- ref: dataset:arc
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:truthfulqa
+  role: eval
+- ref: dataset:winogrande
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: Measured at steps 128, 256, 512, 1k, 2k, ..., 128k, 143k; coupling low at initialization,
+  increases persistently; layer-wise locality (stronger coupling between adjacent layers) emerges with
+  training
+caveat: Only two model sizes (12B, 6.9B) from one organization (EleutherAI) are used for the training
+  dynamics analysis; the pattern may not generalize to all training recipes.
+extracted_by: automatic-extraction
+related_findings:
+- IC-451
+- IC-453
+- IC-454

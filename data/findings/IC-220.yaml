@@ -1,0 +1,33 @@
+id: IC-220
+title: In Pythia-6.9B, the bag-of-heuristics mechanism emerges gradually during training and is the
+  primary arithmetic mechanism from the earliest checkpoint showing good performance (23k steps)
+description: Analyzing Pythia-6.9B training checkpoints from 23k to 143k steps, the authors show that
+  the final heuristic neurons first appear early and gradually converge. The heuristic neurons mutual
+  with the final checkpoint account for an average of 79% of the total heuristics' contribution to accuracy
+  at each intermediate checkpoint, indicating that non-mutual heuristics are less important and become
+  vestigial. Prompt-guided neuron knockout at each checkpoint shows that ablating 25 associated heuristic
+  neurons per layer causes near-zero accuracy at all training stages, confirming the causal link between
+  heuristics and correct completion exists throughout training, not just at the end.
+models:
+- ref: model:pythia
+  variant: variant:pythia-6-9b
+concepts: []
+sources:
+- ref: source:arithmetic-without-algorithms-language-models-solve
+datasets: []
+methods:
+- ref: method:activation-patching
+  role: primary
+- ref: method:mean-ablation
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: final heuristics explain 79% of total heuristics' contribution at each checkpoint; ablating
+  25 heuristic neurons per layer causes near-zero accuracy at all stages from 23k to 143k steps
+caveat: Analysis is limited to Pythia-6.9B due to public availability of its training checkpoints; the
+  23k checkpoint is the earliest showing 'good arithmetic performance' but the exact threshold is not
+  defined.
+extracted_by: automatic-extraction
+related_findings:
+- IC-218
+- IC-219

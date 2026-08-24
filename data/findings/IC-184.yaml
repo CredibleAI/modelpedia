@@ -1,0 +1,47 @@
+id: IC-184
+title: Mistral-7B, Mistral-7B-Instruct, Llama3-8B, and Llama3-8B-Instruct can internally encode the
+  correct answer while externally generating an incorrect one, with the discrepancy most pronounced
+  for error types where the model shows no external preference for the correct answer
+description: 'The paper uses a trained error-detection probe to select the best answer from 30 resampled
+  generations and compares accuracy to greedy decoding, random selection, and majority vote. For error
+  types where the model consistently generates the wrong answer (c2), produces two competing answers
+  (d), or generates many answers with the correct one appearing rarely (e1/e2), the probe-based selection
+  yields substantial accuracy gains of 30 to 40 points in some cases. For example, on TriviaQA with
+  Mistral-7B-Instruct, accuracy for ''consistently incorrect but correct appears'' (c2) rises from 0.11
+  (greedy) to 0.53 (probing). This demonstrates a reproducible failure mode: the model''s generation
+  process does not align with its internal truthfulness encoding.'
+models:
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:llms-know-more-than-they-show
+datasets:
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:winobias
+  role: eval
+methods:
+- ref: method:probing-classifiers
+  role: primary
+related_work:
+- name: Gekhman et al. 2025
+  anchor: https://arxiv.org/abs/2503.15299
+  role: context
+evidence_type: correlational
+key_metric: 'Mistral-7B-Instruct TriviaQA: (c2) greedy 0.11±0.009 vs probing 0.53±0.005; (d) greedy
+  0.32±0.010 vs probing 0.78±0.017; (e2) greedy 0.23±0.020 vs probing 0.56±0.025. Gains of 30 to 40
+  points reported in text for c2, d, and e1 categories.'
+caveat: The probe is used as a diagnostic tool, not proposed as a production mitigation strategy. The
+  improvement is most pronounced for specific error types and may not generalise to all question types.
+  The paper notes that mechanisms favouring token likelihood may override truthfulness-promoting mechanisms.
+extracted_by: automatic-extraction
+related_findings:
+- IC-181
+- IC-182
+- IC-183

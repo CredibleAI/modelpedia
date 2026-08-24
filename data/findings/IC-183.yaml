@@ -1,0 +1,43 @@
+id: IC-183
+title: Error types in Mistral-7B, Mistral-7B-Instruct, Llama3-8B, and Llama3-8B-Instruct are linearly
+  predictable from internal representations, encoding fine-grained information beyond binary correctness
+description: 'The paper defines a taxonomy of five error types based on the distribution of 30 resampled
+  answers: refuses to answer, consistently correct, consistently incorrect, two competing answers, and
+  many answers. Linear probing classifiers trained on intermediate representations of greedy-decoded
+  generations can predict which error type a question will produce. AUC scores range from 0.59 to 0.90
+  across models and error types on TriviaQA, with the highest scores for ''refuses to answer'' (0.85-0.88)
+  and ''many answers'' (0.84-0.90). Results on Winobias and Math show similar patterns, confirming that
+  the internal representation encodes more than a single correctness signal.'
+models:
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-2
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-8b-instruct
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:llms-know-more-than-they-show
+datasets:
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:winobias
+  role: eval
+methods:
+- ref: method:probing-classifiers
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'TriviaQA AUC: Mistral-7B (a) 0.86±0.002, (b) 0.88±0.001, (c) 0.59±0.002, (d) 0.63±0.002,
+  (e) 0.90±0.001; Mistral-Instr-7B (a) 0.85±0.011, (b) 0.82±0.008, (c) 0.67±0.002, (d) 0.68±0.006, (e)
+  0.84±0.003; Llama3-8B (a) 0.87±0.002, (b) 0.86±0.001, (c) 0.59±0.002, (d) 0.61±0.001, (e) 0.89±0.001;
+  Llama3-Instr-8B (a) 0.88±0.014, (b) 0.81±0.002, (c) 0.64±0.003, (d) 0.65±0.004, (e) 0.89±0.001'
+caveat: The taxonomy is non-orthogonal; some errors may belong to multiple categories. Performance on
+  error types (c) consistently incorrect and (d) two competing is lower, though still above random.
+  The taxonomy covers 96% of errors in TriviaQA for Mistral-7B-Instruct.
+extracted_by: automatic-extraction
+related_findings:
+- IC-181
+- IC-182
+- IC-184

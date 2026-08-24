@@ -1,0 +1,38 @@
+id: IC-083
+title: GPT-3.5, GPT-4o, and Claude-3.5-Sonnet produce unfaithful explanations on MedQA medical questions,
+  omitting high-effect clinical concepts such as the patient's mental status while over-referencing
+  low-effect concepts
+description: 'On 30 MedQA type-2 questions (hypothetical patient visits), the same causal concept faithfulness
+  method is applied using removal-based counterfactuals. All three models receive low dataset-level
+  faithfulness scores: GPT-3.5 f(x)=0.50, GPT-4o f(x)=0.34, Claude-3.5-Sonnet f(x)=0.30. The dominant
+  unfaithfulness pattern is that explanations omit concepts with the largest causal effects (e.g., the
+  patient''s mental status upon arrival has CE=0.32 for Claude but EE=0) while frequently citing concepts
+  with much smaller effects (e.g., vital signs with CE=0.07 but EE=1.00 for Claude). This means a user
+  reading the explanation would incorrectly conclude that vital signs drive the diagnosis while mental
+  status is irrelevant.'
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-instruct
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-2024-05-13
+- ref: model:claude-3-5
+  variant: variant:claude-3-5-sonnet-20240620
+concepts:
+- ref: concept:explanation-faithfulness
+sources:
+- ref: source:walk-talk-measuring-faithfulness-large-language
+datasets:
+- ref: dataset:medqa
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'f(x) = 0.50 (90% CI [0.18, 0.77]) for GPT-3.5; f(x) = 0.34 (CI [0.05, 0.65]) for GPT-4o;
+  f(x) = 0.30 (CI [0.01, 0.59]) for Claude-3.5-Sonnet; example: patient''s mental status CE=0.32, EE=0.00
+  for Claude'
+caveat: Only removal-based counterfactuals were used (not replacement-based), which may underestimate
+  effects of correlated concepts. The method can fail to handle correlated concepts, as noted by the
+  authors for concepts like eating disorder and self-perception of weight.
+extracted_by: automatic-extraction
+related_findings:
+- IC-082

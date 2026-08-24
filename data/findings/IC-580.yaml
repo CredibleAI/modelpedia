@@ -1,0 +1,48 @@
+id: IC-580
+title: The 3-step ICL inference circuit (text encoding, semantics merge, feature retrieval) is a dominant
+  causal mechanism, as ablating the corresponding attention connections significantly degrades ICL accuracy
+description: The paper zeros out specific attention connections corresponding to each step of the proposed
+  circuit in Llama 3 8B and Falcon 7B, then measures ICL accuracy on 6 classification datasets. Removing
+  demonstration-text-to-forerunner connections (step 1) drops accuracy by up to 30.60 percentage points;
+  removing query-text-to-forerunner by up to 28.38; removing forerunner-to-label (step 2) by up to 3.45;
+  and removing label-to-query-forerunner (step 3) by up to 11.36. Controlled experiments with randomly
+  ablated connections of equivalent size show negligible drops (within ±0.02). The results confirm the
+  circuit is causally dominant, though bypass mechanisms (direct decoding, shortcut induction) partially
+  compensate.
+models:
+- ref: model:llama-3
+- ref: model:falcon
+concepts: []
+sources:
+- ref: source:revisiting-context-learning-inference-circuit-large
+datasets:
+- ref: dataset:sst-2
+  role: eval
+- ref: dataset:mr
+  role: eval
+- ref: dataset:financial-phrasebank
+  role: eval
+- ref: dataset:sst-5
+  role: eval
+- ref: dataset:trec
+  role: eval
+- ref: dataset:ag-news
+  role: eval
+methods: []
+related_work:
+- name: induction circuit
+  anchor: https://transformer-circuits.pub/2021/framework/index.html
+  role: builds-on
+evidence_type: interventional
+key_metric: 'llama 3 8b 4-shot baseline acc 68.55; step1 demo→forerunner: -4.98/-15.82/-23.43/-30.60
+  (25/50/75/100% layers); step1 query→forerunner: -13.87/-21.10/-24.74/-28.38; step2 forerunner→label:
+  -2.24/-3.45/-3.39/-3.42; step3 label→query forerunner: -5.14/-10.03/-11.36/-10.22; zero-shot reference:
+  -17.90 (acc 50.65); random: -36.05 (acc 32.50)'
+caveat: Ablation is applied from bottom to top layers; the result without induction (step 3) is better
+  than zero-shot, indicating bypass mechanisms. The paper acknowledges the circuit is not the only mechanism
+  and that bypasses exist in parallel.
+extracted_by: automatic-extraction
+related_findings:
+- IC-578
+- IC-579
+- IC-581

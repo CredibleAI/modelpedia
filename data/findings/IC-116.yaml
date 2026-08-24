@@ -1,0 +1,40 @@
+id: IC-116
+title: In LLaVA-7B, multi-head attention modules drive hallucination more than MLP modules, and targeted
+  intervention on specific hallucination heads reduces the hallucination rate by up to 1.7x
+description: Using zero-ablation (causal mediation analysis) on 1,500 COCO training images, the paper
+  shows that removing MHA modules has approximately 3.5x the influence on hallucination word generation
+  compared to removing MLP modules. Further, a contrastive influence score localizes this effect to
+  specific attention heads. Two intervention strategies—adaptive deactivation of text attention during
+  decoding (AD-HH) and targeted fine-tuning of hallucination heads (TF-HH)—reduce CHAIRs from 51.8 to
+  29.6 and 35.0 respectively on COCO validation, while maintaining or improving generation quality.
+models:
+- ref: model:llava-1-5
+  variant: variant:llava-v1-5-7b
+- ref: model:minigpt-4
+concepts: []
+sources:
+- ref: source:understanding-mitigating-hallucination-large-vision-language
+datasets:
+- ref: dataset:mscoco
+  role: eval
+- ref: dataset:nocaps
+  role: eval
+- ref: dataset:mm-vet
+  role: eval
+methods:
+- ref: method:chair
+  role: eval
+related_work:
+- ref: method:dola
+  role: compared-to
+evidence_type: interventional
+key_metric: MHA influence ~3.5x MLP (Figure 1); CHAIRs 51.8 (greedy) to 29.6 (AD-HH) and 35.0 (TF-HH)
+  on COCO for LLaVA-7B; CHAIRi 13.3 to 8.0 and 8.7; up to 1.7x reduction
+caveat: The hallucination heads were identified on the COCO training set; evaluation is on COCO validation
+  and NoCaps out-of-domain. The method requires explicit attention weight computation, making it incompatible
+  with FlashAttention.
+extracted_by: automatic-extraction
+related_findings:
+- IC-117
+- IC-118
+- IC-119

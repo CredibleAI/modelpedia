@@ -1,0 +1,28 @@
+id: IC-607
+title: CLMBR-T-BASE's clinical prediction performance degrades as patient EHRs become more repetitive
+  or irregular
+description: The paper stratifies EHRShot test patients into quartiles by 1-gram repetition rate and
+  by standard deviation of inter-event times, then measures CLMBR-T-BASE's average brier score across
+  all 14 prediction tasks in each quartile. Brier score rises monotonically from 0.0647 (least repetitive)
+  to 0.0805 (most repetitive) and from 0.0683 (least irregular) to 0.0777 (most irregular). The most
+  irregular patients show a 14% higher brier score than the least irregular, a figure the authors highlight
+  in the abstract as a representative example of the degradation pattern.
+models:
+- ref: model:clmbr-t-base
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:context-clues-evaluating-long-context-models
+datasets:
+- ref: dataset:ehrshot
+  role: eval
+methods: []
+related_work:
+- ref: dataset:ehrshot
+  role: builds-on
+evidence_type: correlational
+key_metric: brier score 0.0647 (Q1) to 0.0805 (Q4) by 1-gram repetition rate; 0.0683 (Q1) to 0.0777
+  (Q4) by inter-event time standard deviation; 14% higher brier loss for most vs least irregular patients
+caveat: The authors note the repetition and irregularity metrics are 'fairly simple and could be improved,'
+  and that the pretraining dataset was sourced from a single institution, which may limit generalizability.
+extracted_by: automatic-extraction

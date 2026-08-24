@@ -1,0 +1,41 @@
+id: IC-254
+title: GPT-4o Mini responses to female-sounding names systematically use simpler, more light-hearted,
+  and less technical language compared to male-sounding names across multiple task domains
+description: 'Using the bias enumeration algorithm, the paper identifies axes of difference in GPT-4o
+  Mini responses across 100k prompts. For female-sounding names, 52-55% of prompts elicit responses
+  rated as simpler, more light-hearted, or avoiding technical terms. The most significant group-a (female)
+  biased axes are: uses more general and layman-friendly language (53%), gives simpler explanations
+  (53%), and generally gives concise straightforward responses (52%). In the ''write a story'' task,
+  female names prompted stories with female main characters more often. The LMRA ratings of these features
+  were only weakly correlated with human ratings.'
+models:
+- ref: model:gpt-4o
+  variant: variant:gpt-4o-mini
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:first-person-fairness-chatbots
+datasets:
+- ref: dataset:lmsys-chat-1m
+  role: source
+- ref: dataset:wildchat
+  role: source
+methods: []
+related_work:
+- name: Zhong et al. 2022
+  anchor: https://arxiv.org/abs/2201.12323
+  role: builds-on
+- name: Findeis et al. 2024
+  anchor: https://arxiv.org/abs/2406.06560
+  role: builds-on
+evidence_type: correlational
+key_metric: 52-55% of prompts result in responses for f-names rated as simpler, more light-hearted,
+  or avoid technical terms; uses more general and layman-friendly language (53%); gives simpler explanations
+  (53%); generally gives concise, straightforward responses and explanations (52%)
+caveat: The LMRA ratings of features such as simple language were only weakly correlated with human
+  ratings, reducing confidence in the specific axes identified.
+extracted_by: automatic-extraction
+related_findings:
+- IC-252
+- IC-253
+- IC-255

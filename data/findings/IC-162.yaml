@@ -1,0 +1,37 @@
+id: IC-162
+title: The majority of subject-verb agreement performance in Pythia-70m is explained by approximately
+  100 SAE feature nodes and in Gemma-2-2b by approximately 500 nodes, compared to approximately 1500
+  and 50000 neurons respectively
+description: The authors measure faithfulness and completeness of feature circuits versus neuron circuits
+  for four subject-verb agreement structures. Small feature circuits (100 nodes for Pythia, 500 for
+  Gemma) explain the majority of the model's agreement performance, while neuron circuits require roughly
+  15 times more nodes (1500 for Pythia) or 100 times more (50000 for Gemma) to explain only half the
+  performance. Ablating just a few nodes from the feature circuits eliminates the model's task performance,
+  even with all SAE error terms retained.
+models:
+- ref: model:pythia
+  variant: variant:pythia-70m
+- ref: model:gemma-2
+  variant: variant:gemma-2-2b
+concepts: []
+sources:
+- ref: source:sparse-feature-circuits-discovering-editing-interpretable
+datasets: []
+methods: []
+related_work:
+- name: Bricken et al. 2023
+  anchor: https://transformer-circuits.pub/2023/monosemantic-features/index.html
+  role: context
+- name: Cunningham et al. 2024
+  anchor: https://openreview.net/forum?id=F76bwRSLeK
+  role: context
+evidence_type: correlational
+key_metric: 'Pythia: ~100 feature nodes for majority of performance, ~1500 neurons for half; Gemma:
+  ~500 feature nodes for majority of performance, ~50000 neurons for half'
+caveat: SAE error nodes are high-dimensional and coarse-grained, so they cannot be fairly compared to
+  neurons; the authors also report results with error nodes removed, showing that removing residual
+  stream errors severely disrupts performance.
+extracted_by: automatic-extraction
+related_findings:
+- IC-160
+- IC-161

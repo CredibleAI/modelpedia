@@ -1,0 +1,29 @@
+id: IC-302
+title: Llama-3.1 models perform between unigram-inference and bigram-inference on Markov chain ICL,
+  with performance improving monotonically with model scale
+description: 'The authors feed sequences generated from a finite Markov chain into Llama-3.1 at three
+  scales (8B, 70B, 405B) and measure the KL divergence between the model''s predicted next-state distribution
+  and the ground-truth transition matrix. Without being told the sequence is Markovian, all three models
+  achieve a KL between the unigram-inference baseline and the bigram-inference baseline, showing they
+  extract some transition structure from context. Performance improves with scale: 405B achieves the
+  lowest KL, followed by 70B, then 8B.'
+models:
+- ref: model:llama-3-1
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:competition-dynamics-shape-algorithmic-phases-context
+datasets: []
+methods:
+- ref: method:nnsight-and-ndif
+  role: eval
+related_work:
+- name: Wei et al. 2023 (Larger language models do in-context learning differently)
+  anchor: https://arxiv.org/abs/2303.03846
+  role: context
+evidence_type: correlational
+caveat: The authors describe this experiment as motivated by curiosity and note it is a preliminary
+  exploration; no specific KL values are printed in the text, only the qualitative ordering is stated.
+extracted_by: automatic-extraction
+related_findings:
+- IC-303

@@ -1,0 +1,33 @@
+id: IC-236
+title: Zero-shot Grounding-DINO and Florence-2 show a significant performance gap on referring expression
+  comprehension compared to their fine-tuned versions
+description: The paper measures the zero-shot p@1 of Grounding-DINO (Swin-T) and Florence-2 (Large)
+  on four REC datasets and compares them to the same models after white-box fine-tuning on REC data.
+  The gap ranges from -11.5 to -37.1 p@1 depending on the model and dataset. For example, Florence-2
+  drops from 91.02 p@1 (fine-tuned) to 66.16 p@1 (zero-shot) on RefCOCOg test, and Grounding-DINO drops
+  from 77.99 to 59.32. The authors note that while these VLMs can detect most objects mentioned in a
+  query, they struggle to select only the described object among distractors.
+models:
+- ref: model:grounding-dino
+- ref: model:florence-2
+concepts: []
+sources:
+- ref: source:llm-wrapper-black-box-semantic-aware
+datasets:
+- ref: dataset:refcoco
+  role: eval
+- ref: dataset:refcocog
+  role: eval
+- ref: dataset:talk2car
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Zero-shot vs fine-tuned gap: -11.5 to -37.1 p@1. FLO2 RefCOCOg test: 66.16 (zero-shot)
+  vs 91.02 (FT). GD RefCOCOg test: 59.32 (zero-shot) vs 77.99 (FT). FLO2 RefCOCO test: 57.21 (zero-shot)
+  vs 93.42 (FT).'
+caveat: The fine-tuned versions use different backbones (Swin-B for GD, full fine-tuning for FLO2),
+  so the gap conflates zero-shot limitation with backbone size difference for GD.
+extracted_by: automatic-extraction
+related_findings:
+- IC-237

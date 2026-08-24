@@ -1,0 +1,48 @@
+id: IC-371
+title: Artificially resuscitating inactive memory vectors by scaling the up-projection matrix K improves
+  knowledge acquisition and reduces forgetting, with the effect more pronounced for later-stage OLMo
+  models
+description: 'To test whether low knowledge entropy causally limits acquisition, the authors modify
+  the up-projection matrix K of the final-stage OLMo checkpoint: they identify the lowest p% of memory
+  coefficients and multiply the corresponding rows of K by a factor u that scales them toward the layer
+  mean, controlled by an amplifying factor q. With p fixed at 50, setting q to 1, 2, or 3 generally
+  improves both acquisition and retention over the unmodified model, while q=0.5 (further suppressing
+  inactive coefficients) worsens both. The benefit grows as the original model is from a later pretraining
+  stage. However, even after resuscitation, performance remains below that of a mid-stage model with
+  equivalent knowledge entropy, suggesting linear scaling of a subset of parameters is insufficient
+  to fully restore plasticity.'
+models:
+- ref: model:olmo
+concepts: []
+sources:
+- ref: source:knowledge-entropy-decay-during-language-model
+datasets:
+- ref: dataset:pubmed
+  role: train
+- ref: dataset:fictional-knowledge-dataset
+  role: eval
+- ref: dataset:sciq
+  role: eval
+- ref: dataset:winogrande
+  role: eval
+- ref: dataset:piqa
+  role: eval
+- ref: dataset:obqa
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+- ref: dataset:arc-easy
+  role: eval
+methods: []
+related_work:
+- name: Geva et al. 2021 (Transformer feed-forward layers are key-value memories)
+  anchor: https://doi.org/10.18653/v1/2021.emnlp-main.446
+  role: builds-on
+evidence_type: interventional
+caveat: The resuscitation method arbitrarily modifies model parameters and showed performance decline
+  when applied to initial- or mid-stage models. The authors note that more refined methods preserving
+  language modeling capabilities are needed. Performance after resuscitation remains lower than a mid-stage
+  model with similar knowledge entropy.
+extracted_by: automatic-extraction
+related_findings:
+- IC-370

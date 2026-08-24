@@ -1,0 +1,50 @@
+id: IC-218
+title: LLaMA3-8B and other LLMs solve arithmetic via a bag of independent heuristic neurons in middle
+  and late MLP layers rather than a robust algorithm
+description: Using activation patching and ablation, the authors identify a sparse arithmetic circuit
+  in LLaMA3-8B (and replicate in LLaMA3-70B, Pythia-6.9B, GPT-J) consisting of a few attention heads
+  that copy operand/operator information to the final position, plus middle and late MLP layers. Within
+  those MLPs, only ~200 neurons per layer (~1.5%) are needed for high faithfulness. Each such neuron
+  implements a simple, human-identifiable heuristic (range, modulo, pattern, identical-operand, multi-result)
+  that fires for a specific input pattern and boosts the logit of a corresponding answer token. 91%
+  of the 3,200 top neurons per operator are classified into one of these heuristic types. Ablating neurons
+  of a given heuristic type drops accuracy more on associated prompts than on unrelated ones, and prompt-guided
+  knockout of associated heuristic neurons causes a much larger accuracy drop than random ablation,
+  confirming the bag-of-heuristics mechanism.
+models:
+- ref: model:llama-3
+  variant: variant:llama-3-8b
+- ref: model:llama-3
+  variant: variant:llama-3-70b
+- ref: model:pythia
+  variant: variant:pythia-6-9b
+- ref: model:gpt-j
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:arithmetic-without-algorithms-language-models-solve
+datasets: []
+methods:
+- ref: method:activation-patching
+  role: primary
+- ref: method:linear-probing
+  role: primary
+- ref: method:logit-lens
+  role: supporting
+- ref: method:mean-ablation
+  role: primary
+related_work:
+- name: Zhou et al. 2024
+  anchor: https://arxiv.org/abs/2406.03445
+  role: compared-to
+evidence_type: interventional
+key_metric: circuit faithfulness 0.96 average across four operators (0.97 +, 0.98 −, 0.90 ×, 0.96 ÷);
+  200 neurons (~1.5%) per layer suffice; 91% of 3,200 top neurons classified as heuristics; heuristic
+  ablation causes average drop of 29% out of 95% pre-ablation accuracy
+caveat: Analysis is limited to prompts where operands and result are single tokens (op1, op2 in [0,
+  300] for LLaMA3-8B); heuristic types are defined by human-identifiable patterns, introducing potential
+  researcher bias; roughly 9% of top neurons could not be classified into a defined heuristic type.
+extracted_by: automatic-extraction
+related_findings:
+- IC-219
+- IC-220

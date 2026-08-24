@@ -1,0 +1,25 @@
+id: IC-251
+title: CLIP's overall MMEB performance drops by 29.4% when task-specific instructions are prepended
+  to queries, with classification degrading by 59.3%
+description: The paper measures CLIP's performance on all 36 MMEB datasets both with and without task-specific
+  instructions prepended to the query. Without instructions, CLIP achieves 37.8 overall precision@1.
+  With instructions, it drops to 26.7, a 29.4% relative decrease. The largest degradation is in classification
+  (-59.3%, from 42.8 to 17.4), while visual grounding is nearly unaffected (+2.1%). This contrasts sharply
+  with the authors' VLM2Vec model, which improves 49.4% with instructions.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:vlm2vec-training-vision-language-models-massive
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'CLIP w/o instruction: 37.8 overall; w/ instruction: 26.7 overall; Δ -29.4% overall, -59.3%
+  classification, -12.1% VQA, -22.1% retrieval, +2.1% grounding (precision@1, 36 MMEB datasets)'
+caveat: The paper does not specify which CLIP variant is used in this ablation; the instruction format
+  is the same task-specific instructions used for VLM2Vec training.
+extracted_by: automatic-extraction
+related_findings:
+- IC-250

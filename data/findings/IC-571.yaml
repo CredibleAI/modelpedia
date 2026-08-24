@@ -1,0 +1,47 @@
+id: IC-571
+title: Open-source VLMs (LLaVA, MiniGPT-4, InstructBLIP) are substantially more vulnerable to multimodal
+  jailbreak attacks than Gemini-1.5-flash, with BAP attack ASR of 58–62% versus 40–41%
+description: 'The paper measures the attack success rate (ASR) of four released VLMs under the BAP bimodal
+  jailbreak attack on the MM-SafetyBench dataset (1,680 questions, 13 safety topics). Without any defense,
+  LLaVA-v1.5-7b achieves 61.02% ASR, MiniGPT-4 achieves 62.26%, and InstructBLIP achieves 58.48%, while
+  Gemini-1.5-flash achieves only 40.98%, 41.07%, and 40.71% under three UAP transfer scenarios. The
+  authors attribute Gemini''s lower vulnerability to its stronger built-in safety mechanisms. Similar
+  patterns hold across other attack types: under VAA on Harmful Instructions, open-source models show
+  42–58% ASR versus 2.5–10% for Gemini.'
+models:
+- ref: model:llava
+- ref: model:minigpt-4
+- ref: model:instructblip
+- ref: model:gemini
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:bluesuffix-reinforced-blue-teaming-vision-language
+datasets:
+- ref: dataset:mm-safetybench
+  role: eval
+- ref: dataset:advbench
+  role: eval
+methods:
+- ref: method:bap
+  role: eval
+- ref: method:vaa
+  role: eval
+- ref: method:gcg
+  role: eval
+- ref: method:autodan
+  role: eval
+- ref: method:imgjp
+  role: eval
+related_work:
+- ref: method:bap
+  role: context
+evidence_type: correlational
+key_metric: 'BAP attack (MM-SafetyBench) no-defense ASR: LLaVA-v1.5-7b 61.02%, MiniGPT-4 62.26%, InstructBLIP
+  58.48%, Gemini-1.5-flash 40.98%/41.07%/40.71%; VAA (Harmful Instructions) no-defense ASR: LLaVA 57.50%,
+  MiniGPT-4 47.50%, InstructBLIP 42.50%, Gemini 10.00%/2.50%/5.00%'
+caveat: The Gemini experiments use UAPs generated on white-box open-source models and transferred to
+  Gemini, so the absolute ASR for Gemini may not reflect its vulnerability to natively optimized attacks.
+  The paper notes Gemini's safety mechanism is 'much stronger than the open-source models,' but does
+  not ablate or isolate the specific safety components responsible.
+extracted_by: automatic-extraction

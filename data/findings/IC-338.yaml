@@ -1,0 +1,53 @@
+id: IC-338
+title: Factuality enhancement methods (DoLa, ICD, ITI, TruthX, CD) cause large and consistent declines
+  in context-faithfulness of LLaMA2-7B-Chat and LLaMA2-13B-Chat
+description: 'The paper applies five factuality enhancement methods to LLaMA2-Chat and evaluates their
+  effect on the model''s ability to follow counterfactual contextual knowledge via in-context editing
+  (ICE) and MELLO on MQuAKE. All methods produce a marked decline in editing accuracy compared to the
+  unmodified baseline, with no exception across any method, shot setting, or model size. The largest
+  single decrease is 67.9% (TruthX on LLaMA2-7B-Chat, CoT 10-shot: 26.5 vs. 82.5 baseline). Under MELLO,
+  declines are even more severe, with most exceeding 40% relative to baseline. The paper explains this
+  via logit and hidden-state analysis: factuality enhancement shifts probability mass toward parametric
+  knowledge tokens and constrains hidden-state dispersion, making the model resistant to incorporating
+  new contextual information.'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:factuality-enhancement-free-lunch-llms-better
+datasets:
+- ref: dataset:mquake
+  role: eval
+methods:
+- ref: method:dola
+  role: primary
+- ref: method:icd
+  role: primary
+- ref: method:inference-time-intervention
+  role: primary
+- ref: method:truthx
+  role: primary
+- ref: method:ice
+  role: eval
+related_work:
+- ref: method:dola
+  role: builds-on
+- ref: method:inference-time-intervention
+  role: builds-on
+- ref: method:truthx
+  role: builds-on
+evidence_type: correlational
+key_metric: 'LLaMA2-7B-Chat ICE 3-shot: DoLa 52.3 (↓22.4), ICD 50.1 (↓26.9), ITI 51.9 (↓21.8), TruthX
+  26.7 (↓61.1); CoT 10-shot: TruthX 26.5 (↓67.9). LLaMA2-13B-Chat ICE 3-shot: DoLa 58.3 (↓20.0), ICD
+  59.5 (↓23.2), ITI 64.3 (↓14.0), CD 55.2 (↓29.5). MELLO: LLaMA2-7B-Chat TruthX 22.6 (↓58.5), ITI 31.5
+  (↓42.2); LLaMA2-13B-Chat ITI 34.5 (↓45.9), DoLa 35.6 (↓44.2)'
+caveat: The paper uses only LLaMA2-Chat models; generalization to other model families is not tested.
+  The MQuAKE-cf-3k-v2 dataset was specifically chosen to address internal knowledge conflicts, which
+  may not represent all context-faithfulness scenarios.
+extracted_by: automatic-extraction
+related_findings:
+- IC-339

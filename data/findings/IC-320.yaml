@@ -1,0 +1,28 @@
+id: IC-320
+title: Llama-2-13b-chat underperforms Llama-2-7b-chat on fine-grained dimension-level evaluation
+description: On the MD-Eval dataset (360 human-verified samples across 36 scenarios), the larger Llama-2-13b-chat
+  achieves 48.47% dimension-level accuracy and 53.47% overall accuracy, while the smaller Llama-2-7b-chat
+  achieves 53.13% and 53.58% respectively. The authors explicitly flag this as an 'intriguing observation'
+  and state it suggests that increasing model parameters does not necessarily lead to better fine-grained
+  evaluation capabilities. The overall accuracy is nearly identical between the two sizes, so the degradation
+  is concentrated at the dimension level.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:samer-scenario-aware-multi-dimensional-evaluator
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: dim acc. 48.47% (Llama-2-13b-chat) vs 53.13% (Llama-2-7b-chat); overall acc. 53.47% vs 53.58%
+  on MD-Eval
+caveat: The overall accuracy difference is negligible (53.47% vs 53.58%); the gap is only visible at
+  the dimension level. The MD-Eval set is small (360 samples, 10 per scenario).
+extracted_by: automatic-extraction
+related_findings:
+- IC-321

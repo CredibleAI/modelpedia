@@ -1,0 +1,62 @@
+id: IC-559
+title: Contextual calibration is most effective for prompt classification while temperature scaling
+  is more effective for response classification, but no single post-hoc method fully resolves miscalibration
+description: Three post-hoc calibration methods (temperature scaling, contextual calibration, batch
+  calibration) are applied to all 9 guard models. Contextual calibration reduces prompt classification
+  ECE for most models (e.g., Llama-Guard2 from 26.8% to 15.3%, Aegis-Guard-D from 22.7% to 12.4%), while
+  temperature scaling reduces response classification ECE (e.g., HarmBench-Mistral from 17.8% to 14.6%,
+  WildGuard from 15.9% to 16.5%). Batch calibration underperforms both. The authors note that contextual
+  calibration struggles with multi-sentence response classification and that no method generalizes across
+  all models and datasets.
+models:
+- ref: model:llama-guard
+- ref: model:llama-guard-2
+- ref: model:llama-guard-3
+- ref: model:aegis-guard-defensive
+- ref: model:mistral-7b
+  variant: variant:harmbench-mistral
+- ref: model:wildguard
+concepts: []
+sources:
+- ref: source:calibration-llm-based-guard-models-reliable
+datasets:
+- ref: dataset:xstest
+  role: eval
+- ref: dataset:openai-moderation
+  role: eval
+- ref: dataset:simplesafetytests
+  role: eval
+- ref: dataset:harmbench
+  role: eval
+- ref: dataset:beavertails
+  role: eval
+- ref: dataset:saferlhf-test
+  role: eval
+methods:
+- ref: method:temperature-scaling
+  role: primary
+- ref: method:contextual-calibration
+  role: primary
+- ref: method:batch-calibration
+  role: compared-to
+- ref: method:expected-calibration-error
+  role: eval
+related_work:
+- ref: method:temperature-scaling
+  role: builds-on
+- ref: method:contextual-calibration
+  role: builds-on
+- ref: method:batch-calibration
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Llama-Guard2 prompt ECE: 26.8% (orig) → 15.3% (CC); Aegis-Guard-D prompt ECE: 22.7% (orig)
+  → 12.4% (CC); HarmBench-Mistral response ECE: 17.8% (orig) → 14.6% (TS); WildGuard response ECE: 15.9%
+  (orig) → 16.5% (TS)'
+caveat: Temperature scaling optimized on XSTest validation set (potentially different distribution from
+  target); contextual calibration uses space token for bias estimation; batch calibration assumes access
+  to full test set; no single method generalizes to all models and datasets
+extracted_by: automatic-extraction
+related_findings:
+- IC-556
+- IC-557
+- IC-558

@@ -1,0 +1,29 @@
+id: IC-133
+title: GPT-4, Claude 3, and Gemini 1.0 Pro do not exhibit detectable watermarks from the red-green,
+  fixed-sampling, or cache-augmented families under black-box statistical tests
+description: 'The authors applied their three watermark detection tests (red-green logit-bias test,
+  fixed-sampling diversity test, and cache-augmented distribution-shift test) to the public APIs of
+  GPT-4, Claude 3, and Gemini 1.0 Pro. For every model-test combination, the null hypothesis (no watermark
+  of that family is present) was not rejected at the 95% confidence level. The authors conclude that
+  they cannot confirm the presence of a watermark on any of these three deployments. This is a null
+  result: the absence of a detectable signal does not prove the absence of a watermark, but it does
+  indicate that if a watermark is present, it is not from one of the three families tested or is implemented
+  in a way that evades these specific statistical signatures.'
+models:
+- ref: model:gpt-4
+- ref: model:claude-3
+- ref: model:gemini-1-0-pro
+concepts: []
+sources:
+- ref: source:black-box-detection-language-model-watermarks
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4: r-g p=0.998, fixed p=0.938, cache p=0.51; Claude 3: r-g p=0.638, fixed p=0.844,
+  cache p=0.135; Gemini 1.0 Pro: r-g p=0.683, fixed p=0.938, cache p=0.478 (all above 0.05 threshold)'
+caveat: The authors note they cannot conclude on the presence of a watermark; the tests are restricted
+  to three scheme families and make assumptions (symmetric error terms, perfect sampling) that may not
+  hold for all models. A watermark from a novel family or one with theoretical undetectability guarantees
+  would not be detected.
+extracted_by: automatic-extraction

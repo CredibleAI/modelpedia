@@ -1,0 +1,30 @@
+id: IC-234
+title: SpeechGPT exhibits poor speech-text alignment (ASR-WER 45.00) and degraded response quality in
+  speech-to-speech interaction
+description: On the instructs2s-eval benchmark in the offline scenario, SpeechGPT achieves an ASR-WER
+  of 45.00, far higher than all other systems, indicating that its generated speech is poorly aligned
+  with its own text response. Its ChatGPT score is 2.98 for speech-to-text and drops to 2.19 for speech-to-speech,
+  the lowest among all evaluated models. In the streaming scenario, SpeechGPT's decoding latency exceeds
+  4500 ms due to sequential generation of text instruction, text response, and speech units, and its
+  quality metrics remain the worst across all latency settings.
+models:
+- ref: model:speechgpt
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:llama-omni-seamless-speech-interaction-large
+datasets: []
+methods:
+- ref: method:utmos
+  role: eval
+related_work:
+- ref: model:speechgpt
+  role: compared-to
+evidence_type: correlational
+key_metric: ASR-WER 45.00, ChatGPT score 2.98 (s2tif) / 2.19 (s2sif), UTMOS 3.8958 (offline); streaming
+  latency >4500 ms, ChatGPT score 2.16–2.22, ASR-WER 42.03–44.85
+caveat: Evaluation uses GPT-4o as a judge and Whisper-Large-V3 for ASR transcription, introducing potential
+  bias in both scoring and alignment measurement.
+extracted_by: automatic-extraction
+related_findings:
+- IC-235

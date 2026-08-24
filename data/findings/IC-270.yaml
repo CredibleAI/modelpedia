@@ -1,0 +1,38 @@
+id: IC-270
+title: Unsupervised finetuning (evo-tuning) on homologous sequences improves ESM-2 650M zero-shot fitness
+  prediction for low-likelihood wild types but harms high-likelihood ones, with optimal threshold at
+  log-likelihood ε = −1.4
+description: 'The authors finetune ESM-2 650M for 5 epochs on the 1,000 most similar UniRef100 sequences
+  (by MMseqs2 e-value) for each of 217 ProteinGym DMS studies. Performance improvement is anti-correlated
+  with starting wild type likelihood: low-likelihood sequences benefit while high-likelihood sequences
+  degrade. At ε = −1.4 (only finetuning sequences below this log-likelihood threshold), ESM-2 650M achieves
+  a mean weighted Spearman of 0.443, outperforming EVE (0.432) and MSA Transformer (0.421), and approaching
+  TranceptionEVE (0.455). Naive finetuning without the threshold (ε = 0) degrades performance to 0.377.'
+models:
+- ref: model:esm-2
+- ref: model:eve
+- ref: model:msa-transformer
+- ref: model:tranceptioneve
+- ref: model:progen-2
+concepts: []
+sources:
+- ref: source:protein-language-model-fitness-matter-preference
+datasets:
+- ref: dataset:proteingym
+  role: eval
+- ref: dataset:uniref100
+  role: source
+methods:
+- ref: method:mmseqs2
+  role: supporting
+related_work: []
+evidence_type: interventional
+key_metric: 'ESM-2 650M + finetune ε=−1.4: mean weighted 0.443, activity 0.461, binding 0.356, expression
+  0.437, organismal fitness 0.425, stability 0.534; vs ESM-2 650M baseline 0.419; vs EVE 0.432; vs MSA
+  Transformer 0.421; vs TranceptionEVE 0.455; vs ε=0 (no threshold) 0.377'
+caveat: Finetuning uses a single 80GB A100 GPU with AdamW at lr 1e-6 for 5 epochs; batch size progressively
+  halved on OOM. Results are on 217 DMS studies from ProteinGym only.
+extracted_by: automatic-extraction
+related_findings:
+- IC-268
+- IC-269
