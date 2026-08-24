@@ -13,6 +13,7 @@ models:
   variant: variant:qwen2-5-72b
 concepts:
 - ref: concept:failure-mode
+- ref: concept:method-artefact
 sources:
 - ref: source:workflowllm-enhancing-workflow-orchestration-capability-large
 datasets:

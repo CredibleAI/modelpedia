@@ -1394,20 +1394,41 @@ model:yolov9:
 
 model:claude-2-0:
   name: Claude 2.0
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://www.anthropic.com/index/introducing-claude
 
 model:claude-2-1:
   name: Claude 2.1
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://www.anthropic.com/index/introducing-claude
 
 model:dinov2:
   name: DINOv2
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:falcon:
   name: Falcon
+  modality:
+  - text
+  task:
+  - generative
 
 model:gemini:
   name: Gemini
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2312.11805
 
   variants:
@@ -1423,10 +1444,19 @@ model:gemini:
       name: Gemini Pro Vision
 model:gemini-1-0-pro:
   name: Gemini 1.0 Pro
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2312.11805
 
 model:gemma:
   name: Gemma
+  modality:
+  - text
+  task:
+  - generative
 
   variants:
     variant:gemma-7b-it:
@@ -1445,6 +1475,10 @@ model:gemma:
       name: Gemma-9B
 model:gpt-2:
   name: GPT-2
+  modality:
+  - text
+  task:
+  - generative
 
   variants:
     variant:gpt-2-small:
@@ -1457,6 +1491,10 @@ model:gpt-2:
       name: GPT-2 XL
 model:gpt-j:
   name: GPT-J
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://github.com/kingoflolz/mesh-transformer-jax
 
   variants:
@@ -1464,10 +1502,19 @@ model:gpt-j:
       name: GPT-J 6B
 model:instructblip:
   name: InstructBLIP
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2305.06500
 
 model:llama-3-2-3b:
   name: Llama-3.2-3B
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2407.21783
 
   variants:
@@ -1479,10 +1526,19 @@ model:llama-3-2-3b:
       name: Llama-3.2-1B
 model:llava:
   name: LLaVA
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2304.08485
 
 model:olmo:
   name: OLMo / OLMo base
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://aclanthology.org/2024.acl-long.841/
 
   variants:
@@ -1496,6 +1552,11 @@ model:olmo:
       name: OLMo-7B
 model:openclip:
   name: OpenCLIP
+  modality:
+  - text
+  - image
+  task:
+  - discriminative
   anchor: https://github.com/mlfoundations/open_clip
 
   variants:
@@ -1503,10 +1564,18 @@ model:openclip:
       name: OpenCLIP ViT-B/16
 model:qwen-2-5-72b-instruct:
   name: Qwen 2.5 72B Instruct
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2412.15115
 
 model:qwen2-5:
   name: Qwen2.5
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://qwenlm.github.io/blog/qwen2.5/
 
   variants:
@@ -1526,9 +1595,17 @@ model:qwen2-5:
       name: Qwen2.5-7B-Instruct
 model:sam:
   name: SAM
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:o1:
   name: O1
+  modality:
+  - text
+  task:
+  - generative
 
   variants:
     variant:o1-mini:
@@ -1539,6 +1616,10 @@ model:o1:
       name: GPT-O1-Preview
 model:vicuna:
   name: Vicuna
+  modality:
+  - text
+  task:
+  - generative
   variants:
     variant:vicuna-13b:
       name: Vicuna-13B
@@ -1551,57 +1632,127 @@ model:vicuna:
 
 model:gaussian-splatting-3d:
   name: 3D Gaussian Splatting
+  modality:
+  - image
+  task:
+  - generative
 
 model:aasist:
   name: AASIST
+  modality:
+  - audio
+  task:
+  - discriminative
 
 model:aegis-guard-defensive:
   name: Aegis-Guard-Defensive
+  modality:
+  - text
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2404.05993
 
 model:alexnet:
   name: AlexNet
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:alphaflow:
   name: AlphaFlow
+  task:
+  - generative
+  domain:
+  - biological
   anchor: https://arxiv.org/abs/2402.04845
 
 model:alphafold2:
   name: AlphaFold2
+  modality:
+  - text
+  task:
+  - discriminative
+  domain:
+  - biological
 
 model:amber-7b:
   name: Amber-7B
+  modality:
+  - text
+  task:
+  - generative
 
 model:anyloc:
   name: AnyLoc
+  modality:
+  - image
+  task:
+  - discriminative
+  domain:
+  - geospatial
 
 model:autotikz:
   name: AutoTikZ
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://openreview.net/forum?id=v3k5tvp8kz
 
 model:autowebglm:
   name: AutoWebGLM
+  modality:
+  - text
+  task:
+  - generative
 
 model:baichuan:
   name: Baichuan
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2309.10305
 
 model:baichuan-2:
   name: Baichuan 2
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2309.10305
 
 model:baichuan2-13b:
   name: Baichuan2-13B
+  modality:
+  - text
+  task:
+  - generative
 
 model:bakllava:
   name: BakLLaVA
+  modality:
+  - text
+  - image
+  task:
+  - generative
 
 model:bart-l-mnli:
   name: BART-L-MNLI
+  modality:
+  - text
+  task:
+  - discriminative
   anchor: http://arxiv.org/abs/1910.13461
 
 model:beit:
   name: BEiT
+  modality:
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2106.08254
 
   variants:
@@ -1609,12 +1760,24 @@ model:beit:
       name: BEiT v2
 model:bert:
   name: BERT
+  modality:
+  - text
+  task:
+  - discriminative
 
 model:bert-base-cased:
   name: BERT-base-cased
+  modality:
+  - text
+  task:
+  - discriminative
 
 model:bloom:
   name: BLOOM
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2211.05100
 
   variants:
@@ -1622,49 +1785,114 @@ model:bloom:
       name: BLOOM-560M
 model:cambrian-1:
   name: Cambrian-1
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2406.16860
 
 model:chameleon:
   name: Chameleon
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2405.09818
 
 model:chatglm-6b:
   name: ChatGLM-6B
+  modality:
+  - text
+  task:
+  - generative
 
 model:chat-univi-7b:
   name: Chat-UniVi-7B
+  modality:
+  - text
+  - image
+  - video
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2311.08046
 
 model:chronos:
   name: Chronos
+  modality:
+  - time-series
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2403.07815
 
 model:clap:
   name: CLAP
+  modality:
+  - audio
+  - text
+  task:
+  - discriminative
 
 model:claude-3-7-sonnet:
   name: Claude 3.7 Sonnet
+  modality:
+  - text
+  task:
+  - generative
 
 model:clmbr-t-base:
   name: CLMBR-T-BASE
+  modality:
+  - text
+  task:
+  - generative
+  domain:
+  - medical
 
 model:cocondenser:
   name: CoCondenser
+  modality:
+  - text
+  task:
+  - discriminative
 
 model:codegen:
   name: CodeGen
+  modality:
+  - text
+  task:
+  - generative
 
 model:codellama-13b:
   name: CodeLlama-13B
+  modality:
+  - text
+  task:
+  - generative
 
 model:cogagent:
   name: CogAgent
+  modality:
+  - text
+  - image
+  task:
+  - generative
 
 model:cogvlm:
   name: CogVLM
+  modality:
+  - image
+  - text
+  task:
+  - generative
 
 model:cohere-command-r:
   name: Cohere Command R
+  modality:
+  - text
+  task:
+  - generative
 
   variants:
     variant:cohere-command-r-35b:
@@ -1673,161 +1901,364 @@ model:cohere-command-r:
       name: Cohere Command R 7B
 model:command-r:
   name: Command R+
+  modality:
+  - text
+  task:
+  - generative
 
 model:conch:
   name: CONCH
+  modality:
+  - image
+  - text
+  task:
+  - discriminative
+  domain:
+  - medical
 
 model:contriever:
   name: Contriever
+  modality:
+  - text
+  task:
+  - discriminative
 
 model:convit:
   name: ConvIT
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:convnext:
   name: ConvNeXt
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:convnextv2-tiny:
   name: ConvNeXtV2-Tiny
+  modality:
+  - image
+  task:
+  - discriminative
   anchor: https://doi.org/10.1109/cvpr52688.2022.01167
 
 model:coplace:
   name: CoPlace
+  modality:
+  - image
+  task:
+  - discriminative
+  domain:
+  - geospatial
 
 model:cpm-distilled:
   name: CPM-distilled
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2012.00413
 
 model:dall-e:
   name: DALL-E
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2102.12092
 
 model:dall-e-2:
   name: DALL·E 2
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2204.06125
 
 model:dall-e-3:
   name: DALL·E 3
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://cdn.openai.com/papers/dall-e-3.pdf
 
 model:deberta-v3-nli:
   name: DeBERTa-V3-NLI
+  modality:
+  - text
+  task:
+  - discriminative
   anchor: https://openreview.net/forum?id=se7-xhlxha
 
 model:deepfloyd-if:
   name: DeepFloyd IF
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://github.com/deep-floyd/if
 
 model:deepgate2:
   name: DeepGate2
+  modality:
+  - graph
+  task:
+  - discriminative
 
 model:deepgate3:
   name: DeepGate3
 
 model:deepseek-r1:
   name: DeepSeek R1
+  modality:
+  - text
+  task:
+  - generative
+  - reinforcement-learning
   anchor: https://arxiv.org/abs/2501.12948
 
 model:deepseek-2-chat:
   name: DeepSeek-2-Chat
+  modality:
+  - text
+  task:
+  - generative
 
 model:deepseek-2-coder:
   name: DeepSeek-2-Coder
+  modality:
+  - text
+  task:
+  - generative
 
 model:deepseek-v2-0628:
   name: DeepSeek-V2-0628
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2405.04434
 
 model:deepseek-vl2:
   name: DeepSeek-VL2
+  modality:
+  - text
+  - image
+  task:
+  - generative
+  - discriminative
 
 model:deepseek-llm:
   name: DeepSeek LLM
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2401.02954
 
 model:deepseekmoe:
   name: DeepSeekMoE
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2401.06066
 
 model:deit:
   name: DeiT
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:densenet:
   name: DenseNet
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:depth-anything:
   name: Depth Anything
+  modality:
+  - image
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2401.10891
 
 model:data-filtering-networks-dfn:
   name: Data Filtering Networks (DfN)
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2309.17425
 
 model:diffab:
   name: DiffAb
+  task:
+  - generative
+  domain:
+  - biological
 
 model:diffaffinity:
   name: DiffAffinity
+  task:
+  - discriminative
+  - generative
+  domain:
+  - biological
   anchor: https://arxiv.org/abs/2310.19849
 
 model:dino:
   name: DINO
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:dymean:
   name: DyMEAN
+  modality:
+  - graph
+  task:
+  - generative
+  domain:
+  - biological
   anchor: https://arxiv.org/abs/2302.00203
 
 model:e5-v:
   name: E5-V
+  modality:
+  - text
+  - image
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2407.12580
 
 model:efficientnet:
   name: EfficientNet
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:eigenfold:
   name: EigenFold
+  task:
+  - generative
+  domain:
+  - biological
   anchor: https://arxiv.org/abs/2304.02198
 
 model:ella:
   name: ELLA
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2403.05135
 
 model:emu2:
   name: Emu2
+  modality:
+  - text
+  - image
+  task:
+  - generative
 
   variants:
     variant:emu2-37b:
       name: Emu2-37B
 model:esm-1f:
   name: ESM-1F
+  modality:
+  - text
+  - graph
+  task:
+  - discriminative
+  domain:
+  - biological
 
 model:esm-2:
   name: ESM-2
+  modality:
+  - text
+  task:
+  - discriminative
+  domain:
+  - biological
 
 model:esm3:
   name: ESM3
+  modality:
+  - text
+  task:
+  - generative
+  domain:
+  - biological
 
 model:esmflow:
   name: ESMFlow
+  modality:
+  - text
+  task:
+  - generative
+  domain:
+  - biological
   anchor: https://arxiv.org/abs/2402.04845
 
 model:eurus-rm-7b:
   name: Eurus-RM-7B
+  modality:
+  - text
+  task:
+  - discriminative
 
 model:eva-clip:
   name: EVA-CLIP
+  modality:
+  - text
+  - image
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2303.15389
 
 model:eva-02:
   name: EVA-02
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:eve:
   name: EVE
+  task:
+  - generative
+  - discriminative
+  domain:
+  - biological
+  - medical
 
 model:florence-2:
   name: Florence-2
+  modality:
+  - image
 
 model:flux:
   name: FLUX
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://flux1.ai/
 
   variants:
@@ -1835,35 +2266,70 @@ model:flux:
       name: FLUX
 model:flux-1-dev:
   name: FLUX.1[dev]
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://blackforestlabs.ai/announcing-black-forest-labs/
 
 model:gat:
   name: GAT
+  modality:
+  - graph
   anchor: https://openreview.net/forum?id=rjxmpikcz
 
 model:gcn:
   name: GCN
+  modality:
+  - graph
+  task:
+  - discriminative
   anchor: https://openreview.net/forum?id=sju4ayygl
 
 model:gin:
   name: GIN
+  modality:
+  - graph
+  task:
+  - discriminative
   anchor: https://openreview.net/forum?id=rygs6ia5km
 
 model:googlenet:
   name: GoogLeNet
+  modality:
+  - image
+  task:
+  - discriminative
   anchor: https://arxiv.org/pdf/1409.4842.pdf
 
 model:gp-lvm:
   name: GP-LVM
+  modality:
+  - tabular
+  task:
+  - generative
 
 model:gpt-4-1:
   name: GPT-4.1
+  modality:
+  - text
+  task:
+  - generative
 
 model:gpt-4-5:
   name: GPT-4.5
+  modality:
+  - text
+  task:
+  - generative
 
 model:gpt-neo:
   name: GPT-Neo
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://doi.org/10.5281/zenodo.5297715
 
   variants:
@@ -1871,80 +2337,175 @@ model:gpt-neo:
       name: GPT-Neo-2.7B
 model:griffin:
   name: Griffin
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2402.19427
 
 model:grounding-dino:
   name: Grounding DINO
+  modality:
+  - text
+  - image
+  task:
+  - discriminative
 
 model:gtr-t5-base:
   name: GTR-T5-base
+  modality:
+  - text
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2112.07899
 
 model:harmbench-classifier:
   name: HarmBench Classifier
+  modality:
+  - text
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2402.04249
 
 model:hawkeye:
   name: Hawkeye
+  modality:
+  - text
+  - video
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2403.10228
 
 model:i3d:
   name: I3D
+  modality:
+  - video
+  task:
+  - discriminative
 
 model:iddpm:
   name: IDDPM
+  modality:
+  - image
+  task:
+  - generative
 
 model:idefics:
   name: Idefics
+  modality:
+  - image
+  - text
+  task:
+  - generative
 
 model:iflytekspark-13b:
   name: iFlytekSpark-13B
+  modality:
+  - text
+  task:
+  - generative
 
 model:imagebind:
   name: ImageBind
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:imagebind-llm-7b:
   name: ImageBind-LLM-7B
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2309.03905
 
 model:inception:
   name: Inception
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:internlm:
   name: InternLM
+  modality:
+  - text
+  task:
+  - generative
 
 model:internlm-2-5-7b:
   name: InternLM-2.5-7B
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://doi.org/10.48550/arxiv.2403.17297
 
 model:internlm2:
   name: InternLM2
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2403.17297
 
 model:internvl-1-5:
   name: InternVL-1.5
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2404.16821
 
 model:kandinsky-v2-2:
   name: Kandinsky v2.2
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2310.03502
 
 model:lambo-2:
   name: Lambo-2
+  task:
+  - generative
+  domain:
+  - biological
 
 model:languagebind:
   name: LanguageBind
+  modality:
+  - text
+  - video
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2310.01852
 
 model:legalbert:
   name: LegalBERT
+  modality:
+  - text
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2010.02559
 
 model:lemur-70b-chat-v1:
   name: Lemur-70B-Chat-V1
+  modality:
+  - text
+  task:
+  - generative
 
 model:llama-3-2:
   name: Llama 3.2
+  modality:
+  - text
+  task:
+  - generative
   anchor: http://arxiv.org/abs/2407.21783
 
   variants:
@@ -1956,10 +2517,18 @@ model:llama-3-2:
       name: Llama 3.2 Instruct
 model:llama-guard:
   name: Llama Guard
+  modality:
+  - text
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2312.06674
 
 model:llama-guard-2:
   name: Llama Guard 2
+  modality:
+  - text
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2312.06674
 
   variants:
@@ -1967,34 +2536,80 @@ model:llama-guard-2:
       name: Llama-Guard-2-8B
 model:llama-guard-3:
   name: Llama-Guard 3
+  modality:
+  - text
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2312.06674
 
 model:llama-vid:
   name: Llama-VID
+  modality:
+  - image
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2311.17043
 
 model:llava-med:
   name: LLaVA-Med
+  modality:
+  - text
+  - image
+  task:
+  - generative
+  domain:
+  - medical
 
 model:longva-7b:
   name: LongVA-7B
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2406.16852
 
 model:lovt:
   name: LOVT
+  modality:
+  - image
+  - text
+  task:
+  - discriminative
+  domain:
+  - medical
 
 model:lwm-1m-jax:
   name: LWM-1M-JAX
+  modality:
+  - text
+  - video
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2402.08268
 
 model:mae:
   name: MAE
+  modality:
+  - image
+  task:
+  - generative
 
 model:mae-b-16:
   name: MAE-B/16
+  modality:
+  - image
+  task:
+  - generative
 
 model:magiclens:
   name: MagicLens
+  modality:
+  - text
+  - image
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2403.19651
 
 model:mamba:
@@ -2006,56 +2621,131 @@ model:mamba:
       name: Mamba-130m
 model:map-neo:
   name: MAP-NEO
+  modality:
+  - text
+  - image
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2405.19327
 
 model:med-flamingo:
   name: Med-Flamingo
+  modality:
+  - text
+  - image
+  task:
+  - generative
+  domain:
+  - medical
 
 model:mgca:
   name: MGCA
+  modality:
+  - image
+  task:
+  - discriminative
+  domain:
+  - medical
 
 model:midas:
   name: MiDaS
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:mip-splatting:
   name: Mip-Splatting
+  modality:
+  - image
+  task:
+  - generative
 
 model:mistral-large-2:
   name: Mistral Large 2
+  modality:
+  - text
+  task:
+  - generative
 
 model:mistral-large-v2:
   name: Mistral Large V2
+  modality:
+  - text
+  task:
+  - generative
 
 model:mistral-nemo-12b-instruct-2407:
   name: Mistral-Nemo 12B-Instruct-2407
+  modality:
+  - text
+  task:
+  - generative
 
 model:mistral-nemo-instruct:
   name: Mistral-Nemo-Instruct
+  modality:
+  - text
+  task:
+  - generative
 
 model:moe-llava:
   name: MoE-LLaVA
+  modality:
+  - text
+  - image
+  task:
+  - generative
 
 model:moirai:
   name: Moirai
+  modality:
+  - time-series
+  task:
+  - generative
   anchor: https://openreview.net/forum?id=yd8ehmy1wz
 
 model:molmo:
   name: Molmo
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2409.17146
 
 model:molmoe-7b:
   name: MolmoE-7B
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2409.17146
 
 model:momentor:
   name: Momentor
+  modality:
+  - video
+  - text
+  task:
+  - generative
 
 model:moonshot-v1-8k:
   name: Moonshot-v1-8k
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://platform.moonshot.cn/
 
 model:mplug-owl:
   name: mPLUG-Owl
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2304.14178
 
   variants:
@@ -2063,122 +2753,266 @@ model:mplug-owl:
       name: mPLUG-Owl-7B
 model:mplug-owl2:
   name: mPLUG-Owl2
+  modality:
+  - text
+  - image
+  task:
+  - generative
 
 model:mpt:
   name: MPT
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://www.mosaicml.com/blog/mpt-7b
 
 model:msa-transformer:
   name: MSA Transformer
+  modality:
+  - text
+  domain:
+  - biological
 
 model:multiberts:
   name: MultiBERTs
+  modality:
+  - text
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2106.16163
 
 model:mvit-v2:
   name: MViT V2
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:gpt-neox-20b:
   name: GPT-NeoX-20B
+  modality:
+  - text
+  task:
+  - generative
 
 model:nova-canvas:
   name: Nova Canvas
+  modality:
+  - image
+  task:
+  - generative
   anchor: https://www.amazon.science/publications/the-amazon-nova-family-of-models-technical-report-and-model-card
 
 model:nova-lite:
   name: Nova Lite
+  modality:
+  - text
   anchor: https://www.amazon.science/publications/the-amazon-nova-family-of-models-technical-report-and-model-card
 
 model:nova-pro:
   name: Nova Pro
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://www.amazon.science/publications/the-amazon-nova-family-of-models-technical-report-and-model-card
 
 model:nv-embed-v1:
   name: NV-Embed-v1
+  modality:
+  - text
+  task:
+  - discriminative
 
 model:o3:
   name: O3
+  modality:
+  - text
+  task:
+  - generative
 
   variants:
     variant:o3-mini:
       name: O3 Mini
 model:o4-mini:
   name: O4-mini
+  modality:
+  - text
+  task:
+  - generative
 
 model:olmoe-6-9b:
   name: OLMoE 6.9B
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2409.02060
 
 model:onellm:
   name: OneLLM
+  modality:
+  - text
+  task:
+  - generative
 
 model:openai-moderation:
   name: OpenAI Moderation
+  modality:
+  - text
+  task:
+  - discriminative
 
 model:openassistant-reward-model-deberta-v3-large-v2:
   name: OpenAssistant/Reward-Model-DeBERTa-V3-Large-V2
+  modality:
+  - text
+  task:
+  - reinforcement-learning
   anchor: https://huggingface.co/openassistant/reward-model-deberta-v3-large-v2
 
 model:openchat-3-5-0106:
   name: OpenChat-3.5-0106
+  modality:
+  - text
+  task:
+  - generative
 
 model:openllama:
   name: OpenLLaMA
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://github.com/openlm-research/open_llama
 
 model:otter-7b:
   name: Otter-7B
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2305.03726
 
 model:palm-2:
   name: PaLM 2
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2305.10403
 
 model:pandagpt-7b:
   name: PandaGPT-7B
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2305.16355
 
 model:phi-2:
   name: Phi-2
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2306.11644
 
 model:phi-3-5-mini-instruct:
   name: Phi-3.5 Mini Instruct
+  modality:
+  - text
+  task:
+  - generative
 
 model:pickscore:
   name: PickScore
+  modality:
+  - text
+  - image
+  task:
+  - discriminative
 
 model:pixart:
   name: PixArt-α
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2310.00426
 
 model:platypus2-instruct-70b:
   name: Platypus2-Instruct-70B
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2308.07317
 
 model:playground-v2:
   name: Playground v2
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2402.17245
 
 model:plip:
   name: PLIP
+  modality:
+  - image
+  - text
+  task:
+  - discriminative
+  domain:
+  - medical
 
 model:prismatic:
   name: Prismatic
+  modality:
+  - text
+  - image
+  task:
+  - generative
 
 model:progen-2:
   name: ProGen-2
+  modality:
+  - text
+  task:
+  - generative
+  domain:
+  - biological
 
 model:prometheus-2:
   name: Prometheus 2
+  modality:
+  - text
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2405.01535
 
 model:promim:
   name: ProMiM
+  modality:
+  - text
+  task:
+  - discriminative
+  domain:
+  - biological
   anchor: https://arxiv.org/abs/2405.17802
 
 model:qwen:
   name: Qwen
+  modality:
+  - text
+  task:
+  - generative
+  - discriminative
   anchor: https://arxiv.org/abs/2309.16609
 
   variants:
@@ -2188,60 +3022,131 @@ model:qwen:
       name: Qwen-7B
 model:qwen-audio:
   name: Qwen-Audio
+  modality:
+  - audio
+  - text
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2311.07919
 
 model:qwen2-audio:
   name: Qwen2-Audio
+  modality:
+  - text
+  - audio
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2407.10759
 
 model:qwq:
   name: QwQ
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://qwenlm.github.io/blog/qwq-32b-preview/
 
 model:r2d2:
   name: R2D2
+  modality:
+  - text
 
 model:radfm:
   name: RadFM
+  modality:
+  - image
+  task:
+  - discriminative
+  domain:
+  - medical
   anchor: https://arxiv.org/abs/2308.02463
 
 model:rotamer-density-estimator:
   name: Rotamer Density Estimator
+  task:
+  - discriminative
+  domain:
+  - biological
 
 model:redpajama:
   name: RedPajama
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://www.together.ai/blog/redpajama-models-v1
 
 model:redpajama-incite:
   name: RedPajama-INCITE
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://github.com/togethercomputer/redpajama-data
 
 model:refinegnn:
   name: RefineGNN
+  modality:
+  - graph
+  - text
+  task:
+  - generative
+  domain:
+  - biological
   anchor: https://arxiv.org/abs/2110.04624
 
 model:regnet:
   name: RegNet
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:repvgg:
   name: RepVGG
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:resnext:
   name: ResNeXt
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:roberta:
   name: RoBERTa
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/1907.11692
 
 model:rt-detr:
   name: RT-DETR
+  modality:
+  - image
+  - text
+  task:
+  - discriminative
 
 model:rwkv:
   name: RWKV
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2305.13048
 
 model:salmonn:
   name: SALMONN
+  modality:
+  - audio
+  - text
+  task:
+  - generative
   anchor: https://openreview.net/forum?id=nbzbpxdjlc
 
   variants:
@@ -2249,53 +3154,109 @@ model:salmonn:
       name: SALMONN-7B
 model:sam-2:
   name: SAM 2
+  modality:
+  - image
+  - video
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2408.00714
 
 model:saullm-54b:
   name: SAULLM 54B
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2407.19584
 
 model:scaffold-gs:
   name: Scaffold-GS
+  modality:
+  - image
+  task:
+  - generative
 
 model:seed-llama-8b:
   name: Seed-LLaMA-8B
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2310.01218
 
 model:sfr-embedding-2-r:
   name: SFR-Embedding-2-R
+  modality:
+  - text
+  task:
+  - discriminative
 
 model:siren:
   name: SIREN
+  task:
+  - generative
 
 model:skywork:
   name: Skywork
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2310.19341
 
 model:slip:
   name: SLIP
+  modality:
+  - text
+  - image
+  task:
+  - discriminative
 
 model:slowfast:
   name: SlowFast
+  modality:
+  - video
+  task:
+  - discriminative
 
 model:solar-10-7b:
   name: Solar 10.7B
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2312.15166
 
 model:speechgpt:
   name: SpeechGPT
+  modality:
+  - text
+  - audio
+  task:
+  - generative
   anchor: https://aclanthology.org/2023.findings-emnlp.1055
 
 model:stablelm:
   name: StableLM
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://github.com/stability-ai/stablelm
 
 model:stella-en-1-5b-v5:
   name: Stella-en-1.5b-v5
+  modality:
+  - text
   anchor: https://huggingface.co/dunzhang/stella_en_1.5b_v5
 
 model:str2str:
   name: STR2STR
+  task:
+  - generative
+  domain:
+  - biological
 
 model:stsc-snn:
   name: STSC-SNN
@@ -2303,47 +3264,94 @@ model:stsc-snn:
 
 model:stylegan2-ada:
   name: StyleGAN2-ADA
+  modality:
+  - image
+  task:
+  - generative
 
 model:swin-transformer:
   name: Swin Transformer
+  modality:
+  - image
+  task:
+  - discriminative
 
   variants:
     variant:swin-transformer:
       name: Swin Transformer
 model:ta-snn:
   name: TA SNN
+  modality:
+  - time-series
+  task:
+  - discriminative
   anchor: https://doi.org/10.1109/iccv48922.2021.01006
 
 model:tas-b:
   name: TAS-B
+  modality:
+  - text
+  task:
+  - discriminative
 
 model:td-mpc:
   name: TD-MPC
+  task:
+  - reinforcement-learning
   anchor: https://proceedings.mlr.press/v162/hansen22a.html
 
 model:timechat:
   name: TimeChat
+  modality:
+  - text
+  - video
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2312.02051
 
 model:timesformer:
   name: TimesFormer
+  modality:
+  - time-series
 
 model:tinystories-4-layer-33m:
   name: TinyStories 4-layer 33M
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2305.07759
 
 model:megatron-turing-nlg-530b:
   name: Megatron-Turing NLG 530B
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2201.11990
 
 model:tranceptioneve:
   name: TranceptionEVE
+  modality:
+  - text
+  task:
+  - discriminative
+  domain:
+  - biological
 
 model:tsm:
   name: TSM
+  modality:
+  - video
+  task:
+  - discriminative
 
 model:tulu-2:
   name: Tulu 2
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2311.10702
 
   variants:
@@ -2356,42 +3364,90 @@ model:uform:
 
 model:ugrnn:
   name: UGRNN
+  task:
+  - discriminative
+  domain:
+  - biological
   anchor: https://proceedings.neurips.cc/paper_files/paper/2017/file/ab541d874c7bc19ab77642849e02b89f-paper.pdf
 
 model:uniformer:
   name: Uniformer
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:uniir:
   name: UniIR
+  modality:
+  - text
+  - image
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2311.17136
 
 model:valor:
   name: Valor
+  modality:
+  - text
+  - image
+  - audio
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2304.08345
 
 model:vast:
   name: VAST
+  modality:
+  - text
+  - image
+  - audio
 
 model:vera:
   name: VERA
+  modality:
+  - text
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2305.03695
 
 model:video-chat-7b:
   name: Video-Chat-7B
+  modality:
+  - video
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2305.06355
 
 model:video-chatgpt:
   name: Video-ChatGPT
+  modality:
+  - text
+  - video
+  task:
+  - generative
 
   variants:
     variant:video-chatgpt-7b:
       name: Video-ChatGPT-7B
 model:video-llama-2-13b:
   name: Video-LLaMA-2-13B
+  modality:
+  - video
+  - audio
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2306.02858
 
 model:video-llava:
   name: Video-LLaVA
+  modality:
+  - text
+  - video
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2311.10122
 
   variants:
@@ -2399,34 +3455,78 @@ model:video-llava:
       name: Video-LLaVA-7B
 model:videomae:
   name: VideoMAE
+  modality:
+  - video
+  task:
+  - generative
 
 model:video-swin-transformer:
   name: Video Swin Transformer
+  modality:
+  - video
+  task:
+  - discriminative
 
 model:vila-8b:
   name: ViLA-8B
+  modality:
+  - text
+  - image
+  task:
+  - generative
 
 model:viv1t:
   name: ViV1T
+  modality:
+  - video
+  - time-series
+  task:
+  - discriminative
+  domain:
+  - biological
   anchor: https://arxiv.org/abs/2407.09100
 
 model:vtg-llm:
   name: VTG-LLM
+  modality:
+  - text
+  - video
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2405.13382
 
 model:wideresnet:
   name: WideResNet
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:wildguard:
   name: WildGuard
+  modality:
+  - text
+  task:
+  - discriminative
   anchor: https://arxiv.org/abs/2406.18495
 
 model:wjs:
   name: WJS
+  modality:
+  - text
+  task:
+  - generative
+  domain:
+  - biological
   anchor: https://arxiv.org/abs/2306.12360
 
 model:x-instructblip-7b:
   name: X-InstructBLIP-7B
+  modality:
+  - text
+  - image
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2311.18799
 
 model:x3d:
@@ -2434,25 +3534,55 @@ model:x3d:
 
 model:xception:
   name: Xception
+  modality:
+  - image
+  task:
+  - discriminative
 
 model:xglm:
   name: XGLM
+  modality:
+  - text
+  task:
+  - generative
 
 model:yolo-world:
   name: YOLO-World
+  modality:
+  - image
+  - text
+  task:
+  - discriminative
 
 model:yolov8:
   name: YOLOv8
+  modality:
+  - image
+  - text
+  task:
+  - discriminative
 
 model:zephyr-7b-beta:
   name: Zephyr-7B-beta
+  modality:
+  - text
+  task:
+  - generative
 
 model:ziya2:
   name: ZiYA2
+  modality:
+  - text
+  task:
+  - generative
   anchor: https://arxiv.org/abs/2311.03301
 
 model:agentlm:
   name: Agentlm
+  modality:
+  - text
+  task:
+  - generative
 
   variants:
     variant:agentlm-13b:
@@ -2463,6 +3593,11 @@ model:agentlm:
       name: AgentLM-7B
 model:internlm2-reward:
   name: Internlm2-Reward
+  modality:
+  - text
+  task:
+  - discriminative
+  - reinforcement-learning
 
   variants:
     variant:internlm2-20b-reward:
@@ -2471,6 +3606,11 @@ model:internlm2-reward:
       name: InternLM2-7B-Reward
 model:llama-3-2-vision:
   name: Llama-3-2-Vision
+  modality:
+  - text
+  - image
+  task:
+  - generative
 
   variants:
     variant:llama-3-2-11b-vision-instruct:
@@ -2479,6 +3619,10 @@ model:llama-3-2-vision:
       name: Llama-3.2-90B-Vision-Instruct
 model:mixtral:
   name: Mixtral
+  modality:
+  - text
+  task:
+  - generative
 
   variants:
     variant:mixtral-7x22b:
@@ -2489,6 +3633,10 @@ model:mixtral:
       name: Mixtral 8x22B Instruct
 model:wizardlm:
   name: Wizardlm
+  modality:
+  - text
+  task:
+  - generative
 
   variants:
     variant:wizardlm-13b:
@@ -2497,6 +3645,11 @@ model:wizardlm:
       name: WizardLM-70B
 model:xlam-r:
   name: Xlam-R
+  modality:
+  - text
+  - image
+  task:
+  - discriminative
   variants:
     variant:xlam-7b-r:
       name: XLAM-7B-R

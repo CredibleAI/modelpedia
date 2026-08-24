@@ -12,7 +12,8 @@ models:
   variant: variant:resnet-18
 - ref: model:stable-diffusion
 - ref: model:pythia
-concepts: []
+concepts:
+- ref: concept:scale-dependent-behaviour
 sources:
 - ref: source:neuron-based-multifractal-analysis-neuron-interaction
 datasets: []

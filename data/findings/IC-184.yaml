@@ -19,6 +19,7 @@ models:
   variant: variant:llama-3-8b-instruct
 concepts:
 - ref: concept:failure-mode
+- ref: concept:linear-representation
 sources:
 - ref: source:llms-know-more-than-they-show
 datasets:

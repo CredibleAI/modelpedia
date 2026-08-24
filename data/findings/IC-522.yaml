@@ -17,7 +17,8 @@ models:
   variant: variant:llama-3-8b
 - ref: model:llama-2
   variant: variant:llama-2-13b
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:mirage-evaluating-explaining-inductive-reasoning-process
 datasets: []

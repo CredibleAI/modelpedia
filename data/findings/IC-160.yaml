@@ -14,7 +14,8 @@ models:
   variant: variant:pythia-70m
 - ref: model:gemma-2
   variant: variant:gemma-2-2b
-concepts: []
+concepts:
+- ref: concept:linear-representation
 sources:
 - ref: source:sparse-feature-circuits-discovering-editing-interpretable
 datasets: []

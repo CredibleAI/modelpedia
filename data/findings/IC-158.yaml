@@ -12,6 +12,7 @@ models:
 - ref: model:llava-med
 concepts:
 - ref: concept:failure-mode
+- ref: concept:distance-preservation
 sources:
 - ref: source:mediconfusion-you-trust-your-ai-radiologist
 datasets: []

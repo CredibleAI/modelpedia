@@ -17,7 +17,8 @@ models:
   variant: variant:claude-3-5-sonnet
 - ref: model:claude-3
   variant: variant:claude-3-opus
-concepts: []
+concepts:
+- ref: concept:scale-dependent-behaviour
 sources:
 - ref: source:unearthing-skill-level-insights-understanding-trade
 datasets:

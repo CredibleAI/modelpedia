@@ -17,7 +17,8 @@ models:
 - ref: model:qwen-vl
 - ref: model:gemini
   variant: variant:gemini-pro-vision
-concepts: []
+concepts:
+- ref: concept:shortcut
 sources:
 - ref: source:we-talk-models-into-seeing-world
 datasets: []

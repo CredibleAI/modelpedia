@@ -20,6 +20,7 @@ models:
 - ref: model:fuyu
 concepts:
 - ref: concept:failure-mode
+- ref: concept:explanation-faithfulness
 sources:
 - ref: source:nl-eye-abductive-nli-images
 datasets:

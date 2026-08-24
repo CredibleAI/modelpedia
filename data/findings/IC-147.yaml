@@ -13,7 +13,9 @@ description: The paper demonstrates that CLIP's strong zero-shot accuracy on ren
   data.
 models:
 - ref: model:clip
-concepts: []
+concepts:
+- ref: concept:shortcut
+- ref: concept:method-artefact
 sources:
 - ref: source:search-forgotten-domain-generalization
 datasets:

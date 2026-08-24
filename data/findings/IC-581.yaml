@@ -11,7 +11,8 @@ description: The paper identifies induction heads (attention heads with high sco
   the submodular improvement and saturation of ICL performance with more demonstrations.
 models:
 - ref: model:llama-3
-concepts: []
+concepts:
+- ref: concept:linear-representation
 sources:
 - ref: source:revisiting-context-learning-inference-circuit-large
 datasets:

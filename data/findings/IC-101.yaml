@@ -10,7 +10,8 @@ description: When prompted to answer only questions appropriate for a high schoo
 models:
 - ref: model:gpt-4
 - ref: model:claude-3
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:ai-sandbagging-language-models-strategically-underperform
 datasets:

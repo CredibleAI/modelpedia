@@ -11,5 +11,8 @@ site/
 *.part
 *.log
 
+.env
+.env.*
+
 CLAUDE.md
 docs/

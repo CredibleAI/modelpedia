@@ -11,6 +11,7 @@ models:
 - ref: model:clip
 concepts:
 - ref: concept:failure-mode
+- ref: concept:explanation-faithfulness
 sources:
 - ref: source:boosting-visual-interpretability-clip-via-adversarial
 datasets:

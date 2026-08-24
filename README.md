@@ -33,7 +33,7 @@ You will run these most often. None of them touches the network.
 
 | Command | What it does |
 |---|---|
-| `python3 run_tests.py` | Runs all 372 tests across six suites. No arguments. |
+| `python3 run_tests.py` | Runs all 442 tests across six suites. No arguments. |
 | `python3 build.py` | Validates `data/`, writes `out/graph.json`, prints an audit. **Exits non-zero and writes nothing if validation fails, so run it before every commit.** |
 | `python3 render.py` | Builds the static site into `site/` from `out/graph.json`. |
 | `python3 export.py` | Writes one CSV per node type plus `edges.csv` into `out/csv/`. |
@@ -113,6 +113,12 @@ comparable. Downloading is a separate step so a bad screening rule costs nothing
 | `extract.py propose [N]` | Lists entities the answers name that no registry holds, reaching N papers or more. Also reports which concepts the model refused, proposed or silently skipped. Writes `corpus/reports/proposed.jsonl`. |
 | `extract.py tags [all]` | Writes one small tagging prompt per finding that carries no concept. `all` re-tags every finding instead. |
 | `extract.py split [--write] [--force]` | Turns collected answers into records under `data/findings/`. **Reports only by default.** `--write` creates files but never overwrites; `--force` overwrites. |
+| `extract.py status` | Where the pipeline stands: nine stages with counts, read off disk. |
+| `extract.py entities [N]` | One small prompt per proposed entity reaching N papers or more, into `corpus/prompts-entities/`, with an `_index.jsonl` that pairs each answer back to its proposal. |
+| `extract.py adopt <dir> [--write]` | Reads those answers into the registries. **Every anchor is checked against a paper that cites the entity**; a family outside the closed list, or a canonical title already written, is reported rather than written. |
+| `extract.py retag <dir> [--write]` | Reads tagging answers onto records. An identifier outside the closed concept list is reported and never written. |
+| `extract.py facets` | One prompt per model that carries no facet, into `corpus/prompts-facets/`. A model described by hand is left alone. |
+| `extract.py refacet <dir> [--write]` | Writes `modality`, `task` and `domain` onto entries that already exist. A value outside the vocabulary is refused. |
 | `extract.py compare <dir> <dir>` | Two sets of answers to the same papers, side by side: findings, models, `key_metric` numbers and citations, each checked against that paper's own text. Answers are paired by file name, and only papers both sides answered are counted. |
 
 A candidate from the entity linker is **never** accepted automatically. It is a suggestion for a

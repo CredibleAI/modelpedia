@@ -16,7 +16,8 @@ models:
 - ref: model:gpt-3-5
 - ref: model:palm-2
 - ref: model:claude-2-1
-concepts: []
+concepts:
+- ref: concept:scale-dependent-behaviour
 sources:
 - ref: source:cs-bench-comprehensive-benchmark-large-language
 datasets:

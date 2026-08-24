@@ -12,6 +12,7 @@ models:
 - ref: model:imagebind
 concepts:
 - ref: concept:linear-representation
+- ref: concept:distance-preservation
 sources:
 - ref: source:law-unconscious-contrastive-learner-probabilistic-alignment
 datasets:

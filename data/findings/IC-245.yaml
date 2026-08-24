@@ -20,7 +20,9 @@ models:
 - ref: model:gemma-2
   variant: variant:gemma-2-9b
 - ref: model:mistral-7b
-concepts: []
+concepts:
+- ref: concept:failure-mode
+- ref: concept:positional-bias
 sources:
 - ref: source:language-models-implicitly-continuous
 datasets: []

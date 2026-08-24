@@ -13,7 +13,8 @@ models:
   variant: variant:resnet-34
 - ref: model:vit
   variant: variant:vit-b
-concepts: []
+concepts:
+- ref: concept:distance-preservation
 sources:
 - ref: source:rethinking-self-distillation-label-averaging-enhanced
 datasets:

@@ -10,7 +10,8 @@ description: 'A finer-grained case study on Pythia-2.8B using path patching show
   the model''s natural retrieval mechanism rather than creating an artificial one.'
 models:
 - ref: model:pythia
-concepts: []
+concepts:
+- ref: concept:explanation-faithfulness
 sources:
 - ref: source:look-before-you-leap-universal-emergent
 datasets:

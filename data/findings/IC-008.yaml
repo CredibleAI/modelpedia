@@ -11,7 +11,8 @@ models:
 - ref: model:gpt-4o
   variant: variant:gpt-4o-mini
 - ref: model:llama-3-1
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:language-model-alignment-multilingual-trolley-problems
 datasets:

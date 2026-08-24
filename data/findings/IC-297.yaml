@@ -11,7 +11,8 @@ description: The authors relax the assumption that the residual stream basis is 
   setting is attributable to the basis change across layers rather than to genuinely shared features.
 models:
 - ref: model:pythia
-concepts: []
+concepts:
+- ref: concept:method-artefact
 sources:
 - ref: source:residual-stream-analysis-multi-layer-saes
 datasets:

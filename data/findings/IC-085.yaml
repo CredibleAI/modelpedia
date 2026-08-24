@@ -12,7 +12,8 @@ models:
   variant: variant:llama-2-7b
 - ref: model:gemma
   variant: variant:gemma-7b
-concepts: []
+concepts:
+- ref: concept:shortcut
 sources:
 - ref: source:safety-alignment-should-be-made-more
 datasets:

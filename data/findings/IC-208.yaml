@@ -15,7 +15,8 @@ models:
   variant: variant:llama-3-70b-inst
 - ref: model:llama-3
   variant: variant:llama-3-8b-inst
-concepts: []
+concepts:
+- ref: concept:method-artefact
 sources:
 - ref: source:wildbench-benchmarking-llms-challenging-tasks-from
 datasets:

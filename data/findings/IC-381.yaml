@@ -11,7 +11,8 @@ description: The paper rewrites 1000 factual prompts from COUNTERFACT five times
   similar performance to editing the localized layer.
 models:
 - ref: model:gpt-j
-concepts: []
+concepts:
+- ref: concept:explanation-faithfulness
 sources:
 - ref: source:capability-localization-capabilities-be-localized-rather
 datasets:

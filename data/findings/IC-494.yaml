@@ -14,7 +14,8 @@ models:
   variant: variant:llama-2-7b-chat
 - ref: model:llama-2
   variant: variant:llama-2-13b-chat
-concepts: []
+concepts:
+- ref: concept:linear-representation
 sources:
 - ref: source:llms-know-internally-when-they-follow
 datasets:

@@ -13,6 +13,7 @@ models:
   variant: variant:llama-3-8b-instruct-tar-bio
 concepts:
 - ref: concept:failure-mode
+- ref: concept:method-artefact
 sources:
 - ref: source:evaluating-durability-safeguards-open-weight-llms
 datasets:

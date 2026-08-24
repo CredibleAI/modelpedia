@@ -12,6 +12,7 @@ models:
   variant: variant:llama-3-8b
 concepts:
 - ref: concept:failure-mode
+- ref: concept:positional-bias
 sources:
 - ref: source:training-free-activation-sparsity-large-language
 datasets:

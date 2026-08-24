@@ -20,7 +20,8 @@ models:
 - ref: model:llava
 - ref: model:chameleon
 - ref: model:salmonn
-concepts: []
+concepts:
+- ref: concept:depth-dependent-structure
 sources:
 - ref: source:semantic-hub-hypothesis-language-models-share
 datasets:

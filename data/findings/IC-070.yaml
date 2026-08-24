@@ -9,7 +9,8 @@ description: The paper measures the spatial quality of CLIP's dense features bef
   features confirm the loss of spatial structure.
 models:
 - ref: model:eva-clip
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:refining-clip-s-spatial-awareness-visual
 datasets:

@@ -13,7 +13,8 @@ models:
   variant: variant:cohere-command-r-7b
 - ref: model:cohere-command-r
   variant: variant:cohere-command-r-35b
-concepts: []
+concepts:
+- ref: concept:scale-dependent-behaviour
 sources:
 - ref: source:procedural-knowledge-pretraining-drives-reasoning-large
 datasets: []

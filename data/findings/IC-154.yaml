@@ -13,6 +13,7 @@ models:
 - ref: model:clip
 concepts:
 - ref: concept:failure-mode
+- ref: concept:distance-preservation
 sources:
 - ref: source:qpm-discrete-optimization-globally-interpretable-image
 datasets:

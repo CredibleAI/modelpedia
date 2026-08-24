@@ -12,7 +12,8 @@ description: 'The paper computes the cosine similarity between OpenCLIP''s froze
 models:
 - ref: model:openclip
   variant: variant:openclip-vit-b-16
-concepts: []
+concepts:
+- ref: concept:linear-representation
 sources:
 - ref: source:large-scale-pretraining-secret-good-domain
 datasets:

@@ -18,6 +18,7 @@ models:
   variant: variant:llama-3-1-8b
 concepts:
 - ref: concept:failure-mode
+- ref: concept:method-artefact
 sources:
 - ref: source:judge-decoding-faster-speculative-sampling-requires
 datasets:

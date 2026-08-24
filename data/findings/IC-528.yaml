@@ -15,7 +15,8 @@ models:
   variant: variant:llama-2-7b
 - ref: model:llama-3
   variant: variant:llama-3-8b
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:knowledge-localization-mission-not-accomplished-enter
 datasets:

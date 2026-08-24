@@ -22,6 +22,7 @@ models:
 - ref: model:nova-canvas
 concepts:
 - ref: concept:shortcut
+- ref: concept:failure-mode
 sources:
 - ref: source:mmdt-decoding-trustworthiness-safety-multimodal-foundation
 datasets:

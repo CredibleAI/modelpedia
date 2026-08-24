@@ -14,7 +14,8 @@ models:
 - ref: model:msa-transformer
 - ref: model:tranceptioneve
 - ref: model:progen-2
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:protein-language-model-fitness-matter-preference
 datasets:

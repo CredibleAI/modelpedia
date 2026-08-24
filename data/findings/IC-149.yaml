@@ -18,7 +18,8 @@ models:
 - ref: model:llama-2
 - ref: model:chameleon
 - ref: model:salmonn
-concepts: []
+concepts:
+- ref: concept:linear-representation
 sources:
 - ref: source:semantic-hub-hypothesis-language-models-share
 datasets:

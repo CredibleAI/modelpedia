@@ -16,7 +16,8 @@ models:
 - ref: model:uniformer
 - ref: model:timesformer
 - ref: model:x3d
-concepts: []
+concepts:
+- ref: concept:scale-dependent-behaviour
 sources:
 - ref: source:one-hundred-neural-networks-brains-watching
 datasets:

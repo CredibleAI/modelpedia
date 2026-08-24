@@ -11,7 +11,8 @@ description: Path patching and ablation on Qwen2-0.5B-Instruct show that the pas
 models:
 - ref: model:qwen-2
   variant: variant:qwen2-0-5b-instruct
-concepts: []
+concepts:
+- ref: concept:depth-dependent-structure
 sources:
 - ref: source:same-but-different-structural-similarities-differences
 datasets: []

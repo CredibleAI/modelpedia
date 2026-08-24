@@ -12,7 +12,8 @@ description: The authors fine-tuned the released Gemini Nano 1 (1.8B) on eight n
 models:
 - ref: model:gemini
   variant: variant:gemini-nano-1
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:toward-understanding-context-vs-weight-learning
 datasets: []

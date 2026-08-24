@@ -11,7 +11,8 @@ description: The paper uses Gemini 1.0 Pro as an LLM-as-a-judge, prompting it wi
   we finetune as verifiers.'
 models:
 - ref: model:gemini-1-0-pro
-concepts: []
+concepts:
+- ref: concept:scale-dependent-behaviour
 sources:
 - ref: source:generative-verifiers-reward-modeling-as-next
 datasets:

@@ -16,7 +16,8 @@ models:
 - ref: model:mae
 - ref: model:dinov2
 - ref: model:siglip
-concepts: []
+concepts:
+- ref: concept:linear-representation
 sources:
 - ref: source:locality-alignment-improves-vision-language-models
 datasets:

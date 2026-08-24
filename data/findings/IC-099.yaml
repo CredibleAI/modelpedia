@@ -11,7 +11,8 @@ models:
 - ref: model:gpt-4
 - ref: model:claude-3
   variant: variant:claude-3-opus
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:ai-sandbagging-language-models-strategically-underperform
 datasets:

@@ -27,7 +27,8 @@ models:
   variant: variant:gpt-3-5-turbo
 - ref: model:glm-4
   variant: variant:chatglm-4-air
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:shortcutsbench-large-scale-real-world-benchmark
 datasets: []

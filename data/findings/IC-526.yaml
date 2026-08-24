@@ -10,7 +10,8 @@ description: The authors measure residual stream norms across context positions 
   attention sink phenomenon described by Sun et al. (2024) and Xiao et al. (2023).
 models:
 - ref: model:gpt-2
-concepts: []
+concepts:
+- ref: concept:register-tokens
 sources:
 - ref: source:scaling-evaluating-sparse-autoencoders
 datasets: []

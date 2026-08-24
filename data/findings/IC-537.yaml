@@ -11,7 +11,8 @@ description: The paper retrains Moirai and a simpler encoder-only transformer on
   to out-of-distribution generalisation.
 models:
 - ref: model:moirai
-concepts: []
+concepts:
+- ref: concept:scale-dependent-behaviour
 sources:
 - ref: source:neural-scaling-laws-time-series-foundation
 datasets:

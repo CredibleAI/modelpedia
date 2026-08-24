@@ -16,7 +16,8 @@ models:
 - ref: model:gemma
 - ref: model:mpt
 - ref: model:phi-2
-concepts: []
+concepts:
+- ref: concept:depth-dependent-structure
 sources:
 - ref: source:transformer-block-coupling-its-correlation-generalization
 datasets:

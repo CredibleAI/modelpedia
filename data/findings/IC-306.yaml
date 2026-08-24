@@ -19,7 +19,8 @@ models:
 - ref: model:mistral-7b
   variant: variant:mistral-instruct-7b
 - ref: model:mixtral-8x7b
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:follow-my-instruction-spill-beans-scalable
 datasets:

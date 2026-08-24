@@ -10,7 +10,8 @@ description: The authors use a frozen CLIP ViT-B/32 model to extract image embed
   presented as a setup validation in Appendix H rather than a main contribution.
 models:
 - ref: model:clip
-concepts: []
+concepts:
+- ref: concept:linear-representation
 sources:
 - ref: source:feature-averaging-implicit-bias-gradient-descent
 datasets:

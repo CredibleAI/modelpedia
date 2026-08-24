@@ -8,7 +8,8 @@ description: 'The paper reports that DINOv2 produces dense feature artifacts tha
   The paper attributes this observation to Darcet et al. 2023.'
 models:
 - ref: model:dinov2
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:refining-clip-s-spatial-awareness-visual
 datasets:

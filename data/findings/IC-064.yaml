@@ -12,6 +12,7 @@ models:
 - ref: model:qwen2-5
 concepts:
 - ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
 sources:
 - ref: source:sparse-autoencoders-reveal-temporal-difference-learning
 datasets: []

@@ -347,3 +347,12 @@ def test_a_tag_outside_the_closed_list_is_reported_and_not_written():
 def test_retag_needs_a_directory():
     assert extract.main(["extract.py", "retag"]) == 1
     assert extract.main(["extract.py", "retag", "nowhere"]) == 1
+
+
+def test_retag_adds_without_taking_anything_off():
+    from modelpedia.ingest import tagging
+    held = ["concept:shortcut"]
+    answer = ["concept:failure-mode"]
+    added = held + [key for key in answer if key not in held]
+    assert added == ["concept:shortcut", "concept:failure-mode"]
+    assert tagging.chosen({"concepts": []}, {"concept:shortcut"}) == ([], [])

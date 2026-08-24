@@ -21,6 +21,7 @@ models:
 - ref: model:mixtral
 concepts:
 - ref: concept:failure-mode
+- ref: concept:shortcut
 sources:
 - ref: source:safety-training-llms-generalize-semantically-related
 datasets:

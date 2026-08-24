@@ -31,6 +31,7 @@ models:
   variant: variant:gemini-1-5-pro
 concepts:
 - ref: concept:failure-mode
+- ref: concept:positional-bias
 sources:
 - ref: source:llms-recognize-your-preferences-evaluating-personalized
 datasets:

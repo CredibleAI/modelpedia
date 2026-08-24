@@ -16,7 +16,8 @@ models:
 - ref: model:vit
   variant: variant:vit-l-32
 - ref: model:mae-b-16
-concepts: []
+concepts:
+- ref: concept:explanation-faithfulness
 sources:
 - ref: source:discovering-influential-neuron-path-vision-transformers
 datasets:

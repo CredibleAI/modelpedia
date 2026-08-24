@@ -21,7 +21,8 @@ models:
   variant: variant:gpt-4-0613
 - ref: model:o1
   variant: variant:gpt-o1-preview
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:understanding-enhancing-transferability-jailbreaking-attacks
 datasets:

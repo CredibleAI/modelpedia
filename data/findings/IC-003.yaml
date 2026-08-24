@@ -15,6 +15,7 @@ models:
   variant: variant:llama-3-8b
 concepts:
 - ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
 sources:
 - ref: source:hyperdas-automating-mechanistic-interpretability-hypernetworks
 datasets:

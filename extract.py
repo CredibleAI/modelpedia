@@ -567,7 +567,7 @@ def status():
     return 0
 
 
-def retag(inbox, write=False):
+def retag(inbox, write=False, replace=False):
     folder = Path(inbox)
     if not folder.is_dir():
         return fail("%s is not a directory" % inbox)
@@ -597,15 +597,19 @@ def retag(inbox, write=False):
 
     changed = 0
     for fid, taken in sorted(after.items()):
-        if not taken or set(taken) == set(before.get(fid, [])):
+        held = before.get(fid, [])
+        wanted = taken if replace else held + [key for key in taken if key not in held]
+        if not wanted or wanted == held:
             continue
         path = paths.FINDINGS / ("%s.yaml" % fid)
         record = yaml.safe_load(path.read_text(encoding="utf-8"))
-        record[schema.CONCEPTS_FIELD] = [{keys.REF: key} for key in taken]
+        record[schema.CONCEPTS_FIELD] = [{keys.REF: key} for key in wanted]
         path.write_text(yaml.safe_dump(record, allow_unicode=True, sort_keys=False, width=98),
                         encoding="utf-8")
         changed += 1
-    print("\nwrote concepts onto %s" % console.plural(changed, "record"))
+    print("\nwrote concepts onto %s%s"
+          % (console.plural(changed, "record"),
+             "" if replace else "; nothing was taken off, --replace does that"))
     return 0
 
 
@@ -725,7 +729,7 @@ def main(argv):
     if command == "retag":
         if not rest:
             return fail("retag needs a directory of tagging answers")
-        return retag(rest[0], "--write" in rest)
+        return retag(rest[0], "--write" in rest, "--replace" in rest)
     if command == "tags":
         return tags(rest[0] if rest else None)
     if command == "entities":

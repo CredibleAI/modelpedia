@@ -17,7 +17,8 @@ models:
   variant: variant:qwen-vl-chat
 - ref: model:deepseek-vl
   variant: variant:deepseek-vl-chat-7b
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:failures-find-transferable-image-jailbreaks-between
 datasets:

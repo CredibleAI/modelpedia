@@ -30,7 +30,8 @@ models:
 - ref: model:ziya2
 - ref: model:map-neo
 - ref: model:qwen-2
-concepts: []
+concepts:
+- ref: concept:method-artefact
 sources:
 - ref: source:training-test-task-confounds-evaluation-emergence
 datasets:

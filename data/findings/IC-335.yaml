@@ -12,7 +12,8 @@ models:
 - ref: model:gpt-3-5
 - ref: model:gpt-3
   variant: variant:babbage
-concepts: []
+concepts:
+- ref: concept:scale-dependent-behaviour
 sources:
 - ref: source:glimpse-enabling-white-box-methods-use
 datasets:

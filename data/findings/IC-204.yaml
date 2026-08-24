@@ -9,7 +9,8 @@ description: 'A repetitive experiment compared GPT-4o''s accuracy under the orig
   guidance to trace the failure propagation chain to the originating component.'
 models:
 - ref: model:gpt-4o
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:openrca-large-language-models-locate-root
 datasets: []

@@ -8,7 +8,8 @@ description: While GPT-2-small contains circular representations of days, months
   of a circular representation is insufficient for the model to use it in computation.
 models:
 - ref: model:gpt-2
-concepts: []
+concepts:
+- ref: concept:circular-representation
 sources:
 - ref: source:not-all-language-model-features-one
 datasets: []

@@ -9,7 +9,8 @@ description: 'The paper applies five image transformations (resize, flip, graysc
   inputs varies widely and is architecture-specific.'
 models:
 - ref: model:clip
-concepts: []
+concepts:
+- ref: concept:scale-dependent-behaviour
 sources:
 - ref: source:synergy-diversity-clip-enhancing-performance-through
 datasets:

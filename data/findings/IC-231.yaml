@@ -13,7 +13,8 @@ models:
   variant: variant:gpt-4-turbo
 - ref: model:claude-3
   variant: variant:claude-3-haiku
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:dailydilemmas-revealing-value-preferences-llms-quandaries
 datasets: []

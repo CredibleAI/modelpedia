@@ -19,6 +19,7 @@ models:
   variant: variant:vicuna-7b-v1-5
 concepts:
 - ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
 sources:
 - ref: source:linear-representations-political-perspective-emerge-large
 datasets: []

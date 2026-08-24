@@ -10,7 +10,8 @@ description: The paper measures the zero-shot p@1 of Grounding-DINO (Swin-T) and
 models:
 - ref: model:grounding-dino
 - ref: model:florence-2
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:llm-wrapper-black-box-semantic-aware
 datasets:

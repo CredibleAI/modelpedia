@@ -15,7 +15,8 @@ models:
 - ref: model:gemini-1-5
   variant: variant:gemini-1-5-flash
 - ref: model:aasist
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:loki-comprehensive-synthetic-data-detection-benchmark
 datasets: []

@@ -12,7 +12,8 @@ models:
   variant: variant:llama-3-8b
 - ref: model:grounding-dino
 - ref: model:florence-2
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:llm-wrapper-black-box-semantic-aware
 datasets:

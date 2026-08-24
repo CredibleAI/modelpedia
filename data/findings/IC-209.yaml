@@ -18,6 +18,7 @@ models:
 concepts:
 - ref: concept:shortcut
 - ref: concept:failure-mode
+- ref: concept:method-artefact
 sources:
 - ref: source:style-outweighs-substance-failure-modes-llm
 datasets:

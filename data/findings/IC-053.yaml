@@ -14,6 +14,7 @@ models:
   variant: variant:gpt-2-small
 concepts:
 - ref: concept:linear-representation
+- ref: concept:method-artefact
 sources:
 - ref: source:principled-evaluations-sparse-autoencoders-interpretability-control
 datasets:

@@ -17,6 +17,7 @@ models:
   variant: variant:mistral-v0-3-7b
 concepts:
 - ref: concept:failure-mode
+- ref: concept:method-artefact
 sources:
 - ref: source:knowledge-editing-really-correct-hallucinations
 datasets:

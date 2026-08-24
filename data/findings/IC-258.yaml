@@ -10,7 +10,8 @@ description: Across the 317 TIMM models, the paper measured the correlation betw
 models:
 - ref: model:beit
 - ref: model:swin-transformer
-concepts: []
+concepts:
+- ref: concept:scale-dependent-behaviour
 sources:
 - ref: source:pc-benchmark-visual-perspective-taking-3d
 datasets:

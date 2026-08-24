@@ -11,7 +11,8 @@ description: 'The paper shows that CLIP''s patch-level dense features are system
   reason CLIP''s native spatial awareness is suboptimal.'
 models:
 - ref: model:eva-clip
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:refining-clip-s-spatial-awareness-visual
 datasets:

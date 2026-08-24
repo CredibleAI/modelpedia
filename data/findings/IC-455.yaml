@@ -11,7 +11,8 @@ description: 'The paper introduces the audio difference explanation task and eva
   without task-specific training.'
 models:
 - ref: model:qwen-audio
-concepts: []
+concepts:
+- ref: concept:scale-dependent-behaviour
 sources:
 - ref: source:adiff-explaining-audio-difference-using-natural
 datasets:

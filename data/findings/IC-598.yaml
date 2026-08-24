@@ -10,7 +10,8 @@ models:
 - ref: model:gpt-4o
 - ref: model:qwen-2-vl
   variant: variant:qwen2-vl-72b
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:loki-comprehensive-synthetic-data-detection-benchmark
 datasets: []

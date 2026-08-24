@@ -12,7 +12,8 @@ models:
   variant: variant:llama-3-1-8b-instruct
 - ref: model:llama-3-1
   variant: variant:llama-3-1-70b-instruct
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:chatqa-2-bridging-gap-proprietary-llms
 datasets:

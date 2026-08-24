@@ -12,7 +12,8 @@ models:
   variant: variant:llama-3-1-8b-instruct
 - ref: model:gpt-4o
   variant: variant:gpt-4o-mini
-concepts: []
+concepts:
+- ref: concept:failure-mode
 sources:
 - ref: source:simple-effective-roles-graphs-large-language
 datasets: []
