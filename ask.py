@@ -12,6 +12,7 @@ from modelpedia import atomic
 from modelpedia import console
 from modelpedia import paths
 from modelpedia.ingest import chat
+from modelpedia.ingest import prompt as promptlib
 from modelpedia.ingest import text as textutil
 
 PROMPTS = paths.PROMPTS
@@ -188,9 +189,18 @@ def fingerprint(body):
     return hashlib.sha256(body.encode("utf-8")).hexdigest()[:12]
 
 
-def log_row(handle, name, settings, state, reply, note="", prompt_sha=""):
+def fingerprints(body):
+    """The whole prompt, and the instructions without the paper. The first tells two runs of one
+    paper apart; the second tells two states of the base apart, and only it can, because the paper
+    text dominates the whole-prompt hash and makes every paper differ from every other regardless.
+    ICLR 2025 and ICLR 2024 were asked from the same directory under instructions that had already
+    diverged after 25488 identical characters, and nothing in the log said so."""
+    return fingerprint(body), fingerprint(promptlib.instructions(body))
+
+
+def log_row(handle, name, settings, state, reply, note="", prompt_sha="", context_sha=""):
     handle.write(json.dumps({
-        "prompt": name, "prompt_sha": prompt_sha,
+        "prompt": name, "prompt_sha": prompt_sha, "context_sha": context_sha,
         "model": settings.model, "think": settings.think,
         "max_tokens": settings.max_tokens, "state": state,
         "finish_reason": reply.finish_reason if reply else "",
@@ -269,13 +279,14 @@ def run(source, target, settings, only=None, limit=None, force=False, dry=False,
     with (target / LOG).open("a", encoding="utf-8") as log:
         for number, path in enumerate(todo, start=1):
             prompt = path.read_text(encoding="utf-8", errors="replace")
+            prompt_sha, context_sha = fingerprints(prompt)
             try:
                 images = page_uris(Path(pdfs) / ("%s.pdf" % path.stem)) if pdfs else ()
                 reply = ask(prompt, header, settings, images=images)
             except (Refused, chat.Unreadable, textutil.MissingTool, OSError) as error:
                 failures.append((path.stem, str(error)))
                 log_row(log, path.stem, settings, "failed", None, str(error),
-                        fingerprint(prompt))
+                        prompt_sha, context_sha)
                 continue
             state = reply.state()
             counts[state] += 1
@@ -289,7 +300,7 @@ def run(source, target, settings, only=None, limit=None, force=False, dry=False,
                 atomic.write_text(target / (path.stem + TRUNCATED_SUFFIX), reply.text + "\n")
             log_row(log, path.stem, settings, state, reply,
                     "context window full" if reply.hit_the_window(settings.max_tokens) else "",
-                    fingerprint(prompt))
+                    prompt_sha, context_sha)
             print("  %-14s %-9s %5d tokens out, %5.1fs   %d/%d%s"
                   % (path.stem, state, reply.completion_tokens, reply.seconds, number, len(todo),
                      "   %d pages" % len(images) if images else ""))
@@ -370,6 +381,7 @@ USAGE = """usage:
 
 
 def main(argv):
+    console.line_buffered()
     if len(argv) < 2:
         print(USAGE)
         return 2

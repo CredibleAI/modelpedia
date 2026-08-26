@@ -703,6 +703,7 @@ USAGE = """usage:
 
 
 def main(argv):
+    console.line_buffered()
     if len(argv) < 2:
         print(USAGE)
         return 2

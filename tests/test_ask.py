@@ -5,6 +5,7 @@ from pathlib import Path
 
 import ask
 from modelpedia.ingest import chat
+from modelpedia.ingest import prompt as promptlib
 
 ANSWER = "considered: []\nfindings: []\n"
 
@@ -235,3 +236,61 @@ def test_an_unusable_answer_and_a_failed_request_exit_differently():
     with workspace({"BBB": "prompt"}) as (source, target):
         ask.ask = refusing("HTTP 503")
         assert ask.run(source, target, chat.Settings()) == 1
+
+
+def prompt_like(instructions, title, paper):
+    """The real shape: instructions, then the paper title as the last line of that block, then
+    the paper between its markers."""
+    return "".join([instructions, promptlib.PAPER_TITLE, title, "\n",
+                    promptlib.PAPER_OPEN, "\n", paper, "\n", promptlib.PAPER_CLOSE])
+
+
+AUGUST = "instructions, registry as it stood in august"
+GROWN = "instructions, registry after it grew"
+
+PAPER_A = prompt_like(AUGUST, "What does CLIP look at?", "paper one")
+PAPER_B = prompt_like(AUGUST, "A different paper entirely", "paper two")
+PAPER_C = prompt_like(GROWN, "What does CLIP look at?", "paper one")
+
+
+def test_two_papers_asked_under_one_registry_share_a_context_sha():
+    """The whole-prompt hash cannot say this: the paper text dominates it, so every paper differs
+    from every other one regardless of what the instructions said."""
+    whole_a, context_a = ask.fingerprints(PAPER_A)
+    whole_b, context_b = ask.fingerprints(PAPER_B)
+    assert context_a == context_b
+    assert whole_a != whole_b
+
+
+def test_one_paper_asked_after_the_base_grew_gets_a_new_context_sha():
+    whole_a, context_a = ask.fingerprints(PAPER_A)
+    whole_c, context_c = ask.fingerprints(PAPER_C)
+    assert context_a != context_c
+    assert whole_a != whole_c
+
+
+def test_a_prompt_with_neither_title_nor_paper_is_all_context():
+    """The --pages variant carries no paper text, so the whole body is the context."""
+    pages = "instructions only, images follow"
+    whole, context = ask.fingerprints(pages)
+    assert whole == context
+
+
+def test_every_logged_attempt_records_which_instructions_produced_it():
+    with workspace({"p1": PAPER_A, "p2": PAPER_B}) as (source, target):
+        ask.ask = replying(ANSWER)
+        assert ask.run(source, target, chat.Settings()) == 0
+        rows = log_rows(target)
+    assert len(rows) == 2
+    assert all(row["context_sha"] for row in rows)
+    assert len({row["context_sha"] for row in rows}) == 1
+    assert len({row["prompt_sha"] for row in rows}) == 2
+
+
+def test_a_refused_attempt_records_the_instructions_too():
+    with workspace({"p1": PAPER_A}) as (source, target):
+        ask.ask = refusing("endpoint said no")
+        ask.run(source, target, chat.Settings())
+        rows = log_rows(target)
+    assert rows[0]["state"] == "failed"
+    assert rows[0]["context_sha"] == ask.fingerprints(PAPER_A)[1]

@@ -863,6 +863,41 @@ def test_a_pdf_quota_running_out_mid_batch_gives_the_batch_up_too():
     assert code == 1
 
 
+def test_pdfs_ask_each_venue_through_the_api_generation_that_answers_for_it():
+    """ICLR 2023 lives on API1 and API2 answers `NotFoundError` for every one of its notes, which
+    reads exactly like a venue with no PDFs. Measured 2026-08-25: 314 papers, zero downloaded."""
+    asked = []
+
+    class PerVenue:
+        def __init__(self, venue):
+            self.venue = venue
+
+        def get_notes(self, **query):
+            return ([], 1) if query.get("with_count") else []
+
+        def get_attachment(self, field_name, id):
+            asked.append((self.venue, id))
+            return b"%PDF-1.7 body"
+
+    kept = (harvest.MANIFEST, harvest.PDFS, harvest.source_for, harvest.time)
+    try:
+        with tempfile.TemporaryDirectory() as directory:
+            harvest.MANIFEST = Path(directory) / "manifest.jsonl"
+            harvest.PDFS = Path(directory) / "pdf"
+            harvest.PDFS.mkdir()
+            harvest.MANIFEST.write_text(
+                manifest_line("aaa", "strong")
+                + json.dumps({"id": "ccc", "tier": "strong", "venue": "W/2023"}) + "\n",
+                encoding="utf-8")
+            harvest.source_for = lambda venue: (PerVenue(venue), openreview.API2)
+            harvest.time = NoClock()
+            assert harvest.harvest_pdfs(delay=0) == 0
+    finally:
+        harvest.MANIFEST, harvest.PDFS, harvest.source_for, harvest.time = kept
+
+    assert sorted(asked) == [("V/2026", "aaa"), ("W/2023", "ccc")]
+
+
 def test_a_pause_without_a_batch_size_is_refused_for_pdfs_as_well():
     assert harvest.main(["harvest.py", "pdfs", "--pause", "3600"]) == 1
 
@@ -1424,6 +1459,37 @@ def test_bounding_reports_how_many_adapters_it_actually_reached():
 
     assert openreview.bound_waiting(Bare()) == 0
     assert openreview.bound_waiting(Mounted(object())) == 0
+
+
+RATE_LIMITED_LOGIN = {
+    "name": "RateLimitError",
+    "message": "Too many requests: You have made 4 requests, surpassing the limit of 3 requests. "
+               "Please try again in 54 seconds (2026-08-24-6210796)",
+    "status": 429,
+    "details": {"limit": 3, "remaining": 0},
+}
+
+
+def test_the_wait_a_refused_login_asks_for_is_read_off_the_refusal():
+    class Refusal(Exception):
+        pass
+
+    assert openreview.asked_to_wait(Refusal(RATE_LIMITED_LOGIN)) == 54
+    longer = dict(RATE_LIMITED_LOGIN, message="Please try again in 2 minutes and 6 seconds")
+    assert openreview.asked_to_wait(Refusal(longer)) == 126
+    vague = dict(RATE_LIMITED_LOGIN, message="Too many requests")
+    assert openreview.asked_to_wait(Refusal(vague)) == openreview.LOGIN_WAIT
+    capped = dict(RATE_LIMITED_LOGIN, message="Please try again in 90 minutes and 0 seconds")
+    assert openreview.asked_to_wait(Refusal(capped)) == openreview.LOGIN_WAIT_CAP
+
+
+def test_a_refusal_that_is_not_a_rate_limit_is_not_something_to_wait_out():
+    class Refusal(Exception):
+        pass
+
+    assert openreview.asked_to_wait(Refusal({"status": 403, "message": "nope"})) is None
+    assert openreview.asked_to_wait(Refusal("plain string")) is None
+    assert openreview.asked_to_wait(Refusal()) is None
 
 
 def test_the_api_generation_is_asked_for_rather_than_hardcoded_per_year():

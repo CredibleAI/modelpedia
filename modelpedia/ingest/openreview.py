@@ -1,5 +1,6 @@
 import os
 import re
+import time
 from importlib.metadata import PackageNotFoundError, version
 
 PACKAGE = "openreview-py"
@@ -32,6 +33,11 @@ NOT_PROSE = frozenset((
 
 RETRY_AFTER_CAP = 60
 RETRY_TOTAL = 3
+
+LOGIN_RETRIES = 4
+LOGIN_WAIT = 60
+LOGIN_WAIT_CAP = 300
+ASKED_TO_WAIT = re.compile(r"try again in (?:(\d+) minutes? and )?(\d+) seconds?", re.I)
 
 RATING_FIELDS = ("rating", "recommendation")
 LEADING_NUMBER = re.compile(r"-?\d+(?:\.\d+)?")
@@ -118,18 +124,41 @@ def bound_waiting(connection, cap=RETRY_AFTER_CAP, total=RETRY_TOTAL):
     return bounded
 
 
-def client_for(generation):
+def asked_to_wait(error):
+    """Seconds the server asked us to wait, or None when this is not a rate limit. The login
+    endpoint allows three attempts per window and every harvest command logs in once, so the
+    fourth command of a chain is refused through no fault of its own -- which is how an overnight
+    run died on 2026-08-24 with `meta` and `reviews` a second apart."""
+    payload = error.args[0] if error.args else None
+    if not isinstance(payload, dict) or payload.get("status") != 429:
+        return None
+    found = ASKED_TO_WAIT.search(str(payload.get("message") or ""))
+    if not found:
+        return LOGIN_WAIT
+    minutes, seconds = found.groups()
+    return min(int(minutes or 0) * 60 + int(seconds), LOGIN_WAIT_CAP)
+
+
+def client_for(generation, retries=LOGIN_RETRIES, sleeper=None):
     openreview = module()
     username, password = credentials()
     build = (openreview.api.OpenReviewClient if generation == API2 else openreview.Client)
     baseurl = BASEURL if generation == API2 else V1_BASEURL
-    try:
-        connection = build(baseurl=baseurl, username=username, password=password)
-    except openreview.MfaRequiredException:
-        raise Unavailable("this account requires multi-factor authentication; "
-                          "%s cannot complete it non-interactively" % PACKAGE)
-    except openreview.OpenReviewException as error:
-        raise Unavailable("OpenReview rejected the login: %s" % error)
+    sleeper = sleeper or time.sleep
+    for attempt in range(retries):
+        try:
+            connection = build(baseurl=baseurl, username=username, password=password)
+            break
+        except openreview.MfaRequiredException:
+            raise Unavailable("this account requires multi-factor authentication; "
+                              "%s cannot complete it non-interactively" % PACKAGE)
+        except openreview.OpenReviewException as error:
+            wait = asked_to_wait(error)
+            if wait is None or attempt + 1 == retries:
+                raise Unavailable("OpenReview rejected the login: %s" % error)
+            print("  login rate-limited, waiting %ds before attempt %d of %d"
+                  % (wait, attempt + 2, retries))
+            sleeper(wait + 1)
     bound_waiting(connection)
     return connection
 

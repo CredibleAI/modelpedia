@@ -12,6 +12,7 @@ import urllib.request
 from pathlib import Path
 
 from modelpedia import atomic
+from modelpedia import console
 from modelpedia import graph as graph_json
 from modelpedia import paths
 from modelpedia.build import database
@@ -443,12 +444,22 @@ def harvest_pdfs(tiers=DOWNLOAD_TIERS, limit=None, delay=DELAY, ids=None, pause=
         return 0
     batch_plan(outstanding, limit, pause, "pdfs")
 
-    connection = connect()
+    clients = {}
+
+    def client_for(row):
+        """One client per venue, because the generation is a property of the venue and a run may
+        span several. Asking API2 for an API1 note answers `NotFoundError` on every paper, which
+        looks exactly like a venue with no PDFs: measured 2026-08-25 on ICLR 2023, 314 papers,
+        zero downloaded, nothing in the log but 404s."""
+        venue = row["venue"]
+        if venue not in clients:
+            clients[venue] = source_for(venue)[0]
+        return clients[venue]
 
     def one_pdf(row):
         """A response that is not a PDF still answered, so it does not come back in the next batch
         of the same run. It is not on disk either, so a later run does ask again."""
-        return "got" if fetch_pdf(connection, row["id"], PDFS / ("%s.pdf" % row["id"])) \
+        return "got" if fetch_pdf(client_for(row), row["id"], PDFS / ("%s.pdf" % row["id"])) \
             else "refused"
 
     try:
@@ -1018,18 +1029,8 @@ USAGE = """usage: run these with .venv/bin/python -- openreview-py lives there, 
   OPENREVIEW_USERNAME and OPENREVIEW_PASSWORD must be set in the environment."""
 
 
-def line_buffered():
-    """A run that takes hours is meant to be watched through `nohup ... > log`, and Python buffers
-    stdout into 8 KB blocks the moment it is not a terminal -- so the log stays empty for the first
-    hour and the run looks dead while it is working. Progress nobody can see is not progress
-    reported."""
-    for stream in (sys.stdout, sys.stderr):
-        if hasattr(stream, "reconfigure"):
-            stream.reconfigure(line_buffering=True)
-
-
 def main(argv):
-    line_buffered()
+    console.line_buffered()
     if len(argv) < 2:
         print(USAGE)
         return 2

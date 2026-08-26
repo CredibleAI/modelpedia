@@ -4,6 +4,10 @@ from modelpedia import record_keys as keys
 from modelpedia.ingest import text as textutil
 
 MAX_PAPER_CHARS = None
+
+PAPER_OPEN = "-----BEGIN PAPER-----"
+PAPER_CLOSE = "-----END PAPER-----"
+PAPER_TITLE = "\n\nPaper title: "
 OMITTED = "\n\n[... middle of the paper omitted ...]\n\n"
 CONCEPT_SUMMARY = 340
 
@@ -401,7 +405,7 @@ def head(title, concepts, examples, names):
         "\nTwo worked examples of `considered` and `findings`, both hand-verified against their",
         "sources. Their `entities` blocks are omitted here; follow the citation rules above.\n",
         "\n\n".join(as_example(record, names) for record in examples),
-        "\n\nPaper title: %s" % title,
+        "%s%s" % (PAPER_TITLE, title),
     ]
 
 
@@ -420,9 +424,28 @@ def build(title, raw_text, concepts, examples, names, limit=MAX_PAPER_CHARS):
     body, truncated = clipped(textutil.normalise(raw_text), limit)
     parts = head(title, concepts, examples, names) + [
         "Paper text follows. It is machine-extracted, so hyphenation and spacing may be odd.\n",
-        "-----BEGIN PAPER-----",
+        PAPER_OPEN,
         body,
-        "-----END PAPER-----",
+        PAPER_CLOSE,
         "\nReturn the YAML now, and nothing else.",
     ]
     return "\n".join(parts), truncated
+
+
+def instructions(body):
+    """Everything the prompt says about the base rather than about this paper: the schema, the
+    concept list, the registry names and the examples. It is what changes when the base grows
+    underneath a run, and it is invisible in a hash of the whole prompt, because the paper text
+    dominates that and makes every paper differ from every other one anyway.
+
+    Both per-paper parts are cut, and the title is the one that is easy to miss: it is the last
+    line of the instruction block, before the paper, so cutting only at `PAPER_OPEN` leaves it in.
+    Measured on 972 real prompts, that mistake gave 972 distinct hashes -- the same as no signal.
+    A prompt with no paper in it, the `--pages` variant, still carries the title and is cut there
+    too."""
+    body = str(body or "")
+    for marker in (PAPER_TITLE, PAPER_OPEN):
+        head_part, found, _ = body.partition(marker)
+        if found:
+            return head_part
+    return body
