@@ -1,0 +1,27 @@
+id: IC-1249
+title: TD-MPC exhibits training instability and performance degradation when the planning horizon is
+  set to 20 time steps
+description: While integrating their Koopman dynamics model into TD-MPC for model-based planning, the
+  authors observed that vanilla TD-MPC suffers from training instability, performance degradation, and
+  high variance when using a 20-step planning horizon. This forced them to reduce the vanilla TD-MPC
+  baseline to a 5-step horizon for a fair comparison. The observation was made across four DeepMind
+  Control Suite environments (quadruped run, quadruped walk, cheetah run, acrobot swingup) with 5 random
+  seeds each.
+models:
+- ref: model:td-mpc
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:efficient-dynamics-modeling-interactive-environments-koopman
+datasets:
+- ref: dataset:deepmind-control-suite
+  role: eval
+methods:
+- ref: method:td-mpc
+  role: compared-to
+related_work: []
+evidence_type: observational
+caveat: The observation is made in passing to justify the experimental setup rather than as a systematic
+  study of TD-MPC's limitations; no specific error or variance numbers are reported for the unstable
+  runs in the text.
+extracted_by: automatic-extraction

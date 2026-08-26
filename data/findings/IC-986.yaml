@@ -1,0 +1,48 @@
+id: IC-986
+title: Most LLMs lack tool usage awareness, with only ChatGPT exceeding 70% F1 in zero-shot evaluation
+description: The paper evaluates whether eight LLMs can recognise when a user query requires an external
+  tool versus one they can answer directly. Under zero-shot prompting, only ChatGPT achieves both accuracy
+  and F1 above 70% (74.85% acc, 77.81 F1). Llama2-13b scores an F1 of just 11.53% and Vicuna-7b 13.43%.
+  Five-shot prompting improves some models substantially (Llama2-13b F1 rises by 42.79 points, Vicuna-7b
+  by 42.28), yet even the best non-ChatGPT model (Vicuna-33b) reaches only 69.12 F1. The authors conclude
+  that most LLMs still lack sufficient tool usage awareness to function as reliable agents.
+models:
+- ref: model:chatgpt
+- ref: model:chatglm2
+- ref: model:llama-2
+- ref: model:vicuna
+- ref: model:koala
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:metatool-benchmark-large-language-models-deciding
+datasets:
+- ref: dataset:self-instruct
+  role: eval
+- ref: dataset:commonsenseqa
+  role: eval
+- ref: dataset:lima
+  role: eval
+methods: []
+related_work:
+- name: API-Bank
+  anchor: https://arxiv.org/abs/2304.08244
+  role: compared-to
+- name: ToolLLM
+  anchor: https://arxiv.org/abs/2307.16789
+  role: compared-to
+- name: GPT4Tools
+  anchor: https://arxiv.org/abs/2305.18752
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Zero-shot F1: ChatGPT 77.81, ChatGLM2 48.88, Llama2-7b 65.03, Llama2-13b 11.53, Vicuna-7b
+  13.43, Vicuna-13b 42.2, Vicuna-33b 53.49, Koala-13b 54.04. Five-shot F1: ChatGPT 81.87, Llama2-13b
+  54.32 (Δ 42.79), Vicuna-7b 55.71 (Δ 42.28).'
+caveat: The test set is a manually curated subset of 515 positive samples from TOOLE plus 515 negative
+  samples from public instruction datasets; the authors note that the boundary between 'needs a tool'
+  and 'does not' can be ambiguous.
+extracted_by: automatic-extraction
+related_findings:
+- IC-987
+- IC-988
+- IC-989

@@ -1,0 +1,35 @@
+id: IC-1270
+title: Chain-of-thought prompting does not mitigate privacy leakage in GPT-4 or ChatGPT
+description: The authors test whether adding 'take a deep breath and work on this step by step' to the
+  instruction (a CoT prompt from Yang et al. 2023) reduces leakage. In tier 3, GPT-4 leakage goes from
+  0.22 to 0.24 and ChatGPT from 0.93 to 0.95. In tier 4 summary, GPT-4 goes from 0.39 to 0.40 and ChatGPT
+  from 0.57 to 0.61. Manual inspection of ChatGPT's CoT chains shows 51.2% of failures involve the model
+  acknowledging privacy but still revealing the secret, and 38.3% involve theory-of-mind errors where
+  the model assumes the third party already knows the secret.
+models:
+- ref: model:gpt-4
+- ref: model:chatgpt
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:llms-keep-secret-testing-privacy-implications
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: primary
+related_work:
+- ref: method:chain-of-thought-prompting
+  role: builds-on
+- name: Large language models as optimizers (Yang et al. 2023)
+  anchor: https://arxiv.org/abs/2309.03409
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Tier 3 string-match leakage: GPT-4 0.22 (w/o CoT) vs 0.24 (w/ CoT); ChatGPT 0.93 vs 0.95.
+  Tier 4 summary leaks: GPT-4 0.39 vs 0.40; ChatGPT 0.57 vs 0.61'
+caveat: Only GPT-4 and ChatGPT were tested with CoT. The CoT prompt is a single fixed instruction; other
+  prompting strategies were not explored.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1267
+- IC-1268
+- IC-1269

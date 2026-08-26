@@ -1,0 +1,40 @@
+id: IC-1407
+title: OpenFlamingo and Idefics models perform near random chance on compositional image-text matching,
+  and ICL has almost no effect on atomic foils
+description: On CRePE and SugarCrepe benchmarks, LMMs are only slightly better than random (50%) at
+  detecting when sentence constituents are changed. OFv2-9b scores 53.88% on hn-atom and 60.75% on hn-comp
+  in zero-shot; Idefics-9b scores 58.05% and 62.63%. ICL does not improve hn-atom accuracy but does
+  help hn-comp (Idefics-9b rises from 62.63% to 86.39% at 32-shot). The apparent improvement of 80B
+  models on CRePE is attributed to benchmark biases (longer, less fluent hard negatives) rather than
+  true compositional ability, confirmed by poor performance on SugarCrepe.
+models:
+- ref: model:openflamingo
+- ref: model:idefics
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:beyond-task-performance-evaluating-reducing-flaws
+datasets:
+- ref: dataset:crepe
+  role: eval
+- ref: dataset:sugarcrepe
+  role: eval
+methods:
+- ref: method:in-context-learning
+  role: primary
+related_work:
+- ref: model:openflamingo
+  role: context
+- ref: model:idefics
+  role: context
+evidence_type: correlational
+key_metric: 'OFv2-9b CRePE: 53.88/60.75/56.53 (0-shot) to 52.20/75.61/60.59 (32-shot) for hn-atom/hn-comp/hn-atom+comp;
+  Idefics-9b CRePE: 58.05/62.63/60.02 (0-shot) to 60.54/86.39/71.49 (32-shot)'
+caveat: The paper notes that the 80B model's apparent advantage on CRePE may come from exploiting biases
+  in the benchmark (hard negatives are usually longer, do not always make logical sense, and lack fluency),
+  as confirmed by poor performance on SugarCrepe.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1405
+- IC-1406
+- IC-1408

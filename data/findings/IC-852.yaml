@@ -1,0 +1,44 @@
+id: IC-852
+title: Intrinsic self-correction without external feedback consistently degrades reasoning accuracy
+  across GPT-3.5-turbo, GPT-4, GPT-4-turbo, and LLaMA-2-70B-chat
+description: The paper evaluates whether LLMs can improve their reasoning by reviewing and revising
+  their own answers without any oracle label or external feedback. Across GSM8K, CommonsenseQA, and
+  HotpotQA, every model tested shows a drop in accuracy after one or two rounds of self-correction.
+  The degradation is most severe for LLaMA-2 (GSM8K drops from 62.0 to 36.5) and GPT-3.5 on CommonsenseQA
+  (75.8 to 38.1). The authors attribute the drop to the model's inability to judge the correctness of
+  its own reasoning, combined with the self-correction prompt biasing the model away from its initial
+  (often correct) answer.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:llama-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:large-language-models-cannot-self-correct
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:commonsenseqa
+  role: eval
+- ref: dataset:hotpotqa
+  role: eval
+methods:
+- ref: method:self-consistency
+  role: compared-to
+related_work:
+- ref: method:self-refine
+  role: compared-to
+evidence_type: correlational
+key_metric: 'GPT-3.5: GSM8K 75.9→75.1→74.7, CommonsenseQA 75.8→38.1→41.8, HotpotQA 26.0→25.0→25.0; GPT-4:
+  GSM8K 95.5→91.5→89.0, CommonsenseQA 82.0→79.5→80.0, HotpotQA 49.0→49.0→43.0; GPT-4-turbo: GSM8K 91.5→88.0→90.0,
+  CommonsenseQA 84.0→81.5→83.0; LLaMA-2: GSM8K 62.0→43.5→36.5, CommonsenseQA 64.0→37.5→36.5'
+caveat: The paper focuses on reasoning tasks; the authors note that self-correction may still be effective
+  in other domains such as style or safety alignment. Sample sizes for GPT-4-turbo and LLaMA-2 are 200
+  questions per dataset (100 for HotpotQA) rather than the full test set.
+extracted_by: automatic-extraction
+related_findings:
+- IC-853
+- IC-854

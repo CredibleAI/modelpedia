@@ -1,0 +1,42 @@
+id: IC-1261
+title: LLaMA-2 attention to constraint tokens correlates with factual correctness, and a linear probe
+  on these attention weights predicts factual errors comparably to model confidence
+description: The paper measures the attention contribution from constraint tokens to the final generation
+  token across all layers and heads in LLaMA-2 7B, 13B, and 70B. When the model produces a factually
+  correct completion, the norm of attention to constraint tokens is larger; when it fails, attention
+  is weaker. A logistic regression probe (SAT Probe) trained on these attention weights achieves AUROC
+  comparable to the model's own confidence for predicting factual errors across 10 datasets with over
+  40,000 prompts. The combined predictor (attention + confidence) outperforms either alone in most settings.
+  The signal is also available for individual constraints in multi-constraint queries.
+models:
+- ref: model:llama-2
+concepts:
+- ref: concept:linear-representation
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:attention-satisfies-constraint-satisfaction-lens-factual
+datasets:
+- ref: dataset:counterfact
+  role: eval
+- ref: dataset:wikidata
+  role: source
+- ref: dataset:opendatasoft-nobel-prize
+  role: source
+methods:
+- ref: method:logistic-regression
+  role: primary
+- ref: method:lasso-regression
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: Spearman's ρ = 0.67 (70B), 0.65 (13B), 0.66 (7B) for predicting entity popularity from attention
+  (p < 10^-8); SAT Probe AUROC 0.95 ± 0.00 vs confidence 0.96 ± 0.00 (7B basketball players); SAT Probe
+  AUROC 0.73 ± 0.00 vs confidence 0.88 ± 0.00 (70B basketball players); combined predictor AUROC 0.91
+  ± 0.00 (70B basketball players)
+caveat: The paper acknowledges that exact match is a strict criterion that could introduce noise; attention
+  alone does not explain all failures (some attention on constraints where the model still fails); the
+  content of the information in attention patterns remains opaque
+extracted_by: automatic-extraction
+related_findings:
+- IC-1262
+- IC-1263

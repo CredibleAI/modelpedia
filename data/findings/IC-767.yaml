@@ -1,0 +1,35 @@
+id: IC-767
+title: BSRNet outperforms RealESRNet on the majority of degradation cases, reversing the ranking obtained
+  from a single random test set
+description: On a single randomly generated test set (real-DIV2K val), RealESRNet achieves a higher
+  average PSNR than BSRNet (24.93 dB vs 24.77 dB), suggesting RealESRNet is superior. However, under
+  SEAL's systematic evaluation on 100 representative degradation cases, BSRNet achieves AR 0.55 while
+  RealESRNet achieves only AR 0.15, meaning BSRNet outperforms the FSRCNN acceptance line on 55% of
+  cases versus 15% for RealESRNet. Across 20 random test sets, the PSNR difference between the two ranges
+  from -0.22 to 0.18 dB, making the conventional ranking unstable.
+models:
+- ref: model:bsrnet
+- ref: model:realesrnet
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:seal-framework-systematic-evaluation-real-world
+datasets:
+- ref: dataset:div2k-se
+  role: eval
+- ref: dataset:div2k-val
+  role: eval
+methods: []
+related_work:
+- name: BSRGAN
+  anchor: https://arxiv.org/abs/2103.14006
+  role: context
+evidence_type: correlational
+key_metric: 'PSNR on real-DIV2K val: RealESRNet 24.93 dB vs BSRNet 24.77 dB; AR on DIV2K-SE: BSRNet
+  0.55 vs RealESRNet 0.15; PSNR difference across 20 random sets ranges from -0.22 to 0.18 dB'
+caveat: The conventional test set uses a single random sampling of degradations; the SEAL test set uses
+  100 cluster centers from spectral clustering of 10,000 sampled degradations.
+extracted_by: automatic-extraction
+related_findings:
+- IC-766
+- IC-768

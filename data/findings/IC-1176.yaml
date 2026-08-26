@@ -1,0 +1,27 @@
+id: IC-1176
+title: ChatGPT-generated misinformation is harder for humans to detect than human-written misinformation
+  with the same semantics
+description: 'Ten crowd-sourced evaluators judged 100 news items each from multiple categories. On human-written
+  PolitiFact misinformation, average detection was 40.7%. On ChatGPT-generated misinformation preserving
+  the same semantics, detection dropped: paraphrase 38.4%, rewriting 24.2%, open-ended 21.4%. The drops
+  for rewriting (p=9.15e-5) and open-ended (p=1.01e-6) are statistically significant by paired t-test.
+  Hallucinated news was detected at only 9.6%, far below the human-written baseline.'
+models:
+- ref: model:chatgpt
+concepts: []
+sources:
+- ref: source:llm-generated-misinformation-be-detected
+datasets: []
+methods:
+- ref: method:paired-t-test
+  role: validation
+related_work: []
+evidence_type: correlational
+key_metric: 'Human detection: human-written 40.7%, hallucination 9.6%, paraphrase 38.4%, rewriting 24.2%
+  (p=9.15e-5), open-ended 21.4% (p=1.01e-6)'
+caveat: Only 10 evaluators with no annotation experience; 100 items per category; same-semantics comparison
+  limited to paraphrase, rewriting, and open-ended generation methods.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1175
+- IC-1177

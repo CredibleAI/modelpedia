@@ -1,0 +1,32 @@
+id: IC-941
+title: CLIP reward model quality scales with model size, with a sharp phase transition between ViT-H/14
+  and ViT-BigG/14 for the humanoid kneeling task
+description: 'The authors evaluate four CLIP model sizes (RN50, ViT-L/14, ViT-H/14, ViT-BigG/14) as
+  reward models on the humanoid kneeling task. The EPIC distance to human labels improves smoothly and
+  approximately log-linearly with model size. However, the human-evaluated success rate of the trained
+  agent shows a sharp phase transition: RN50, ViT-L/14, and ViT-H/14 all achieve 0% success, while ViT-BigG/14
+  achieves 100%. Goal-baseline regularization improves the reward model across all sizes but is more
+  impactful for smaller models. The authors note that predicting the exact point where the RL agent
+  can learn the task is difficult, a common pattern in evaluating large foundation models.'
+models:
+- ref: model:clip
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:vision-language-models-zero-shot-reward
+datasets:
+- ref: dataset:mujoco-humanoid-v4
+  role: eval
+methods:
+- ref: method:epic-distance
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'success rate: RN50 0%, ViT-L/14 0%, ViT-H/14 0%, ViT-BigG/14 100% (over 2 seeds); EPIC
+  distance close to log-linear in log10 of number of parameters'
+caveat: Evaluated on a single task (kneeling) and a single environment (humanoid); the phase transition
+  point may differ for other tasks. Only 2 seeds used for the success rate comparison.
+extracted_by: automatic-extraction
+related_findings:
+- IC-939
+- IC-940

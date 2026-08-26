@@ -1,0 +1,28 @@
+id: IC-996
+title: GPT-3.5 achieves 73.5% zero-shot accuracy on OGBN-ARXIV 40-class node classification and 73.56%
+  on TAPe-ARXIV23, a dataset of papers published after its knowledge cutoff
+description: The paper prompts GPT-3.5 (gpt-3.5-turbo) with paper titles and abstracts in a zero-shot
+  setting, asking it to predict the arXiv CS sub-category and provide an explanation. On OGBN-ARXIV
+  (169,343 nodes, 40 classes) it reaches 73.5% accuracy, surpassing RevGAT with OGB shallow features
+  (70.8%) but falling short of GLEM (76.6%). On TAPe-ARXIV23, a citation graph of 46,198 papers published
+  in 2023 (beyond GPT-3.5's November 2022 knowledge cutoff), it still achieves 73.56%, indicating generalization
+  to unseen papers.
+models:
+- ref: model:gpt-3-5
+concepts: []
+sources:
+- ref: source:harnessing-explanations-llm-lm-interpreter-enhanced
+datasets:
+- ref: dataset:ogbn-arxiv
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 73.5% on OGBN-ARXIV; 73.56% on TAPe-ARXIV23 (zero-shot, gpt-3.5-turbo)
+caveat: The paper acknowledges that GPT-3.5's training data may include some arXiv papers, making it
+  infeasible to definitively rule out label leakage on OGBN-ARXIV; TAPe-ARXIV23 was constructed specifically
+  to address this.
+extracted_by: automatic-extraction
+related_findings:
+- IC-997
+- IC-998

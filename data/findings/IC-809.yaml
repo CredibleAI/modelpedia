@@ -1,0 +1,48 @@
+id: IC-809
+title: Sparse dictionary features in Pythia-410m enable more precise causal localisation of indirect
+  object identification behaviour than PCA, requiring fewer patches and smaller edit magnitudes for
+  the same KL divergence
+description: Using activation patching on the IOI task, the authors compare interventions along sparse
+  autoencoder dictionary features versus PCA components in Pythia-410m's residual stream (layer 11,
+  r=4). They find that patching a smaller number of sparse features achieves the same KL divergence
+  from the target output as patching more PCA components, and that the edit magnitude per feature is
+  smaller. A non-sparse dictionary (alpha=0) does not show this advantage. The feature selection uses
+  the ACDC algorithm applied to the dictionary features as a flat computational graph, averaged over
+  50 IOI test points. Results on other layers (3, 7, 11, 15, 19, 23) in Appendix F show the same pattern.
+models:
+- ref: model:pythia
+  variant: variant:pythia-410m
+concepts: []
+sources:
+- ref: source:sparse-autoencoders-find-highly-interpretable-features
+datasets:
+- ref: dataset:the-pile
+  role: source
+- ref: dataset:ioi
+  role: eval
+methods:
+- ref: method:sparse-autoencoder
+  role: primary
+- ref: method:activation-patching
+  role: primary
+- ref: method:acdc-automated-circuit-discovery
+  role: supporting
+- ref: method:pca
+  role: compared-to
+related_work:
+- name: 'Wang et al. 2022 (Interpretability in the Wild: A Circuit for Indirect Object Identification
+    in GPT-2 Small)'
+  anchor: https://arxiv.org/abs/2211.00593
+  role: builds-on
+- name: Conmy et al. 2023 (Towards Automated Circuit Discovery for Mechanistic Interpretability)
+  anchor: https://arxiv.org/abs/2304.14997
+  role: builds-on
+evidence_type: interventional
+caveat: The dictionary is trained in a task-agnostic way; the authors note that generalisation to other
+  tasks is expected but unconfirmed. The non-sparse (alpha=0) dictionary does not show the same precision
+  advantage, and larger alpha values increase the minimum achievable KL divergence due to lower reconstruction
+  accuracy.
+extracted_by: automatic-extraction
+related_findings:
+- IC-808
+- IC-810

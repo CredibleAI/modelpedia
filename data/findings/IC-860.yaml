@@ -1,0 +1,27 @@
+id: IC-860
+title: Larger PaLM 2 models (xxs to l) show progressively better graph reasoning, but even the largest
+  variant fails to beat the majority baseline on edge existence
+description: 'The paper compares four sizes of the PaLM 2 family (xxs, xs, s, l) across all six basic
+  graph tasks under five prompting methods. The general trend is that larger models achieve higher accuracy
+  on most tasks. However, the improvement is not uniform: edge existence shows the least sensitivity
+  to model size, and even the largest model (PaLM 2-l) does not exceed the majority baseline for that
+  task. The authors conclude that model capacity has a significant effect on graph reasoning ability.'
+models:
+- ref: model:palm-2
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:talk-like-graph-encoding-graphs-large
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: PaLM 2-l zero-shot node degree 55.1% vs PaLM 2-xxs zero-shot node degree 11.3%; PaLM 2-l
+  zero-shot edge existence 47.5% (below majority baseline); PaLM 2-xxs zero-shot edge existence 47.2%
+caveat: Only four sizes are tested; the relationship between capacity and graph reasoning is not characterized
+  beyond the monotonic trend.
+extracted_by: automatic-extraction
+related_findings:
+- IC-858
+- IC-859
+- IC-861

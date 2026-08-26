@@ -1,0 +1,42 @@
+id: IC-903
+title: Knowledge editing performance (ES, GS, LS) improves as model scale increases from GPT-2 (124M)
+  to T5-XL (2.8B) to GPT-J (6B) across all editing methods
+description: 'The paper measures editing success, generalization success, and locality success as the
+  number of simultaneous edits scales from 2^5 to 2^14 on three released LLMs of increasing size. The
+  authors explicitly note that ''as the model scale increases, the performance of all editing methods
+  improve.'' On GPT-J, MALMEN maintains ES of 99.7% and GS of 92.8% at 8192 edits, while on GPT-2 at
+  512 edits the same method achieves ES 99.7% and GS 96.1%. Locality also improves: LS rises from 16.5%
+  on GPT-2 (m=512) to 25.1% on GPT-J (m=8192). The observation is made in the context of a specific
+  editing method but is stated to hold across all methods tested.'
+models:
+- ref: model:gpt-2
+- ref: model:t5
+  variant: variant:t5-xl
+- ref: model:gpt-j
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:massive-editing-large-language-models-via
+datasets:
+- ref: dataset:zsre
+  role: eval
+- ref: dataset:natural-questions
+  role: source
+methods:
+- ref: method:mend
+  role: compared-to
+- ref: method:memit
+  role: compared-to
+related_work:
+- ref: method:mend
+  role: compared-to
+- ref: method:memit
+  role: compared-to
+evidence_type: correlational
+key_metric: 'GPT-2 (124M) m=512: ES 99.7%, GS 96.1%, LS 16.5%; GPT-J (6B) m=8192: ES 99.7%, GS 92.8%,
+  LS 25.1%; ''As the model scale increases, the performance of all editing methods improve''; ''malmen
+  can edit more than two orders of magnitude more facts than mend on gpt-j with similar performance'''
+caveat: The three models have different architectures (decoder-only GPT-2, encoder-decoder T5-XL, decoder-only
+  GPT-J), so the scale trend is confounded with architecture. The comparison is also at different numbers
+  of edits (512 vs 8192), and the paper does not isolate model scale from architecture as a variable.
+extracted_by: automatic-extraction

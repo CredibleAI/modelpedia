@@ -1,0 +1,47 @@
+id: IC-1232
+title: GPT-2 XL and GPT-J exhibit knowledge conflict when subjected to reverse and composite knowledge
+  edits, with ROME and MEMIT showing near-total failure on reverse edits
+description: 'The paper applies pairs of logically connected edits to GPT-2 XL and GPT-J using four
+  editing methods (FT, MEND, ROME, MEMIT). In the reverse-edit setting (editing inverse relations),
+  ROME and MEMIT fail almost completely: their conflict scores (CS) drop to 0.00 and negative values,
+  meaning the model retains the old fact alongside the new one. In the composite-edit setting (two edits
+  linked by a logical rule through a tied fact), all methods cause significant damage to the tied fact,
+  with tied-fact-damage (TFD) scores reaching 88.75 for FT on GPT-2 XL. The paper attributes ROME and
+  MEMIT''s reverse-edit failure to their poor performance on reverse relation reasoning.'
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl
+- ref: model:gpt-j
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:unveiling-pitfalls-knowledge-editing-large-language
+datasets:
+- ref: dataset:conflictedit
+  role: eval
+- ref: dataset:wikidata
+  role: source
+methods:
+- ref: method:mend
+  role: primary
+- ref: method:rome
+  role: primary
+- ref: method:memit
+  role: primary
+related_work:
+- ref: method:rome
+  role: builds-on
+- ref: method:memit
+  role: builds-on
+- ref: method:mend
+  role: builds-on
+evidence_type: interventional
+key_metric: 'GPT-2 XL reverse edit: ROME CS_exp 0.00, CS_imp -0.65; MEMIT CS_exp 2.08, CS_imp -1.60.
+  GPT-2 XL composite edit TFD: FT 88.75, MEND 72.09, ROME 69.55, MEMIT 24.63. GPT-J reverse edit: ROME
+  CS_exp 0.00, CS_imp 0.06; MEMIT CS_exp 0.00, CS_imp -1.18.'
+caveat: The paper notes that ROME and MEMIT's failure on reverse edits may be caused by poor performance
+  on reverse relation reasoning (citing Berglund et al., 2023), suggesting the conflict may partly reflect
+  a pre-existing model limitation rather than a pure editing artefact.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1233

@@ -1,0 +1,34 @@
+id: IC-853
+title: Multi-agent debate with GPT-3.5-turbo-0301 does not outperform self-consistency at equivalent
+  inference cost on GSM8K
+description: The paper replicates the multi-agent debate method of Du et al. (2023) using three GPT-3.5-turbo-0301
+  agents over two rounds on the full GSM8K test set. At 6 responses, multi-agent debate scores 83.2
+  versus 85.3 for self-consistency; at 9 responses, 83.0 versus 88.2. The authors conclude that the
+  improvement attributed to 'debate' is actually due to self-consistency (sampling and voting), not
+  to the critique mechanism.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts: []
+sources:
+- ref: source:large-language-models-cannot-self-correct
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+methods:
+- ref: method:multi-agent-debate
+  role: primary
+- ref: method:self-consistency
+  role: compared-to
+related_work:
+- ref: method:multi-agent-debate
+  role: builds-on
+evidence_type: correlational
+key_metric: 'GSM8K: standard prompting (1 response) 76.7; self-consistency (3) 82.5; multi-agent debate
+  (6) 83.2; self-consistency (6) 85.3; multi-agent debate (9) 83.0; self-consistency (9) 88.2'
+caveat: Only one model (GPT-3.5-turbo-0301) and one dataset (GSM8K) are tested for this comparison.
+  The authors use the exact prompt from Du et al. (2023) with 3 agents and 2 rounds.
+extracted_by: automatic-extraction
+related_findings:
+- IC-852
+- IC-854

@@ -1,0 +1,51 @@
+id: IC-1510
+title: Without retrieved context, LLMs are unable to translate Kalamang, and among context types, retrieved
+  parallel sentences are most beneficial, followed by word list entries, then grammar book passages
+description: In the no-context condition, all models produce hallucinated translations for KGV→ENG (relying
+  on capitalization, punctuation, and sentence length) or generate other languages like Indonesian for
+  ENG→KGV; scores are near-zero except for proper-noun copying. When context is provided, retrieved
+  parallel sentences (s) are the most beneficial single context type, followed by word list entries
+  (w), then grammar book passages (gs). Combining context types generally improves results further.
+  For Claude 2, adding a ~100k-token grammar book chunk (gl) produces a qualitative leap in ENG→KGV,
+  with the model outputting grammatically correct Kalamang of moderate complexity, though results remain
+  inconsistent.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama
+  variant: variant:llama-30b
+- ref: model:llama
+  variant: variant:llama-13b
+- ref: model:llama
+  variant: variant:llama-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:benchmark-learning-translate-new-language-from
+datasets:
+- ref: dataset:a-grammar-of-kalamang
+  role: source
+methods:
+- ref: method:chrf
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'no context: llama-7b 10.2 (kgv→eng), 7.4 (eng→kgv); claude 2 no context 15.6 (kgv→eng),
+  13.0 (eng→kgv); claude 2 w+s+gl 44.7 (kgv→eng), 45.8 (eng→kgv)'
+caveat: The grammar book retrieval (gs) retrieves lexically similar passages that do not necessarily
+  contain useful grammatical explanations; the authors note this is a failure of external retrieval
+  rather than of the model's ability to use grammar. Long-context settings (gm, gl) were tested only
+  with Claude 2 due to context window limitations of other models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1508
+- IC-1509

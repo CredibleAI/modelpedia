@@ -1,0 +1,26 @@
+id: IC-887
+title: HuggingGPT's in-context task-model assignment always selects the same model regardless of input
+  question or task type
+description: The paper tests HuggingGPT's in-context task-model assignment strategy on 100 GQA questions
+  spanning five structural categories (query, choose, compare, logical, verify). In every single case,
+  the LLM-based selection assigns the task to ViLT-b32-finetuned-vqa with 100% consistency, regardless
+  of the question content or structure. The authors conclude that the in-context learning mechanism
+  does not achieve genuine dynamic model selection, as the selected model remains fixed across all inputs.
+models:
+- ref: model:hugginggpt
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:robust-multi-modal-reasoning-via-model
+datasets:
+- ref: dataset:gqa
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: 100% selection of ViLT-b32-finetuned-vqa across all 5 task types (query, choose, compare,
+  logical, verify) on 100 questions; all other 6 candidate models selected 0%
+caveat: The experiment was conducted only in a one-step scenario, where one model is selected for a
+  single task. The authors note this is a simplified setting but argue it is sufficient to demonstrate
+  the limitation.
+extracted_by: automatic-extraction

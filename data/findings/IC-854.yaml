@@ -1,0 +1,32 @@
+id: IC-854
+title: The apparent self-correction improvement in constrained generation (Madaan et al., 2023) is an
+  artefact of a sub-optimal initial prompt, not a genuine model capability
+description: The paper replicates the constrained generation task from Madaan et al. (2023) using GPT-3.5-turbo-0613.
+  With the original prompt that omits the instruction to include all concepts, self-correction appears
+  to improve concept coverage from 44.0 to 67.0. However, when the constraint is explicitly stated in
+  the initial prompt, standard prompting already achieves 81.8, and applying the same self-correction
+  procedure drops performance to 75.1. The authors conclude the reported improvement was due to the
+  feedback prompt supplying missing task information, not to the model's self-correction ability.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts:
+- ref: concept:method-artefact
+sources:
+- ref: source:large-language-models-cannot-self-correct
+datasets: []
+methods:
+- ref: method:self-refine
+  role: primary
+related_work:
+- ref: method:self-refine
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Concept coverage: Madaan et al. prompt standard 44.0, self-correct 67.0; authors'' prompt
+  standard 81.8, self-correct 75.1'
+caveat: Only one model (GPT-3.5-turbo-0613) and one task (constrained generation) are tested. The authors
+  note this is a single illustrative example of a broader prompt-design issue.
+extracted_by: automatic-extraction
+related_findings:
+- IC-852
+- IC-853

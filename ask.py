@@ -173,13 +173,16 @@ def default_out(source, pdfs, think=chat.THINK):
     pointed a fresh run at the directory holding the old `low` answers, mixed nine files into it
     and skipped the 21 papers it should have redone. The prompt version stays out of the name
     on purpose -- `prompt_sha` in the log carries it exactly, and a name cannot."""
-    with_pages = Path(source).name == Path(paths.PAGE_PROMPTS).name
+    folder = Path(source).name
+    with_pages = folder == Path(paths.PAGE_PROMPTS).name
     if with_pages and pdfs:
         name = "pages"
     elif pdfs:
         name = "text-and-pages"
-    else:
+    elif folder == Path(paths.PROMPTS).name:
         name = "text"
+    else:
+        name = folder[len("prompts-"):] if folder.startswith("prompts-") else folder
     return paths.RUNS / ("%s-%s" % (name, think))
 
 

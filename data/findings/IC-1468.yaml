@@ -1,0 +1,27 @@
+id: IC-1468
+title: DECAF's optimization-based fitting degrades under significant self-occlusion where the hand covers
+  more than half the face
+description: The paper demonstrates that DECAF, which depends on accurate initial keypoint estimates
+  to drive its test-time optimization, produces poor reconstructions when significant occlusion is present.
+  In cases where the hand covers more than half the face, the 2D keypoint estimators (MediaPipe, 3DDFA)
+  fail to produce accurate initial estimates, causing DECAF's iterative fitting to converge to incorrect
+  hand-face relationships. This is shown qualitatively in Figure 8 with several example images.
+models:
+- ref: model:decaf
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:dice-end-end-deformation-capture-hand
+datasets:
+- ref: dataset:decaf
+  role: eval
+methods:
+- ref: method:decaf
+  role: primary
+related_work: []
+evidence_type: observational
+caveat: Shown qualitatively with a small number of examples in Figure 8; no systematic evaluation over
+  a defined set of occluded cases is reported
+extracted_by: automatic-extraction
+related_findings:
+- IC-1467

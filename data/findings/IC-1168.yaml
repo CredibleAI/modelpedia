@@ -1,0 +1,37 @@
+id: IC-1168
+title: For GPT-4 Code Interpreter, code-based self-verification improves MATH accuracy to 73.54% while
+  natural language self-verification slightly degrades it to 69.29% relative to the 69.69% base
+description: 'The paper compares two verification strategies applied to GPT-4 Code Interpreter on MATH:
+  natural language verification (asking the model to verify in text) and code-based verification (asking
+  it to write and execute verification code). Natural language verification yields 69.29% overall, a
+  0.40% decrease from the 69.69% base, with four of seven subtopics declining. Code-based verification
+  yields 73.54%, a 3.85% gain, with all seven subtopics improving. The paper also reports that the verification
+  process has 95.88% precision and 79.11% recall over five sampled paths, meaning verified-true answers
+  are highly reliable.'
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:solving-challenging-math-word-problems-using
+datasets:
+- ref: dataset:math
+  role: eval
+methods:
+- ref: method:self-consistency
+  role: compared-to
+related_work:
+- ref: method:self-consistency
+  role: compared-to
+- name: Let's Verify Step by Step
+  anchor: https://arxiv.org/abs/2305.20050
+  role: context
+evidence_type: correlational
+key_metric: 'MATH overall: NL verification 69.29% (-0.40 vs base), code-based verification 73.54% (+3.85
+  vs base); verification precision 95.88%, recall 79.11%, accuracy 73.54% (5 sampled paths)'
+caveat: The natural language verification result is based on a single prompt formulation; the paper
+  does not explore multiple NL verification strategies. The precision/recall numbers are from 5 sampled
+  paths on MATH only.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1167
+- IC-1169

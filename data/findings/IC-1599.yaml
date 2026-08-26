@@ -1,0 +1,47 @@
+id: IC-1599
+title: Self-repair at equivalent compute budget provides only modest and inconsistent gains over i.i.d.
+  sampling for CodeLlama-13B-Instruct, GPT-3.5, and GPT-4 on HumanEval and APPS
+description: 'The paper compares self-repair (generate code, get feedback, repair) against i.i.d. sampling
+  at the same total number of programs generated. Across all three models and both benchmarks, the gains
+  are small and highly variable. GPT-4 on APPS shows the largest improvement (up to 8% over baseline),
+  while GPT-3.5 on HumanEval is near ceiling (up to 3%). Critically, the allocation of budget matters:
+  spending more on initial diverse samples helps, while spending more on repair candidates often hurts.
+  For GPT-4 on APPS, 10 initial + 1 repair (20 total) gives 66.1% vs 63.1% baseline, but 2 initial +
+  10 repairs (22 total) gives 61.8% vs 63.4% baseline.'
+models:
+- ref: model:codellama-13b
+  variant: variant:codellama-13b-instruct
+- ref: model:gpt-3-5
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:self-repair-silver-bullet-code-generation
+datasets:
+- ref: dataset:humaneval
+  role: eval
+- ref: dataset:apps
+  role: eval
+methods:
+- ref: method:pass-k
+  role: eval
+related_work:
+- ref: method:self-refine
+  role: context
+- name: Self-Debug
+  anchor: https://arxiv.org/abs/2304.05128
+  role: context
+- name: Self-Edit
+  anchor: https://arxiv.org/abs/2305.04087
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4 on APPS: 10 initial + 1 repair (20 total) = 66.1% vs 63.1% i.i.d. (1.05x); 2 initial
+  + 10 repairs (22 total) = 61.8% vs 63.4% i.i.d. (0.97x). GPT-3.5 on APPS competition-level: up to
+  34% gain. CodeLlama on HumanEval: up to 10% gain. GPT-3.5 on HumanEval: up to 3% gain.'
+caveat: Experiments use self-contained Python tasks with executable unit tests, which differs from real-world
+  software development. The bootstrap resampling from a single large repair tree risks introducing statistical
+  artefacts, though standard deviations are reported as very small.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1600
+- IC-1601

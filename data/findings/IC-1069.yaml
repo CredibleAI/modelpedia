@@ -1,0 +1,33 @@
+id: IC-1069
+title: Stable Diffusion v2.1's compositional understanding on the ARO benchmark is significantly higher
+  than previously reported by MMSE-based scoring
+description: The paper applies an information-theoretic score (pointwise mutual information i^o) to
+  Stable Diffusion v2.1 on the ARO benchmark and obtains substantially higher accuracy than the MMSE-based
+  DiffITM score. On VG-A, VG-R, COCO, and Flickr30k the information score yields 72.0, 69.1, 40.1, and
+  49.3 percent, compared to 62.9, 50.0, 23.5, and 33.2 for DiffITM. Because the text encoder is frozen
+  and shared with OpenCLIP, the authors attribute the improvement over OpenCLIP (64.6, 51.4, 32.8, 40.5)
+  to the denoising objective and visual component. The authors conclude that previous work using MMSE
+  as a proxy for alignment systematically underestimates diffusion models' compositional understanding.
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v2-1
+- ref: model:openclip
+concepts:
+- ref: concept:method-artefact
+sources:
+- ref: source:interpretable-diffusion-via-information-decomposition
+datasets:
+- ref: dataset:aro
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'ARO accuracy (%): Info. 72.0 / 69.1 / 40.1 / 49.3 vs DiffITM 62.9 / 50.0 / 23.5 / 33.2
+  vs OpenCLIP 64.6 / 51.4 / 32.8 / 40.5 on VG-A / VG-R / COCO / Flickr30k'
+caveat: The information estimator is not guaranteed to be an upper or lower bound on true mutual information,
+  as the denoiser may not achieve the global MMSE minimum. Improvements are smaller compared to contrastive
+  pre-training with composition-aware negative samples.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1070
+- IC-1071

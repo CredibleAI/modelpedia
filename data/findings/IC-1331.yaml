@@ -1,0 +1,40 @@
+id: IC-1331
+title: SIFT and RLHF variants of CodeLlama and Llama-2 perform worse than their base counterparts in
+  multi-turn interaction
+description: Comparing base, SIFT, and RLHF variants within the CodeLlama and Llama-2 families, the
+  paper finds that instruction fine-tuning and RLHF alignment generally degrade multi-turn tool-use
+  performance. SIFT hurts CodeLlama-34b by 11.1% in absolute success rate (no feedback) and 15.4% (with
+  feedback); RLHF hurts Llama-2-70b by 8.5% and 8.7% respectively. Notable exceptions are Vicuna-v1.5-7b
+  and Lemur-v1-70b SIFT, where SIFT on multi-turn ShareGPT data improves performance.
+models:
+- ref: model:codellama-13b
+  variant: variant:codellama-7b
+- ref: model:codellama-34b
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:vicuna
+  variant: variant:vicuna-v1-5-7b
+- ref: model:lemur-v1-70b
+concepts: []
+sources:
+- ref: source:mint-evaluating-llms-multi-turn-interaction
+datasets: []
+methods: []
+related_work:
+- ref: method:react
+  role: builds-on
+evidence_type: correlational
+key_metric: 'SIFT hurts CodeLlama-34b by 11.1% (sr5: 28.2 base vs 17.1 SIFT) and 15.4% (sr5_feedback:
+  42.7 vs 27.3); RLHF hurts Llama-2-70b by 8.5% (sr5: 26.4 base vs 17.9 RLHF) and 8.7% (sr5_feedback:
+  35.3 vs 26.6)'
+caveat: The authors note it is hard to conclude that RLHF in general hurts model performance, and leave
+  exploring the role of RLHF in multi-turn interaction for future work. Vicuna-v1.5 and Lemur-v1 are
+  exceptions where SIFT helps.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1330
+- IC-1332

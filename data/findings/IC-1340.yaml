@@ -1,0 +1,37 @@
+id: IC-1340
+title: Chinchilla 70B produces coherent autoregressive continuations of text, image, and audio data
+  when used as a compressor, outperforming gzip in sample quality
+description: 'The paper demonstrates the prediction-compression equivalence by using compressors as
+  generative models: the conditional probability of the next symbol is derived from the change in compressed
+  length. When conditioning on the first half of each row of an ImageNet image (250 pixels) and sampling
+  the remaining 250 pixels autoregressively, Chinchilla 70B produces visually appropriate continuations
+  that degrade with length, while gzip produces much noisier completions. Similar qualitative comparisons
+  are made for text (enwik9) and audio (Librispeech), where Chinchilla 70B samples are significantly
+  more coherent than gzip''s.'
+models:
+- ref: model:chinchilla
+concepts: []
+sources:
+- ref: source:language-modeling-compression
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:enwik9
+  role: eval
+- ref: dataset:librispeech
+  role: eval
+methods:
+- ref: method:arithmetic-coding
+  role: primary
+- ref: method:gzip
+  role: compared-to
+related_work: []
+evidence_type: observational
+caveat: The comparison is qualitative ('judged qualitatively'); no quantitative generation metric is
+  reported. The paper notes that gzip samples are biased because its internal dictionary of tokens can
+  be longer than one byte, and that looking multiple steps ahead would improve results. The image generation
+  treats rows as independent, which is an oversimplification of natural image statistics.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1338
+- IC-1339

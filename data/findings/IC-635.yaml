@@ -1,0 +1,31 @@
+id: IC-635
+title: InstructBLIP achieves the highest overall MMBench score (44.0) among five evaluated vision-language
+  models
+description: The paper reports MMBench scores for five released vision-language models. InstructBLIP
+  achieves the highest overall score (44.0), followed by LLaVA (38.7), VisualGLM (38.1), and OpenFlamingo
+  (4.6). InstructBLIP leads in attribute reasoning (54.2) and coarse perception (56.4). OpenFlamingo
+  scores very low across all sub-abilities, with 0.0 on relation reasoning. The numbers are sourced
+  from the MMBench paper (Liu et al. 2023b).
+models:
+- ref: model:instructblip
+- ref: model:llava
+- ref: model:visualglm
+- ref: model:openflamingo
+concepts: []
+sources:
+- ref: source:minigpt-4-enhancing-vision-language-understanding
+datasets:
+- ref: dataset:mmbench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'InstructBLIP: overall 44.0, LR 19.1, AR 54.2, RR 34.8, FP-S 47.8, FP-C 24.8, CP 56.4; LLaVA:
+  38.7, 16.7, 48.3, 30.4, 45.5, 32.4, 40.6; VisualGLM: 38.1, 10.8, 44.3, 35.7, 43.8, 23.4, 47.3; OpenFlamingo:
+  4.6, 6.7, 8.0, 0.0, 6.7, 2.8, 2.0'
+caveat: Numbers are from Liu et al. (2023b), not independently measured by this paper.
+extracted_by: automatic-extraction
+related_findings:
+- IC-632
+- IC-633
+- IC-634

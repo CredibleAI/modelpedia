@@ -1,0 +1,37 @@
+id: IC-1308
+title: Dynamic retrieval-based few-shot prompting substantially improves released LLMs' code optimization,
+  with GPT-4-0613 reaching 76.07% optimization rate and 3.93x speedup (best@8), exceeding the 3.66x
+  human reference
+description: Using CodeBERTScore embeddings and FAISS to retrieve the k=4 most similar slow-fast pairs
+  from the PIE training set, the paper constructs dynamic few-shot prompts for each test program. This
+  strategy outperforms all baseline prompting variants across every model tested. GPT-4-0613 achieves
+  76.07% optimization rate and 3.93x speedup at best@8, surpassing the 3.66x human reference. CodeLlama
+  34B improves from 19.63% opt / 1.30x (CoT) to 42.54% opt / 2.43x with retrieval. The ablation over
+  k in {1, 2, 4} shows k=4 is optimal for most models.
+models:
+- ref: model:code-llama
+- ref: model:gpt-3-5
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:learning-performance-improving-code-edits
+datasets: []
+methods:
+- ref: method:codebertscore
+  role: supporting
+- ref: method:faiss
+  role: supporting
+related_work:
+- ref: model:code-llama
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4 k=4 best@8: 76.07% opt, 3.93x speedup, 95.71% correct; CodeLlama 34B k=4 best@8:
+  42.54% opt, 2.43x; GPT-3.5 k=4 best@8: 51.64% opt, 2.19x; human reference: 3.66x'
+caveat: Increased speedup comes with some cost in correctness (e.g., CodeLlama 34B drops from 78.73%
+  to 73.62% correct); retrieval uses the PIE training set, so the improvement is partly due to task-specific
+  data rather than a general property of the model.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1307
+- IC-1309
+- IC-1310

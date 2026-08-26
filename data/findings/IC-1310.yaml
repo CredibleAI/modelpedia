@@ -1,0 +1,36 @@
+id: IC-1310
+title: Chain-of-thought prompting provides notable code-optimization gains only for larger models (CodeLlama
+  34B, GPT-3.5, GPT-4) but not for CodeLlama 7B or 13B, consistent with an emergent capability
+description: Comparing CoT to few-shot prompting at best@8, CoT outperforms few-shot for CodeLlama 34B
+  (19.63% vs 13.70% opt), GPT-3.5 (43.05% vs 29.04%), and GPT-4 (42.74% vs 36.40%), but underperforms
+  few-shot for CodeLlama 7B (7.46% vs 9.51%) and CodeLlama 13B (11.15% vs 13.70%). The authors explicitly
+  link this to the emergent-capability finding of Wei et al. (2022a), noting the improvement is 'notably
+  only for the larger codellama (13b and 34b) and gpt-3.5 models.'
+models:
+- ref: model:code-llama
+- ref: model:gpt-3-5
+- ref: model:gpt-4
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:learning-performance-improving-code-edits
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: primary
+- ref: method:few-shot-prompting
+  role: compared-to
+related_work:
+- name: Emergent abilities of large language models
+  anchor: https://arxiv.org/abs/2206.07682
+  role: builds-on
+evidence_type: correlational
+key_metric: 'CoT vs few-shot best@8: CodeLlama 7B 7.46% vs 9.51%; CodeLlama 13B 11.15% vs 13.70%; CodeLlama
+  34B 19.63% vs 13.70%; GPT-3.5 43.05% vs 29.04%; GPT-4 42.74% vs 36.40%'
+caveat: The CodeLlama 13B gap (11.15% vs 13.70%) is modest; the paper's claim of 'notable' improvement
+  is a qualitative judgment. The comparison is within a single test set of 978 problems.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1307
+- IC-1308
+- IC-1309

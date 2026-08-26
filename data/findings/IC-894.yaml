@@ -1,0 +1,26 @@
+id: IC-894
+title: FLAN-T5 base's average per-token probability increases with token index during generation on
+  WMT translation tasks
+description: The paper measures the average prediction probability of each token position across all
+  examples for FLAN-T5 base on WMT fr→en. The result shows that as the token index increases, the average
+  probability increases, meaning the model becomes progressively more confident as it generates. This
+  structural property causes the sum of log-probabilities (chow-sum) to be systematically lower for
+  longer outputs, and the average (chow-average) to over-correct toward shorter outputs. The effect
+  is visible in the deferral curves where chow-sum preferentially defers longer predictions and chow-average
+  preferentially defers shorter ones.
+models:
+- ref: model:flan-t5
+concepts: []
+sources:
+- ref: source:language-model-cascades-token-level-uncertainty
+datasets:
+- ref: dataset:wmt-14-fr-en
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: Measured on a single dataset (WMT fr→en) and a single model size (base); the paper does not
+  report the same analysis for other sizes or tasks in the main text.
+extracted_by: automatic-extraction
+related_findings:
+- IC-895

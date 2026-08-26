@@ -1,0 +1,30 @@
+id: IC-634
+title: Video-ChatGPT achieves the highest correctness, detail, and contextual scores among four video
+  understanding baselines
+description: The paper evaluates four released video understanding models on the Video-based Generative
+  Performance Benchmark. Video-ChatGPT scores highest on correctness (2.40), detail (2.52), contextual
+  (2.62), and consistency (2.37) among the baselines. VideoChat scores 2.23/2.50/2.53/1.94/2.24, LLaMA
+  Adapter 2.03/2.32/2.30/1.98/2.15, and Video-LLaMA 1.96/2.18/2.16/1.82/1.79. The paper identifies Video-ChatGPT
+  as the strongest baseline.
+models:
+- ref: model:video-chatgpt
+- ref: model:videochat
+- ref: model:llama-adapter
+- ref: model:video-llama
+concepts: []
+sources:
+- ref: source:minigpt-4-enhancing-vision-language-understanding
+datasets:
+- ref: dataset:videoinstruct100k
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Video-ChatGPT: correctness 2.40, detail 2.52, contextual 2.62, temporal 1.98, consistency
+  2.37; VideoChat: 2.23, 2.50, 2.53, 1.94, 2.24; LLaMA Adapter: 2.03, 2.32, 2.30, 1.98, 2.15; Video-LLaMA:
+  1.96, 2.18, 2.16, 1.82, 1.79'
+extracted_by: automatic-extraction
+related_findings:
+- IC-632
+- IC-633
+- IC-635

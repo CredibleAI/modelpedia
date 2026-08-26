@@ -1,0 +1,37 @@
+id: IC-644
+title: CLIP relies on spurious features (background) as a shortcut in zero-shot classification, and
+  conditioning on the correct background reduces this reliance
+description: 'On the Waterbirds dataset, CLIP''s Grad-CAM saliency shows 37.2% of attention on spurious
+  (background) regions when no context is provided. Conditioning on the correct background shifts this
+  to 33.7% spurious and 66.3% core (ViT-B/32). This shortcut manifests as a large group-robustness gap:
+  on Waterbirds with ViT-L/14, the gap between average and worst-group accuracy is 45.91 without context,
+  reducing to 41.51 with background. On CelebA (hair color), the gap is 9.61 without context, reducing
+  to 5.99 with gender. The paper attributes the bias to CLIP associating water backgrounds with waterbirds
+  rather than focusing on the bird itself.'
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:perceptionclip-visual-classification-by-inferring-conditioning
+datasets:
+- ref: dataset:waterbirds
+  role: eval
+- ref: dataset:celeba
+  role: eval
+methods:
+- ref: method:grad-cam
+  role: primary
+- ref: method:segment-anything
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: Grad-CAM core saliency 62.8% to 66.3%, spurious 37.2% to 33.7% (ViT-B/32, Waterbirds); Waterbirds
+  ViT-L/14 gap 45.91 to 41.51 (with background); CelebA ViT-L/14 gap 9.61 to 5.99 (with gender)
+caveat: The group robustness experiments are conducted on the training set of Waterbirds and CelebA.
+  The Grad-CAM analysis uses ViT-B/32 while the group robustness tables use multiple variants; the effect
+  is not uniform across all variants (e.g., ViT-B/16 on Waterbirds shows a gap increase from 60.56 to
+  66.91 with background).
+extracted_by: automatic-extraction
+related_findings:
+- IC-642
+- IC-643

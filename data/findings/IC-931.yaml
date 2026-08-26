@@ -1,0 +1,33 @@
+id: IC-931
+title: GPT-4 achieves approximately 95% accuracy on contrast instructions, far exceeding human performance
+  without tools
+description: The paper evaluates GPT-4 on the contrast instructions benchmark by prompting it to determine
+  which of two instruction-response pairs would be more preferred by humans. Across the four datasets
+  (Stack, WMT, Twitter, RealSumm), GPT-4 achieves 95.5% average response consistency (cres) and 96.0%
+  average instruction consistency (cins). This substantially exceeds the human performance without tools
+  (82.8% cres, 81.7% cins) and is comparable to human performance with tools (96.3% cres, 96.1% cins).
+  The result validates that contrast instructions is a solvable task and that the near-random performance
+  of standard RMs reflects a genuine limitation of the training procedure rather than task impossibility.
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:trickle-down-impact-reward-inconsistency-rlhf
+datasets:
+- ref: dataset:stackexchange
+  role: source
+- ref: dataset:wmt
+  role: source
+- ref: dataset:realsumm
+  role: source
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4: cres 91.2 / 98.4 / 96.8 / 95.4 (avg 95.5), cins 91.8 / 98.8 / 97.2 / 96.2 (avg 96.0)
+  across Stack / WMT / Twitter / RealSumm'
+caveat: GPT-4 was prompted with a specific instruction to judge preference; the result is sensitive
+  to the exact prompt formulation. The evaluation is a single-turn judgment, not a full reward-modeling
+  task.
+extracted_by: automatic-extraction
+related_findings:
+- IC-930

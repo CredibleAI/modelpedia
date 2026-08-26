@@ -1,0 +1,43 @@
+id: IC-1105
+title: PAC-Bayes generalization bounds for discrete class prompts on CLIP are within a few percentage
+  points of the actual test error across CIFAR-10, CIFAR-100, ImageNet, FMOW, and OfficeHome
+description: 'The paper applies classical PAC-Bayes bounds to the discrete hypothesis space of class
+  prompts used with CLIP, using LLaMA-7B as the prior over token sequences. For both handcrafted prompts
+  (from CLIP and Wortsman et al.) and prompts found by greedy search, the resulting bound is remarkably
+  tight: on ImageNet the bound is 0.319 versus a test error of 0.256, and on CIFAR-10 with ViT-L/14
+  greedy the bound is 0.063 versus test error 0.028. These bounds are substantially tighter than existing
+  PAC-Bayes bounds for deep learning (e.g., 0.965 for ImageNet from Zhou et al. 2019). The tightness
+  holds even when prompts are optimized on the training set, explaining why prompt engineering does
+  not appear to overfit.'
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:understanding-prompt-engineering-may-not-require
+datasets:
+- ref: dataset:cifar-10
+  role: eval
+- ref: dataset:cifar-100
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:fmow
+  role: eval
+- ref: dataset:officehome
+  role: eval
+methods:
+- ref: method:pac-bayes-bound
+  role: primary
+- ref: method:linear-probing
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: 'ImageNet L-14 handcrafted: train 0.243, test 0.256, PAC-Bayes 0.319; CIFAR-10 L-14 greedy:
+  train 0.023, test 0.028, PAC-Bayes 0.063; CIFAR-100 L-14 greedy: train 0.142, test 0.180, PAC-Bayes
+  0.266; comparison: Zhou et al. 2019 ImageNet bound 0.965, Lotfi et al. 2022 ImageNet bound 0.930/0.409'
+caveat: The bounds assume the CLIP image encoder was not trained on the evaluation data; the authors
+  note this is difficult to verify since CLIP's training data is not publicly disclosed, though the
+  CLIP paper reports a small sensitivity to including evaluation datasets.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1106

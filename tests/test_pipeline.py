@@ -3,6 +3,7 @@ import copy
 import json
 import os
 import tempfile
+import yaml
 from pathlib import Path
 
 import check
@@ -18,6 +19,7 @@ from modelpedia.ingest import link
 from modelpedia.ingest import openreview
 from modelpedia.ingest import prompt
 from modelpedia.ingest import proposals
+from modelpedia.ingest import registries
 from modelpedia.ingest import report
 from modelpedia.ingest import split as splitter
 from modelpedia.ingest import tagging
@@ -70,6 +72,28 @@ def test_every_registry_entity_resolves_to_its_own_slug():
                 if link.resolve(probe, index).slug != key:
                     misses.append((key, probe))
     assert misses == []
+
+
+def test_an_index_can_be_narrowed_to_several_types_at_once():
+    """A link field that accepts several registry types needs an index of exactly those. Wider is
+    not safer: `related_work` resolved against every entity produced `ref: variant:sdxl`, which
+    the validator rejects only after the record is on disk -- two of 447 fresh records on
+    2026-08-26."""
+    entities = sample_db().entities
+    everything = link.index_of(entities)
+    registries = link.index_of(entities, graph_json.REGISTRY_TYPES)
+    variants = [key for key in everything.identifiers if key.startswith("variant:")]
+    assert variants, "the fixture must hold a variant for this to test anything"
+    assert all(key not in registries.identifiers for key in variants)
+    assert set(registries.identifiers) < set(everything.identifiers)
+
+
+def test_a_variant_name_never_resolves_in_a_registry_only_index():
+    entities = sample_db().entities
+    registries = link.index_of(entities, graph_json.REGISTRY_TYPES)
+    for key in link.index_of(entities).identifiers:
+        if key.startswith("variant:"):
+            assert link.resolve(key, registries).slug != key
 
 
 def test_a_known_name_resolves_exactly():
@@ -2347,3 +2371,63 @@ def test_a_model_that_already_carries_a_facet_is_left_alone():
                 "model:b": {"type": "model", "name": "B", "modality": ["text"]},
                 "dataset:c": {"type": "dataset", "name": "C"}}
     assert list(facets.wanted(entities)) == ["model:a"]
+
+
+def registry_file(body):
+    """A registry file on disk, so `set_anchor` is exercised as the text editor it is."""
+    directory = tempfile.mkdtemp()
+    path = Path(directory) / "datasets.yaml"
+    path.write_text(body, encoding="utf-8")
+    return path
+
+
+def test_an_anchor_is_written_onto_an_entry_that_has_none():
+    path = registry_file("dataset:one:\n  name: One\n\ndataset:two:\n  name: Two\n")
+    kept = registries.path_for
+    try:
+        registries.path_for = lambda field: path
+        assert registries.set_anchor("datasets", "dataset:one", "https://example.org/a")
+    finally:
+        registries.path_for = kept
+    held = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert held["dataset:one"]["anchor"] == "https://example.org/a"
+    assert "anchor" not in held["dataset:two"]
+
+
+def test_an_anchor_already_there_is_never_overwritten():
+    """A proposal is evidence that a URL fits a citation, never that it fits the entity better
+    than what a human already put there."""
+    path = registry_file("dataset:one:\n  name: One\n  anchor: https://example.org/kept\n")
+    kept = registries.path_for
+    try:
+        registries.path_for = lambda field: path
+        assert registries.set_anchor("datasets", "dataset:one", "https://example.org/new") is False
+    finally:
+        registries.path_for = kept
+    assert "example.org/kept" in path.read_text(encoding="utf-8")
+
+
+def test_an_empty_anchor_key_is_filled_rather_than_duplicated():
+    path = registry_file("dataset:one:\n  name: One\n  anchor: null\n  note: null\n")
+    kept = registries.path_for
+    try:
+        registries.path_for = lambda field: path
+        assert registries.set_anchor("datasets", "dataset:one", "https://example.org/a")
+    finally:
+        registries.path_for = kept
+    body = path.read_text(encoding="utf-8")
+    assert body.count("anchor:") == 1
+    assert yaml.safe_load(body)["dataset:one"]["note"] is None
+
+
+def test_writing_an_anchor_leaves_every_other_entry_byte_identical():
+    before = "dataset:one:\n  name: One\n\ndataset:two:\n  name: Two\n  note: kept verbatim\n"
+    path = registry_file(before)
+    kept = registries.path_for
+    try:
+        registries.path_for = lambda field: path
+        registries.set_anchor("datasets", "dataset:one", "https://example.org/a")
+    finally:
+        registries.path_for = kept
+    after = path.read_text(encoding="utf-8")
+    assert "dataset:two:\n  name: Two\n  note: kept verbatim\n" in after

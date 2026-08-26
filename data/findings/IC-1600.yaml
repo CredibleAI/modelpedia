@@ -1,0 +1,38 @@
+id: IC-1600
+title: Replacing a model's self-generated feedback with a stronger model's feedback consistently improves
+  self-repair beyond both the i.i.d. baseline and the self-repair baseline
+description: The paper tests the hypothesis that self-repair is bottlenecked by the model's inability
+  to provide useful feedback on its own code. When CodeLlama's feedback is replaced by GPT-3.5 or GPT-4,
+  and GPT-3.5's feedback is replaced by GPT-4, the boosted configurations beat both the corresponding
+  i.i.d. baseline and the corresponding self-repair configuration at all sample budgets. On APPS, both
+  CodeLlama and GPT-3.5 now beat their baselines, whereas in pure self-repair they mostly lag behind.
+  On HumanEval, CodeLlama's gains increase with the strength of the feedback model.
+models:
+- ref: model:codellama-13b
+  variant: variant:codellama-13b-instruct
+- ref: model:gpt-3-5
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:self-repair-silver-bullet-code-generation
+datasets:
+- ref: dataset:humaneval
+  role: eval
+- ref: dataset:apps
+  role: eval
+methods:
+- ref: method:pass-k
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'In every boosted configuration (CodeLlama+GPT-3.5, CodeLlama+GPT-4, GPT-3.5+GPT-4), the
+  boosted pass rate exceeds both the i.i.d. baseline and the self-repair baseline at all budgets. Repair
+  success rates (Table 2): CodeLlama overall 1.1%, CodeLlama+GPT-3.5 2.2%, GPT-3.5 4.7%, GPT-3.5+GPT-4
+  11.5%, GPT-4 10.8%.'
+caveat: The feedback model and repair model are different, so this tests cross-model transfer rather
+  than the model's intrinsic repair ability. The experiment uses nf=10 instead of nf=25 to reduce cost.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1599
+- IC-1601

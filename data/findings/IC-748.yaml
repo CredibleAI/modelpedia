@@ -1,0 +1,48 @@
+id: IC-748
+title: Pruned LLMs at ≥50% sparsity remain robust in-context retrievers and summarizers, with Vicuna-7B
+  matching up to ~40% sparsity and Vicuna-13B up to ~50% sparsity in open-book settings
+description: When external knowledge is provided in-context (open-book ICRA-QA on TriviaQA, and in-context
+  summarization on CNN/DailyMail), pruned LLMs retain their ability to extract and synthesize information
+  from the prompt. Vicuna-7B remains within the 5% matching tolerance up to ~40% unstructured sparsity
+  and 8-bit quantization for retrieval, while Vicuna-13B holds up to ~50% sparsity and 4-bit quantization.
+  For summarization, all pruning and quantization methods preserve coherence, consistency, fluency,
+  and relevance, though longer stories show sharper degradation. This contrasts sharply with the closed-book
+  knowledge loss observed in Finding 1.
+models:
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+- ref: model:vicuna
+  variant: variant:vicuna-13b
+concepts: []
+sources:
+- ref: source:compressing-llms-truth-rarely-pure-never
+datasets:
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:cnn-dailymail
+  role: eval
+methods:
+- ref: method:sparsegpt
+  role: primary
+- ref: method:wanda
+  role: primary
+- ref: method:magnitude-pruning
+  role: primary
+- ref: method:gptq
+  role: primary
+- ref: method:llm-as-a-judge
+  role: eval
+related_work:
+- name: ICRA-QA
+  anchor: https://arxiv.org/abs/2302.00083
+  role: builds-on
+evidence_type: interventional
+key_metric: 'Vicuna-7B matching up to ~40% sparsity and 8-bit quantization; Vicuna-13B matching up to
+  ~50% sparsity and 4-bit quantization (open-book ICRA-QA); in-context retrieval coherence (long story):
+  SparseGPT 5.883→5.067, Wanda 5.883→5.033 at 50% sparsity'
+caveat: With increasing context length (large stories), performance drop is sharper; no matching compressed
+  LLM identified for 2:4 structured sparsity; GPT-4 used as judge introduces potential evaluation bias
+extracted_by: automatic-extraction
+related_findings:
+- IC-747
+- IC-749

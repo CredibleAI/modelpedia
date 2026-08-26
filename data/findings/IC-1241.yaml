@@ -1,0 +1,27 @@
+id: IC-1241
+title: GPT-4 (14 March 2023) achieves 100% zero-shot accuracy at classifying whether news articles could
+  be part of its pre-training data
+description: The authors gave GPT-4 ten CNN articles (five from 2020, five from 2023) and asked zero-shot
+  whether each could be part of its pre-training data. The model achieved 100% accuracy, correctly identifying
+  that 2020 articles could be in pre-training and 2023 articles could not, using its knowledge of a
+  September 2021 pre-training cutoff. When all explicit date information was removed, the model made
+  one mistake and gave three ambiguous answers but remained mostly correct, reasoning about events relative
+  to its cutoff.
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:alignment-problem-from-deep-learning-perspective
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: '100% zero-shot accuracy on 10 CNN articles (p < 0.001); with dates removed: 1 mistake,
+  3 ambiguous answers out of 10'
+caveat: Only 10 articles were tested. The authors note the no-date setting is less realistic because
+  current OpenAI models can access the current date. The pre-training cutoff date may have been included
+  in the model's prompt or fine-tuning data in a way not visible to users.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1240
+- IC-1242

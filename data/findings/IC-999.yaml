@@ -1,0 +1,31 @@
+id: IC-999
+title: FLUX1 and Stable Diffusion 3.5 exhibit high local dependency ratio and produce text hallucinations
+  when generating text content
+description: The paper measures the local dependency ratio (LDR) of FLUX1-dev and Stable Diffusion 3.5-medium
+  when prompted to generate images containing text (e.g. 'a blackboard with formulas'). Both models
+  show high LDR values across most denoising timesteps, indicating that each text region is denoised
+  primarily from its own local noise rather than from global context. Correspondingly, generated images
+  contain misspelled words, missing characters, and nonsensical symbol assemblies. The LDR for FLUX1
+  stays above 0.79 across all five measured timesteps, while SD 3.5 starts at 0.9692 and drops to 0.4534
+  only at the final timestep.
+models:
+- ref: model:flux
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-3-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:understanding-text-hallucination-diffusion-models-via
+datasets: []
+methods: []
+related_work:
+- ref: model:stable-diffusion
+  role: context
+evidence_type: observational
+key_metric: 'LDR (prompt ''a blackboard with formulas'', 50 total reverse timesteps): FLUX1 0.9253/0.8078/0.7992/0.8208/0.7994
+  at timesteps 50/40/30/20/10; SD 3.5 0.9692/0.8283/0.7912/0.5726/0.4534 at timesteps 50/40/30/20/10'
+caveat: The authors note that SD 3.5 has a small LDR near the end of denoising (timestep 10) and state
+  'we do not know why.' LDR was computed via zeroth-order approximation due to memory constraints of
+  the full Jacobian. Only one prompt ('a blackboard with formulas') was used for the LDR measurement,
+  though multiple prompts and seeds (0-2) were used for the qualitative hallucination examples.
+extracted_by: automatic-extraction

@@ -1,0 +1,31 @@
+id: IC-935
+title: In pre-trained ViT, query vector Kruskal rank reaches the context size only after one self-attention
+  layer, while general position fails at all depths
+description: The paper measures the Kruskal rank of query vectors and the linear independence of context
+  vectors in a ViT pre-trained on ImageNet, tested on 2000 ImageNet images. At the embedding layer,
+  the Kruskal rank of query vectors is below the context size n, violating the paper's assumption 1.
+  After one self-attention layer, the Kruskal rank exceeds n, satisfying assumption 1. The general position
+  assumption (Kruskal rank equal to d) fails at every depth, with the Kruskal rank being only slightly
+  above n and much smaller than d. This depth-dependent emergence of query diversity is what enables
+  the paper's memorization theorem to apply to the second attention layer.
+models:
+- ref: model:vit
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:memorization-capacity-multi-head-attention-transformers
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: 2000 images from ImageNet; 5000 random samples per rank test; 99% threshold for assumption
+  validation; n/d ratio 197/768; Kruskal rank 'only slightly larger than n (assumption 1), and much
+  smaller than d (general position)' (Figure 1)
+caveat: The Kruskal rank test is approximate (NP-hard to compute exactly); the paper uses a polynomial-time
+  proxy of sampling n query vectors and checking if the resulting matrix has rank n, repeated 5000 times
+  with a 99% success threshold.
+extracted_by: automatic-extraction
+related_findings:
+- IC-936

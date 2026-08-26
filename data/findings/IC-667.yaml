@@ -1,0 +1,36 @@
+id: IC-667
+title: CLIP's intermediate layer features encode object boundaries recoverable by k-means clustering,
+  a property absent in shallow and deep layers
+description: 'The paper probes CLIP''s internal representations and finds that k-means clustering on
+  the second-to-last layer (conv4_x) features delineates boundaries between individual objects in complex
+  scenes. This property is depth-dependent: layers too shallow or too deep do not produce boundary-sensitive
+  clustering, and the intermediate layer requires semantic-aware initialization for stable results.
+  The boundary information is not present in DINOv2''s features under the same clustering protocol,
+  suggesting it is specific to CLIP''s image-text contrastive pretraining. In ablation, adding boundary
+  detection from this layer increases AP50 from 2.2 to 22.4 on Pascal VOC.'
+models:
+- ref: model:clip
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:devil-object-boundary-annotation-free-instance
+datasets:
+- ref: dataset:mscoco
+  role: eval
+- ref: dataset:pascal-voc
+  role: eval
+methods:
+- ref: method:k-means
+  role: primary
+related_work:
+- ref: model:dinov2
+  role: compared-to
+evidence_type: observational
+key_metric: AP50 increases from 2.2 (clip semantic only) to 22.4 (+ boundary detection) on Pascal VOC
+  val set (Table 3)
+caveat: The boundary clustering is only observed in CLIP's ResNet variants, not in ViT variants, and
+  requires semantic-aware initialization for stable results.
+extracted_by: automatic-extraction
+related_findings:
+- IC-668
+- IC-669

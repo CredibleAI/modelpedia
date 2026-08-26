@@ -1,0 +1,32 @@
+id: IC-1205
+title: GPT-3 models (ada, curie, davinci) achieve near-zero accuracy on zero-shot arithmetic tasks but
+  learn them rapidly with 1000 fine-tuning samples
+description: 'The paper evaluates the zero-shot arithmetic performance of three GPT-3 variants on addition,
+  subtraction, sine, and square root. All three models show extremely poor zero-shot accuracy: addition
+  ranges from 0.0% (curie, ada) to 2% (davinci), subtraction from 0.0% to 0.1%, and sine/square root
+  are at or near 0%. However, fine-tuning with only 1000 samples and 4 epochs dramatically improves
+  performance, with the detailed scratchpad format reaching 99.5-99.8% on addition and 81.5-99.5% on
+  subtraction. This demonstrates that pretraining does not elicit arithmetic in a zero-shot setting
+  but provides a strong inductive bias that accelerates learning with minimal additional data.'
+models:
+- ref: model:gpt-3
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:teaching-arithmetic-small-transformers
+datasets: []
+methods: []
+related_work:
+- name: Hanna et al. 2023 (How does GPT-2 compute greater-than?)
+  anchor: https://arxiv.org/abs/2305.00586
+  role: context
+evidence_type: correlational
+key_metric: 'zero-shot addition: davinci 2%, curie 0.0%, ada 0.0%; zero-shot subtraction: davinci 0.1%,
+  curie 0.1%, ada 0.0%; zero-shot sine (eps=0): davinci 0%, curie 0.0%, ada 0.0%; zero-shot sqrt (eps=0):
+  davinci 0%, curie 0.0%, ada 0.0%; after 1000-sample fine-tune, detailed scratchpad addition: davinci
+  99.5%, curie 99.7%, ada 99.8%'
+caveat: Fine-tuning used only 1000 samples and 4 epochs, which the authors note is 'significantly smaller'
+  than their NanoGPT experiments (10,000 samples, 5,000 iterations). The authors also note that for
+  sine and square root, 1000 samples is insufficient to generate exact answers (eps=0), and the fine-tuned
+  GPT-3 performs worse than NanoGPT trained with 10,000 samples on those tasks.
+extracted_by: automatic-extraction

@@ -1,0 +1,35 @@
+id: IC-700
+title: GPT-4's reasoning accuracy degrades when provided with incorrect hints from a weaker model
+description: In the mot-1d-verify cascade, when the weaker LLM (GPT-3.5-turbo) produces two inconsistent
+  answers, those answers can be passed as hints to GPT-4 before it answers. On the subset of questions
+  routed to GPT-4, adding these hints slightly improves accuracy on Date (0.892 to 0.910) but significantly
+  hurts performance on GSM8K (0.891 to 0.867) and CREPE (0.774 to 0.727). The authors attribute the
+  degradation to GPT-4 being misled by the incorrect answers when both hints are wrong.
+models:
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:large-language-model-cascades-mixture-thought
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:big-bench-hard
+  role: eval
+- ref: dataset:crepe
+  role: eval
+methods:
+- ref: method:self-consistency
+  role: primary
+related_work:
+- name: Progressive-hint prompting
+  anchor: https://arxiv.org/abs/2304.09797
+  role: builds-on
+evidence_type: correlational
+key_metric: 'GSM8K: 0.891 (w/o hints) vs 0.867 (w/ hints); CREPE: 0.774 vs 0.727; Date: 0.892 vs 0.910'
+caveat: The experiment is conducted only on the subset of questions that the mot-1d-verify approach
+  routes to the stronger LLM, not on the full dataset.
+extracted_by: automatic-extraction
+related_findings:
+- IC-698
+- IC-699

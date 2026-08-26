@@ -1,0 +1,27 @@
+id: IC-1416
+title: ChatGPT achieves only 28–35% accuracy on multimodal intent recognition in MINTREC2.0, showing
+  a gap of over 30 percentage points compared to human evaluators
+description: The paper evaluates ChatGPT in zero-shot and few-shot (10 dialogues, 227 utterances) settings
+  on the MINTREC2.0 dataset, which requires classifying utterances into 30 fine-grained intent classes
+  plus an out-of-scope tag. In the zero-shot setting ChatGPT reaches 35.27% accuracy and 28.34% F1;
+  with 10 dialogues of prior knowledge it reaches 34.53% accuracy and 28.41% F1. Human evaluators given
+  the same 10 dialogues achieve 64.34% accuracy and 57.83% F1, and with 100 dialogues (997 utterances)
+  they reach 71.03% accuracy and 69.49% F1. The paper highlights that even a powerful LLM using text-only
+  modality remains far below human performance on this high-level cognitive intent understanding task.
+models:
+- ref: model:chatgpt
+concepts: []
+sources:
+- ref: source:mintrec2-0-large-scale-benchmark-dataset
+datasets:
+- ref: dataset:mintrec2-0
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'ChatGPT-0: acc 35.27, f1 28.34; ChatGPT-10: acc 34.53, f1 28.41; Humans-10: acc 64.34,
+  f1 57.83; Humans-100: acc 71.03, f1 69.49'
+caveat: ChatGPT is evaluated in a text-only setting (it cannot process video or audio), while the ground-truth
+  labels were annotated using all three modalities. The few-shot setting provides only 10 dialogues
+  (227 utterances) as prior knowledge.
+extracted_by: automatic-extraction

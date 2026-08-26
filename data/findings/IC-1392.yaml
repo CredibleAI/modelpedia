@@ -1,0 +1,36 @@
+id: IC-1392
+title: Title reproduction shows no contamination signal while tag reproduction shows a negative association
+  with GitHub presence and a moderating difficulty effect for GPT-4 and GPT-3.5-turbo
+description: 'As memorization probes, the paper asks models to reproduce problem titles and Codeforces
+  tags from just the problem ID. For title reproduction, there is no significant effect of GitHub presence
+  on reproduction ability, both before and after the cutoff, across all models. For tag reproduction
+  on Codeforces, there is a negative association between GitHub presence and tag reproduction (GPT-3.5-turbo:
+  OR 0.959, p=0.00001 pre-cutoff). The difficulty effect on tag reproduction moderates after the cutoff,
+  dropping from a 56.9% decrease in odds to 17.4% for GPT-4, and from 50.3% to 26.1% for GPT-3.5-turbo.
+  The authors hypothesize that tags, being metadata not present in the main problem description, may
+  be less frequently copied online, explaining the inverse relationship with GitHub presence.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts: []
+sources:
+- ref: source:cutoff-beyond-longitudinal-perspective-llm-data
+datasets:
+- ref: dataset:codeforces
+  role: eval
+- ref: dataset:project-euler
+  role: eval
+methods:
+- ref: method:logistic-regression
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Tag reproduction difficulty OR: GPT-4 0.431 (pre) vs 0.826 (post); GPT-3.5-turbo 0.497
+  (pre) vs 0.739 (post). Tag reproduction github_presence OR: GPT-4 0.991 (pre, p=0.195); GPT-3.5-turbo
+  0.959 (pre, p=0.00001). Title reproduction github_presence OR: GPT-4 1.010 (pre, p=0.210) vs 1.005
+  (post, p=0.684)'
+caveat: The authors note that the inverse relationship between GitHub presence and tag reproduction
+  is unexpected and offer only a hypothesis (tags less likely to be copied verbatim online). No tags
+  exist for Project Euler, limiting the tag analysis to Codeforces only.
+extracted_by: automatic-extraction

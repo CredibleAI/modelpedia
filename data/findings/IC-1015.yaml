@@ -1,0 +1,80 @@
+id: IC-1015
+title: 'GPT-J and 10 other LLMs exhibit overthinking: calibrated accuracy given incorrect few-shot demonstrations
+  peaks at a critical layer then declines, and ablating 5 false induction heads in late layers reduces
+  the accuracy gap by 38.9% on average'
+description: Using the logit lens to decode predictions from intermediate layers, the authors show that
+  across 11 released LLMs, calibrated accuracy given permuted (incorrect) few-shot demonstrations follows
+  a similar trajectory to correct demonstrations at early layers, then diverges sharply at a model-specific
+  critical layer (e.g., layers 13-14 for GPT-J, layer 9 for Pythia-6.9B, layers 13-17 for Llama2-7B).
+  After the critical layer, accuracy given incorrect demonstrations progressively decreases, so that
+  decoding from an earlier layer outperforms the full model. The authors identify 5 attention heads
+  in GPT-J's late layers that attend to false labels in previous demonstrations (false induction heads),
+  confirmed by a prefix-matching score and a false label promoting score of 6.5 (vs. -0.04 for random
+  heads). Ablating these 5 heads (1% of all heads) reduces the accuracy gap between correct and incorrect
+  prompts by 38.9% on average across 14 datasets, with negligible effect on correct-demo performance.
+  The phenomenon is consistent across all model sizes and instruction-tuned variants.
+models:
+- ref: model:gpt-j
+  variant: variant:gpt-j-6b
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl-1-5b
+- ref: model:gpt-neox-20b
+- ref: model:pythia
+  variant: variant:pythia-410m
+- ref: model:pythia
+  variant: variant:pythia-2-8b
+- ref: model:pythia
+  variant: variant:pythia-6-9b
+- ref: model:pythia
+  variant: variant:pythia-12b
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+concepts:
+- ref: concept:depth-dependent-structure
+- ref: concept:failure-mode
+sources:
+- ref: source:overthinking-truth-understanding-language-models-process
+datasets:
+- ref: dataset:sst-2
+  role: eval
+- ref: dataset:financial-phrasebank
+  role: eval
+- ref: dataset:ethos
+  role: eval
+- ref: dataset:tweeteval
+  role: eval
+- ref: dataset:medq-pairs
+  role: eval
+- ref: dataset:mrpc
+  role: eval
+- ref: dataset:sick
+  role: eval
+- ref: dataset:rte
+  role: eval
+- ref: dataset:ag-news
+  role: eval
+- ref: dataset:trec
+  role: eval
+- ref: dataset:dbpedia
+  role: eval
+methods:
+- ref: method:logit-lens
+  role: primary
+related_work:
+- name: Olsson et al. (2022) - In-context learning and induction heads
+  anchor: https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html
+  role: builds-on
+- name: Nostalgebraist (2020) - The logit lens
+  anchor: https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens
+  role: builds-on
+evidence_type: interventional
+key_metric: '"removing 5 such heads (1% of heads) reduced the accuracy gap between correct and incorrect
+  prompts by an average of 38.9% over 14 datasets"; "for gpt-j, using p16 (the first 16 layers) achieves
+  a better accuracy than the full model on all but one dataset"; "the accuracies diverge between layers
+  13 and 14 for all but two datasets"; "our 5 heads have an average false label promoting score of 6.5"
+  vs. "an average score of -0.04, with a standard deviation of 0.41" for random heads'
+caveat: 'our head ablations do not fully remove the accuracy gap between correct and incorrect demonstrations.
+  this could be because we did not identify some of the model components that cause false context-following.
+  however, there is another possibility: if an attention head''s outputs are on average far from zero,
+  zeroing out that head takes the intermediate states off-distribution, which can decrease overall performance.'
+extracted_by: automatic-extraction

@@ -1,0 +1,38 @@
+id: IC-1630
+title: Llama and Pythia models represent entity-attribute bindings via additive binding id vectors that
+  form a continuous subspace with metric structure
+description: 'Using causal mediation analysis, the paper shows that Llama and Pythia models solve binding
+  tasks by attaching abstract binding id vectors to entity and attribute token activations. The binding
+  function is additive (entity/attribute representation plus binding id vector), the mechanism is factorizable
+  (swapping one entity''s activation changes only that entity''s binding), and position-independent
+  (permuting token positions does not change bindings). Furthermore, binding id vectors occupy a continuous
+  subspace: linear combinations of valid binding ids are themselves valid, and the distance between
+  two binding id vectors determines the model''s ability to distinguish them, with nearby vectors causing
+  near-chance accuracy and distant vectors yielding high accuracy.'
+models:
+- ref: model:llama
+- ref: model:pythia
+concepts:
+- ref: concept:linear-representation
+- ref: concept:distance-preservation
+sources:
+- ref: source:language-models-bind-entities-context
+datasets:
+- ref: dataset:bias-in-bios
+  role: eval
+methods:
+- ref: method:causal-mediation-analysis
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: 'Table 1 (Llama-13B, n=2 capitals): control 0.99/1.00, attribute intervention 0.00/0.03,
+  entity intervention 0.00/0.01, both 0.97/1.00 (mean median-calibrated accuracy for e0/e1). Table 2
+  (Llama-30B, n=3 capitals, transfer): capitals 0.88, parallel 0.87, shapes 0.71, fruits 0.80, bios
+  0.47, zeros 0.30, random 0.31.'
+caveat: 'The mechanism is not universal: an MCQ task uses an alternative direct binding mechanism. The
+  bios task has multi-token attributes, so attribute factorizability does not hold there. Llama-65B
+  was excluded from some experiments for computational reasons.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-1631
+- IC-1632

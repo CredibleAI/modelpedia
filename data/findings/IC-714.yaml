@@ -1,0 +1,27 @@
+id: IC-714
+title: For GPT-4 book-length summaries, human annotators prefer incremental summaries for detail (83%
+  vs 11%) but hierarchical for structure (59% vs 35%), logic (53% vs 38%), and overall (54% vs 44%),
+  showing coherence and human preference are not aligned
+description: The same four annotators who performed fine-grained error annotation were asked to make
+  coarse-grained preference judgments on 100 pairs of GPT-4-generated incremental and hierarchical summaries.
+  Despite hierarchical summaries having higher BooookScore (89.1 vs 82.5), annotators strongly preferred
+  incremental summaries for level of detail (83% vs 11%) but preferred hierarchical for structure, logic,
+  and overall quality. The authors conclude that summary-level preference judgments are highly subjective
+  and do not correlate with BooookScore.
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:booookscore-systematic-exploration-book-length-summarization
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Preference: detail 83% incremental vs 11% hierarchical; structure 35% vs 59%; logic 38%
+  vs 53%; overall 44% vs 54% (incremental vs hierarchical).'
+caveat: Only GPT-4 summaries were compared; the result may not generalize to other models. The evaluation
+  used only 4 annotators and 100 pairs. The authors note that some annotators preferred the higher detail
+  of incremental summaries at the expense of coherence.
+extracted_by: automatic-extraction
+related_findings:
+- IC-713

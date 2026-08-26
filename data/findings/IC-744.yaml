@@ -1,0 +1,37 @@
+id: IC-744
+title: The decoded vocabulary of a function vector often reflects the task's output space, but reconstructing
+  a vector that matches this vocabulary distribution does not recover the FV's full causal effect.
+description: 'The authors decode each function vector to a token probability distribution and find that
+  for most tasks the top tokens lie within the task''s output vocabulary (e.g., plural nouns for singular-plural,
+  past-tense verbs for present-past). They then optimize a new vector to match the top-100 or full-50k-token
+  distribution of the original FV and test it as an intervention. The reconstructions perform substantially
+  worse than the original FV: for antonym, 48.2% drops to 4.8% (top-100) or 39.6% (full vocabulary),
+  indicating the FV carries essential information beyond its decoded word distribution.'
+models:
+- ref: model:gpt-j
+concepts: []
+sources:
+- ref: source:function-vectors-large-language-models
+datasets:
+- ref: dataset:antonym-dataset-nguyen-et-al-2017
+  role: eval
+methods:
+- ref: method:logit-lens
+  role: primary
+related_work:
+- name: Dar et al. 2023 (transformers in embedding space)
+  anchor: https://doi.org/10.18653/v1/2023.acl-long.893
+  role: compared-to
+- name: Geva et al. 2022 (FFN layers as key-value memories)
+  anchor: https://doi.org/10.18653/v1/2022.emnlp-main.3
+  role: compared-to
+evidence_type: interventional
+key_metric: 'Antonym: v_t 48.2 ± 2.0% vs v̂_t_100 4.8 ± 2.0% (KL 0.0033) vs v̂_t_all 39.6 ± 2.6% (KL
+  0.0137); Capitalize: 70.5 ± 2.4% vs 5.7 ± 2.2% vs 51.5 ± 11.6%; Country-capital: 83.2 ± 2.7% vs 58.1
+  ± 18.5% vs 29.0 ± 15.1%'
+caveat: The reconstruction matches the decoded distribution (near-zero KL divergence) but still underperforms,
+  suggesting the missing information is in the geometry of the vector rather than in the vocabulary
+  it projects onto.
+extracted_by: automatic-extraction
+related_findings:
+- IC-745

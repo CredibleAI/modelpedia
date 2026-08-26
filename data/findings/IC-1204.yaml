@@ -1,0 +1,29 @@
+id: IC-1204
+title: SD-VAE 1.x and SD-VAE 2.x achieve lower reconstruction quality than the new SDXL-VAE on COCO
+  2017
+description: The paper evaluates the autoencoder components of previously released Stable Diffusion
+  models on the COCO 2017 validation split at 256x256 pixels. SD-VAE 1.x achieves PSNR 23.4, SSIM 0.69,
+  LPIPS 0.96, rFID 5.0, while SD-VAE 2.x achieves PSNR 24.5, SSIM 0.71, LPIPS 0.92, rFID 4.7. The new
+  SDXL-VAE outperforms both on all four metrics.
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-1-5
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-2-1
+concepts: []
+sources:
+- ref: source:sdxl-improving-latent-diffusion-models-high
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'PSNR: sd-vae 1.x 23.4, sd-vae 2.x 24.5; SSIM: 0.69, 0.71; LPIPS: 0.96, 0.92; rFID: 5.0,
+  4.7 (COCO 2017 val, 256x256)'
+caveat: The paper notes that SD 2.x uses an improved version of SD 1.x's autoencoder with a reduced
+  perceptual loss weight and more compute; the new VAE is trained from scratch.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1202
+- IC-1203

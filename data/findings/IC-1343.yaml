@@ -1,0 +1,31 @@
+id: IC-1343
+title: Task-agnostic de-biasing prompts are ineffective at reducing persona-induced reasoning bias in
+  ChatGPT-3.5, while task-dependent expertise prompts are effective but lack generalizability
+description: 'The paper tests 11 task-agnostic de-biasing instructions (ranging from gentle nudges to
+  strong ''don''t refuse'' commands to ''treat personas equally'') appended to the persona prompt for
+  ChatGPT-3.5 (June 2023). None substantially reduce the bias between the physically-disabled and able-bodied
+  personas; the best task-agnostic instruction (domain expert #3) actually worsens the drop on history
+  (76.0% vs 70.6% baseline) and maths (65.8% vs 37.5%). A task-dependent approach that adds domain expertise
+  to the persona (e.g., ''a physically-disabled historian'') significantly reduces the bias (2.5% on
+  history, 0.5% on law) but requires pre-determined expertise per task and cannot generalize to open-ended
+  tasks.'
+models:
+- ref: model:gpt-3-5
+concepts: []
+sources:
+- ref: source:bias-runs-deep-implicit-reasoning-biases
+datasets:
+- ref: dataset:mmlu
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Task-agnostic best (domain expert #3): history 76.0, law 35.8, maths 65.8, physics 21.7
+  (vs baseline 70.6, 41.7, 37.5, 26.1). Task-dependent (expertise): history 2.5, law 0.5, maths 9.2,
+  physics 12.0.'
+caveat: Evaluated only on 4 MMLU datasets for the physically-disabled vs able-bodied pair. The task-dependent
+  method requires pre-determined expertise for each task, which is not always possible (e.g., 'composing
+  a poem to explain magnetism to a 7-year-old').
+extracted_by: automatic-extraction
+related_findings:
+- IC-1342

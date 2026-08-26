@@ -1,0 +1,28 @@
+id: IC-752
+title: GPT-4's win rate over GPT-3.5-turbo is 52% on the top-50 most challenging prompts but only 22%
+  on the bottom-50 easiest prompts
+description: The paper samples 50 prompts scored above 8 and 50 scored below 2 by GPT-3.5-turbo's difficulty
+  rating, then compares GPT-4 and GPT-3.5-turbo responses on each set. GPT-4 wins 52% of comparisons
+  on the challenging set but only 22% on the easy set, with 40% ties on the easy set. This demonstrates
+  that prompt difficulty is a key factor in distinguishing model capabilities.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts: []
+sources:
+- ref: source:lmsys-chat-1m-large-scale-real
+datasets:
+- ref: dataset:lmsys-chat-1m
+  role: source
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4 win rate: 52% on top-50 (score >8) prompts, 22% on bottom-50 (score <2) prompts;
+  40% tie on bottom-50'
+caveat: The comparison is limited to two models (GPT-4 and GPT-3.5-turbo) and only 50 prompts per difficulty
+  tier. The difficulty scores are assigned by GPT-3.5-turbo itself, which may introduce circularity.
+extracted_by: automatic-extraction
+related_findings:
+- IC-750
+- IC-751

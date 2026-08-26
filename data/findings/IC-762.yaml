@@ -1,0 +1,63 @@
+id: IC-762
+title: GPT-4 and GPT-3.5 outperform humans in generation but underperform in discriminative (selective)
+  evaluation across 10 of 13 language tasks
+description: 'The paper evaluates GPT-4 and GPT-3.5 in both a generative setting (produce a response)
+  and a discriminative setting (select the correct response from candidates) across 13 language benchmarks.
+  In 10 of 13 datasets, at least one model outperforms humans in generation while underperforming in
+  discrimination; in 7 of 13, both models show this pattern. The gap widens with task difficulty: on
+  XSum, GPT-4 drops from 100% accuracy with easy negatives to 19% with hard negatives, while humans
+  maintain consistently high accuracy.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:generative-ai-paradox-it-create-it
+datasets:
+- ref: dataset:xsum
+  role: eval
+- ref: dataset:faithdial
+  role: eval
+- ref: dataset:dream
+  role: eval
+- ref: dataset:mutual
+  role: eval
+- ref: dataset:topioqa
+  role: eval
+- ref: dataset:race
+  role: eval
+- ref: dataset:commonsenseqa
+  role: eval
+- ref: dataset:social-iqa
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+- ref: dataset:piqa
+  role: eval
+- ref: dataset:abductive-nli
+  role: eval
+- ref: dataset:wannli
+  role: eval
+methods:
+- ref: method:zero-shot-prompting
+  role: primary
+related_work:
+- name: Dziri et al. 2023 (Faith and Fate)
+  anchor: https://arxiv.org/abs/2305.18654
+  role: context
+- name: Bubeck et al. 2023 (Sparks of AGI)
+  anchor: https://arxiv.org/abs/2303.12712
+  role: context
+evidence_type: correlational
+key_metric: for 10 of the 13 datasets, sub-hypothesis 1 is supported in at least one model; for 7 of
+  the 13 datasets, supported in both models; in the xsum task, gpt4 achieves 100% accuracy when selecting
+  the correct answer from easy negatives, but this drops to 19% when confronted with hard negatives
+caveat: Dataset/benchmark contamination is a potential limitation with proprietary models; the authors
+  note this should affect generation and discriminative evaluation similarly. The study focuses on a
+  small set of the most popular models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-763
+- IC-764
+- IC-765

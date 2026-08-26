@@ -1,0 +1,45 @@
+id: IC-1266
+title: For GPT-3, white-box token-probability methods outperform black-box verbalized confidence in
+  uncertainty estimation, but the gap is narrow (0.522–0.605 AUROC) and both remain near random
+description: On GPT-3, three token-probability-based white-box methods (sequence probability, length-normalized
+  sequence probability, key token probability) are compared against black-box verbalized confidence
+  across five datasets. White-box methods consistently achieve lower ECE and higher AUROC, with length-normalized
+  sequence probability and key token probability being most effective. However, the AUROC gap between
+  the best white-box and best black-box method is only 0.522 to 0.605, and nearly all methods across
+  datasets range between 0.5 and 0.6 in AUROC, indicating that neither access mode yields reliable uncertainty
+  estimates from GPT-3.
+models:
+- ref: model:gpt-3
+concepts: []
+sources:
+- ref: source:llms-express-their-uncertainty-empirical-evaluation
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:strategyqa
+  role: eval
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:svamp
+  role: eval
+methods:
+- ref: method:verbalized-confidence
+  role: compared-to
+- ref: method:auroc
+  role: eval
+- ref: method:expected-calibration-error
+  role: eval
+related_work:
+- name: Kuhn et al. 2023 (Semantic Uncertainty)
+  anchor: https://arxiv.org/abs/2302.09664
+  role: context
+evidence_type: correlational
+key_metric: 'AUROC gap between white-box and black-box: 0.522 to 0.605; nearly all methods across datasets
+  range between 0.5–0.6 in AUROC'
+caveat: The comparison is limited to GPT-3 (the only model with accessible token probabilities in the
+  study) and five datasets. The paper notes that logit-based methods 'predominantly capture the model's
+  uncertainty regarding the next token' rather than semantic uncertainty.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1264
+- IC-1265

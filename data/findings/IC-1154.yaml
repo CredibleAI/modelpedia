@@ -1,0 +1,30 @@
+id: IC-1154
+title: LLaMA-65B exhibits a selection bias where zero-shot accuracy varies substantially by answer choice,
+  with 'a' at 71.58% and 'd' at 52.28%
+description: 'On a balanced MMLU test set (equal numbers of questions with golden answers a, b, c, d),
+  LLaMA-65B''s zero-shot accuracy differs by answer choice: class ''a'' achieves 71.58%, ''b'' 59.65%,
+  ''c'' 58.95%, and ''d'' 52.28%. With 5 demonstrations, the overall accuracy improves from 60.61% to
+  63.16%, but class ''a'' accuracy drops to 54.74% while ''b'', ''c'', and ''d'' all increase. This
+  indicates a persistent preference for earlier answer choices in zero-shot that partially corrects
+  with more demonstrations.'
+models:
+- ref: model:llama
+concepts: []
+sources:
+- ref: source:understanding-context-learning-from-repetitions
+datasets:
+- ref: dataset:mmlu
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Zero-shot: a=71.58%, b=59.65%, c=58.95%, d=52.28%, avg=60.61%. With 5 demos: a=54.74%,
+  b=70.76%, c=67.60%, d=59.53%, avg=63.16%.'
+caveat: Measured on 1140 randomly sampled MMLU test cases with the test set randomly permuted to ensure
+  balance across answer choices. The paper presents this as a confound to be controlled for in the spurious-connection
+  experiments rather than as a primary contribution.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1151
+- IC-1152
+- IC-1153

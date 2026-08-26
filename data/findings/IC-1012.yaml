@@ -1,0 +1,39 @@
+id: IC-1012
+title: Connected regions in the latent space of Stable Diffusion v2.1, v1.5, and GLIDE produce distorted
+  images independent of the text prompt
+description: 'SAGE discovers latent variables that, when used to generate images, produce distorted
+  or garbled outputs regardless of the text prompt. These latent variables are non-outlier samples of
+  N(0,I), confirmed by Shapiro-Wilk tests (p-values 0.429, 0.207, 0.534) and mean/std checks. The authors
+  show these are not isolated points but connected regions: expanding the boundary around each found
+  latent variable reveals that any sample within the region produces similar distorted images. The distorted
+  images can be generated with non-zero probability under standard Gaussian sampling, indicating the
+  latent space is not well-structured in these regions.'
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v2-1
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v1-5
+- ref: model:glide
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:discovering-failure-modes-text-guided-diffusion
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:imagenet-c
+  role: eval
+methods:
+- ref: method:shapiro-wilk-test
+  role: validation
+related_work: []
+evidence_type: correlational
+key_metric: 'Shapiro-Wilk p-values: 0.429, 0.207, 0.534; mean/std: -0.003/1.005, -0.027/1.045, 0.008/1.041;
+  connected regions confirmed by boundary expansion'
+caveat: The distorted images are classified with high confidence by ViT and ViT on ImageNet-C (e.g.,
+  pinwheel 0.96, dalmatian 0.99, warplane 0.99), suggesting the distortion aligns with classifier representation
+  biases rather than being purely random noise.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1013
+- IC-1014

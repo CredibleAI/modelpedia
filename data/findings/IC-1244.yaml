@@ -1,0 +1,27 @@
+id: IC-1244
+title: GPT-4's non-zero scores on GAIA web browsing questions are largely due to memorization of intermediate
+  information from training data rather than actual web browsing
+description: When evaluating GPT-4 without tools on GAIA level 1 questions, the model achieves non-zero
+  scores on questions that annotators solved via web browsing. The paper attributes these scores primarily
+  to GPT-4 having memorized pieces of information needed to complete intermediate steps, rather than
+  to any actual browsing capability. This means the model's apparent web browsing performance is a shortcut
+  that would fail for questions requiring information not present in its training data. The paper notes
+  that GPT-4 cannot deal with files and multi-modality at all, further confirming its limitations in
+  tool use.
+models:
+- ref: model:gpt-4
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:gaia-benchmark-general-ai-assistants
+datasets:
+- ref: dataset:gaia
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The paper does not provide a precise count of how many web browsing questions were answered
+  via memorization versus other means; the attribution is qualitative ('mostly due to correct memorization').
+extracted_by: automatic-extraction
+related_findings:
+- IC-1243

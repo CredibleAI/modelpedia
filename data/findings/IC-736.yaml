@@ -1,0 +1,32 @@
+id: IC-736
+title: Vicuna-13B outperforms Vicuna-7B on factual knowledge tasks by 5.4% on average
+description: The paper compares Vicuna-7B and Vicuna-13B across all Pinocchio tasks under few-shot CoT
+  prompting. As model parameters increase from 7B to 13B, performance on factual questions improves
+  correspondingly, with an average increase of 5.4%. The authors interpret this as evidence that LLMs
+  with more parameters can store more world knowledge and have stronger factual knowledge recognition
+  capabilities.
+models:
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+- ref: model:vicuna
+  variant: variant:vicuna-13b
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:understanding-factual-knowledge-large-language-models
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'average increase of 5.4% from Vicuna-7B to Vicuna-13B; few-shot CoT overall: Vicuna-7B
+  acc 48.5 F1 40.6, Vicuna-13B acc 47.0 F1 42.5'
+caveat: The paper notes that due to limited computing resources, hyperparameter exploration was only
+  done for these two Vicuna variants. The 5.4% figure is an average across tasks; individual task differences
+  vary.
+extracted_by: automatic-extraction
+related_findings:
+- IC-733
+- IC-734
+- IC-735

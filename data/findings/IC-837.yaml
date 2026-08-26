@@ -1,0 +1,31 @@
+id: IC-837
+title: CLIP ViT-L/14 embeds more target-attribute information and less sensitive-attribute information
+  than CLIP ResNet-50 on Waterbirds
+description: 'Using HSIC and KCC to measure statistical dependence between CLIP features and ground-truth
+  labels on Waterbirds, CLIP ViT-L/14 shows higher dependence with the target attribute (HSIC 0.1849
+  vs 0.1423) and lower dependence with the sensitive attribute (HSIC 0.2392 vs 0.3823) compared to CLIP
+  ResNet-50. This explains why debiasing methods perform better on ViT-L/14: the larger model''s features
+  are more informative for the target while carrying less of the spurious sensitive signal.'
+models:
+- ref: model:clip
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:fairerclip-debiasing-clip-s-zero-shot
+datasets:
+- ref: dataset:waterbirds
+  role: eval
+methods:
+- ref: method:hsic
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'HSIC(x,y): ViT-L/14 0.1849, ResNet-50 0.1423; HSIC(x,s): ViT-L/14 0.2392, ResNet-50 0.3823;
+  KCC(x,y): 0.8267 vs 0.7556; KCC(x,s): 0.8661 vs 0.8861'
+caveat: Measured only on Waterbirds; the paper notes this explains the performance discrepancy between
+  the two CLIP variants in Table 2.
+extracted_by: automatic-extraction
+related_findings:
+- IC-834
+- IC-835
+- IC-836

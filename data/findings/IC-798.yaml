@@ -1,0 +1,30 @@
+id: IC-798
+title: GPT-4 achieves 61.6% on MATH with tool-integrated reasoning prompting, exceeding PaL (51.8%)
+  and CoT (42.5%)
+description: 'The paper evaluates GPT-4 on the MATH benchmark under three prompting strategies: chain-of-thought
+  (CoT), program-aided language (PaL), and the tool-integrated reasoning format proposed by the authors.
+  GPT-4''s accuracy on MATH is 42.5% with CoT, 51.8% with PaL, and 61.6% with the tool-integrated format
+  that interleaves natural language rationales with program execution. The tool-integrated format yields
+  a 19.1-point improvement over CoT and a 9.8-point improvement over PaL. The paper states that ''the
+  tool-integrated reasoning method used by tora significantly outperforms pal prompting when directly
+  applied to the closed-source gpt-4.'''
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:tora-tool-integrated-reasoning-agent-mathematical
+datasets:
+- ref: dataset:math
+  role: eval
+methods: []
+related_work:
+- ref: model:gpt-4
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4 on MATH: 42.5% (CoT), 51.8% (PaL), 61.6% (tool-integrated reasoning); improvements
+  of 19.1% and 9.8% respectively'
+caveat: The tool-integrated reasoning format is the paper's own contribution applied via few-shot prompting;
+  the 61.6% figure uses the paper's specific prompt design and up to 3 tool execution rounds.
+extracted_by: automatic-extraction
+related_findings:
+- IC-799

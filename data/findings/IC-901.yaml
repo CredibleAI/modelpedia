@@ -1,0 +1,32 @@
+id: IC-901
+title: BLIP-2's LLM-only VQA performance improves with more specified questions while the image remains
+  essential, revealing asymmetric strength between the LLM and vision components
+description: The paper evaluates BLIP-2 with and without the image input, using both original and REPARe-augmented
+  questions. In the LLM-only setting, VQAv2 overall accuracy rises from 32.84% to 40.53% when the question
+  is augmented, while the full model rises from 60.29% to 67.28%. The persistent gap of roughly 25–27
+  points between full-model and LLM-only performance shows the image is still indispensable. Adding
+  a caption or extracted visual details to the LLM-only input helps (52.88%→54.31% on VQAv2) but does
+  not close the gap, confirming that the improvement comes from better leveraging the LLM's existing
+  QA ability rather than replacing the image.
+models:
+- ref: model:blip-2
+concepts: []
+sources:
+- ref: source:rephrase-augment-reason-visual-grounding-questions
+datasets:
+- ref: dataset:vqav2
+  role: eval
+- ref: dataset:a-okvqa
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'BLIP-2 VQAv2 overall: full model 60.29→67.28, LLM-only 32.84→40.53; A-OKVQA direct: full
+  41.72→45.01, LLM-only 15.93→20.33; A-OKVQA MC: full 72.56→78.43, LLM-only 45.20→54.21; caption+orig
+  q (LLM-only) 52.88, repare i(a)+orig q 54.31'
+caveat: Analysis is conducted only on BLIP-2 (FLAN-T5-XL); the paper does not verify the same asymmetric-strength
+  pattern for MiniGPT-4 or LLaVA-1.5 in the LLM-only setting.
+extracted_by: automatic-extraction
+related_findings:
+- IC-900
+- IC-902

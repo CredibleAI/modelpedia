@@ -1,0 +1,27 @@
+id: IC-848
+title: GPT-3.5 achieves 98.3% precision and 96.0% recall for automatic question-tuple matching but makes
+  errors when questions differ in wording yet are semantically unique
+description: 'The paper uses GPT-3.5 with in-context examples to automatically evaluate whether generated
+  DSG questions match their source semantic tuples (precision/recall) and whether questions are unique
+  (no duplicates). On the full TIFA160 set, GPT-3.5 achieves 98.3% precision and 96.0% recall for matching,
+  and 90.5% uniqueness for DSG questions. However, the paper identifies a specific error pattern: GPT-3.5
+  is ''distracted by text overlap'' and flags semantically distinct questions as duplicates when they
+  share surface wording, or misses true duplicates that are phrased differently.'
+models:
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:davidsonian-scene-graph-improving-reliability-fine
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'precision 98.3%, recall 96.0% (automatic, 160 prompts); uniqueness 90.5% for DSG (automatic,
+  160 prompts); manual: precision 92.2%, recall 100.0% (30 prompts)'
+caveat: The automatic evaluation uses GPT-3.5 as both the system under test and the evaluator for some
+  metrics, and the paper notes disagreement between automatic and human evaluation in specific cases
+  (Figure 9).
+extracted_by: automatic-extraction
+related_findings:
+- IC-847

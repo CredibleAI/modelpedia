@@ -1,0 +1,30 @@
+id: IC-734
+title: GPT-3.5-turbo's factual verification F1 decreases as the number of reasoning hops required to
+  validate a claim increases
+description: 'The paper categorizes multifaceted and structural factual questions by the number of hops
+  (1, 2, 3, or multi-hop) needed to verify them, sampling 1,490 data pieces from each dataset. For GPT-3.5-turbo
+  under few-shot CoT, macro F1 drops steadily: from 51.3 at 1-hop to 45.2 at multi-hop for multifaceted
+  questions, and from 40.6 at 1-hop to 30.2 at 3-hop for structural questions. The authors attribute
+  this to the extended reasoning chain requiring heightened logical reasoning capabilities.'
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:understanding-factual-knowledge-large-language-models
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'multifaceted macro F1: 51.3 (1-hop), 48.4 (2-hop), 47.0 (3-hop), 45.2 (multi-hop); structural
+  macro F1: 40.6 (1-hop), 39.4 (2-hop), 30.2 (3-hop)'
+caveat: Analysis is reported only for GPT-3.5-turbo; the 1,490-sample subset was randomly drawn from
+  the full dataset.
+extracted_by: automatic-extraction
+related_findings:
+- IC-733
+- IC-735
+- IC-736

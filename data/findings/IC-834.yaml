@@ -1,0 +1,36 @@
+id: IC-834
+title: CLIP zero-shot predictions exhibit high equal opportunity difference when target and sensitive
+  attributes are intrinsically dependent
+description: On CelebA with high cheekbones as target and sex as sensitive attribute, zero-shot CLIP
+  shows substantial bias measured by EOD. CLIP ResNet-50 achieves an EOD of 5.8% while CLIP ViT-L/14
+  achieves 2.8%, indicating that the model's predictions for cheekbones are systematically different
+  for males versus females. This bias arises from a genuine correlation between the two attributes rather
+  than a spurious one, and no existing debiasing baseline fully eliminates it.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:fairerclip-debiasing-clip-s-zero-shot
+datasets:
+- ref: dataset:celeba
+  role: eval
+methods:
+- ref: method:equal-opportunity-difference
+  role: eval
+related_work:
+- name: Contrastive adapter
+  anchor: https://arxiv.org/abs/2207.07180
+  role: compared-to
+- ref: method:linear-probing
+  role: compared-to
+- name: DFR
+  anchor: https://arxiv.org/abs/2204.02937
+  role: compared-to
+evidence_type: observational
+key_metric: 'EOD: CLIP ResNet-50 5.8%, CLIP ViT-L/14 2.8% (CelebA, high cheekbones target, sex sensitive)'
+extracted_by: automatic-extraction
+related_findings:
+- IC-835
+- IC-836
+- IC-837

@@ -1,0 +1,32 @@
+id: IC-829
+title: Role assignment to GPT-3.5-turbo produces role-consistent changes in psychological profiles and
+  task performance, validating the psychometric scales
+description: Assigning GPT-3.5-turbo five roles (default, ordinary, hero, liar, psychopath) and re-measuring
+  its psychological profile shows predictable, role-consistent shifts. The psychopath role dramatically
+  increases EPQ-R psychoticism (from 5.0±2.6 to 24.5±3.5) and DTDD psychopathy (from 4.0±1.0 to 7.3±1.1).
+  On SafetyQA, negative roles consistently produce more toxic content, while on TruthfulQA the liar
+  role shows low accuracy consistent with its assigned persona. The 'ordinary' role approximates average
+  human scores, supporting the validity of the scales on LLMs.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts: []
+sources:
+- ref: source:humanity-conversational-ai-evaluating-psychological-portrayal
+datasets:
+- ref: dataset:truthfulqa
+  role: eval
+- ref: dataset:safetyqa
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'EPQ-R psychoticism: default 5.0±2.6, psychopath 24.5±3.5; DTDD psychopathy: default 4.0±1.0,
+  psychopath 7.3±1.1; DTDD narcissism: default 6.5±0.6, psychopath 7.9±0.6'
+caveat: Results are averaged from three identical runs. The role assignment is a prompt-level instruction,
+  not a modification of model parameters, so the observed shifts reflect instruction-following rather
+  than a change in the model's underlying representations.
+extracted_by: automatic-extraction
+related_findings:
+- IC-827
+- IC-828

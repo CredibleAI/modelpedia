@@ -1,0 +1,48 @@
+id: IC-715
+title: Factual information deleted from GPT-J, LLaMA-2, and GPT-2-XL via ROME or MEMIT remains linearly
+  recoverable from intermediate hidden states, with up to 89% extraction success at budget b=20
+description: 'After applying ROME or MEMIT to remove a specific fact from GPT-J, LLaMA-2-7B, or GPT-2-XL,
+  the paper projects intermediate hidden states onto the vocabulary embedding matrix (logit lens) and
+  collects top-k tokens across a set of layers. The ''deleted'' answer still appears among the top candidates
+  in a large fraction of cases: 38% for GPT-J with ROME on CounterFact, 88.55% for GPT-J with MEMIT
+  on ZSRE, 62.14% for LLaMA-2-7B with ROME on CounterFact, and 87.00% for GPT-2-XL with MEMIT on CounterFact,
+  all at budget b=20. The information is present in middle layers (e.g., layers 17-21 for GPT-J) but
+  absent at the final output layer, indicating a depth-dependent organisation. A max-entropy defense
+  that also edits intermediate representations reduces the GPT-J whitebox attack success from 38% to
+  2.4%.'
+models:
+- ref: model:gpt-j
+- ref: model:llama-2
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:sensitive-information-be-deleted-from-llms
+datasets:
+- ref: dataset:counterfact
+  role: eval
+- ref: dataset:zsre
+  role: eval
+methods:
+- ref: method:logit-lens
+  role: primary
+- ref: method:rome
+  role: primary
+- ref: method:memit
+  role: primary
+related_work:
+- ref: method:logit-lens
+  role: builds-on
+evidence_type: correlational
+key_metric: 38% (GPT-J, ROME+empty resp, head projection, b=20, CounterFact); 88.55% (GPT-J, MEMIT+empty
+  resp, head projection, b=20, ZSRE); 62.14% (LLaMA-2-7B, ROME+empty resp, head projection, b=20, CounterFact);
+  87.00% (GPT-2-XL, MEMIT+empty resp, head projection, b=20, CounterFact); 18% at b=1 (probability delta,
+  GPT-J)
+caveat: Experiments restricted to single-token answers; attack hyperparameters (layer set, k) tuned
+  on a 100-sample development set; the 38% figure is from the head projection attack on CounterFact
+  with ROME, while the 89% figure uses MEMIT on ZSRE, a different editing method and dataset.
+extracted_by: automatic-extraction
+related_findings:
+- IC-716

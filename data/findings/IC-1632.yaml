@@ -1,0 +1,30 @@
+id: IC-1632
+title: Tulu-13B uses a direct binding mechanism rather than binding ids for multiple-choice question
+  tasks
+description: For a reversed MCQ format on SST-2, the paper shows that Tulu-13B's activations are not
+  factorizable in the binding id sense. Instead of an abstract binding id mediating between label and
+  option, the label and option text are directly bound in the same token activations. Copying only the
+  suffix 'ative' and the following whitespace from a source context into the target context suffices
+  to almost completely change the model's belief, indicating the binding information is stored directly
+  at those positions. This contrasts with the binding id mechanism where such a substitution would not
+  change the binding.
+models:
+- ref: model:tulu
+concepts: []
+sources:
+- ref: source:language-models-bind-entities-context
+datasets:
+- ref: dataset:sst-2
+  role: eval
+methods:
+- ref: method:causal-mediation-analysis
+  role: primary
+related_work: []
+evidence_type: interventional
+caveat: The reversed MCQ format is described as 'too out of distribution for llama-30b to solve,' so
+  the finding is specific to Tulu-13B and this particular prompt format. Only a single task (SST-2)
+  was tested for this alternative mechanism.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1630
+- IC-1631

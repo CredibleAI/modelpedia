@@ -1,0 +1,34 @@
+id: IC-895
+title: Across all FLAN-T5 sizes, BLEURT scores show a negative correlation with prediction length on
+  WMT translation tasks
+description: The paper computes the Pearson correlation between BLEURT scores and prediction lengths
+  for FLAN-T5 models of five sizes (small, base, large, xl, xxl) on three WMT translation directions.
+  All correlations are negative, ranging from -0.10 to -0.58, indicating that longer outputs are systematically
+  lower quality. The strongest negative correlation is for the base model on WMT en→fr (-0.58), while
+  the weakest is for the xxl model on WMT fr→en (-0.10). This confirms that output length carries some
+  signal about quality, but the magnitude varies by model size and direction.
+models:
+- ref: model:flan-t5
+concepts: []
+sources:
+- ref: source:language-model-cascades-token-level-uncertainty
+datasets:
+- ref: dataset:wmt-14-fr-en
+  role: eval
+- ref: dataset:wmt-14-en-fr
+  role: eval
+- ref: dataset:wmt19-de-fr
+  role: eval
+methods:
+- ref: method:bleurt
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'WMT de→fr: small -0.35, base -0.28, large -0.22, xl -0.30, xxl -0.24; WMT en→fr: small
+  -0.26, base -0.58, large -0.26, xl -0.33, xxl -0.29; WMT fr→en: small -0.16, base -0.20, large -0.21,
+  xl -0.24, xxl -0.10'
+caveat: Correlations are moderate in magnitude; the paper notes this is 'some signal' rather than a
+  strong deterministic relationship.
+extracted_by: automatic-extraction
+related_findings:
+- IC-894

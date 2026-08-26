@@ -1,0 +1,28 @@
+id: IC-668
+title: SAM's edge-oriented segmentation yields high recall but very low precision because it cannot
+  distinguish object boundaries from interior edges
+description: 'The paper measures SAM-B and SAM-H on COCO val2017 for annotation-free instance segmentation.
+  SAM achieves high average recall (AR100 of 36.9 for SAM-B, 44.5 for SAM-H) but very low average precision
+  (AP of 1.4 and 0.9 respectively). The authors attribute this to SAM''s edge-oriented approach: it
+  segments all prominent edges including interior edges within objects (e.g., between an elephant''s
+  head and ear), and tends to assign higher confidence to smoother planes and smaller objects rather
+  than to actual object instances. This makes it impossible to determine the confidence that a particular
+  mask represents an object.'
+models:
+- ref: model:sam
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:devil-object-boundary-annotation-free-instance
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: 'SAM-B: AR100 36.9, AP 1.4; SAM-H: AR100 44.5, AP 0.9 (class-agnostic, COCO val2017, Table
+  1)'
+extracted_by: automatic-extraction
+related_findings:
+- IC-667
+- IC-669

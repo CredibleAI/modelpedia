@@ -1,0 +1,33 @@
+id: IC-1195
+title: Model substitution adversarial attack reduces TreeRing AUROC to 0.14 at ε=2/255 and StegaStamp
+  AUROC to 0.492 at ε=12/255
+description: 'For high-perturbation watermarks where diffusion purification is ineffective, the paper
+  trains a substitute ResNet-18 classifier to distinguish watermarked from non-watermarked images, then
+  applies PGD adversarial perturbations using the substitute. The resulting adversarial images transfer
+  to the original black-box watermark detector. TreeRing is highly vulnerable: a perturbation budget
+  as low as ε=2/255 reduces its AUROC to 0.14. StegaStamp is more resilient, requiring ε=12/255 to reach
+  AUROC 0.492, though this level of perturbation may leave perceptible artifacts.'
+models:
+- ref: model:treering
+- ref: model:stegastamp
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:robustness-ai-image-detectors-fundamental-limits
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:laion-captions
+  role: eval
+methods:
+- ref: method:pgd
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: TreeRing AUROC 0.14 at ε=2/255; StegaStamp AUROC 0.492 at ε=12/255 (Table 4, base column)
+caveat: Transferability depends on substitute classifier architecture; a more suitable configuration
+  may increase attack success. StegaStamp requires ε=12/255 which may leave perceptible artifacts on
+  images.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1196

@@ -1,0 +1,30 @@
+id: IC-1149
+title: ChatGPT and Llama-2-7b-chat fail to recognize unanswerable questions on SQuAD 2.0, with Llama-2-7b-chat
+  scoring only 3.72% accuracy on no-answer questions
+description: On the SQuAD 2.0 hold-out test, the paper measures how well each model handles unanswerable
+  questions (questions with no valid answer in the context). ChatGPT achieves 32.35% accuracy on no-answer
+  questions, while Llama-2-7b-chat achieves only 3.72%, meaning it almost never outputs the correct
+  'I don't know' response. The authors note that Llama-2-7b-chat 'struggled with format adherence and
+  hallucinations, especially in answering no-answer questions.' In-context learning with mixed no-answer
+  and has-answer examples improves no-answer handling but reduces has-answer accuracy.
+models:
+- ref: model:chatgpt
+- ref: model:llama-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:supervised-knowledge-makes-large-language-models
+datasets:
+- ref: dataset:squad-2-0
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: ChatGPT acc.no. = 32.35%, Llama-2-7b-chat acc.no. = 3.72%; ChatGPT acc.has. = 79.35%, Llama-2-7b-chat
+  acc.has. = 31.87%
+caveat: The SQuAD 2.0 evaluation uses a hold-out test where in-context examples are drawn from the training
+  set; the prompt length is controlled under 4,096 tokens for Llama-2.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1148
+- IC-1150

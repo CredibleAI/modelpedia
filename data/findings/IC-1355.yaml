@@ -1,0 +1,30 @@
+id: IC-1355
+title: Instruction-tuned VLMs fail to follow multiple-choice format in reasoning questions, with InstructBLIP
+  frequently returning blank responses
+description: On closed-ended (multiple-choice) reasoning questions, BLIP2 tends to select a particular
+  option as instructed, while instruction-tuned models (InstructBLIP, LLaVA, LLaMA-Adapter v2, mPLUG-Owl,
+  Otter) often ignore the provided options and generate detailed free-form responses. InstructBLIP in
+  particular frequently returns blank responses. The authors attribute this to overfitting during instruction
+  tuning, which causes catastrophic forgetting of generic instruction-following ability, making it difficult
+  for the LLM judge to evaluate their outputs.
+models:
+- ref: model:instructblip
+- ref: model:llava
+- ref: model:llama-adapter-v2
+- ref: model:mplug-owl
+- ref: model:otter
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:large-language-models-as-automated-aligners
+datasets:
+- ref: dataset:auto-bench
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+caveat: This is an observational note from the authors during evaluation rather than a separately quantified
+  experiment; no dedicated metric isolates format compliance from content accuracy.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1356

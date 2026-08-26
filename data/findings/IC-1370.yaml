@@ -1,0 +1,41 @@
+id: IC-1370
+title: MLP0 representations of ordinal-sequence tokens in Pythia-1.4b contain linearly decodable mod-10
+  features that are causally important for incrementation
+description: Using sparse autoencoders on MLP0 activations, the authors identify ten features f0–f9
+  such that fn is present in tokens whose ordinal index is congruent to n mod 10. The modal most important
+  feature for each mod-10 class is shared on average by 58.5% of tokens in that class. A linear probe
+  recovers the mod-10 value with 0.70764 average cosine similarity to the SAE features and generalises
+  to 94/102 non-numeric tokens. Vector arithmetic (adding/subtracting mod-10 features to token representations)
+  successfully steers the successor head's output in 53% of month cases and 89% of digit 20–29 cases
+  when the target residue is greater than the source. Ablative experiments on individual MLP0 neurons
+  confirm periodic firing with period 10.
+models:
+- ref: model:pythia
+  variant: variant:pythia-1-4b
+- ref: model:pythia
+  variant: variant:pythia-2-8b
+- ref: model:gpt-2
+concepts: []
+sources:
+- ref: source:successor-heads-recurring-interpretable-attention-heads
+datasets: []
+methods:
+- ref: method:sparse-autoencoder
+  role: primary
+- ref: method:linear-probing
+  role: validation
+related_work:
+- ref: method:sparse-autoencoder
+  role: builds-on
+evidence_type: interventional
+key_metric: modal most important feature shared by 58.5% of tokens in class; linear probe cosine similarity
+  0.70764; 94/102 non-numeric tokens correct; vector arithmetic success 53% (months) and 89% (digits
+  20-29); most common neuron firing period 10
+caveat: The mod-10 features do not steer the days and letters tasks; the greater-than bias in the successor
+  head means vector arithmetic fails when the target residue is smaller than the source. The SAE was
+  trained primarily on number tokens, so generalisation to other tasks is partial.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1369
+- IC-1371
+- IC-1372

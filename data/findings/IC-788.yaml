@@ -1,0 +1,31 @@
+id: IC-788
+title: CLIP ViT-B/32 fails to retrieve the correct image even when the generated target caption is well-aligned
+  with the ground-truth image
+description: 'Using TIFA to measure text-image alignment, the paper shows that the modified caption
+  produced by the LLM aligns well with the ground-truth target image, yet CLIP ViT-B/32 retrieves a
+  different image whose actual alignment with the caption is notably lower. The paper concludes that
+  CLIP retrieval is a severe bottleneck: the captioning and reasoning stages produce valid target descriptions
+  that the retrieval model cannot match. This was observed across the CIRCO validation set.'
+models:
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:vision-by-language-training-free-compositional
+datasets:
+- ref: dataset:circo
+  role: eval
+methods:
+- ref: method:tifa
+  role: eval
+related_work:
+- ref: dataset:sugarcrepe
+  role: context
+evidence_type: correlational
+caveat: The TIFA scores are shown in a figure (Fig. 5) without explicit numeric values printed in the
+  text; the claim is qualitative ('notably lower').
+extracted_by: automatic-extraction
+related_findings:
+- IC-789
+- IC-790
+- IC-791

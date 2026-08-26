@@ -1,0 +1,36 @@
+id: IC-1035
+title: Reprover achieves 0% accuracy on sorry theorems in advanced mathematics repositories (PFR, Hairy
+  Ball Theorem, Coxeter) while proving basic theorems in other repositories
+description: 'The paper measures reprover''s ability to prove previously missing (sorry) theorems across
+  23 Lean repositories spanning diverse mathematical domains. Reprover fails completely on three advanced-mathematics
+  repositories: the Polynomial Freiman-Ruzsa conjecture (0/37), the Hairy Ball Theorem (0/14), and Coxeter
+  groups (0/15). In contrast, it achieves 48.3% on Mathematics in Lean Source, 20.9% on MiniF2F, and
+  8.2% on SciLean, which contain more elementary material. The paper attributes this to reprover''s
+  training on Mathlib4, which covers primarily undergraduate-level mathematics, making it unable to
+  generalise to advanced topics. On the MiniF2F Lean4 test set, reprover achieves a pass@1 of 34.0%
+  (83/244 theorems).'
+models:
+- ref: model:reprover
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:leanagent-lifelong-learning-formal-theorem-proving
+datasets:
+- ref: dataset:minif2f
+  role: eval
+methods:
+- ref: method:retrieval-augmented-generation
+  role: supporting
+related_work:
+- name: LeanDojo
+  anchor: https://doi.org/10.48550/arxiv.2306.15626
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Reprover accuracy: 0% on PFR (0/37), 0% on Hairy Ball (0/14), 0% on Coxeter (0/15); 48.3%
+  on MIL (14/29), 20.9% on MiniF2F (85/406), 8.2% on SciLean (24/294); pass@1 34.0% (83/244) on MiniF2F
+  Lean4 test set'
+caveat: The paper notes that some proofs in the PFR repository exploited unintended constructs (placeholder
+  0=1 statements), and that reprover's performance is limited by Mathlib4's coverage of primarily undergraduate
+  mathematics. The comparison is confounded by the fact that reprover's retriever is also the starting
+  point for LeanAgent.
+extracted_by: automatic-extraction

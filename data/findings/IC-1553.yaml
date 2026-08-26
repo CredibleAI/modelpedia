@@ -1,0 +1,57 @@
+id: IC-1553
+title: GPT-J, GPT-2-XL, and Llama-13B decode approximately 48% of tested relations via a linear transformation
+  on the subject representation, and this structure causally influences predictions
+description: The authors estimate a linear relational embedding (LRE) from the LM's Jacobian on a single
+  prompt and test whether it faithfully reproduces the model's next-token predictions. For 48% of 47
+  relations spanning factual, commonsense, linguistic, and bias categories, the LRE achieves over 60%
+  faithfulness. Causal validation via activation patching (editing the subject representation using
+  the inverse LRE) confirms the linear structure is used by the model, with a strong correlation (r=0.84)
+  between faithfulness and causality scores in GPT-J. However, some relations like 'company CEO' are
+  accurately predicted by GPT-J (69 companies) yet no linear method exceeds 6% faithfulness, indicating
+  non-linear decoding for those relations. The same pattern holds across GPT-2-XL and Llama-13B.
+models:
+- ref: model:gpt-j
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl
+- ref: model:llama
+  variant: variant:llama-13b
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:linearity-relation-decoding-transformer-language-models
+datasets:
+- ref: dataset:counterfact
+  role: source
+- ref: dataset:wikidata
+  role: source
+methods:
+- ref: method:linear-relational-embedding
+  role: primary
+- ref: method:logit-lens
+  role: compared-to
+- ref: method:linear-regression
+  role: compared-to
+related_work:
+- name: Inspecting and editing knowledge representations in language models
+  anchor: https://arxiv.org/abs/2304.00740
+  role: builds-on
+- name: Dissecting recall of factual associations in auto-regressive language models
+  anchor: https://arxiv.org/abs/2304.14767
+  role: context
+- name: Eliciting latent predictions from transformers with the tuned lens
+  anchor: https://arxiv.org/abs/2303.08112
+  role: compared-to
+- name: 'Jump to conclusions: shortcutting transformers with linear transformations'
+  anchor: https://arxiv.org/abs/2303.09435
+  role: compared-to
+evidence_type: interventional
+key_metric: 48% of 47 relations; faithfulness > 60% for almost half; causality-faithfulness correlation
+  r = 0.84 (GPT-J, β = 2.25); company CEO faithfulness < 6% despite GPT-J correctly predicting 69 companies;
+  GPT-2-XL corr = 0.85, Llama-13B corr = 0.83
+caveat: Evaluation restricted to first-token correctness, which risks false positives when multiple
+  objects share a first token; only 47 relations tested; n=8 examples used for LRE estimation; single-state
+  activation patching may be limited by attention leakage from unpatched earlier layers
+extracted_by: automatic-extraction
+related_findings:
+- IC-1554
+- IC-1555

@@ -1,0 +1,38 @@
+id: IC-638
+title: ROME editing on GPT-2 XL and Llama-2 7B achieves high reliability but fails under bijective symmetry
+  (23.71%–33.64%) and synonymous invariance (52.35%–58.36%) criteria
+description: 'The paper evaluates ROME on newly constructed symmetry and synonymy datasets derived from
+  ParaRel. While ROME achieves near-perfect reliability (96.37%–100%), it fails to generalize: when
+  the capital of Canada is edited to Rome, the model does not consistently agree that Rome is the capital
+  of Canada (symmetry 23.71%–33.64%), and when a field of work is edited, the corresponding occupation
+  name is not updated (synonym 52.35%–58.36%). Qualitative examples show ROME edits only the exact token
+  association without affecting paraphrased or related expressions.'
+models:
+- ref: model:gpt-2
+- ref: model:llama-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:knowledge-neuron-thesis-have-knowledge
+datasets:
+- ref: dataset:pararel
+  role: eval
+methods:
+- ref: method:rome
+  role: primary
+related_work:
+- name: Yao et al. 2023
+  anchor: https://doi.org/10.18653/v1/2023.emnlp-main.632
+  role: builds-on
+evidence_type: interventional
+key_metric: 'GPT-2 XL: P101 reliability 99.82% synonym 52.35%; P1376 reliability 96.37% symmetry 23.71%;
+  P36 reliability 99.79% symmetry 25.17%. Llama-2: P101 reliability 100% synonym 58.36%; P1376 reliability
+  100% symmetry 33.40%; P36 reliability 100% symmetry 33.64%'
+caveat: The symmetry and synonymy datasets are newly constructed by the authors from ParaRel relations
+  (234 symmetry pairs for P1376, 703 for P36, 568 synonym entries for P101), so the evaluation scope
+  is limited to these specific relation types.
+extracted_by: automatic-extraction
+related_findings:
+- IC-636
+- IC-637
+- IC-639

@@ -1,0 +1,38 @@
+id: IC-981
+title: ImageBind's indirect alignment through images degrades zero-shot performance on non-visual modalities
+  and prevents emergent cross-modal retrieval
+description: 'The paper measures ImageBind (ViT-Huge) on zero-shot classification across video, infrared,
+  depth, and audio benchmarks, as well as on emergent cross-modal retrieval. ImageBind aligns non-visual
+  modalities to images rather than directly to language, and this indirect alignment yields substantially
+  lower accuracy on non-visual tasks: 63.4% top-1 on LLVIP, 54.0% on NYU-D, and 66.9% on ESC-50. Furthermore,
+  ImageBind is unable to perform emergent zero-shot retrieval between non-visual modalities (video-to-audio,
+  RGB-to-infrared, RGB-to-depth), marked as not achievable in the paper''s Table 7, whereas direct language
+  alignment enables such transfers.'
+models:
+- ref: model:imagebind
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:languagebind-extending-video-language-pretraining-n
+datasets:
+- ref: dataset:llvip
+  role: eval
+- ref: dataset:nyu-v2
+  role: eval
+- ref: dataset:esc-50
+  role: eval
+- ref: dataset:audioset
+  role: eval
+- ref: dataset:vggsound
+  role: eval
+- ref: dataset:msr-vtt
+  role: eval
+- ref: dataset:ave
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'top-1 accuracy (ImageBind huge): LLVIP 63.4%, NYU-D 54.0%, ESC-50 66.9%, AudioSet 17.6%,
+  VGGSound 27.8%, K400 50.0%; emergent cross-modal retrieval (Table 7): not achievable (marked ✗) on
+  AVE, VGGSound, LLVIP, NYU'
+extracted_by: automatic-extraction

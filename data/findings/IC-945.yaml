@@ -1,0 +1,50 @@
+id: IC-945
+title: LLaMA-2, MPT, Falcon, Pythia, and BERT-base-uncased allocate disproportionate attention to initial
+  tokens regardless of their semantic content
+description: The paper visualizes attention maps across all layers and heads of LLaMA-2-7B and LLaMA-2-70B,
+  finding that beyond the bottom two layers the model heavily attends to the initial token. A substitution
+  experiment on LLaMA-2-13B shows that replacing the first four tokens with linebreak characters still
+  restores perplexity to near-normal levels (5.60 vs 5.40), confirming the effect is positional rather
+  than semantic. Across MPT-7B, Falcon-7B, Pythia-12B, and LLaMA-2-7B, introducing four initial tokens
+  alongside a recent window restores perplexity from catastrophic levels to near-normal. BERT-base-uncased
+  shows the same pattern with its [SEP] token receiving disproportionately high attention in most layers.
+  The authors attribute the phenomenon to the softmax constraint requiring attention scores to sum to
+  one, forcing the model to dump excess attention onto globally visible initial tokens.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:mpt
+  variant: variant:mpt-7b
+- ref: model:falcon
+  variant: variant:falcon-7b
+- ref: model:pythia
+  variant: variant:pythia-12b
+- ref: model:bert
+  variant: variant:bert-base-uncased
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:efficient-streaming-language-models-attention-sinks
+datasets:
+- ref: dataset:pg19
+  role: eval
+- ref: dataset:arc
+  role: eval
+methods:
+- ref: method:streamingllm
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'LLaMA-2-13B: 0+1024 ppl 5158.07, 4+1020 ppl 5.40, 4"\n"+1020 ppl 5.60; LLaMA-2-7B: 0+4096
+  ppl 3359.95, 4+4092 ppl 9.59; MPT-7B: 0+2048 ppl 460.29, 4+2044 ppl 14.99; Falcon-7B: 0+2048 ppl 17.90,
+  4+2044 ppl 12.12; Pythia-12B: 0+2048 ppl 21.62, 4+2044 ppl 12.09'
+caveat: The attention sink observation is directly visualized on LLaMA-2-7B and LLaMA-2-70B; other model
+  families are supported by perplexity recovery experiments rather than direct attention map visualization.
+  The BERT result is a single attention map on one sentence.
+extracted_by: automatic-extraction
+related_findings:
+- IC-946

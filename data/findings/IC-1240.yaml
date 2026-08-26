@@ -1,0 +1,30 @@
+id: IC-1240
+title: GPT-4-0314 achieves 85% zero-shot accuracy on situational-awareness questions about its own architecture
+  and training
+description: The authors evaluated GPT-4-0314 on a set of multiple-choice questions probing technical
+  self-knowledge (e.g. parameter counts, training data, attention layer details) drawn from the dataset
+  in Perez et al. (2022b). Using zero-shot prompting with a system message instructing a single-character
+  answer at temperature 0, the model reached 85% accuracy. The authors note this is a preliminary test
+  and that the questions were designed for models similar to Anthropic's, not specifically for GPT-4.
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:alignment-problem-from-deep-learning-perspective
+datasets:
+- ref: dataset:fictional-knowledge-dataset
+  role: eval
+methods: []
+related_work:
+- name: Perez et al. (2022b) – Discovering language model behaviors with model-written evaluations
+  anchor: https://arxiv.org/abs/2212.09251
+  role: builds-on
+evidence_type: correlational
+key_metric: 85% zero-shot accuracy on situational awareness questions (Appendix E)
+caveat: The dataset was designed for Anthropic models; the authors note results are preliminary and
+  that the questions may not be fully applicable to GPT-4's architecture. No chain-of-thought or other
+  prompting techniques were used.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1241
+- IC-1242

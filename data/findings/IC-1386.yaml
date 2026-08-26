@@ -1,0 +1,45 @@
+id: IC-1386
+title: Fact recall in OPT and LLaMA models degrades by more than 5% relative accuracy when more than
+  30% of weights are pruned, and similarly when moving from the 30B to the 13B dense model
+description: 'The paper evaluates closed-book question answering (TriviaQA, WebQuestions) on OPT-13B,
+  OPT-30B, LLaMA-13B, and LLaMA-33B under progressive weight pruning via SparseGPT. Accepting a 5% relative
+  accuracy drop from the dense model, the maximum tolerable sparsity is 30% on TriviaQA and 40% on WebQuestions.
+  The same sensitivity appears under dense scaling: moving from OPT-30B to OPT-13B causes more than
+  5% relative accuracy degradation on both close-book tasks. The pattern is confirmed on Pythia-12B
+  (20% sparsity threshold) and with the Wanda pruning algorithm (30% threshold).'
+models:
+- ref: model:opt
+- ref: model:llama
+- ref: model:pythia
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:cost-scaling-down-large-language-models
+datasets:
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:webquestions
+  role: eval
+methods:
+- ref: method:sparsegpt
+  role: primary
+- ref: method:wanda
+  role: supporting
+- ref: method:llm-pruner
+  role: supporting
+related_work:
+- name: Chan et al. 2022a (Transformers generalize differently from information stored in context vs
+    in weights)
+  anchor: https://arxiv.org/abs/2210.05675
+  role: builds-on
+evidence_type: interventional
+key_metric: '"removing more than 30% of weights leads to significant (> 5%, relative) accuracy degradation"
+  on close-book TriviaQA; "moving from the 30b model to the next largest 13b model leads to more than
+  5% relative task accuracy degradation on close-book triviaqa and webqa task"; Pythia-12B: 20% sparsity
+  threshold; Wanda: 30% sparsity threshold'
+caveat: since our work is empirical in nature, our observations may not generalize to all tasks and
+  llms
+extracted_by: automatic-extraction
+related_findings:
+- IC-1387
+- IC-1388

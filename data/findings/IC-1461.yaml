@@ -1,0 +1,44 @@
+id: IC-1461
+title: Varying decoding hyperparameters and removing the system prompt breaks the safety alignment of
+  9 out of 11 open-source LLMs, raising attack success rate from 0% to over 95%
+description: The paper tests 11 open-source LLMs (Vicuna 7B/13B/33B, MPT 7B/30B, Falcon 7B/40B, Llama2
+  7B/13B/7B-chat/13B-chat) on the MaliciousInstruct benchmark (100 harmful instructions) and AdvBench
+  (500 instructions). By simply varying temperature, top-k, or top-p sampling parameters and removing
+  the system prompt, the attack success rate (measured by a trained classifier) jumps from 0% under
+  default settings to 95-98% for 9 of the 11 models. Human evaluation on 100 misaligned outputs from
+  Llama2-13b-chat shows 50% contain genuinely harmful instructions, and the HP for Llama2-7b-chat can
+  reach 80% under certain decoding configurations. The attack requires roughly 30x less compute than
+  the prior state-of-the-art GCG attack.
+models:
+- ref: model:vicuna
+- ref: model:mpt
+- ref: model:falcon
+- ref: model:llama-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:catastrophic-jailbreak-open-source-llms-via
+datasets:
+- ref: dataset:advbench
+  role: eval
+- ref: dataset:maliciousinstruct
+  role: eval
+- ref: dataset:hh-rlhf
+  role: source
+methods:
+- ref: method:gcg
+  role: compared-to
+related_work:
+- ref: method:gcg
+  role: compared-to
+evidence_type: correlational
+key_metric: 'ASR on MaliciousInstruct: Vicuna-7b 50→97, Vicuna-13b 21→97, Vicuna-33b 42→96, MPT-7b 0→97,
+  MPT-30b 0→98, Falcon-7b 5→95, Falcon-40b 7→95, Llama2-7b 14→97, Llama2-13b 34→97, Llama2-7b-chat 0→81,
+  Llama2-13b-chat 0→88 (greedy→varied all); HP 50% (llama2-13b-chat, human), up to 80% (llama2-7b-chat,
+  heuristic); 30× less compute than GCG'
+caveat: The attack requires the attacker to generate 49 responses per prompt and select the best one
+  using a scorer trained on HH-RLHF; the scorer assumes knowledge of the aligned/misaligned output distribution.
+  The two RLHF-aligned Llama2-chat models reach only 81-88% without additional sampling or constraints.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1462

@@ -1,0 +1,82 @@
+id: IC-1393
+title: Most mainstream LLMs generate value-violating content at high rates (APV 65-80%) across 2,397
+  morally ambiguous prompts, indicating substantial ethical misalignment
+description: 'The paper benchmarks 27 LLMs across seven model families using the MoralPrompt dataset
+  of 2,397 prompts covering 522 value principles from the Moral Foundations Theory. For each prompt,
+  10 completions are generated and scored by a classifier for value violation. The results show that
+  nearly all models produce value-violating content at high frequency: LLaMA-2-70b-chat scores 77.73
+  APV, LLaMA-7b scores 76.85 APV, and even the best-performing ChatGPT scores 65.20 APV. Aligned models
+  show modest improvement over their unaligned counterparts (e.g., Falcon-40b-instruct achieves 2.94
+  less APV than Falcon-40b), but violations remain pervasive. Models within the same series exhibit
+  similar value conformity regardless of size.'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-70b-chat
+- ref: model:llama
+  variant: variant:llama-7b
+- ref: model:chatgpt
+- ref: model:gpt-4
+- ref: model:falcon
+  variant: variant:falcon-40b
+- ref: model:falcon
+  variant: variant:falcon-40b-instruct
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:vicuna
+  variant: variant:vicuna-7b-v1-3
+- ref: model:vicuna
+  variant: variant:vicuna-13b-v1-3
+- ref: model:vicuna
+  variant: variant:vicuna-33b-v1-3
+- ref: model:guanaco
+  variant: variant:guanaco-33b
+- ref: model:guanaco
+  variant: variant:guanaco-65b
+- ref: model:baichuan
+  variant: variant:baichuan-7b
+- ref: model:baichuan-2
+  variant: variant:baichuan2-7b-chat
+- ref: model:baichuan
+  variant: variant:baichuan-13b-chat
+- ref: model:baichuan2-13b
+  variant: variant:baichuan2-13b-chat
+- ref: model:chatglm-6b
+- ref: model:gpt-3
+  variant: variant:text-davinci-002
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+- ref: model:llama
+  variant: variant:llama-13b
+- ref: model:llama
+  variant: variant:llama-30b
+- ref: model:llama
+  variant: variant:llama-65b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:denevil-deciphering-navigating-ethical-values-large
+datasets:
+- ref: dataset:moral-stories
+  role: source
+methods:
+- ref: method:gedi
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: LLaMA-2-70b-chat 77.73 APV, LLaMA-7b 76.85 APV, ChatGPT 65.20 APV, GPT-4 79.08 APV, Falcon-40b-instruct
+  72.70 APV vs Falcon-40b 75.64 APV (2.94 less), across 2,397 prompts x 10 completions
+caveat: Evaluation relies on a single classifier (RoBERTa or LLaMA-2-7b LoRA) for violation detection;
+  the paper acknowledges potential social biases in generated scenarios and notes that Moral Foundations
+  Theory may not capture all ethical dimensions.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1394
+- IC-1395

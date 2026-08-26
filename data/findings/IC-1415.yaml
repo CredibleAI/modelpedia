@@ -1,0 +1,30 @@
+id: IC-1415
+title: BLOOMZ generalizes instruction-following to programming languages (Go, Rust) absent from its
+  instruction data, scoring above the random baseline
+description: BLOOMZ, a 176B parameter model trained primarily on natural language, is evaluated on HumanEvalPack
+  across six programming languages. Go and Rust are not contained in BLOOMZ's instruction data, yet
+  the model performs substantially above the 0.0 random baseline for these languages across most tasks
+  (e.g., 16.4% on Go HumanEvalFix, 8.4% on Go HumanEvalSynthesize, 5.7% on Rust HumanEvalFix). The authors
+  interpret this as evidence that models can generalize instructions to programming languages seen only
+  at pretraining, analogous to cross-lingual generalization in natural languages.
+models:
+- ref: model:bloom
+  variant: variant:bloomz
+concepts: []
+sources:
+- ref: source:octopack-instruction-tuning-code-large-language
+datasets: []
+methods:
+- ref: method:pass-k
+  role: eval
+related_work:
+- name: Crosslingual Generalization through Multitask Finetuning
+  anchor: https://arxiv.org/abs/2211.01786
+  role: context
+evidence_type: correlational
+key_metric: 'BLOOMZ Go: 16.4% fix, 8.5% explain, 8.4% synthesize; Rust: 5.7% fix, 0.0% explain, 5.5%
+  synthesize (random baseline 0.0)'
+extracted_by: automatic-extraction
+related_findings:
+- IC-1413
+- IC-1414

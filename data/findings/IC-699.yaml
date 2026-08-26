@@ -1,0 +1,36 @@
+id: IC-699
+title: Llama2-13b produces significantly less consistent answers than GPT-3.5-turbo on complex reasoning
+  tasks, making it unsuitable as a weaker LLM in a cascade
+description: When used as the weaker LLM in the cascade pipeline, Llama2-13b exhibits much lower answer
+  consistency across multiple samples than GPT-3.5-turbo on complex reasoning tasks. On GSM8K, only
+  16.3% of cases achieve an agreement score above 0.6 for Llama2-13b versus 77.3% for GPT-3.5-turbo;
+  on CREPE the figures are 24.3% versus 72.2%. The accuracy within those high-agreement cases is comparable,
+  indicating the issue is the proportion of questions the model can answer consistently rather than
+  the quality of its confident answers. On the simpler Date dataset, Llama2-13b performs more comparably.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:large-language-model-cascades-mixture-thought
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:big-bench-hard
+  role: eval
+- ref: dataset:crepe
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GSM8K agreement>0.6 proportion: 0.163 (Llama2-13b) vs 0.773 (GPT-3.5-turbo); CREPE: 0.243
+  vs 0.722; Date: 0.461 vs 0.721'
+caveat: The authors note that the choice of weaker LLM should be contingent on task difficulty; Llama2-13b
+  works on Date but not on GSM8K or CREPE.
+extracted_by: automatic-extraction
+related_findings:
+- IC-698
+- IC-700

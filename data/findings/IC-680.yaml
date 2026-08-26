@@ -1,0 +1,38 @@
+id: IC-680
+title: CLIP ViT's image token contributions are spatially localized to match described content, enabling
+  zero-shot segmentation that outperforms existing CLIP-based methods
+description: Decomposing the image representation across image tokens and computing the inner product
+  of each token's contribution with a text direction yields a spatially localized heatmap. The highlighted
+  regions match the image parts described by the text (e.g. the Eiffel Tower for 'photo taken in Paris').
+  Binarizing these heatmaps produces zero-shot segmentations that outperform LRP, Partial-LRP, Rollout,
+  Raw Attention, Grad-CAM, and Chefer et al. on all metrics (pixel accuracy, mIoU, mAP) on ImageNet-Segmentation.
+models:
+- ref: model:openclip
+  variant: variant:openclip-vit-l-14
+concepts: []
+sources:
+- ref: source:interpreting-clip-s-image-representation-via
+datasets:
+- ref: dataset:imagenet-segmentation
+  role: eval
+methods:
+- ref: method:mean-ablation
+  role: supporting
+- ref: method:grad-cam
+  role: compared-to
+- ref: method:partial-lrp
+  role: compared-to
+related_work:
+- name: CLIP
+  anchor: https://proceedings.mlr.press/v139/radford21a
+  role: builds-on
+evidence_type: observational
+key_metric: 'ImageNet-Segmentation: pixel acc 75.21, mIoU 54.50, mAP 81.61 (ours) vs best prior: pixel
+  acc 70.27 (Grad-CAM), mIoU 47.47 (Chefer et al.), mAP 78.29 (Chefer et al.).'
+caveat: Only direct effects of tokens are measured; the class token's contribution is shown to be negligible
+  but not zero. Evaluation is on a subset of 4,276 ImageNet validation images.
+extracted_by: automatic-extraction
+related_findings:
+- IC-677
+- IC-678
+- IC-679

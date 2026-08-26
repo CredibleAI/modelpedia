@@ -1,0 +1,41 @@
+id: IC-1408
+title: OpenFlamingo and Idefics models generate low-quality explanations in zero-shot, but ICL and model
+  scale significantly improve explanation CIDEr
+description: 'On VQA-X, LMMs are given an image, question, and correct answer, then asked to generate
+  an explanation. Zero-shot CIDEr scores are significantly below SOTA: OFv2-9b scores 56.17 and Idefics-9b
+  scores 67.43. ICL with more demonstrations substantially improves CIDEr: OFv2-9b rises to 80.51 at
+  32-shot, Idefics-9b to 90.18. There is a clear positive correlation between model size and explanation
+  quality. Idefics-80b surpasses SOTA with ICL, but instruction tuning does not help the 80B model,
+  possibly due to overfitting when training the LLM.'
+models:
+- ref: model:openflamingo
+- ref: model:idefics
+concepts:
+- ref: concept:explanation-faithfulness
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:beyond-task-performance-evaluating-reducing-flaws
+datasets:
+- ref: dataset:vqa-x
+  role: eval
+methods:
+- ref: method:in-context-learning
+  role: primary
+- ref: method:cider
+  role: eval
+related_work:
+- ref: model:openflamingo
+  role: context
+- ref: model:idefics
+  role: context
+evidence_type: correlational
+key_metric: 'OFv2-9b CIDEr: 56.17 (0-shot), 61.43 (4-shot), 74.71 (8-shot), 80.41 (16-shot), 80.51 (32-shot);
+  Idefics-9b CIDEr: 67.43 (0-shot), 80.13 (4-shot), 83.45 (8-shot), 88.59 (16-shot), 90.18 (32-shot)'
+caveat: The paper notes that for 80B-parameter models, instruction tuning does not improve explanation
+  quality, which might be due to overfitting when training the LLM. CIDEr measures syntactic similarity
+  to human annotations, not semantic faithfulness of the explanation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1405
+- IC-1406
+- IC-1407

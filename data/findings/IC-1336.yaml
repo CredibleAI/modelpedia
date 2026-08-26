@@ -1,0 +1,41 @@
+id: IC-1336
+title: MobileNetV2 (PyTorch pre-trained on ImageNet) exhibits a failure mode under global unstructured
+  L1 pruning at the Pareto-optimal point, with its high kurtosis of kurtoses (64.40) causing very-low-magnitude
+  layers to be entirely pruned and disconnect the network
+description: The paper applies its proposed optimal L1 pruning method to three PyTorch pre-trained ImageNet
+  models. While VGG11 and ResNet18 maintain performance after pruning at the Pareto-optimal point, MobileNetV2
+  suffers dramatic degradation. The mechanism is that MobileNetV2's parameter distribution has a very
+  high kurtosis of layer-wise kurtoses (64.40 versus 1.42 for VGG11 and 5.81 for ResNet18), meaning
+  it contains layers composed almost entirely of low-magnitude parameters. Global L1 pruning removes
+  these small parameters first, eventually zeroing entire layers and disconnecting them from the network.
+  A conservative adjustment (multiplying the optimal pruning percentage by 1/ln κ²) reduces the pruning
+  to 21% for MobileNetV2 versus 51% for ResNet18.
+models:
+- ref: model:mobilenetv2
+- ref: model:vgg
+  variant: variant:vgg-11
+- ref: model:resnet
+  variant: variant:resnet-18
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:makes-good-prune-maximal-unstructured-pruning
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:l1-magnitude-pruning
+  role: primary
+related_work:
+- ref: model:mobilenetv2
+  role: context
+- ref: model:vgg
+  role: context
+- ref: model:resnet
+  role: context
+evidence_type: interventional
+key_metric: 'kurtosis of kurtoses: 1.42 (VGG11), 5.81 (ResNet18), 64.40 (MobileNetV2); conservative
+  pruning estimate: 51% (ResNet18), 21% (MobileNetV2)'
+caveat: The authors note this is based on a 'limited set of experiments' and the 1/ln κ² adjustment
+  is described as a 'sensible, conservative choice' rather than a proven formula.
+extracted_by: automatic-extraction

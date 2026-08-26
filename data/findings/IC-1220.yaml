@@ -1,0 +1,32 @@
+id: IC-1220
+title: GPT-4, GPT-3.5-turbo, and Llama-2-70B can implement learning algorithms in-context on novel boolean
+  functions, competing with nearest-neighbor baselines
+description: The authors directly prompt GPT-4, GPT-3.5-turbo, and Llama-2-70B with sequences of boolean
+  input-label pairs and ask them to predict the label of a new input, with no parameter modification.
+  The target functions are sampled from an exponentially large space (over 10^30 for n=7), making memorization
+  virtually impossible. All three models perform as well as or better than the nearest-neighbor baseline
+  when the number of dimensions is up to 7. GPT-4 slightly outperforms the NN baseline even at 15 dimensions.
+  Llama-2-70B performs quite similarly to GPT-3.5-turbo.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:llama-2
+concepts: []
+sources:
+- ref: source:understanding-context-learning-transformers-llms-by
+datasets: []
+methods:
+- ref: method:knn
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: all models perform as well as or better than the nearest neighbor baseline when the number
+  of dimensions is up to 7; GPT-4 slightly outperforms the nearest neighbor baseline even in the 15-dimensional
+  case
+caveat: Only 100 different functions are sampled for OpenAI models due to cost; 1000 for Llama-2. The
+  models are evaluated on conjunction, majority, and parity tasks only.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1219
+- IC-1221

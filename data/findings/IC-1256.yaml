@@ -1,0 +1,30 @@
+id: IC-1256
+title: MPT-7B-Chat produces non-committal responses rather than proper refusals on unsafe instructions
+description: 'The paper evaluates MPT-7B-Chat on the i-maliciousinstructions dataset (n=100). While
+  the model is safer than the authors'' Llama (Alpaca) baseline, it exhibits a degraded response pattern:
+  instead of clearly refusing unsafe requests, it frequently replies with non-committal phrases such
+  as ''I''m not sure what you''re asking'' or ''I''m sorry, I don''t understand the question. Can you
+  please rephrase it?'' The authors attribute this to the HH-RLHF training data, where many assistant
+  responses are non-committal rather than proper refusals, so the model learned to parrot that pattern.'
+models:
+- ref: model:mpt
+  variant: variant:mpt-7b-chat
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:safety-tuned-llamas-lessons-from-improving
+datasets:
+- ref: dataset:maliciousinstruct
+  role: eval
+methods: []
+related_work:
+- ref: dataset:hh-rlhf
+  role: context
+evidence_type: observational
+key_metric: harmfulness reward model score of 1.65 on i-maliciousinstructions
+caveat: Evaluation is on a single dataset (i-maliciousinstructions, n=100); the comparison baseline
+  is the authors' own fine-tuned model, not another released model. The paper does not provide a full
+  per-example breakdown.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1257

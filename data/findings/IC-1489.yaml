@@ -1,0 +1,40 @@
+id: IC-1489
+title: State-of-the-art foundation models (CLIP, GPT-3.5-turbo, and others) score well below elementary
+  students on multimodal K-12 STEM questions
+description: The paper benchmarks nine released models on a new 1,073,146-question multimodal STEM dataset
+  spanning science, technology, engineering, and math at K-12 grade levels. The best-performing model,
+  CLIP-RN50x64, achieves 54.9% average accuracy, while GPT-3.5-turbo reaches 49.0%. Seven university
+  students attain 83.0% accuracy. The average exam score for elementary grades (1-6) is 40.8, which
+  is 54.7% lower than the human reference of 90. Models perform well on object-identification skills
+  but fail on skills requiring abstract reasoning, comparison, and complex spatial understanding. Math
+  is the hardest subject for all models, with only marginal improvements over random chance.
+models:
+- ref: model:clip
+- ref: model:gpt-3
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:vilbert
+- ref: model:in-1-12
+- ref: model:uniter
+- ref: model:virtex
+- ref: model:unifiedqa
+- ref: model:glove
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:measuring-vision-language-stem-skills-neural
+datasets: []
+methods: []
+related_work:
+- ref: dataset:mmlu
+  role: compared-to
+evidence_type: correlational
+key_metric: CLIP-RN50x64 54.9% avg accuracy, GPT-3.5-turbo 49.0%, GPT-3 46.7%, UNITER 45.9%, ViLBERT
+  39.5%, 12-in-1 38.3%, ViRTex 37.1%, UnifiedQA-base 41.7%, GloVe 37.6%, random 36.9%, human 83.0%;
+  exam score 40.8 vs human 90 (54.7% lower); 2.5% third-grade skills mastered
+caveat: The technology subset has no grade-level information; the human comparison uses 7 university
+  students on 80 sampled questions for accuracy and IXL SmartScore for exam scores.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1490
+- IC-1491

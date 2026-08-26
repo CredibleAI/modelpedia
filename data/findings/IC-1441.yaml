@@ -1,0 +1,32 @@
+id: IC-1441
+title: GCN exhibits structural unfairness in transductive node classification, with demographic parity
+  and equal opportunity gaps between nodes connected to and disconnected from the training set
+description: 'The paper measures structural fairness by comparing the classification distribution of
+  two node groups: those with direct connections to the training set and those with no path to the training
+  set. On Cora, GCN shows a demographic parity gap of 0.195 and an equal opportunity gap of 0.177. On
+  Wiki-CS, the gaps are larger at 0.478 and 0.432 respectively. The authors attribute this to GCN''s
+  inability to propagate training-node information to isolated test nodes, and show that their InterpGNN-GW
+  module reduces these gaps.'
+models:
+- ref: model:gcn
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:interpgnn-understand-improve-generalization-ability-transdutive
+datasets:
+- ref: dataset:cora
+  role: eval
+- ref: dataset:wiki-cs
+  role: eval
+methods: []
+related_work:
+- name: Liu et al. (2023)
+  anchor: https://arxiv.org/abs/2302.03881
+  role: builds-on
+evidence_type: correlational
+key_metric: 'GCN on Cora: Δsp = 0.195, Δeo = 0.177; GCN on Wiki-CS: Δsp = 0.478, Δeo = 0.432'
+caveat: Experiments conducted on small graphs only due to computational impracticability of calculating
+  the node-pair distance matrix on graphs with millions of nodes.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1440

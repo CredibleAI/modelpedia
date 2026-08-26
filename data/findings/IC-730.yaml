@@ -1,0 +1,39 @@
+id: IC-730
+title: CLIPCap and BLIP-2 produce degraded alt-text on Twitter social media images, with BLEU@4 of 0.372
+  and 0.111 respectively
+description: The paper evaluates two released image captioning models on a new dataset of 20,260 Twitter
+  images with user-written alt-text. Frozen CLIPCap achieves BLEU@4 of 0.372 and CIDEr of 0.830, while
+  frozen BLIP-2 (OPT 2.7B) achieves BLEU@4 of 0.111 and CIDEr of 1.381. The authors attribute CLIPCap's
+  poor performance to domain mismatch between its Conceptual Captions training data and the Twitter
+  image distribution. BLIP-2, despite extensive pretraining, is described as failing to produce alt-text
+  with sufficient detail and accuracy. In human evaluation, annotators preferred the authors' multimodal
+  model over frozen CLIPCap in 61.4% of cases for fluency and 66.9% for descriptiveness.
+models:
+- ref: model:clipcap
+- ref: model:blip-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:alt-text-context-improving-accessibility-images
+datasets: []
+methods:
+- ref: method:bleu
+  role: eval
+- ref: method:meteor
+  role: eval
+- ref: method:rouge-l
+  role: eval
+- ref: method:cider
+  role: eval
+related_work:
+- name: Conceptual Captions
+  anchor: https://doi.org/10.18653/v1/p18-1238
+  role: context
+evidence_type: correlational
+key_metric: 'CLIPCap (frozen) bs (nr): BLEU@4 0.372, METEOR 1.400, ROUGE-L 6.690, CIDEr 0.830; BLIP-2
+  (frozen) bs: BLEU@4 0.111, METEOR 1.449, ROUGE-L 6.744, CIDEr 1.381; human eval vs frozen CLIPCap:
+  fluency 61.4 vs 29.8, descriptiveness 66.9 vs 26.2'
+caveat: Gold references are user-written and variable in quality; the authors note that absolute scores
+  are lower than on Conceptual Captions due to noisy references, and that some gold alt-text functions
+  as a second caption rather than a literal description.
+extracted_by: automatic-extraction

@@ -294,3 +294,24 @@ def test_a_refused_attempt_records_the_instructions_too():
         rows = log_rows(target)
     assert rows[0]["state"] == "failed"
     assert rows[0]["context_sha"] == ask.fingerprints(PAPER_A)[1]
+
+
+def test_every_prompt_directory_gets_a_run_directory_of_its_own():
+    """Until 2026-08-26 anything that was not `corpus/prompts` fell through to `text-<think>`, so
+    a tagging run with no explicit `--out` would have written its answers into the directory
+    holding the extraction answers. The docstring promised `<input>-<think>` and the code gave it
+    for three cases out of six."""
+    from modelpedia import paths as p
+    assert ask.default_out(p.PROMPTS, None).name == "text-medium"
+    assert ask.default_out(p.PAGE_PROMPTS, "corpus/pdf").name == "pages-medium"
+    assert ask.default_out(p.PROMPTS, "corpus/pdf").name == "text-and-pages-medium"
+    assert ask.default_out(p.TAGS, None).name == "tags-medium"
+    assert ask.default_out(p.FACET_PROMPTS, None).name == "facets-medium"
+    assert ask.default_out(p.ENTITY_PROMPTS, None).name == "entities-medium"
+
+
+def test_two_prompt_directories_never_share_a_run_directory():
+    from modelpedia import paths as p
+    sources = (p.PROMPTS, p.TAGS, p.FACET_PROMPTS, p.ENTITY_PROMPTS)
+    outs = [ask.default_out(s, None) for s in sources]
+    assert len(set(outs)) == len(outs)

@@ -1,0 +1,37 @@
+id: IC-1431
+title: BERT-base fine-tuning has negligible distribution-wise variance (0.21%) while BERT-large fine-tuning
+  has substantial distribution-wise variance (2.08%) on MRPC
+description: The authors fine-tune pretrained BERT-base and BERT-large checkpoints 1,000 times each
+  on the MRPC task. Although both models show high test-set variance (0.80% and 2.24% standard deviation
+  respectively), only BERT-large exhibits genuine distribution-wise variance. For BERT-base, the top
+  15% of seeds by validation performance achieve only 0.09% higher test-set accuracy than average, and
+  the estimated distribution-wise standard deviation is just 0.21%. For BERT-large, the distribution-wise
+  standard deviation is 2.08%, confirming that multiple fine-tuning runs genuinely help for the larger
+  model but only overfit the validation set for the smaller one.
+models:
+- ref: model:bert
+  variant: variant:bert-base
+- ref: model:bert
+  variant: variant:bert-large
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:variance-neural-network-training-respect-test
+datasets:
+- ref: dataset:mrpc
+  role: eval
+methods: []
+related_work:
+- name: Dodge et al. 2020
+  anchor: https://arxiv.org/abs/2002.06305
+  role: compared-to
+- name: Mosbach et al. 2020
+  anchor: https://arxiv.org/abs/2006.04884
+  role: compared-to
+evidence_type: correlational
+key_metric: 'BERT-base: test-set stddev 0.80%, distribution-wise stddev 0.21%, top 15% seeds +0.09%
+  on test; BERT-large: test-set stddev 2.24%, distribution-wise stddev 2.08%'
+caveat: The authors state they do not speculate on the reasons underlying BERT-large's instability;
+  the finding is limited to the MRPC task and a specific fine-tuning recipe (3 epochs, batch size 16,
+  Adam with LR annealed from 2e-5).
+extracted_by: automatic-extraction

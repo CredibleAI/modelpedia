@@ -1,0 +1,33 @@
+id: IC-745
+title: Function vectors for simple list-oriented tasks can be algebraically combined via addition and
+  subtraction to produce new vectors that trigger composed tasks, sometimes outperforming 10-shot ICL.
+description: 'The authors extract FVs for three decomposable tasks (first-copy, first-capital, last-copy)
+  and form a composed vector v*_bd = v_ad + v_bc - v_ac, hypothesizing it triggers the ''last-capital''
+  task. Testing on GPT-J, Llama 2 (13B), and Llama 2 (70B), the composed vector outperforms both the
+  directly extracted FV and 10-shot ICL on some tasks (e.g., last-country-capital: 0.60 vs 0.15 vs 0.32
+  on GPT-J; last-capitalize-first-letter: 0.95 vs 0.76 vs 0.75). Other tasks resist composition, suggesting
+  the algebraic structure holds for certain task decompositions but not universally.'
+models:
+- ref: model:gpt-j
+- ref: model:llama-2
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:function-vectors-large-language-models
+datasets: []
+methods:
+- ref: method:causal-mediation-analysis
+  role: primary
+- ref: method:activation-patching
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: 'GPT-J last-country-capital: ICL 0.32 ± 0.02, FV 0.15 ± 0.03, composed 0.60 ± 0.02; GPT-J
+  last-capitalize-first-letter: ICL 0.75 ± 0.01, FV 0.76 ± 0.02, composed 0.95 ± 0.00; Llama 2 (70B)
+  last-country-capital: ICL 0.81 ± 0.03, FV 0.91 ± 0.02, composed 0.94 ± 0.02'
+caveat: Composition works for some tasks but not others; the authors note it may hinge on 'word-selection'
+  and 'word-transformation' being separable components. Results are on a small set of list-oriented
+  tasks.
+extracted_by: automatic-extraction
+related_findings:
+- IC-744

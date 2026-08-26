@@ -1,0 +1,31 @@
+id: IC-723
+title: The entity tracking performance gap between Goat-7b and Llama-7b is primarily attributable to
+  enhanced positional information in the value fetcher and position transmitter heads
+description: Using cross-model activation patching (CMap), the authors patch the output of specific
+  head groups from Goat-7b into Llama-7b. Patching the value fetcher heads alone recovers the full performance
+  of Goat-7b (0.82) in Llama-7b (baseline 0.66). Patching the position transmitter heads also yields
+  a substantial performance boost. This localizes the improvement to enhanced encoding of positional
+  information and object value in the fine-tuned model's shared circuit components, rather than to entirely
+  new circuitry.
+models:
+- ref: model:llama
+  variant: variant:llama-7b
+- ref: model:goat-7b
+concepts: []
+sources:
+- ref: source:fine-tuning-enhances-existing-mechanisms-case
+datasets: []
+methods:
+- ref: method:activation-patching
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: Llama-7b baseline accuracy 0.66; patching Goat-7b value fetcher heads recovers full Goat-7b
+  performance (0.82); patching position transmitter heads yields substantial boost; Goat-7b value fetcher
+  shows 20% improvement over Llama-7b
+caveat: The authors speculate the enhanced encoding stems from both additional components in the circuit
+  and improved encoding in shared components, but do not fully disentangle these two sources.
+extracted_by: automatic-extraction
+related_findings:
+- IC-721
+- IC-722

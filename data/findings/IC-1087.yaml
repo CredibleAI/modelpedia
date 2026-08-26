@@ -1,0 +1,29 @@
+id: IC-1087
+title: SLDS produces poor dynamical accuracy on the NASCAR task because it lacks recurrent switching
+description: On the synthetic NASCAR task, where the true generative model is an RS LDS with k=4 states
+  and recurrent dynamics, the SLDS model (which has no recurrence) attains a reasonable test log-likelihood
+  (1331.35) but a very high dynamical mean-squared error (0.930) between its learned state-space flow
+  and the true flow field, compared to 0.010 for the RS LDS. The SLDS sample trajectories do not resemble
+  the true NASCAR-track dynamics. This was checked over 5 random initialization seeds.
+models:
+- ref: model:slds
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:parsing-neural-dynamics-infinite-recurrent-switching
+datasets: []
+methods:
+- ref: method:sequential-monte-carlo
+  role: eval
+related_work:
+- name: Fox et al. 2010 (SLDS / Markov switching processes)
+  anchor: https://doi.org/10.1109/msp.2010.937999
+  role: builds-on
+evidence_type: correlational
+key_metric: 'NASCAR (k=4, 5 seeds): SLDS test LL 1331.35, dyn MSE 0.930; RS LDS test LL 1628.57, dyn
+  MSE 0.010'
+caveat: The NASCAR task is synthetic and was specifically designed to test the inclusion of recurrence;
+  the gap may be larger on this task than on other data.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1086

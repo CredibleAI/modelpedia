@@ -1,0 +1,37 @@
+id: IC-1150
+title: ChatGPT and Llama-2-7b-chat underperform humans by 20 and 31 points respectively on out-of-distribution
+  NLU tasks in GLUE-X
+description: On 15 OOD datasets spanning 8 NLU tasks (sentiment, NLI, paraphrase, entailment, similarity,
+  grammar), ChatGPT achieves 66.67% average accuracy in zero-shot and 72.28% with 16-shot ICL, compared
+  to 86.83% human performance. Llama-2-7b-chat achieves 55.92% zero-shot and 58.54% with 16-shot ICL.
+  The gap is particularly severe on MNLI (ChatGPT 41.54%, Llama-2 34.30%) and CoLA (ChatGPT 39.05%,
+  Llama-2 6.94%). The authors note that even with 16-shot ICL, performance remains far below the SLM
+  Electra-large (79.86%).
+models:
+- ref: model:chatgpt
+- ref: model:llama-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:supervised-knowledge-makes-large-language-models
+datasets:
+- ref: dataset:glue-x
+  role: eval
+methods:
+- ref: method:bm25
+  role: compared-to
+related_work:
+- name: 'GLUE-X: Evaluating Natural Language Understanding Models from an Out-of-Distribution Generalization
+    Perspective'
+  anchor: https://arxiv.org/abs/2211.08073
+  role: builds-on
+evidence_type: correlational
+key_metric: 'ChatGPT avg OOD: 66.67% (zero-shot), 72.28% (16-shot); Llama-2-7b-chat avg OOD: 55.92%
+  (zero-shot), 58.54% (16-shot); Human: 86.83%; Electra-large: 79.86%'
+caveat: The OOD setting follows GLUE-X protocol; in-context examples are drawn from in-domain data while
+  test sets are from different domains. Data sizes differ between ChatGPT (43,728 instances) and Llama-2
+  (37,438 instances) due to prompt length constraints.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1148
+- IC-1149

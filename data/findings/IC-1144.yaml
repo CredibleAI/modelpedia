@@ -1,0 +1,30 @@
+id: IC-1144
+title: GPT-4 and GPT-3.5 produce high rates of irrelevant (fabricated) books when answering constraint
+  queries from parametric knowledge, with a sharp phase transition at low author popularity
+description: 'When asked to list books by a given author satisfying an additional constraint, both models
+  output a substantial fraction of books not written by that author. GPT-4''s irrelevance rate is 0.26
+  and GPT-3.5''s is 0.20 in the no-context condition. The paper identifies a ''phase transition'': for
+  authors with 0-10 Wikidata sitelinks, irrelevance is very high, then it drops sharply and flattens
+  out with no further improvement at higher popularity. The authors conjecture this reflects a threshold
+  in training-time memorization.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:kitab-evaluating-llms-constraint-satisfaction-information
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: GPT-4 no-context p_irr = 0.26, GPT-3.5 no-context p_irr = 0.20; irrelevance varies between
+  12% and 41% across authors; sharp drop between 0-10 sitelinks then flattens
+caveat: The authors note that less than 5% of GPT-4 queries and less than 6% of GPT-3.5 queries may
+  be affected by data cleaning issues (titles not in Open Library but real), so true irrelevance may
+  be slightly lower.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1145
+- IC-1146
+- IC-1147

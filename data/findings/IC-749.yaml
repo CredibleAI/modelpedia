@@ -1,0 +1,38 @@
+id: IC-749
+title: Compressed Vicuna-13B at 46.16% sparsity (matching 7B parameter count) achieves lower MMLU accuracy
+  than dense Vicuna-7B, indicating large-sparse models do not outperform small-dense at matched size
+description: The paper compares compressed Vicuna-13B pruned to exactly 7 billion active parameters
+  (46.16% sparsity) against dense Vicuna-7B on MMLU. Using one-shot magnitude pruning, the compressed
+  13B achieves only 31.7% MMLU accuracy versus 46.7% for dense Vicuna-7B. Wanda and SparseGPT fare better
+  at 45.3% and 46.3% respectively, but still do not exceed the dense 7B baseline. This shows that current
+  sparsity algorithms cannot justify the cost of pruning larger models when a smaller dense model is
+  available.
+models:
+- ref: model:vicuna
+  variant: variant:vicuna-13b
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:compressing-llms-truth-rarely-pure-never
+datasets:
+- ref: dataset:mmlu
+  role: eval
+methods:
+- ref: method:magnitude-pruning
+  role: primary
+- ref: method:wanda
+  role: primary
+- ref: method:sparsegpt
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: 'MMLU accuracy: dense Vicuna-7B 46.7%; compressed Vicuna-13B at 46.16% sparsity: magnitude
+  31.7%, Wanda 45.3%, SparseGPT 46.3%'
+caveat: Comparison limited to MMLU benchmark; only one sparsity level (46.16%) tested for the 13B model
+  to match 7B parameter count
+extracted_by: automatic-extraction
+related_findings:
+- IC-747
+- IC-748

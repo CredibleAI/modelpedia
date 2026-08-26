@@ -1,0 +1,34 @@
+id: IC-1555
+title: GPT-J's internal representations contain correct factual knowledge even when the model outputs
+  falsehoods under repetition or instruction distraction prompts
+description: The authors apply the attribute lens (a relation-specific linear probe derived from the
+  LRE) to GPT-J's hidden states on 11,891 repetition-distracted and 11,891 instruction-distracted prompts
+  designed to bait the model into outputting wrong answers. While GPT-J almost never outputs the correct
+  fact (r@1 = 0.02 for repetition-distracted, 0.03 for instruction-distracted), the attribute lens recovers
+  the correct answer in the top-3 predictions 71% and 78% of the time respectively, revealing that the
+  correct knowledge is present in the internal representation but does not reach the output under these
+  adversarial conditions.
+models:
+- ref: model:gpt-j
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:linearity-relation-decoding-transformer-language-models
+datasets: []
+methods:
+- ref: method:logit-lens
+  role: compared-to
+related_work:
+- name: 'Interpreting GPT: the logit lens'
+  anchor: https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens
+  role: builds-on
+evidence_type: correlational
+key_metric: 'r@1: model 0.02 vs attribute lens 0.54 (repetition-distracted); model 0.03 vs attribute
+  lens 0.63 (instruction-distracted); r@3: 0.41 vs 0.71 and 0.25 vs 0.78; 11,891 prompts per condition'
+caveat: The attribute lens is a linear probe derived from the LRE, so it can only reveal knowledge that
+  is linearly encoded; the finding is limited to relations for which a good LRE exists; first-token
+  evaluation criterion applies
+extracted_by: automatic-extraction
+related_findings:
+- IC-1553
+- IC-1554

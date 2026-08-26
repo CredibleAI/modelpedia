@@ -1,0 +1,40 @@
+id: IC-1371
+title: The Pythia-1.4b successor head l12h0 exhibits interpretable polysemanticity, performing successorship,
+  acronym prediction, copying, and greater-than behaviors on natural language data
+description: 'On 128 randomly sampled length-512 contexts from the PILE, the authors use direct effect
+  mean ablation to measure when the successor head is most important for next-token prediction. In winning
+  cases (where ablating the head most decreases the correct token''s logit), the behaviors are: successorship
+  43.4%, acronym 23.8%, greater-than 18.9%, other 14%. In loss-reducing cases, the proportions of reduced
+  loss are: successorship 38.2%, other 28.7%, copying 11.7%, acronym 10.8%, greater-than 10.5%. The
+  authors identify this as the cleanest example of interpretable polysemanticity in an LLM, where a
+  single head performs two clearly distinct tasks (succession and acronym completion) that are not fully
+  independent.'
+models:
+- ref: model:pythia
+  variant: variant:pythia-1-4b
+concepts: []
+sources:
+- ref: source:successor-heads-recurring-interpretable-attention-heads
+datasets: []
+methods:
+- ref: method:mean-ablation
+  role: primary
+related_work:
+- name: Olah et al. 2020 (polysemanticity in vision)
+  anchor: https://doi.org/10.23915/distill.00024.001
+  role: context
+- name: Elhage et al. 2022 (toy models of superposition)
+  anchor: https://arxiv.org/abs/2209.10652
+  role: context
+evidence_type: interventional
+key_metric: 'winning cases: successorship 43.4%, acronym 23.8%, greater-than 18.9%, other 14%; loss-reducing
+  cases: successorship 38.2%, other 28.7%, copying 11.7%, acronym 10.8%, greater-than 10.5%; successor
+  head is winning head across all 64 numbered-listing prompts'
+caveat: The analysis is limited to a single head (l12h0) in a single model (Pythia-1.4b). The authors
+  note they did not explicitly demonstrate that successor heads are necessary for incrementation in
+  the main text, only in the numbered-listing appendix.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1369
+- IC-1370
+- IC-1372

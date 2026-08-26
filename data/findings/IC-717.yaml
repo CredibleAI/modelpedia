@@ -1,0 +1,36 @@
+id: IC-717
+title: Llama-2-Chat's evaluation capability does not improve monotonically with model size
+description: The paper measures the Pearson correlation between Llama-2-Chat scores and GPT-4 scores
+  on 1222 customized score rubrics. The 7B variant (0.485) outperforms the 13B variant (0.441) on seen
+  rubrics, and the 70B variant (0.572) only marginally exceeds the 7B. The authors explicitly state
+  that 'naively increasing the size of a model does not necessarily improve an LLM's evaluation capabilities.'
+  The same non-monotonic pattern holds on Vicuna Bench, MT Bench, and FLASK Eval.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-chat
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:prometheus-inducing-fine-grained-evaluation-capability
+datasets:
+- ref: dataset:vicuna-bench
+  role: eval
+- ref: dataset:mt-bench
+  role: eval
+methods:
+- ref: method:pearson-correlation
+  role: eval
+- ref: method:kendall-s-tau
+  role: eval
+- ref: method:spearman-correlation
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Pearson correlation with GPT-4-0613 on seen rubrics: 7B 0.485, 13B 0.441, 70B 0.572; on
+  Vicuna Bench: 7B 0.175, 13B 0.211, 70B 0.376; on MT Bench: 7B 0.132, 13B -0.020, 70B 0.226'
+caveat: The 70B model does eventually surpass the 7B, so the effect is non-monotonicity rather than
+  a strict decrease; the gap between 7B and 13B is small (0.044).
+extracted_by: automatic-extraction
+related_findings:
+- IC-718
+- IC-719

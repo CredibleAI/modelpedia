@@ -1,0 +1,43 @@
+id: IC-1410
+title: FF's contextualization effects in BERT and GPT-2 are largely canceled by the residual connection
+  and layer normalization, with LN's γ weights specifically shrinking the outlier dimensions in FF output
+description: The paper shows that the contextualization change introduced by FF is progressively undone
+  by the subsequent residual connection and layer normalization. The L2 norm of the res2 bypass vector
+  is more than twice that of the FF output in most layers, so the original representation dominates.
+  Additionally, the FF output has outlier values in specific dimensions, and the LN weight γ is negatively
+  correlated with these dimensions (Pearson r from -0.45 to -0.78 in BERTs, -0.22 to -0.59 in GPT-2).
+  When the bottom 1% of dimensions with the lowest γ are excluded from the norm calculation, the FF
+  contextualization change drops from 0.21 to 0.09 in BERT and from 0.15 to 0.02 in GPT-2, indicating
+  that FF's effect is realized through very specific dimensions that LN erases. This suggests redundancy
+  in the transformer layer's processing.
+models:
+- ref: model:bert
+- ref: model:multiberts
+- ref: model:roberta
+- ref: model:gpt-2
+- ref: model:opt
+concepts: []
+sources:
+- ref: source:analyzing-feed-forward-blocks-transformers-through
+datasets:
+- ref: dataset:sst-2
+  role: eval
+methods:
+- ref: method:norm-based-analysis
+  role: primary
+- ref: method:integrated-gradients
+  role: primary
+related_work:
+- name: Kovaleva et al. 2021 (outlier dimensions in BERT)
+  anchor: https://doi.org/10.18653/v1/2021.findings-acl.300
+  role: context
+evidence_type: correlational
+key_metric: 'res2 bypass vector L2 norm >2x FF output in most layers; Pearson r between LN γ and mean
+  absolute FF output by dimension: -0.45 to -0.78 (BERTs), -0.22 to -0.59 (GPT-2); FF contextualization
+  change with bottom 1% γ dimensions ignored: 0.21→0.09 (BERT), 0.15→0.02 (GPT-2)'
+caveat: The cancellation is weakened in the 10th-11th layers of BERT and former layers of GPT-2 where
+  FF's contextualization is relatively large; in RoBERTa the Pearson r is small (-0.02 to -0.28) though
+  Spearman ρ is large (-0.46 to -0.56), suggesting the mechanism may differ.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1409

@@ -1,0 +1,36 @@
+id: IC-810
+title: Individual sparse autoencoder features in Pythia-70m-deduped are monosemantic and have predictable
+  causal effects on output logits, as demonstrated by an apostrophe feature whose ablation primarily
+  suppresses the 's' token
+description: 'Case studies on Pythia-70m-deduped (layer 4, r=4, alpha=0.0014) show that individual dictionary
+  features correspond to single human-understandable concepts. An apostrophe feature activates only
+  on apostrophe tokens (and conceptually similar punctuation at lower activations), in contrast to the
+  default residual stream dimension which is polysemantic. Ablating this feature (less-than-rank-one
+  ablation) primarily reduces the logit for the following ''s'' token, consistent with its role in predicting
+  possessives and contractions. A closing-parenthesis feature in layer 5 has a causal circuit: previous-layer
+  features detecting dates, acronyms, and phrases cause it to activate, and its unembedding produces
+  closing-parenthesis tokens. 12k logits are negatively affected by the apostrophe ablation (threshold
+  0.1).'
+models:
+- ref: model:pythia
+  variant: variant:pythia-70m-deduped
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:sparse-autoencoders-find-highly-interpretable-features
+datasets:
+- ref: dataset:the-pile
+  role: source
+methods:
+- ref: method:sparse-autoencoder
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: 12k logits negatively affected (threshold 0.1); top suppressed token is 's'
+caveat: Case studies are on a small number of hand-selected features; the authors do not claim all features
+  are monosemantic. The ablation uses less-than-rank-one ablation, which only lowers the activation
+  to the point where the feature is no longer active.
+extracted_by: automatic-extraction
+related_findings:
+- IC-808
+- IC-809

@@ -1,0 +1,38 @@
+id: IC-1135
+title: LLMs show order sensitivity to evidence position in context, with PaLM2 and LLaMA2-7B showing
+  memorization ratio variations exceeding 30%
+description: When parametric memory and counter-memory are presented in different orders, the memorization
+  ratio changes significantly for most models. PaLM2 varies from 38.6 (parametric memory first) to 72.2
+  (counter-memory first), a 33.6 percentage point swing. LLaMA2-7B varies from 33.3 to 82.8, a 49.5
+  percentage point swing. ChatGPT tends to favor the first evidence, while PaLM2 and LLaMA2-7B lean
+  toward later evidence. GPT-4 shows minimal order sensitivity.
+models:
+- ref: model:chatgpt
+- ref: model:gpt-4
+- ref: model:palm-2
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:adaptive-chameleon-stubborn-sloth-revealing-behavior
+datasets:
+- ref: dataset:popqa
+  role: eval
+- ref: dataset:strategyqa
+  role: eval
+methods: []
+related_work:
+- name: Behnamghader et al. 2022 (retriever-augmented LM reasoning)
+  anchor: https://arxiv.org/abs/2212.09146
+  role: context
+evidence_type: correlational
+key_metric: 'PaLM2: 38.6 (parametric first) vs 72.2 (counter first); LLaMA2-7B: 33.3 vs 82.8; ChatGPT:
+  46.7 vs 40.1; GPT-4: 60.9 vs 62.7'
+caveat: Only four models (ChatGPT, GPT-4, PaLM2, LLaMA2-7B) were tested for order sensitivity; the order
+  of evidence was the only variable changed.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1133
+- IC-1134
+- IC-1136

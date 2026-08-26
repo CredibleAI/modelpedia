@@ -1,0 +1,33 @@
+id: IC-934
+title: DNN object detectors do not exhibit the same object size effect as humans in peripheral object
+  detection
+description: Human critical eccentricity for peripheral object detection increases with the size of
+  the target object, meaning humans detect larger objects at greater eccentricities. This relationship
+  does not appear for any of the tested DNN object detection models, whose critical eccentricities remain
+  low for both small and large objects. The absence of a size effect persists even in models trained
+  on COCO-Periph that show higher AP-large and AP-small than baseline on TTM-transformed images.
+models:
+- ref: model:dino-focalnet-large
+- ref: model:swin-transformer
+  variant: variant:dino-swin-tiny
+- ref: model:detr-r50
+- ref: model:retinanet-r50
+- ref: model:foveabox
+- ref: model:faster-r-cnn
+concepts: []
+sources:
+- ref: source:coco-periph-bridging-gap-between-human
+datasets:
+- ref: dataset:mscoco
+  role: source
+methods:
+- ref: method:uniform-ttm
+  role: primary
+related_work: []
+evidence_type: correlational
+caveat: The relationship is assessed qualitatively from Figure 6a; no specific correlation values or
+  effect sizes are reported in the text for the DNN size effect.
+extracted_by: automatic-extraction
+related_findings:
+- IC-932
+- IC-933

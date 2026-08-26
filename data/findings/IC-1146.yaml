@@ -1,0 +1,29 @@
+id: IC-1146
+title: Self-context (self-retrieval) chain-of-thought increases the rate of fabricated books compared
+  to no-context for both GPT-4 and GPT-3.5
+description: When the model is asked to first retrieve all books by the author and then filter by constraint
+  (self-context template), the irrelevance rate increases rather than decreases. GPT-4 goes from 0.26
+  (no-context) to 0.33 (self-context), and GPT-3.5 from 0.20 to 0.44. The first step of the chain (listing
+  all books) already has high irrelevance (0.42 for GPT-4, 0.47 for GPT-3.5), and the model cannot recover
+  from these fabricated titles in the filtering step. Qualitative examples show the model generating
+  irrelevant titles specifically to satisfy the constraint.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:kitab-evaluating-llms-constraint-satisfaction-information
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4: p_irr 0.26 (no-context) to 0.33 (self-context); GPT-3.5: p_irr 0.20 to 0.44; first-step
+  irrelevance 0.42 (GPT-4) and 0.47 (GPT-3.5)'
+caveat: The self-context condition uses a maximum token length of 3000, which may affect generation
+  quality differently from the 400-token no-context condition.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1144
+- IC-1145
+- IC-1147

@@ -1,0 +1,27 @@
+id: IC-669
+title: DINOv2's features, when clustered, produce smooth semantic regions but lack instance-level boundary
+  delineation
+description: The paper compares k-means clustering on DINOv2's middle-layer features with CLIP's under
+  identical settings. DINOv2's clustering results appear smoother with larger contiguous blocks sharing
+  similar semantics, but they do not delineate individual object boundaries. On COCO val2017, DINOv2
+  achieves only AP 0.8 (class-agnostic) and 0.2 (class-aware) for instance segmentation, far below SAM
+  and CLIP-based methods. The authors attribute this to DINOv2's self-supervised pretraining objective,
+  which encourages global semantic coherence rather than instance-level discrimination.
+models:
+- ref: model:dinov2
+concepts: []
+sources:
+- ref: source:devil-object-boundary-annotation-free-instance
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods:
+- ref: method:k-means
+  role: primary
+related_work: []
+evidence_type: observational
+key_metric: 'DINOv2: AP 0.8 (class-agnostic), AP 0.2 (class-aware) on COCO val2017 (Table 1)'
+extracted_by: automatic-extraction
+related_findings:
+- IC-667
+- IC-668

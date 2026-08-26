@@ -1,0 +1,33 @@
+id: IC-1374
+title: Counting difficulty in constrained generation increases with text level and constraint strictness,
+  with exact sentence-level character counts being the hardest condition for all five models
+description: The paper decomposes constraint difficulty by counting level and constraint type. Counting
+  characters within a word is easier than within a sentence for all models. Exact equality constraints
+  (e.g., exactly 82 characters in a sentence) are harder than range constraints (e.g., between 10 and
+  15 words per sentence), which are harder than simple upper/lower bounds. Adding a second counting
+  level via logical composition (e.g., at least 20 words AND each word under 6 characters) uniformly
+  degrades performance compared to the single-level version. Tasks word02, sent01, sent02, and para03
+  remain very challenging across all models.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:palm-2
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:collie-systematic-construction-constrained-text-generation
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: Tasks word02, sent01, sent02, para03 remain very challenging across all models; sent03 uniformly
+  trails word01 despite the added constraint being assumed manageable
+caveat: The paper reports these as qualitative trends illustrated in figures rather than giving per-task
+  numeric tables in the main text; specific per-task rates are in figures 6-7.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1373
+- IC-1375

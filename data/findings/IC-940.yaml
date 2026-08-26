@@ -1,0 +1,37 @@
+id: IC-940
+title: CLIP can specify 5 of 8 complex humanoid tasks from single-sentence prompts, failing on tasks
+  requiring discrimination of subtle body-pose differences
+description: 'Using CLIP ViT-BigG/14 as a zero-shot reward model, the authors train a MuJoCo humanoid
+  on 8 tasks specified by single-sentence text prompts. Five tasks (kneeling, lotus position, standing
+  up, arms raised, doing splits) achieve 100% human-evaluated success. Three tasks fail: hands on hips
+  (64%), standing on one leg (0%), and arms crossed (0%). The authors hypothesize the failures stem
+  from CLIP''s inability to discriminate between visually similar body poses (e.g., hands on hips vs.
+  standing) and from physical limitations of the MuJoCo simulation (round feet making one-leg standing
+  difficult). Goal-baseline regularization does not rescue the failing tasks.'
+models:
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:vision-language-models-zero-shot-reward
+datasets:
+- ref: dataset:mujoco-humanoid-v4
+  role: eval
+methods:
+- ref: method:epic-distance
+  role: eval
+related_work:
+- name: Du et al. 2023
+  anchor: https://arxiv.org/abs/2303.07280
+  role: compared-to
+evidence_type: correlational
+key_metric: kneeling 100%, lotus position 100%, standing up 100%, arms raised 100%, doing splits 100%,
+  hands on hips 64%, standing on one leg 0%, arms crossed 0% (human-evaluated success rate over 100
+  trajectories, 4 random seeds)
+caveat: Human evaluation by a single author; the authors note their protocol is 'very basic and might
+  be biased.' The standing-on-one-leg failure may be due to MuJoCo physics (round feet) rather than
+  CLIP's visual discrimination.
+extracted_by: automatic-extraction
+related_findings:
+- IC-939
+- IC-941

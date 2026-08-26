@@ -1,0 +1,36 @@
+id: IC-1584
+title: LLaMA-7B and GPT-J-6B fail to interpret textual emphasis markers, with marked prompting degrading
+  performance substantially
+description: '"When standard emphasis markers (asterisks or double quotes) are added around user-specified
+  spans in the prompt, both models'' performance drops sharply rather than improving. For LLaMA-7B on
+  the JSON formatting task, format accuracy falls from 60.00 (zero-shot) to 18.55 (*-marked) and 4.56
+  (""-marked). For GPT-J-6B, format accuracy falls from 28.83 to 4.44 and 8.81 respectively. The authors
+  attribute this to the rarity of such markers in pre-training data, meaning the models have not learned
+  to treat them as attention cues."'
+models:
+- ref: model:llama
+  variant: variant:llama-7b
+- ref: model:gpt-j
+  variant: variant:gpt-j-6b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:tell-your-model-where-attend-post
+datasets:
+- ref: dataset:bias-in-bios
+  role: eval
+- ref: dataset:counterfact
+  role: eval
+methods:
+- ref: method:zero-shot-prompting
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: 'LLaMA-7B JSON format f.acc: 60.00 (zero-shot) vs 18.55 (*-marked) vs 4.56 (""-marked);
+  GPT-J-6B: 28.83 vs 4.44 vs 8.81'
+caveat: The authors note that emphasis markers rarely appear in massive pre-training data, which may
+  explain the failure; the effect is measured on 5000 test examples per task.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1585
+- IC-1586

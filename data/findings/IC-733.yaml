@@ -1,0 +1,53 @@
+id: IC-733
+title: CoT prompting improves factual accuracy for instruction-tuned LLMs but degrades it for non-instruction-tuned
+  LLMs such as OPT, BLOOM, and LLaMA
+description: The paper evaluates 10 LLMs under four prompting strategies (zero-shot, zero-shot CoT,
+  few-shot, few-shot CoT) on the Pinocchio benchmark. Instruction-tuned models benefit from CoT with
+  an average 2.1% improvement, while non-instruction-tuned models (OPT, BLOOM, LLaMA) show stable or
+  decreased accuracy. The authors attribute this to untuned models producing verbose content considerations
+  under CoT that overshadow the factual discernment task, leading to incorrect label outputs. Overall,
+  LLMs without instruction tuning underperform those with instruction tuning by 16.0%.
+models:
+- ref: model:opt
+  variant: variant:opt-6-7b
+- ref: model:bloom
+  variant: variant:bloom-7b
+- ref: model:llama
+  variant: variant:llama-7b
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+- ref: model:vicuna
+  variant: variant:vicuna-13b
+- ref: model:chatglm-6b
+- ref: model:flan-t5
+  variant: variant:flan-t5-11b
+- ref: model:gpt-3
+  variant: variant:text-davinci-002
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:understanding-factual-knowledge-large-language-models
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: eval
+- ref: method:few-shot-prompting
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'instruction-tuned vs non-instruction-tuned gap: 16.0%; few-shot over zero-shot: 7.3% average
+  improvement; CoT for tuned models: +2.1% average; OPT-6.7B few-shot acc 36.9 vs zero-shot (no output);
+  BLOOM-7B zero-shot acc 29.7 vs zero-shot CoT acc 14.8; LLaMA-7B zero-shot acc 31.8 vs zero-shot CoT
+  acc 22.3'
+caveat: The paper notes that due to limited computing resources, hyperparameter exploration was only
+  done for Vicuna-7B and Vicuna-13B. OPT-6.7B produced no valid outputs under zero-shot settings, so
+  its zero-shot numbers are unavailable.
+extracted_by: automatic-extraction
+related_findings:
+- IC-734
+- IC-735
+- IC-736

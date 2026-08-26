@@ -1,0 +1,36 @@
+id: IC-647
+title: DINOv2's feature-map artifacts cause it to be incompatible with the LOSt unsupervised object
+  discovery method, scoring far below DINO
+description: The LOSt algorithm, which detects objects by gathering information in attention maps, works
+  well on DINO features (61.9 corloc on VOC 2007) but produces degraded performance on DINOv2 features.
+  The paper reports DINOv2 achieving only 35.3/40.2/26.9 corloc on VOC 2007/2012 and COCO 20k, and DeiT-III
+  even lower at 11.7/13.1/10.7. The authors attribute this to the high-norm outlier tokens corrupting
+  the local feature maps that LOSt relies on. The qualitative analysis in Appendix C shows that the
+  LOSt seed expansion score is disrupted by the artifacts in DINOv2 and DeiT-III, while for OpenCLIP
+  the value projection appears to filter out the outliers, explaining its relatively better LOSt performance.
+models:
+- ref: model:dinov2
+- ref: model:dino
+- ref: model:deit-iii
+- ref: model:openclip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:vision-transformers-need-registers
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods:
+- ref: method:lost
+  role: eval
+related_work:
+- ref: method:lost
+  role: builds-on
+evidence_type: observational
+key_metric: 'LOSt corloc: DINOv2 35.3/40.2/26.9 (VOC 2007/2012, COCO 20k); DeiT-III 11.7/13.1/10.7;
+  OpenCLIP 38.8/44.3/31.0; DINO 61.9 (VOC 2007, from Simeoni et al.)'
+caveat: The LOSt numbers in Table 3 are from the authors' reproductions of the training recipes, not
+  the exact released checkpoints. The DINO baseline of 61.9 is taken from Simeoni et al. 2021.
+extracted_by: automatic-extraction
+related_findings:
+- IC-646

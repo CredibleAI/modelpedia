@@ -1,0 +1,44 @@
+id: IC-1342
+title: Assigning socio-demographic personas to LLMs causes significant reasoning performance degradation
+  across all four models studied, manifesting as both explicit abstentions and implicit reasoning errors
+description: 'The paper assigns 19 socio-demographic personas (spanning race, gender, religion, disability,
+  and political affiliation) to four LLMs via system prompts and measures their accuracy on 24 reasoning
+  datasets. For ChatGPT-3.5 (June 2023), 80% of personas show a statistically significant performance
+  drop relative to a ''human'' persona baseline, with drops reaching 64% (physically disabled on high
+  school world history) and 69% (religious on college chemistry). The bias manifests in two ways: explicit
+  abstentions citing stereotypical assumptions (58% of errors for the physically-disabled persona) and
+  implicit reasoning errors on questions where the model does not abstain. The effect is present in
+  all four models but varies in extent: GPT-4-turbo shows bias in 42% of personas, Llama-2-70B-Chat
+  and ChatGPT-3.5 (June) in 80%, and ChatGPT-3.5 (November) in 100%.'
+models:
+- ref: model:gpt-3-5
+- ref: model:gpt-4
+  variant: variant:gpt-4-turbo
+- ref: model:llama-2
+  variant: variant:llama-2-70b-chat
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:bias-runs-deep-implicit-reasoning-biases
+datasets:
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:big-bench-hard
+  role: eval
+- ref: dataset:mbpp
+  role: eval
+methods:
+- ref: method:wilson-s-confidence-interval
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'ChatGPT-3.5 (June): 80% of personas show bias; 64% drop (phys. disabled, high school world
+  history); 69% drop (religious, college chemistry); 33% avg. drop (phys. disabled); 58% of phys. disabled
+  errors are abstentions. GPT-4-turbo: 42% of personas affected. Llama-2-70B-Chat: 80% of personas affected.
+  ChatGPT-3.5 (Nov): 100% of personas affected.'
+caveat: The study uses English-language prompts and datasets only. The persona set is not exhaustive
+  and shows a WEIRD preference. Results are averaged across 3 persona instructions and 3 runs, but one
+  instruction exhibits significantly higher bias than the instruction-averaged results.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1343

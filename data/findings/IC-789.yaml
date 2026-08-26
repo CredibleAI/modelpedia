@@ -1,0 +1,41 @@
+id: IC-789
+title: CLIP retrieval quality in zero-shot compositional image retrieval scales log-linearly with model
+  size from approximately 150M to 2.5B parameters
+description: By swapping the retrieval backbone in the CIR-EVL pipeline with OpenCLIP LAION-2B pretrained
+  models of increasing size, the paper observes a clear log-linear relationship between model capacity
+  and performance on both CIRCO and CIRR. On CIRCO, map@5 rises from 14.94 (ViT-B/32) to 18.57 (ViT-L/14)
+  to 26.77 (ViT-G/14); on CIRR, r@1 rises from 23.94 to 24.55 to 34.65. The authors note this contrasts
+  with prior work (vaze et al. 2023) that found only minimal gains from scaling.
+models:
+- ref: model:clip
+- ref: model:openclip
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:vision-by-language-training-free-compositional
+datasets:
+- ref: dataset:circo
+  role: eval
+- ref: dataset:cirr
+  role: eval
+- ref: dataset:fashion-iq
+  role: eval
+- ref: dataset:genecis
+  role: eval
+methods:
+- ref: method:openclip
+  role: primary
+related_work:
+- ref: dataset:genecis
+  role: compared-to
+evidence_type: correlational
+key_metric: 'CIRCO map@5: 14.94 (ViT-B/32), 18.57 (ViT-L/14), 26.77 (ViT-G/14); CIRR r@1: 23.94, 24.55,
+  34.65; Fashion-IQ avg r@10: 28.29, 28.55, 32.19'
+caveat: Scaling study uses OpenCLIP LAION-2B pretrained weights, which may differ from the original
+  OpenAI CLIP training recipe; the log-linear trend is observed over a limited range of three to four
+  model sizes.
+extracted_by: automatic-extraction
+related_findings:
+- IC-788
+- IC-790
+- IC-791

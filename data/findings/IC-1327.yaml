@@ -1,0 +1,49 @@
+id: IC-1327
+title: GPT-4, GPT-3.5, Llama2, and Vicuna models underperform human annotators on multistep soft reasoning
+  in natural language narratives, with smaller models scoring near random chance
+description: 'The paper evaluates seven released LLMs on 756 multistep soft reasoning examples across
+  three domains (murder mystery, object placements, team allocation) using a CoT+ prompting strategy.
+  GPT-4 achieves the highest accuracy at 80.4/60.9/68.4% across the three domains, but still falls well
+  short of the human majority-vote baseline of 94.1/95.0/100.0%. GPT-3.5-turbo scores 61.6/46.9/40.4%,
+  while Llama2 (70B and 7B) and all Vicuna variants (7B, 13B, 33B) score at or near random chance (50.0/24.6/33.3%).
+  Varying the prompting strategy from regular to CoT to CoT+ to 1-shot/few-shot CoT+ provides limited
+  improvement for GPT-4, with the best result (few-shot CoT+ on team allocation: 89.6%) still below
+  human performance.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:llama-2
+  variant: variant:llama-2-70b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:vicuna
+  variant: variant:vicuna-7b-v1-5
+- ref: model:vicuna
+  variant: variant:vicuna-13b-v1-5
+- ref: model:vicuna
+  variant: variant:vicuna-33b-v1-3
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:musr-testing-limits-chain-thought-multistep
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: compared-to
+related_work:
+- ref: method:chain-of-thought-prompting
+  role: builds-on
+- name: True Detective
+  anchor: https://api.semanticscholar.org/CorpusID:259064331
+  role: compared-to
+evidence_type: correlational
+key_metric: 'GPT-4 CoT+: 80.4/60.9/68.4; GPT-3.5 CoT+: 61.6/46.9/40.4; Llama2 70B: 48.8/42.2/44.8; Llama2
+  7B: 50.8/29.3/36.8; Vicuna 7B: 48.4/29.7/26.4; Vicuna 13B: 50.8/34.4/32.0; Vicuna 33B: 49.6/31.2/30.0;
+  Human majority: 94.1/95.0/100.0; Random: 50.0/24.6/33.3; GPT-4 few-shot CoT+ best: 89.6 (team allocation)'
+caveat: The dataset was generated using GPT-4, so GPT-4 may have some familiarity with the narrative
+  style, though the authors argue the hidden reasoning structure prevents trivial solvability. The human
+  evaluation used only 7 annotators (4 of whom are paper authors).
+extracted_by: automatic-extraction
+related_findings:
+- IC-1328

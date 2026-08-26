@@ -1,0 +1,29 @@
+id: IC-1462
+title: GPT-3.5-turbo is substantially more robust to the generation exploitation attack, with attack
+  success rate of only 7% compared to over 95% for open-source models
+description: The same generation exploitation attack (varying temperature, top-p, presence penalty,
+  and frequency penalty via the OpenAI API) is applied to GPT-3.5-turbo on the MaliciousInstruct benchmark.
+  The attack success rate under default decoding is 0%, and even with all four hyperparameters varied
+  simultaneously, the ASR reaches only 7%. The authors attribute this robustness to content filtering
+  (9 out of 100 prompts time out, suggesting filtering) and more extensive red-teaming by the proprietary
+  provider.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts: []
+sources:
+- ref: source:catastrophic-jailbreak-open-source-llms-via
+datasets:
+- ref: dataset:maliciousinstruct
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'ASR on MaliciousInstruct: default 0%, temperature 3%, top-p 3%, presence penalty 2%, frequency
+  penalty 4%, all 7%'
+caveat: The authors note this is a preliminary experiment; 9 out of 100 prompts experience timeout errors
+  suggesting content filtering may be blocking the attack rather than the model being inherently aligned.
+  The API only exposes four hyperparameters, limiting the attack surface compared to open-source models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1461

@@ -1,0 +1,43 @@
+id: IC-868
+title: Skill-Mix performance degrades with increasing k, and within the Llama-2 family the saturation
+  point increases with model size
+description: 'The paper evaluates ten instruction-tuned models on Skill-Mix(k) for k=2 through k=6,
+  where the model must generate text illustrating k randomly selected skills in a given topic. Performance
+  drops sharply as k increases: most models saturate by k=3 under GPT-4 grading. Within the Llama-2
+  family, which shares training data and methodology, the saturation point rises with size: Llama-2-7b-chat
+  saturates at k=2, while Llama-2-13b-chat and Llama-2-70b-chat saturate at k=3. GPT-4 is the only model
+  that maintains reasonable performance through k=5 and k=6.'
+models:
+- ref: model:llama-2
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:falcon
+  variant: variant:falcon-180b-chat
+- ref: model:xwin-lm-70b-v0-1
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-1
+- ref: model:qwen
+  variant: variant:qwen-14b-chat
+- ref: model:tigerbot-70b-chat
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:skill-mix-flexible-expandable-family-evaluations
+datasets: []
+methods: []
+related_work:
+- name: Arora & Goyal (2023)
+  anchor: https://arxiv.org/abs/2307.15936
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Ratio of full marks (GPT-4 grading): Llama-2-7b-chat k=2 .05, k=3 .00; Llama-2-13b-chat
+  k=2 .22, k=3 .05; Llama-2-70b-chat k=2 .28, k=3 .02; GPT-4 k=2 .94, k=3 .68, k=4 .52, k=5 .36, k=6
+  .29'
+caveat: Falcon-180b-chat was evaluated on only 30 combinations with GPT-4 grading due to computation
+  limits, compared to 100 for other models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-869
+- IC-870
+- IC-871

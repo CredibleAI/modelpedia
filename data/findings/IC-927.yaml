@@ -1,0 +1,42 @@
+id: IC-927
+title: Human ciphers (ASCII, Unicode, Caesar, Morse) bypass the safety alignment of GPT-4 and GPT-3.5-turbo,
+  with more powerful models producing more unsafe responses
+description: 'The paper tests whether encoding unsafe queries in human ciphers (ASCII, Unicode, Caesar,
+  Morse, GBK, Atbash, UTF) can elicit unsafe responses from safety-aligned LLMs. GPT-4 shows notably
+  higher unsafety rates than GPT-3.5-turbo in almost all cipher settings, with ASCII achieving 68.3%
+  unsafety for GPT-4 on English and near-100% in several domains (insult, mental health). Across other
+  LLMs (Claude 2, Falcon-chat, Llama2-chat, Text-davinci-003), cipher understanding varies: only Claude
+  2 handles ASCII (96% valid), none handle Caesar, but all handle SelfCipher. The authors attribute
+  the effect to safety alignment being conducted in natural language and failing to generalize to cipher
+  inputs.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:falcon
+  variant: variant:falcon-chat
+- ref: model:llama-2
+  variant: variant:llama-2-chat
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:gpt-4-too-smart-be-safe
+datasets:
+- ref: dataset:safety-assessment-of-chinese-large-language-models
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'ASCII unsafety rate: 37.2% (turbo, English) vs 68.3% (GPT-4, English); Unicode: 26.6% (turbo)
+  vs 10.7% (GPT-4, Chinese); best English cipher ASCII averaged success rates 23.7% (turbo) and 72.1%
+  (GPT-4); best Chinese cipher Unicode 17.4% (turbo) and 45.2% (GPT-4); Claude 2 ASCII valid 96% unsafe
+  0%; Llama2-chat-70b selfcipher valid 100% unsafe 0%'
+caveat: The paper notes that the more powerful the model, the unsafer the response with ciphers, which
+  the authors frame as a safety concern rather than a model bug. Results are on 199 instances per domain
+  from a Chinese safety benchmark translated to English.
+extracted_by: automatic-extraction
+related_findings:
+- IC-928
+- IC-929

@@ -1,0 +1,55 @@
+id: IC-643
+title: Conditioning CLIP on correct contextual attributes in the text prompt improves zero-shot classification
+  accuracy across 13 image transformations
+description: 'The authors apply 13 image transformations (vertical flip, rotation, blur, noise, fog,
+  etc.) to ImageNet test images and compare four prompting strategies: no attribute, random attribute,
+  wrong attribute, and correct attribute. Conditioning on the ground-truth attribute consistently improves
+  accuracy over the no-attribute baseline, with an average gain of +1.16% across all transformations.
+  Self-inferred attributes (CLIP''s own estimate) yield a similar +1.17% gain. On the full ImageNet
+  test set with ViT-B/16, using the top-4 attribute composition achieves 68.80% versus 66.72% for the
+  single template and 68.32% for 80-template prompt ensembling.'
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:perceptionclip-visual-classification-by-inferring-conditioning
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:imagenet-v2
+  role: eval
+- ref: dataset:imagenet-r
+  role: eval
+- ref: dataset:imagenet-a
+  role: eval
+- ref: dataset:imagenet-sketch
+  role: eval
+- ref: dataset:cub-200-2011
+  role: eval
+- ref: dataset:eurosat
+  role: eval
+- ref: dataset:places365
+  role: eval
+- ref: dataset:flowers-102
+  role: eval
+- ref: dataset:food-101
+  role: eval
+- ref: dataset:oxford-pets
+  role: eval
+methods:
+- ref: method:prompt-ensembling
+  role: compared-to
+related_work:
+- ref: method:prompt-ensembling
+  role: compared-to
+evidence_type: correlational
+key_metric: 'average accuracy gain +1.16% (correct z) and +1.17% (self-inferred z) across 13 transformations
+  on ImageNet; ViT-B/16 ImageNet: 68.80% (top-4 attributes) vs 66.72% (single template) vs 68.32% (80
+  templates)'
+caveat: 'The paper notes sensitivity to text description wording: using different synonyms for the same
+  attribute can have non-trivial effects. Ablation with random strings of equal length shows a smaller
+  but non-zero gain, suggesting some benefit from added tokens.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-642
+- IC-644

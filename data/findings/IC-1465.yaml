@@ -1,0 +1,26 @@
+id: IC-1465
+title: InstructUIE-11B achieves 81.16% average F1 on 20 in-domain NER datasets and 49.4% on out-of-domain
+  evaluation
+description: InstructUIE, a multi-task instruction-tuned system based on FLAN-T5 11B that uses supervised
+  NER examples, is evaluated in both in-domain and out-of-domain settings. In the in-domain setting
+  (Table 2, 20 datasets from Wang et al. 2023a), it achieves 81.16% average F1. In the out-of-domain
+  setting (Table 3, excluding CrossNER and MIT datasets from training), it achieves 49.4% average F1.
+  The paper notes a critical bug in InstructUIE's original evaluation script that inflates F1 for passages
+  without entities, and re-evaluated using the released checkpoint.
+models:
+- ref: model:instructuie
+concepts: []
+sources:
+- ref: source:universalner-targeted-distillation-from-large-language
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 81.16% avg F1 (in-domain, 20 datasets); 49.4% avg F1 (out-of-domain, 7 domains)
+caveat: The original InstructUIE evaluation script contained a bug where 'none' was added as a placeholder
+  entity for entity-free passages, inflating F1; the paper re-evaluated using the released checkpoint
+  to correct this.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1463
+- IC-1464

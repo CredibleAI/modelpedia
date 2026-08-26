@@ -1,0 +1,30 @@
+id: IC-735
+title: GPT-3.5-turbo's factual verification performance drops substantially under adversarial modifications,
+  with man-made adversarial examples causing the largest decline
+description: 'The paper divides adversarial questions into three subsets: auto-generated from the corpus,
+  manually modified synthesized questions, and artificially created adversarial questions. GPT-3.5-turbo
+  under few-shot CoT shows average F1 of 83.95 on synthetic data, 79.45 on modified data, and 63.55
+  on man-made data. The authors note that auto-generated questions often contain explicit positive or
+  negative words that hint at the outcome, which LLMs can exploit, while manually crafted adversarial
+  examples remove these cues.'
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:understanding-factual-knowledge-large-language-models
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'avg F1: synthetic data 83.95, modified data 79.45, man-made data 63.55'
+caveat: Analysis is reported only for GPT-3.5-turbo. The paper does not report per-category breakdowns
+  for the adversarial subsets in the text.
+extracted_by: automatic-extraction
+related_findings:
+- IC-733
+- IC-734
+- IC-736

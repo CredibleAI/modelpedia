@@ -1,0 +1,33 @@
+id: IC-1148
+title: ChatGPT and InstructGPT exhibit positional bias in their reliance on in-context examples, with
+  ChatGPT showing decreasing attention by position and InstructGPT showing a U-shaped pattern
+description: 'Using an interpreter prompt that asks the model to identify which in-context example most
+  influenced its prediction, the paper counts how often each of 16 positions is cited across 8 NLU tasks.
+  ChatGPT shows a monotonic decrease: the second example is cited over 35,000 times while the last receives
+  around 5,000. InstructGPT shows a U-shaped curve, attending to the first and last examples while attention
+  degrades significantly in the middle. The authors note this is consistent with Liu et al. (2023) on
+  long-context degradation.'
+models:
+- ref: model:chatgpt
+- ref: model:instructgpt
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:supervised-knowledge-makes-large-language-models
+datasets:
+- ref: dataset:glue-x
+  role: eval
+methods: []
+related_work:
+- name: 'Lost in the middle: how language models use long contexts'
+  anchor: https://arxiv.org/abs/2307.03172
+  role: context
+evidence_type: correlational
+key_metric: 'ChatGPT: 2nd in-context example cited over 35,000 times, last example around 5,000 times;
+  InstructGPT: U-shaped occurrence with peak at positions 1 and 16, trough in the middle'
+caveat: The measurement relies on the model's self-reported identification of the influential example
+  via an interpreter prompt, which may not perfectly reflect actual internal attention.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1149
+- IC-1150

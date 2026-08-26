@@ -1,0 +1,33 @@
+id: IC-1200
+title: GPT-2-XL's untruncated next-token log-probability matrix has rank saturating at its hidden dimensionality
+  of 1600, while truncation sampling produces post-truncation distributions whose estimated rank grows
+  far beyond 1600
+description: The authors run GPT-2-XL on OpenWebText prefixes, concatenate the conditional log-distributions,
+  and compute the rank of the resulting matrix. Without truncation (ancestral sampling), the rank saturates
+  at 1600, matching the model's hidden dimensionality as predicted by the softmax bottleneck theory.
+  With nucleus, η, or ε truncation, the estimated rank continues to grow with the number of prefixes,
+  reaching well past 1600 (up to ~5000 in the figure). This confirms that truncation sampling effectively
+  breaks the low-rank constraint on the model's output space.
+models:
+- ref: model:gpt-2
+concepts: []
+sources:
+- ref: source:closing-curious-case-neural-text-degeneration
+datasets:
+- ref: dataset:openwebtext
+  role: eval
+methods:
+- ref: method:nucleus-sampling
+  role: compared-to
+related_work:
+- name: Breaking the softmax bottleneck (Yang et al. 2018)
+  anchor: https://openreview.net/forum?id=hkwzsg-cz
+  role: builds-on
+evidence_type: correlational
+key_metric: GPT-2-XL hidden dimensionality 1600; untruncated rank saturates at 1600; truncated (nucleus,
+  η, ε) rank estimate grows to ~5000 at 10000 prefixes
+caveat: Limited by the number of prefixes that can be processed (matrix is 50257-dimensional per prefix);
+  rank is estimated, not exact; only GPT-2-XL tested
+extracted_by: automatic-extraction
+related_findings:
+- IC-1199

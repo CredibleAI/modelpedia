@@ -1,0 +1,38 @@
+id: IC-989
+title: Tool selection CSR degrades as the candidate tool list grows from 5 to 15 tools, and performance
+  varies by user scenario
+description: 'Across all eight LLMs, the correct selection rate drops as the number of candidate tools
+  increases from top-5 to top-10 to top-15, with the steepest decline between top-5 and top-10. For
+  example, ChatGPT zero-shot CSR falls from 88.89 (top-5) to 77.39 (top-10) to 75.08 (top-15); Vicuna-33b
+  drops from 92.00 to 73.23 to 70.90. Performance also varies by user scenario: LLMs generally score
+  highest for elderly and artists-and-designers tool sets and lowest for student-related tools, indicating
+  a domain-dependent bias in tool selection.'
+models:
+- ref: model:chatgpt
+- ref: model:chatglm2
+- ref: model:llama-2
+- ref: model:vicuna
+- ref: model:koala
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:metatool-benchmark-large-language-models-deciding
+datasets: []
+methods: []
+related_work:
+- name: API-Bank
+  anchor: https://arxiv.org/abs/2304.08244
+  role: compared-to
+- name: ToolLLM
+  anchor: https://arxiv.org/abs/2307.16789
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Zero-shot CSR by list size (popularity scenarios): ChatGPT 88.89/77.39/75.08 (top5/10/15);
+  Vicuna-33b 92.00/73.23/70.90; ChatGLM2 82.29/56.19/48.07; Llama2-13b 42.00/43.72/38.93.'
+caveat: The scenario-based tool lists are manually curated (10 tools per scenario), and the popularity-based
+  lists are ranked by the number of merged tools, which may not reflect real-world tool popularity.
+extracted_by: automatic-extraction
+related_findings:
+- IC-986
+- IC-987
+- IC-988

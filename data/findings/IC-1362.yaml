@@ -1,0 +1,26 @@
+id: IC-1362
+title: State-of-the-art text anonymization is insufficient to prevent GPT-4 from inferring personal
+  attributes
+description: 'After anonymizing all PersonalReddit comments with Azure Language Service (removing locations,
+  persons, organizations, dates, ages, numbers, currencies), GPT-4''s accuracy decreases but remains
+  substantial. Location accuracy drops from approximately 86% to approximately 55%. The anonymization
+  effect diminishes with hardness: 41.1% accuracy decrease at hardness 1 but only 7.7% at hardness 5,
+  indicating the model relies on subtle contextual and linguistic cues that anonymizers do not remove.'
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:beyond-memorization-violating-privacy-via-inference
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4 location: ~86% to ~55% after anonymization; accuracy decrease by hardness: 41.1%
+  (h1), 19.0% (h2), 13.6% (h3), 31.6% (h4), 7.7% (h5)'
+caveat: Only 5 of 8 attributes were supported by the anonymizer (location, age, occupation, place of
+  birth, income); the anonymizer threshold was set to 0.4
+extracted_by: automatic-extraction
+related_findings:
+- IC-1361
+- IC-1363
+- IC-1364

@@ -1,0 +1,38 @@
+id: IC-750
+title: Open-source models without safety training are significantly more vulnerable to jailbreak attacks
+  than safety-aligned proprietary models
+description: On a 50-conversation jailbreak benchmark, Vicuna-13b-v1.5 (66% success) and Alpaca-13b
+  (74% success) are far more vulnerable than GPT-4 (34%), GPT-3.5-turbo (34%), Claude-2 (18%), and Llama-2-13b-chat
+  (16%). The paper identifies specific jailbreak techniques (content warning framing, educational purpose
+  framing, token replacement, translation) that bypass safety measures even on proprietary models like
+  GPT-4 and Claude.
+models:
+- ref: model:vicuna
+  variant: variant:vicuna-13b-v1-5
+- ref: model:alpaca
+  variant: variant:alpaca-13b
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:llama-2
+  variant: variant:llama-2-13b-chat
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:lmsys-chat-1m-large-scale-real
+datasets:
+- ref: dataset:lmsys-chat-1m
+  role: source
+methods:
+- ref: method:openai-moderation-api
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'jailbreak success rate: Alpaca-13b 74%, Vicuna-13b-v1.5 66%, GPT-3.5-turbo 34%, GPT-4 34%,
+  Claude-2 18%, Llama-2-13b-chat 16%'
+caveat: The benchmark is small (50 conversations) and jailbreak success is defined by the OpenAI moderation
+  API flagging the model's response, which the authors note may have low recall.
+extracted_by: automatic-extraction
+related_findings:
+- IC-751
+- IC-752

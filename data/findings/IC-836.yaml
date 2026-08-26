@@ -1,0 +1,32 @@
+id: IC-836
+title: CLIP zero-shot predictions exhibit demographic bias on FairFace when using attribute-unrelated
+  text prompts
+description: On the FairFace dataset, using ten text prompts unrelated to facial or sensitive attributes
+  (e.g., 'a photo of a criminal person'), zero-shot CLIP shows high maxSkew@1000 for both sex and race.
+  CLIP ViT-B/32 achieves maxSkew of 0.206 (sex) and 0.743 (race), while CLIP ViT-L/14 achieves 0.206
+  (sex) and 0.768 (race). This indicates that CLIP's representations encode race and sex information
+  that leaks into predictions for unrelated target attributes.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:fairerclip-debiasing-clip-s-zero-shot
+datasets:
+- ref: dataset:fairface
+  role: eval
+methods: []
+related_work:
+- name: Orth-Proj
+  anchor: https://arxiv.org/abs/2302.00070
+  role: compared-to
+- name: Orth-Cali
+  anchor: https://arxiv.org/abs/2302.00070
+  role: compared-to
+evidence_type: observational
+key_metric: 'maxSkew@1000: CLIP ViT-B/32 sex 0.206, race 0.743; CLIP ViT-L/14 sex 0.206, race 0.768'
+extracted_by: automatic-extraction
+related_findings:
+- IC-834
+- IC-835
+- IC-837

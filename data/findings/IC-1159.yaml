@@ -1,0 +1,46 @@
+id: IC-1159
+title: GPT-4 is a strong inductive hypothesis proposer, achieving high accuracy on inductive reasoning
+  benchmarks when its generated rules are applied by a symbolic interpreter
+description: 'Using iterative hypothesis refinement (t=3, n=5), GPT-4 achieves 82.5% raw accuracy on
+  ACRE, 93.3% on MiniScan, 71.2% on List Functions, and 18.7% on MiniARC, substantially outperforming
+  standard IO prompting (64.0%, 61.7%, 65.1%, 33.1%) and self-consistency prompting. The approach also
+  enables better OOD generalization: on List Functions OOD, rule prompting achieves 65.7% raw accuracy
+  versus 46.1% for IO prompting. The key component is the symbolic interpreter providing accurate feedback;
+  replacing it with the LM itself (self-refine) degrades performance substantially.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+concepts: []
+sources:
+- ref: source:phenomenal-yet-puzzling-testing-inductive-reasoning
+datasets:
+- ref: dataset:acre
+  role: eval
+- ref: dataset:miniscan
+  role: eval
+- ref: dataset:miniarc
+  role: eval
+methods:
+- ref: method:hypothesis-refinement
+  role: primary
+- ref: method:self-consistency
+  role: compared-to
+- ref: method:self-refine
+  role: compared-to
+related_work:
+- name: 'Hypothesis search: inductive reasoning with language models'
+  anchor: https://arxiv.org/abs/2309.05660
+  role: compared-to
+evidence_type: correlational
+key_metric: 'GPT-4 t=3,n=5 raw accuracy: ACRE 82.5%, MiniScan 93.3%, List Functions 71.2%, MiniARC 18.7%;
+  task accuracy: 59.0%, 85.0%, 61.2%, 14.6%. IO prompting raw: 64.0%, 61.7%, 65.1%, 33.1%. OOD List
+  Functions: rule 65.7% vs IO 46.1%.'
+caveat: The authors note that MiniARC performance is far from optimal for all methods due to limited
+  visual understanding in text-only models, and that some MiniARC tasks are heavily dependent on pattern
+  matching where IO prompting may be more effective. They also note they did not exhaustively tune hyperparameters.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1157
+- IC-1158

@@ -1,0 +1,38 @@
+id: IC-1201
+title: CLIP-ViT-L/14 image features support 200-way zero-shot EEG-based object recognition better than
+  ViT-B/16 or ResNet-50 features when used as a frozen encoder in a contrastive learning framework
+description: The paper uses three released image encoders as frozen feature extractors in a contrastive
+  learning pipeline that aligns image features with EEG features via cosine similarity. CLIP-ViT-L/14
+  (pre-trained on 400M image-text pairs) achieves the highest average top-1 accuracy of 13.8% and top-5
+  of 39.5% on the 200-way zero-shot task. Pre-trained ViT-B/16 achieves 12.1% top-1 (1.7% lower, p >
+  0.05), and pre-trained ResNet-50 achieves 8.8% top-1 (6.9% lower, p < 0.001). Notably, pre-training
+  on ImageNet-21k+1k improves ViT-B/16 by 4.2% over random initialization (p < 0.01), but pre-training
+  on ImageNet-1k degrades ResNet-50 by 1.9% (p < 0.05). In the appendix, EVA-CLIP pre-trained on LAION-2B
+  further improves to 18.7% top-1 and 47.6% top-5.
+models:
+- ref: model:clip
+- ref: model:vit
+- ref: model:resnet
+- ref: model:eva-clip
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:decoding-natural-images-from-eeg-object
+datasets:
+- ref: dataset:gifford-et-al-eeg-dataset
+  role: eval
+methods:
+- ref: method:cosine-similarity
+  role: eval
+related_work:
+- name: BRAVL
+  anchor: https://doi.org/10.1109/tpami.2023.3263181
+  role: compared-to
+evidence_type: correlational
+key_metric: CLIP top-1 13.8%, top-5 39.5%; ViT-B/16 (pre-trained) top-1 12.1%, top-5 29.4%; ResNet-50
+  (pre-trained) top-1 8.8%, top-5 17.3%; ViT-B/16 (non-pre-trained) top-1 7.9%; ResNet-50 (non-pre-trained)
+  top-1 6.9%; EVA-CLIP top-1 18.7%, top-5 47.6%
+caveat: The image encoder is frozen and only the EEG encoder is trained; the comparison isolates the
+  image encoder's contribution but the overall system performance also depends on the authors' TSConv
+  EEG encoder. The ViT vs CLIP gap is not statistically significant (p > 0.05).
+extracted_by: automatic-extraction

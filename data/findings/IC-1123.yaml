@@ -1,0 +1,49 @@
+id: IC-1123
+title: All seven published concept erasure methods applied to Stable Diffusion 1.4 can be circumvented
+  by learned word embeddings, demonstrating that targeted concepts are input-filtered rather than truly
+  removed from the model
+description: The paper applies a concept inversion (CI) attack—learning a special word embedding via
+  textual inversion—to seven published erasure methods (ESD, UCE, NP, SLD, SA, FMN, AC) applied to SD
+  1.4. In every case, the learned embedding recovers the supposedly-erased concept with no weight modifications
+  to the erased model. Across four concept categories (art style, object, identity, NSFW), the recovered
+  outputs match or exceed the original SD 1.4 quality. The learned embeddings also transfer back to
+  the unmodified SD 1.4, confirming that the erasure methods suppress the concept only for specific
+  input embeddings rather than removing the underlying capability.
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-1-4
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-2-0
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:circumventing-concept-erasure-methods-text-image
+datasets:
+- ref: dataset:i2p
+  role: eval
+- ref: dataset:mnist
+  role: eval
+- ref: dataset:laion-5b
+  role: source
+methods:
+- ref: method:giphy-celebrity-detector
+  role: eval
+- ref: method:nudenet
+  role: eval
+- ref: method:clip
+  role: eval
+related_work:
+- name: Negative Prompt
+  anchor: https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Negative-prompt
+  role: compared-to
+- ref: method:textual-inversion
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Art: Likert score 1.31 (erased) to 3.85 (CI); Objects: avg accuracy 13.68 to 68.8; ID:
+  avg accuracy 12.52 to 67.13; NSFW: avg detected body parts 26.2 to 170.93; SD 2.0 (Brad Pitt): accuracy
+  96.6% original, drops to 17.4%/28.2% with AC/SLD, recovers to 89.8%/54.4% with CI'
+caveat: The attack requires white-box access to model weights and knowledge of the erasure method. SLD-max
+  is the most resistant variant but degrades image quality on unrelated prompts. A small number of failure
+  cases exist where CI does not fully recover the concept, but those models also produce artifacts on
+  unrelated prompts.
+extracted_by: automatic-extraction

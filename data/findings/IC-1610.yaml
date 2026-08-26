@@ -1,0 +1,35 @@
+id: IC-1610
+title: Llama-2-7b-chat underperforms on small molecule editing tasks due to limited domain-specific
+  pretraining
+description: When used as the backbone in the ChatDrug framework for 28 small molecule editing tasks
+  (16 single-objective, 12 multi-objective), Llama-2-7b-chat outperforms baseline methods on only 7
+  of the 28 tasks. The authors attribute this to the model not being well pretrained on small molecule
+  domain datasets. In contrast, the same model performs adequately on peptide and protein editing tasks,
+  indicating the limitation is domain-specific rather than a general capability gap.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:conversational-drug-editing-using-retrieval-domain
+datasets:
+- ref: dataset:zinc
+  role: source
+methods:
+- ref: method:moleculestm
+  role: compared-to
+- ref: method:pca
+  role: compared-to
+related_work:
+- ref: method:moleculestm
+  role: compared-to
+evidence_type: correlational
+key_metric: 'outperforming on 7 out of 28 small molecule tasks; e.g. task 101 (more soluble in water,
+  loose threshold): 61.87 ± 2.67 hit ratio vs. 94.13 ± 1.04 for GPT-3.5-turbo'
+caveat: The authors state the reason 'may be' limited domain pretraining; this is a hypothesis, not
+  a verified cause. Performance is measured within the ChatDrug framework, not in isolation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1611
+- IC-1612

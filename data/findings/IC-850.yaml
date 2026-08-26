@@ -1,0 +1,38 @@
+id: IC-850
+title: A partial SFT phase (40% of steps, 1% of samples) before RFT allows GPT-2 and T5-base to reach
+  96% of the reward achieved with full SFT+RFT, by reducing the number of inputs with vanishing gradients
+description: On NarrativeQA (GPT-2), ToTTo, and CommonGen (T5-base), the paper shows that performing
+  a reduced initial SFT phase before RFT substantially boosts RFT efficacy. Using only 40% of the SFT
+  optimization steps and as few as 1% of the labeled input samples, RFT reaches 96% of the reward achieved
+  when SFT is performed over all samples and steps. The mechanism is that even this small SFT phase
+  considerably reduces the number of inputs with small reward standard deviation (i.e., vanishing expected
+  gradient), after which RFT becomes roughly 5 to 18 times more potent.
+models:
+- ref: model:gpt-2
+- ref: model:t5
+  variant: variant:t5-base
+concepts: []
+sources:
+- ref: source:vanishing-gradients-reinforcement-finetuning-language-models
+datasets:
+- ref: dataset:narrativeqa
+  role: eval
+- ref: dataset:totto
+  role: eval
+- ref: dataset:commongen
+  role: eval
+methods:
+- ref: method:ppo
+  role: primary
+related_work:
+- ref: dataset:grue
+  role: builds-on
+evidence_type: correlational
+key_metric: '40% SFT steps + 1% samples: RFT reaches 96% of full SFT+RFT reward. RFT efficacy (reward
+  after minus before RFT) increases 5 to 18 times after initial SFT phase.'
+caveat: Results are on three GRUE datasets (NarrativeQA, ToTTo, CommonGen) with small-to-moderate models;
+  the authors note the investigation of solutions is not exhaustive and findings may not carry over
+  to larger models or iterative human feedback pipelines.
+extracted_by: automatic-extraction
+related_findings:
+- IC-849

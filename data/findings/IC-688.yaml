@@ -1,0 +1,36 @@
+id: IC-688
+title: GPT-3.5-turbo-instruct-0914 shows sharp phase transitions in in-context learning of simple formal
+  languages, transitioning from random generation to deterministic pattern repetition as context length
+  increases
+description: When given a prompt to generate samples from a weighted coin, and the context contains
+  a repeating formal language pattern such as (011)^n, gpt-3.5-turbo-instruct-0914 initially generates
+  subjectively random sequences for small context lengths |x|, then sharply transitions to deterministically
+  repeating the pattern. The predictive probability p(y in c | x) assigned to valid continuations of
+  the concept rises from near 0 to near 1 over a narrow range of |x|. In randomness judgment tasks,
+  the model's confidence that a sequence is random drops sharply from high to near 0 as |x| increases,
+  across 9 different binary concepts. The transition is s-shaped, consistent with Bayesian model selection
+  rather than model averaging.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-instruct
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+concepts: []
+sources:
+- ref: source:context-learning-dynamics-random-binary-sequences
+datasets:
+- ref: dataset:mmlu
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: At prediction depth d=6, only 3 out of 64 possible length-6 binary sequences match concept
+  c=(011)^n; p(y in c|x) transitions from near 0 to near 1 as |x| increases; in judgment tasks, p(y=random|x)
+  drops from high confidence to near 0.0 across 9 concepts
+caveat: The ICL curves for longer concepts are smoother for text-davinci-003 and do not converge to
+  p(y|x) approximately 1 as they do for gpt-3.5-turbo-instruct-0914. The authors do not explore the
+  reason for this distinction. The paper notes that with p(tails)=50% specifically, the model defaults
+  to repeating 'heads, tails' regardless of the formal language in context.
+extracted_by: automatic-extraction
+related_findings:
+- IC-687
+- IC-689

@@ -1,0 +1,42 @@
+id: IC-1155
+title: ViT-B/16 (ImageNet-21k) fine-tuned with VPT outperforms full fine-tuning on 16 of 19 VTAB-1k
+  tasks, with the advantage concentrated in high-task-disparity and similar-distribution scenarios and
+  narrowing as downstream data grows
+description: The paper compares visual prompt tuning (VPT) against full fine-tuning (FT) on the released
+  ViT-B/16 checkpoint pretrained on ImageNet-21k, across all 19 tasks in the VTAB-1k benchmark. VPT
+  wins 16/19 tasks (6/7 natural, 2/4 specialized, 8/8 structured). The advantage is strongest when the
+  downstream task objective differs substantially from classification (e.g., counting, distance) or
+  when the data distribution is similar to ImageNet. As the downstream training set grows from 400 to
+  20,000 samples, the gap closes and FT surpasses VPT in 9 of 12 plotted cases. One-shot experiments
+  confirm VPT's advantage in low-data regimes (13/19 tasks). Similar patterns are observed for Swin-Base,
+  MAE-pretrained ViT-B/16, and MoCo v3-pretrained ViT-B/16 in the appendix.
+models:
+- ref: model:vit
+  variant: variant:vit-b-16
+- ref: model:swin-transformer
+  variant: variant:swin-base
+concepts: []
+sources:
+- ref: source:facing-elephant-room-visual-prompt-tuning
+datasets:
+- ref: dataset:vtab-1k
+  role: eval
+- ref: dataset:imagenet-21k
+  role: source
+methods:
+- ref: method:visual-prompt-tuning
+  role: primary
+- ref: method:fid
+  role: eval
+related_work:
+- ref: method:visual-prompt-tuning
+  role: builds-on
+evidence_type: correlational
+key_metric: 'VPT mean accuracy 79.53 vs FT 75.19 on VTAB-1k natural; VPT 56.09 vs FT 48.07 on VTAB-1k
+  structured; VPT wins 16/19 tasks; one-shot: VPT 56.94 vs FT 41.66 on natural; FT surpasses VPT in
+  9/12 cases at high data scale'
+caveat: The paper notes that not all datasets support all data-scale combinations due to insufficient
+  samples, and that one-shot results may be affected by randomness in the single training example selection.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1156

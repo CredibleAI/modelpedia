@@ -1,0 +1,36 @@
+id: IC-785
+title: Different released diffusion models produce images with distinguishable probability signatures,
+  enabling source attribution
+description: 'The authors generated 100 images each from Dreamlike Photoreal 2.0, OpenJourney, and Stable
+  Diffusion 1.5, plus 100 real COCO images, all from the same 100 captions. They computed CAS using
+  each model on all images. CAS is significantly higher when the scoring model matches the generating
+  model (diagonal: 189.90, 171.81, 163.24) than when it does not (off-diagonal: 32.39–121.80). This
+  enables source detection at 0.90 accuracy and fake detection at 0.92 accuracy using a 3-layer MLP
+  on CAS values.'
+models:
+- ref: model:dreamlike-photoreal-2-0
+- ref: model:openjourney
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v1-5
+- ref: model:stable-diffusion
+  variant: variant:realistic-vision-1-4
+- ref: model:stable-diffusion
+  variant: variant:epic-diffusion
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-2-1
+concepts: []
+sources:
+- ref: source:cas-probability-based-approach-universal-condition
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Table 5: dp2.0/dp2.0=189.90, oj/oj=171.81, sd1.5/sd1.5=163.24 (diagonal) vs. dp2.0/sd1.5=32.39,
+  oj/sd1.5=51.04, sd1.5/dp2.0=72.50 (off-diagonal); Table 8: source detection accuracy 0.90'
+caveat: Evaluated on 100 captions from COCO; the MLP classifier is trained on only 100 samples per model;
+  the authors note this is a small-scale experiment demonstrating potential.
+extracted_by: automatic-extraction
+related_findings:
+- IC-783
+- IC-784
+- IC-786

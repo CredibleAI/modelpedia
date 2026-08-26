@@ -1,0 +1,44 @@
+id: IC-716
+title: Factual information deleted from GPT-J, LLaMA-2, and GPT-2-XL via ROME or MEMIT is recoverable
+  by sampling outputs on automatically generated rephrased prompts, with up to 56% extraction success
+  at budget b=20
+description: 'The paper generates rephrased versions of the edited prompt using the DIPPER-paraphraser-xxl
+  model and samples the edited model''s outputs across these rephrases. The ''deleted'' answer appears
+  among the top-b sampled candidates in a substantial fraction of cases: 29.02% for GPT-J with ROME
+  on CounterFact, 56.14% for LLaMA-2-7B with ROME on CounterFact, and 50.43% for GPT-2-XL with MEMIT
+  on CounterFact, all at budget b=20. The paper confirms that a data-augmentation-based defense (editing
+  on the same paraphrases) does not reduce attack success when the attack uses different paraphrases,
+  and that making edits more aggressive to suppress the blackbox attack causes severe damage to model
+  knowledge (random Δ-acc 4.7, neighborhood Δ-acc 27.8).'
+models:
+- ref: model:gpt-j
+- ref: model:llama-2
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:sensitive-information-be-deleted-from-llms
+datasets:
+- ref: dataset:counterfact
+  role: eval
+- ref: dataset:zsre
+  role: eval
+methods:
+- ref: method:dipper-paraphraser-xxl
+  role: supporting
+- ref: method:rome
+  role: primary
+- ref: method:memit
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 29.02% (GPT-J, ROME+empty resp, input rephrasing, b=20, CounterFact); 56.14% (LLaMA-2-7B,
+  ROME+empty resp, input rephrasing, b=20, CounterFact); 50.43% (GPT-2-XL, MEMIT+empty resp, input rephrasing,
+  b=20, CounterFact)
+caveat: The rephrasing model (DIPPER-paraphraser-xxl) is a specific off-the-shelf model; the defense
+  fails only when attack paraphrases differ from defense paraphrases; aggressive editing to suppress
+  the attack causes Δ-acc of 4.7 (random) and 27.8 (neighborhood).
+extracted_by: automatic-extraction
+related_findings:
+- IC-715

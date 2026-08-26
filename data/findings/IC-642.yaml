@@ -1,0 +1,28 @@
+id: IC-642
+title: CLIP can infer contextual attributes (orientation, illumination, etc.) from images with approximately
+  74% accuracy on a binary task
+description: 'The authors apply one of thirteen image transformations to half of ImageNet test images,
+  creating a binary classification task (e.g., upright vs. upside-down). Using two approximations of
+  p(z|x) (classattr and pureattr), CLIP identifies the correct attribute value. The average accuracy
+  across all thirteen attributes is 74.28% (classattr) and 73.83% (pureattr), well above the 50% random
+  baseline. Some attributes are easier to infer (frost: 89.11%, fog: 93.95%) while others are harder
+  (blur: 62.91%, bright: 56.98%).'
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:perceptionclip-visual-classification-by-inferring-conditioning
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: average inference accuracy 74.28% (classattr) and 73.83% (pureattr) across 13 attributes
+  on ImageNet; range from 56.98% (bright, classattr) to 93.95% (fog, pureattr)
+caveat: The task is binary (attribute present or not), so 50% is the random baseline; the paper notes
+  that inferring attributes may be easier than determining the object class.
+extracted_by: automatic-extraction
+related_findings:
+- IC-643
+- IC-644

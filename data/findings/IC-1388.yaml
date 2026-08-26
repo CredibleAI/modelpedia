@@ -1,0 +1,31 @@
+id: IC-1388
+title: In LLaMA-13B, feed-forward layers are more critical than attention layers for fact recall, while
+  both are equally important for in-context learning
+description: The authors selectively prune only attention layers or only feed-forward (FFW) layers in
+  LLaMA-13B and measure the effect on fact recall (close-book TriviaQA) and ICL (linear classification).
+  Pruning 60% of FFW parameters causes 14% more accuracy degradation on fact recall than pruning 60%
+  of attention parameters. For ICL, the two module types show similar importance. This suggests fact
+  recall is stored more heavily in FFW layers while ICL relies on both.
+models:
+- ref: model:llama
+concepts: []
+sources:
+- ref: source:cost-scaling-down-large-language-models
+datasets:
+- ref: dataset:triviaqa
+  role: eval
+methods:
+- ref: method:sparsegpt
+  role: primary
+related_work:
+- name: Dai et al. 2021 (Knowledge neurons in pretrained transformers)
+  anchor: https://arxiv.org/abs/2104.08696
+  role: context
+evidence_type: interventional
+key_metric: '"pruning 60% ffw layers lead to 14% more accuracy degradation than pruning 60% of attention
+  layers" on TriviaQA close-book'
+caveat: '"preliminary results" (as stated in the main text); single model (LLaMA-13B only)'
+extracted_by: automatic-extraction
+related_findings:
+- IC-1386
+- IC-1387

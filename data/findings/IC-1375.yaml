@@ -1,0 +1,26 @@
+id: IC-1375
+title: GPT-4's constraint satisfaction improves by approximately 20% after one round of automated feedback
+  but plateaus at 66% even after three additional rounds
+description: 'The paper engages GPT-4 in a generation-feedback dialogue where automated natural language
+  feedback (e.g., ''you generated a word with 3 character v and 4 character i'') is provided after each
+  round. GPT-4 shows a significant 20% improvement after the second round, but performance plateaus
+  at 66% after three further rounds, comparable to pass@5 with i.i.d. sampling. Improvement varies by
+  task: word03''s rate changes from 62.1% to 10%, while word02, sent01, and sent02 remain challenging
+  throughout.'
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:collie-systematic-construction-constrained-text-generation
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 20% improvement after second round of feedback; plateaus at 66% after three additional rounds;
+  comparable to pass@5 using i.i.d. sampling
+caveat: Only GPT-4 was tested in the feedback loop; the paper does not test whether other models show
+  similar or different feedback dynamics.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1373
+- IC-1374

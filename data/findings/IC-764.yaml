@@ -1,0 +1,44 @@
+id: IC-764
+title: GPT-4 and GPT-3.5 make frequent errors answering questions about their own generated text, underperforming
+  humans in interrogative evaluation
+description: In the interrogative evaluation, GPT-4 and GPT-3.5 first generate content (stories, summaries,
+  dialogue continuations) and are then asked multiple-choice questions about that same generated content.
+  Despite excelling at generation, the models make frequent errors in answering these questions, while
+  humans consistently achieve higher accuracy. The paper notes that humans are assumed to answer questions
+  about their own generations with near-perfect accuracy, so the true gap is likely larger. Qualitative
+  examples show GPT-4 contradicting itself and misreading details of its own stories.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:generative-ai-paradox-it-create-it
+datasets:
+- ref: dataset:xsum
+  role: eval
+- ref: dataset:mutual
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+- ref: dataset:colie
+  role: eval
+methods:
+- ref: method:zero-shot-prompting
+  role: primary
+related_work:
+- name: Madaan et al. 2023 (Self-Refine)
+  anchor: https://arxiv.org/abs/2303.17651
+  role: context
+- name: Agrawal et al. 2023
+  anchor: https://arxiv.org/abs/2305.18248
+  role: context
+evidence_type: correlational
+caveat: The human baseline assumes near-perfect accuracy on questions about one's own generations rather
+  than directly measuring it. The humans in the study are not experts; the authors anticipate the gap
+  would widen with human experts. The study focuses on a small set of the most popular models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-762
+- IC-763
+- IC-765

@@ -1,0 +1,48 @@
+id: IC-1519
+title: Topic and style biases in LLaMA 2 7B are learned like simple features (rapidly, with minimal
+  capacity, concentrated at the first few tokens, magnified by learning rate) while factual knowledge
+  is learned like complex features (slowly, requiring significant capacity, uniformly across positions,
+  unaffected by learning rate)
+description: Using LLaMA 2 7B finetuned on PubMed, the authors dissect the learning dynamics of the
+  three text factors. Topic/style biases are strongest at token positions ≤10 and are acquired within
+  1-10k documents; at positions ≥100 they are much weaker but grow steadily. With LoRA rank 1 (0.02%
+  of parameters), topic/style biases are learned comparably to full finetuning, whereas factual learning
+  is significantly hindered at large training sizes. Increasing the learning rate magnifies topic/style
+  biases in a non-saturating way, while factual learning remains consistent. Mixing Wikipedia text into
+  the training data reduces the biases only modestly. Topic and style biases are also learned independently
+  of each other, as shown by similar likelihood-ratio trajectories under different conditioning styles/topics.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:dissecting-learning-forgetting-language-model-finetuning
+datasets:
+- ref: dataset:pubmed
+  role: train
+- ref: dataset:c4
+  role: eval
+- ref: dataset:wikipedia
+  role: train
+methods:
+- ref: method:lora
+  role: primary
+related_work:
+- name: Spectral bias of neural networks (Rahaman et al., 2019)
+  anchor: https://proceedings.mlr.press/v97/rahaman19a.html
+  role: context
+- name: Shortcut learning in deep neural networks (Geirhos et al., 2020)
+  anchor: https://doi.org/10.1038/s42256-020-00257-z
+  role: context
+evidence_type: correlational
+key_metric: Topic/style bias strongest at position ≤10, learned with 1-10k documents; LoRA r=1 (0.02%
+  tunable parameters) recovers bias comparable to full finetuning while factual learning is significantly
+  hindered; bias magnifies non-saturatingly with learning rate (Figure 7); mixing general text reduces
+  bias only modestly (Figure 8)
+caveat: Capacity experiments use LoRA rank as a proxy for available capacity; the position analysis
+  treats each document as a separate sequence (not concatenated), which differs from standard pre-training;
+  results limited to at most 1 million documents.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1518

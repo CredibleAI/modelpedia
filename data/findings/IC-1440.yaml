@@ -1,0 +1,36 @@
+id: IC-1440
+title: 'GCN, GAT, GraphSAGE, and SGC exhibit structure-dependent generalization in transductive node
+  classification: test nodes with shorter paths to training nodes are classified more accurately'
+description: The paper groups test nodes by their shortest path length to the nearest training node
+  (l-hop interplay) and measures classification accuracy per group. Across Cora, Citeseer, and PubMed,
+  all four message-passing GNNs show a monotonic increase in accuracy as interplay increases (i.e.,
+  as test nodes get closer to training nodes). The same trend holds when grouping by node degree, with
+  lower-degree nodes (fewer interactions with training nodes) performing worse. This empirical pattern
+  is used to validate the paper's PAC-Bayesian bound linking generalization error to l-hop interplay.
+models:
+- ref: model:gcn
+- ref: model:gat
+- ref: model:graphsage
+- ref: model:sgc
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:interpgnn-understand-improve-generalization-ability-transdutive
+datasets:
+- ref: dataset:cora
+  role: eval
+- ref: dataset:citeseer
+  role: eval
+- ref: dataset:pubmed
+  role: eval
+methods:
+- ref: method:pac-bayesian-analysis
+  role: primary
+related_work: []
+evidence_type: observational
+caveat: The specific per-group accuracy values are reported only in figures (Figures 1 and 2), not in
+  the text or tables. The trend is described qualitatively in the text as 'for test nodes exhibiting
+  stronger interplay with training nodes, the generalization error is smaller.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-1441

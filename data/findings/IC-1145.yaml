@@ -1,0 +1,29 @@
+id: IC-1145
+title: Providing complete context eliminates irrelevance but does not fix constraint satisfaction for
+  GPT-4 or GPT-3.5
+description: 'When the full list of books by the author is provided as in-context information (simulating
+  a perfect retrieval system), the irrelevance rate drops to near zero (GPT-4: 0.08, GPT-3.5: 0.07).
+  However, the satisfaction rate barely changes: GPT-4 stays at 0.24 and GPT-3.5 at 0.16. All-correctness
+  remains very low (GPT-4: 0.08, GPT-3.5: 0.07). This shows the bottleneck is the model''s ability to
+  verify and filter constraints, not its knowledge of the book list.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:kitab-evaluating-llms-constraint-satisfaction-information
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4: p_irr 0.26 (no-context) to 0.08 (with-context), p_sat 0.24 (no-context) to 0.24
+  (with-context); GPT-3.5: p_irr 0.20 to 0.07, p_sat 0.16 to 0.16; all-correctness GPT-4 0.08, GPT-3.5
+  0.07'
+caveat: The context provided is the complete and correct list from KITAB, which is an idealized retrieval
+  setting; real retrieval systems may provide incomplete or noisy context.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1144
+- IC-1146
+- IC-1147

@@ -1,0 +1,34 @@
+id: IC-685
+title: CLIP ViT-B/32 with a linear probe relies on gender as a spurious correlation for hair color,
+  achieving only 15.85% accuracy on female gray hair
+description: 'The paper fine-tunes a linear classifier on CLIP''s frozen cls token embeddings for binary
+  gray-hair vs non-gray-hair classification on CelebA. The baseline shows a large gender gap: male gray
+  hair accuracy is 58.22% while female gray hair accuracy is only 15.85%, indicating the model exploits
+  gender as a shortcut. Using ViTE to zero out tokens on layer 12 that interpret to non-hair-related
+  words (including gender-related terms) improves female gray hair accuracy to 74.01% (male: 81.66%),
+  demonstrating the spurious correlation was carried in those specific tokens.'
+models:
+- ref: model:clip
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:invite-interpret-control-vision-language-models
+datasets:
+- ref: dataset:celeba
+  role: eval
+methods:
+- ref: method:linear-probing
+  role: primary
+- ref: method:random-smoothing
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: 'baseline: male gray hair 58.22%, female gray hair 15.85%; ViTE intervention: male gray
+  hair 81.66%, female gray hair 74.01%; ViTE intervention (rs): male gray hair 83.91%, female gray hair
+  74.80%'
+caveat: The linear probe is trained for one epoch with Adam (lr=1e-3); the finding is about CLIP's representation
+  as read by a linear classifier, not about the full end-to-end model.
+extracted_by: automatic-extraction
+related_findings:
+- IC-684
+- IC-686

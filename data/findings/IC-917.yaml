@@ -1,0 +1,31 @@
+id: IC-917
+title: ViT-S models show early-layer sensitivity to layer-wise averaging, with the averaging direction
+  being far more disruptive than random perturbations of the same norm
+description: The paper evaluates three pairs of pre-trained ViT-S models (differing in learning rate,
+  data augmentation, or SAM radius) from a public repository. Layer-wise interpolation at alpha=0.5
+  is barrier-free for almost all layers, but the most sensitive layers are the early attention (to-qkv)
+  and fully-connected (net) weights, with barriers reaching ~4-5 in early layers versus ~0 in deep layers.
+  When comparing the loss increase from layer-wise interpolation to random perturbations of the same
+  norm, the interpolation direction causes substantially higher loss, indicating that the averaging
+  direction is a special, high-curvature direction on the loss surface. Flatter models (larger learning
+  rate or larger SAM rho) show slower loss growth over the interpolation coefficient.
+models:
+- ref: model:vit
+  variant: variant:vit-s
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:layer-wise-linear-mode-connectivity
+datasets:
+- ref: dataset:cifar-10
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: to-qkv layer barrier up to ~5.3 (small lr) vs. ~0.0 for deep layers; random-direction perturbation
+  loss ~0.0-0.1 for the same layers
+caveat: Results are for ViT-S on CIFAR-10 only. The paper notes that the success of interpolations is
+  highly asymmetric for a pair of models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-916

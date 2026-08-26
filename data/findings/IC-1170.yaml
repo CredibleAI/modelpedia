@@ -1,0 +1,48 @@
+id: IC-1170
+title: GPT-3.5, Llama2, PaLM2, and GPT-4 are susceptible to a CoT-prompting backdoor attack (BadChain)
+  on complex reasoning tasks, with stronger reasoning models showing higher attack success rates
+description: The paper measures how four released LLMs behave when a subset of chain-of-thought demonstrations
+  is poisoned with a backdoor reasoning step and a trigger is embedded in the query prompt. Under this
+  condition, the models produce the adversarial target answer (e.g., scaling the arithmetic result by
+  2.1, shifting a multiple-choice letter, inverting a true/false answer) with high frequency. Average
+  attack success rates are 85.1% (GPT-3.5), 76.6% (Llama2), 87.1% (PaLM2), and 97.0% (GPT-4) across
+  six reasoning benchmarks and two CoT strategies. In contrast, baseline demonstration-poisoning attacks
+  without the backdoor reasoning step (DT-base, DT-cot) fail uniformly with ASR at most 18.3%. The paper
+  further observes that models with stronger reasoning capabilities (GPT-4, with 88.4% baseline accuracy)
+  are the most susceptible.
+models:
+- ref: model:gpt-3-5
+- ref: model:gpt-4
+- ref: model:palm-2
+- ref: model:llama-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:badchain-backdoor-chain-thought-prompting-large
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:math
+  role: eval
+- ref: dataset:asdiv
+  role: eval
+- ref: dataset:strategyqa
+  role: eval
+methods:
+- ref: method:chain-of-thought-prompting
+  role: primary
+- ref: method:self-consistency
+  role: primary
+related_work:
+- ref: method:chain-of-thought-prompting
+  role: builds-on
+- ref: method:self-consistency
+  role: builds-on
+evidence_type: correlational
+key_metric: 'average ASR: 85.1% (GPT-3.5), 76.6% (Llama2), 87.1% (PaLM2), 97.0% (GPT-4); baselines ASR
+  ≤ 18.3%; GPT-4 baseline acc 88.4%'
+caveat: For Llama2, only 10-20% of each test set was evaluated due to computational resource limits.
+  The attack requires the attacker to control the user prompt (e.g., via a malicious prompt-engineering
+  service or man-in-the-middle). The paper does not investigate whether the susceptibility persists
+  under different decoding settings or safety filters (which were turned off for PaLM2).
+extracted_by: automatic-extraction

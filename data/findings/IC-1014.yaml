@@ -1,0 +1,41 @@
+id: IC-1014
+title: A single adversarial token embedding appended to any input prompt overwrites the prompt in Stable
+  Diffusion v2.1 to generate a target object, with CLIP similarity to the original prompt (0.742) remaining
+  higher than to the target (0.546)
+description: By optimizing a single token embedding [x] and appending it to prompts like 'a photo of
+  a cat [x]', the authors find tokens that cause the model to generate only the target object (e.g.,
+  a car) regardless of the original prompt content. The CLIP similarity between the modified prompt
+  and the original is 0.742, higher than the 0.546 similarity to the target, indicating the attack operates
+  on the diffusion process rather than the text encoder. The authors also discover universal tokens
+  that work across different key objects and even different language patterns. They attribute this to
+  a bias towards the final word of the input, where the model predominantly focuses on the last noun/object
+  and is easily misled by particular words.
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v2-1
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v1-5
+- ref: model:glide
+concepts:
+- ref: concept:failure-mode
+- ref: concept:positional-bias
+sources:
+- ref: source:discovering-failure-modes-text-guided-diffusion
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:clip
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'CLIP similarity to origin: 0.742, to target: 0.546; FGR(h) for ''a photo of a cat [x]''
+  with target car: 92%; universal tokens demonstrated across ''a photo of a cat [x]'', ''a photo of
+  a laptop [x]'', ''a photo of a ship [x]'', ''a dog is playing a ball [x]'''
+caveat: The authors note that similar phenomena were reported before (Zhuang et al. 2023; Mao et al.
+  2022), but those tokens did not show the property of minimal CLIP score change. The safety-critical
+  findings (weapons, drug use, nudity) are noted as a concern.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1012
+- IC-1013

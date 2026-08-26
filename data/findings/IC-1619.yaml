@@ -1,0 +1,34 @@
+id: IC-1619
+title: DINOv2's patch-level features outperform CLIP and MAE for cross-image semantic feature matching
+description: Using each model as the image encoder in the Matcher framework, the paper measures how
+  well their patch-level features support cross-image semantic matching. DINOv2 (ViT-L/14) achieves
+  52.7% mean mIoU on COCO-20i, 87.0% on FSS-1000, and 79.5 J&F on DAVIS 2017, substantially outperforming
+  CLIP (32.2/77.4/73.9) and MAE (18.8/71.9/69.5). The authors attribute CLIP's weakness to text-image
+  contrastive pre-training limiting pixel-level information, and MAE's weakness to patch-level features
+  confusing surrounding patch information. DINOv2's image-level and patch-level discriminative self-supervised
+  learning is credited with producing all-purpose visual features suitable for precise patch matching.
+models:
+- ref: model:dinov2
+- ref: model:clip
+- ref: model:mae
+concepts:
+- ref: concept:distance-preservation
+sources:
+- ref: source:matcher-segment-anything-one-shot-using
+datasets:
+- ref: dataset:coco-20i
+  role: eval
+- ref: dataset:fss-1000
+  role: eval
+- ref: dataset:davis-2017-val
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'DINOv2: 52.7 / 87.0 / 79.5; CLIP: 32.2 / 77.4 / 73.9; MAE: 18.8 / 71.9 / 69.5 (mean mIoU
+  COCO-20i, mIoU FSS-1000, J&F DAVIS 2017)'
+caveat: Performance is measured within the Matcher framework's specific matching protocol (cosine similarity
+  + Hungarian matching); the relative ranking may differ under other matching or evaluation setups.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1618

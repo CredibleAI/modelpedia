@@ -29,7 +29,7 @@ model:terramind:
       name: TerraMind v1 large
 
 model:clip:
-  name: CLIP
+  name: CLIP / CLIP-ViT (LC)
   developer:
   - OpenAI
   date: '2021-02-26'
@@ -167,6 +167,12 @@ model:llama-2:
       name: Llama2-chat-13b
     variant:llama2-chat-70b:
       name: Llama2-chat-70b
+    variant:llama-2-7b-chat-hf:
+      name: LLaMA-2-7b-chat-hf
+    variant:llama-2-7b-instruct:
+      name: Llama-2-7B-Instruct
+    variant:llama-2-7b-32k:
+      name: Llama-2-7B-32K
 
 model:llama-3:
   name: Llama 3
@@ -261,6 +267,8 @@ model:llama-3-1:
       name: Meta-Llama-3.1-70B-Instruct
     variant:llama-3-1-nemotron-70b-reward:
       name: Llama-3.1-Nemotron-70B-Reward
+    variant:meta-llama-3-1-8b-instruct:
+      name: Meta-Llama-3.1-8B-Instruct
 
 model:gemma-2:
   name: Gemma 2
@@ -331,7 +339,7 @@ model:mistral-7b:
       name: Mistral-v0.3 7B
 
 model:mixtral-8x7b:
-  name: Mixtral 8x7B / Mistral 8x7B Instruct / Mixtral 46.7B
+  name: Mixtral 8x7B / Mistral 8x7B Instruct / Mixtral 46.7B / Mixtral 8x7B Instruct / Mixtral-instruct-8x7b
   developer: null
   date: 2024-01
   modality:
@@ -393,6 +401,8 @@ model:phi-3:
       name: Phi-3-Vision-Instruct
     variant:phi-3-3-8b-instruct:
       name: Phi-3-3.8B-Instruct
+    variant:phi-3-3-8b-it:
+      name: Phi-3-3.8B-IT
 
 model:qwen-1-5:
   name: Qwen1.5
@@ -563,6 +573,8 @@ model:pythia:
       name: Pythia-160m
     variant:pythia-70m:
       name: Pythia-70m
+    variant:pythia-70m-deduped:
+      name: Pythia-70m-deduped
 
 model:opt:
   name: OPT
@@ -581,9 +593,15 @@ model:opt:
   variants:
     variant:opt-6-7b:
       name: OPT 6.7B
+    variant:opt-1-3b:
+      name: OPT-1.3B
+    variant:opt-7b:
+      name: OPT-7B
+    variant:opt-iml:
+      name: OPT-IML
 
 model:gpt-4:
-  name: GPT-4 / ChatGPT4
+  name: GPT-4 / ChatGPT4 / GPT-4 Code Interpreter / GPT-4 Technical Report
   developer:
   - OpenAI
   date: 2023-03
@@ -657,7 +675,7 @@ model:gpt-3:
   domain: null
   task:
   - generative
-  anchor: null
+  anchor: https://proceedings.neurips.cc/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html
   artifact: null
   description: Closed-weight autoregressive language model, cited in the corpus in its instruction-tuned
     text-davinci-003 release.
@@ -669,9 +687,15 @@ model:gpt-3:
       name: text-davinci-003
     variant:babbage:
       name: Babbage
+    variant:text-babbage-001:
+      name: text-babbage-001
+    variant:text-davinci-001:
+      name: text-davinci-001
+    variant:text-davinci-002:
+      name: text-davinci-002
 
 model:gpt-3-5:
-  name: GPT-3.5
+  name: GPT-3.5 / ChatGPT-3.5
   developer:
   - OpenAI
   date: null
@@ -680,7 +704,7 @@ model:gpt-3-5:
   domain: null
   task:
   - generative
-  anchor: null
+  anchor: https://proceedings.neurips.cc/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html
   artifact: null
   description: Closed-weight language model served through an API, cited in the corpus in a pinned long-context
     chat release.
@@ -703,6 +727,10 @@ model:gpt-3-5:
       name: GPT-3.5-turbo-20231106
     variant:gpt-3-5-turbo-instruct:
       name: GPT-3.5-turbo-instruct
+    variant:gpt-3-5-text-davinci-003:
+      name: GPT-3.5-text-davinci-003
+    variant:gpt-3-5-turbo-0301:
+      name: GPT-3.5-turbo-0301
 
 model:gemini-1-5:
   name: Gemini 1.5 / Gemini Pro 1.5
@@ -756,6 +784,8 @@ model:claude-3:
       name: Claude-3-Haiku-20240229
     variant:claude-sonnet:
       name: Claude Sonnet
+    variant:claude-haiku:
+      name: Claude Haiku
 
 model:claude-3-5:
   name: Claude 3.5
@@ -856,7 +886,7 @@ model:llava-onevision:
   domain: null
   task:
   - generative
-  anchor: null
+  anchor: https://doi.org/10.48550/arXiv.2408.03326
   artifact: null
   description: Vision-language model in the LLaVA line trained for single-image, multi-image and video
     inputs, cited in the corpus on a Qwen2 backbone.
@@ -1238,9 +1268,19 @@ model:vit:
       name: ViT-L/32
     variant:vit-l-16:
       name: ViT/L-16
+    variant:rvit-b-16:
+      name: RViT-B/16
+    variant:vit-l:
+      name: ViT-L
+    variant:vit-s:
+      name: ViT-S
+    variant:vit-s-16:
+      name: ViT-S/16
+    variant:vit-t-16:
+      name: ViT-t/16
 
 model:resnet:
-  name: ResNet / ResNet-152
+  name: ResNet / ResNet-152 / ResNet-101 / ResNet-50-BN
   developer: null
   date: null
   modality:
@@ -1263,9 +1303,17 @@ model:resnet:
       name: ResNet-32
     variant:resnet-34:
       name: ResNet-34
+    variant:bit-resnet-101:
+      name: BiT ResNet-101
+    variant:bit-resnet-50:
+      name: BiT ResNet-50
+    variant:resnet-110:
+      name: ResNet-110
+    variant:resnetv2-152x2:
+      name: ResNetV2-152x2
 
 model:vgg:
-  name: VGG
+  name: VGG / VGG13
   developer: null
   date: null
   modality:
@@ -1282,6 +1330,10 @@ model:vgg:
   variants:
     variant:vgg-16:
       name: VGG-16
+    variant:vgg-19:
+      name: VGG-19
+    variant:vgg-11:
+      name: VGG-11
 
 model:dit:
   name: DiT
@@ -1308,7 +1360,7 @@ model:stable-diffusion:
   domain: null
   task:
   - generative
-  anchor: null
+  anchor: https://proceedings.mlr.press/v235/esser24a.html
   artifact: https://huggingface.co/CompVis/stable-diffusion-v1-4
   description: Open-weight latent diffusion model for text-to-image generation, cited in the corpus
     at version 1.4.
@@ -1334,9 +1386,23 @@ model:stable-diffusion:
       name: Stable Diffusion 3
     variant:stable-diffusion-3-5:
       name: Stable Diffusion 3.5
+    variant:epic-diffusion:
+      name: Epic Diffusion
+    variant:realistic-vision-1-4:
+      name: Realistic Vision 1.4
+    variant:stable-diffusion-3-3:
+      name: Stable Diffusion 3
+    variant:stable-diffusion-1-5:
+      name: Stable Diffusion 1.5
+    variant:stable-diffusion-3-4:
+      name: Stable Diffusion 3
+    variant:stable-diffusion-v2-1:
+      name: Stable Diffusion v2.1
+    variant:stable-diffusion-xl:
+      name: Stable Diffusion XL
 
 model:faster-r-cnn:
-  name: Faster R-CNN
+  name: Faster R-CNN / Faster R-CNN R50 / Faster R-CNN X101
   developer: null
   date: null
   modality:
@@ -1410,6 +1476,7 @@ model:claude-2-1:
 
 model:dinov2:
   name: DINOv2
+  anchor: https://openreview.net/forum?id=a68SUt6zFt
   modality:
   - image
   task:
@@ -1422,6 +1489,19 @@ model:falcon:
   task:
   - generative
 
+  variants:
+    variant:falcon-180b-chat:
+      name: Falcon-180B-Chat
+    variant:falcon-40b:
+      name: Falcon-40B
+    variant:falcon-40b-instruct:
+      name: Falcon-40B-Instruct
+    variant:falcon-7b:
+      name: Falcon-7B
+    variant:falcon-7b-instruct:
+      name: Falcon-7B-Instruct
+    variant:falcon-chat:
+      name: Falcon-Chat
 model:gemini:
   name: Gemini
   modality:
@@ -1453,6 +1533,7 @@ model:gemini-1-0-pro:
 
 model:gemma:
   name: Gemma
+  anchor: https://doi.org/10.48550/arXiv.2403.08295
   modality:
   - text
   task:
@@ -1489,6 +1570,8 @@ model:gpt-2:
       name: GPT-2 Medium
     variant:gpt-2-xl:
       name: GPT-2 XL
+    variant:gpt-2-xl-1-5b:
+      name: GPT-2 XL 1.5B
 model:gpt-j:
   name: GPT-J
   modality:
@@ -1500,6 +1583,8 @@ model:gpt-j:
   variants:
     variant:gpt-j-6b:
       name: GPT-J 6B
+    variant:instruct-gpt-j-6b:
+      name: Instruct-GPT-J-6B
 model:instructblip:
   name: InstructBLIP
   modality:
@@ -1562,6 +1647,10 @@ model:openclip:
   variants:
     variant:openclip-vit-b-16:
       name: OpenCLIP ViT-B/16
+    variant:openclip-vit-h-14:
+      name: OpenCLIP ViT-H/14
+    variant:openclip-vit-l-14:
+      name: OpenCLIP ViT-L/14
 model:qwen-2-5-72b-instruct:
   name: Qwen 2.5 72B Instruct
   modality:
@@ -1593,6 +1682,8 @@ model:qwen2-5:
       name: Qwen 2.5 7B
     variant:qwen2-5-7b-instruct:
       name: Qwen2.5-7B-Instruct
+    variant:qwen2-5-coder-instruct:
+      name: Qwen2.5-Coder-Instruct
 model:sam:
   name: SAM
   modality:
@@ -1601,7 +1692,7 @@ model:sam:
   - discriminative
 
 model:o1:
-  name: O1
+  name: O1 / OpenAI-o1-preview
   modality:
   - text
   task:
@@ -1629,9 +1720,22 @@ model:vicuna:
       name: Vicuna-7B
     variant:vicuna-7b-v1-5:
       name: Vicuna-7B-v1.5
+    variant:vicuna-13b-v1-3:
+      name: Vicuna-13B-v1.3
+    variant:vicuna-33b:
+      name: Vicuna-33B
+    variant:vicuna-33b-v1-3:
+      name: Vicuna-33B-v1.3
+    variant:vicuna-7b-v1-3:
+      name: Vicuna-7B-v1.3
+    variant:vicuna-v1-5-13b:
+      name: Vicuna-v1.5-13B
+    variant:vicuna-v1-5-7b:
+      name: Vicuna-v1.5-7B
 
 model:gaussian-splatting-3d:
   name: 3D Gaussian Splatting
+  anchor: https://doi.org/10.1145/3592433
   modality:
   - image
   task:
@@ -1639,6 +1743,7 @@ model:gaussian-splatting-3d:
 
 model:aasist:
   name: AASIST
+  anchor: https://doi.org/10.1109/ICASSP43922.2022.9747766
   modality:
   - audio
   task:
@@ -1669,6 +1774,7 @@ model:alphaflow:
 
 model:alphafold2:
   name: AlphaFold2
+  anchor: https://doi.org/10.1038/s41586-021-03819-2
   modality:
   - text
   task:
@@ -1678,6 +1784,7 @@ model:alphafold2:
 
 model:amber-7b:
   name: Amber-7B
+  anchor: https://doi.org/10.48550/arXiv.2312.06550
   modality:
   - text
   task:
@@ -1685,6 +1792,7 @@ model:amber-7b:
 
 model:anyloc:
   name: AnyLoc
+  anchor: https://doi.org/10.1109/LRA.2023.3343602
   modality:
   - image
   task:
@@ -1693,7 +1801,7 @@ model:anyloc:
   - geospatial
 
 model:autotikz:
-  name: AutoTikZ
+  name: AutoTikZ / DataTikZ
   modality:
   - text
   - image
@@ -1703,6 +1811,7 @@ model:autotikz:
 
 model:autowebglm:
   name: AutoWebGLM
+  anchor: https://doi.org/10.1145/3637528.3671620
   modality:
   - text
   task:
@@ -1716,6 +1825,11 @@ model:baichuan:
   - generative
   anchor: https://arxiv.org/abs/2309.10305
 
+  variants:
+    variant:baichuan-13b-chat:
+      name: Baichuan-13B-Chat
+    variant:baichuan-7b:
+      name: Baichuan-7B
 model:baichuan-2:
   name: Baichuan 2
   modality:
@@ -1724,6 +1838,9 @@ model:baichuan-2:
   - generative
   anchor: https://arxiv.org/abs/2309.10305
 
+  variants:
+    variant:baichuan2-7b-chat:
+      name: Baichuan2-7B-Chat
 model:baichuan2-13b:
   name: Baichuan2-13B
   modality:
@@ -1731,6 +1848,9 @@ model:baichuan2-13b:
   task:
   - generative
 
+  variants:
+    variant:baichuan2-13b-chat:
+      name: Baichuan2-13B-Chat
 model:bakllava:
   name: BakLLaVA
   modality:
@@ -1760,13 +1880,24 @@ model:beit:
       name: BEiT v2
 model:bert:
   name: BERT
+  anchor: https://doi.org/10.18653/v1/n19-1423
   modality:
   - text
   task:
   - discriminative
 
+  variants:
+    variant:bert-base:
+      name: BERT-base
+    variant:bert-base-uncased:
+      name: BERT-base-uncased
+    variant:bert-l:
+      name: BERT-L
+    variant:bert-large:
+      name: BERT-large
 model:bert-base-cased:
   name: BERT-base-cased
+  anchor: https://doi.org/10.18653/v1/n19-1423
   modality:
   - text
   task:
@@ -1783,6 +1914,10 @@ model:bloom:
   variants:
     variant:bloom-560m:
       name: BLOOM-560M
+    variant:bloom-7b:
+      name: BLOOM-7B
+    variant:bloomz:
+      name: BLOOMZ
 model:cambrian-1:
   name: Cambrian-1
   modality:
@@ -1802,7 +1937,7 @@ model:chameleon:
   anchor: https://arxiv.org/abs/2405.09818
 
 model:chatglm-6b:
-  name: ChatGLM-6B
+  name: ChatGLM-6B / ChatGLM-6b-2
   modality:
   - text
   task:
@@ -1828,6 +1963,7 @@ model:chronos:
 
 model:clap:
   name: CLAP
+  anchor: https://doi.org/10.1109/ICASSP49357.2023.10095889
   modality:
   - audio
   - text
@@ -1843,6 +1979,7 @@ model:claude-3-7-sonnet:
 
 model:clmbr-t-base:
   name: CLMBR-T-BASE
+  anchor: https://doi.org/10.1016/j.jbi.2020.103637
   modality:
   - text
   task:
@@ -1852,6 +1989,7 @@ model:clmbr-t-base:
 
 model:cocondenser:
   name: CoCondenser
+  anchor: https://doi.org/10.18653/v1/2022.acl-long.203
   modality:
   - text
   task:
@@ -1859,6 +1997,7 @@ model:cocondenser:
 
 model:codegen:
   name: CodeGen
+  anchor: https://openreview.net/forum?id=iaYcJKpY2B_
   modality:
   - text
   task:
@@ -1866,13 +2005,20 @@ model:codegen:
 
 model:codellama-13b:
   name: CodeLlama-13B
+  anchor: https://doi.org/10.48550/arXiv.2308.12950
   modality:
   - text
   task:
   - generative
 
+  variants:
+    variant:codellama-13b-instruct:
+      name: CodeLlama-13B-Instruct
+    variant:codellama-7b:
+      name: CodeLlama-7B
 model:cogagent:
   name: CogAgent
+  anchor: https://doi.org/10.48550/arXiv.2312.08914
   modality:
   - text
   - image
@@ -1881,6 +2027,7 @@ model:cogagent:
 
 model:cogvlm:
   name: CogVLM
+  anchor: https://doi.org/10.48550/arXiv.2311.03079
   modality:
   - image
   - text
@@ -1918,6 +2065,7 @@ model:conch:
 
 model:contriever:
   name: Contriever
+  anchor: https://openreview.net/forum?id=jKN1pXi7b0
   modality:
   - text
   task:
@@ -1925,6 +2073,7 @@ model:contriever:
 
 model:convit:
   name: ConvIT
+  anchor: http://proceedings.mlr.press/v139/d-ascoli21a.html
   modality:
   - image
   task:
@@ -1937,6 +2086,11 @@ model:convnext:
   task:
   - discriminative
 
+  variants:
+    variant:convnext-b:
+      name: ConvNeXt-B
+    variant:convnext-l:
+      name: ConvNeXt-L
 model:convnextv2-tiny:
   name: ConvNeXtV2-Tiny
   modality:
@@ -2008,6 +2162,7 @@ model:deepfloyd-if:
 
 model:deepgate2:
   name: DeepGate2
+  anchor: https://doi.org/10.1109/ICCAD57390.2023.10323798
   modality:
   - graph
   task:
@@ -2015,6 +2170,7 @@ model:deepgate2:
 
 model:deepgate3:
   name: DeepGate3
+  anchor: https://doi.org/10.1145/3676536.3676791
 
 model:deepseek-r1:
   name: DeepSeek R1
@@ -2080,7 +2236,8 @@ model:deit:
   - discriminative
 
 model:densenet:
-  name: DenseNet
+  name: DenseNet / DenseNet-101
+  anchor: https://doi.org/10.1109/cvpr.2017.243
   modality:
   - image
   task:
@@ -2102,6 +2259,7 @@ model:data-filtering-networks-dfn:
 
 model:diffab:
   name: DiffAb
+  anchor: http://papers.nips.cc/paper_files/paper/2022/hash/3fa7d76a0dc1179f1e98d1bc62403756-Abstract-Conference.html
   task:
   - generative
   domain:
@@ -2118,11 +2276,15 @@ model:diffaffinity:
 
 model:dino:
   name: DINO
+  anchor: https://doi.org/10.1109/ICCV48922.2021.00951
   modality:
   - image
   task:
   - discriminative
 
+  variants:
+    variant:dino-vit-b-16:
+      name: DINO ViT-B/16
 model:dymean:
   name: DyMEAN
   modality:
@@ -2144,11 +2306,15 @@ model:e5-v:
 
 model:efficientnet:
   name: EfficientNet
+  anchor: http://proceedings.mlr.press/v97/tan19a.html
   modality:
   - image
   task:
   - discriminative
 
+  variants:
+    variant:efficientnet-b3:
+      name: EfficientNet-B3
 model:eigenfold:
   name: EigenFold
   task:
@@ -2168,6 +2334,7 @@ model:ella:
 
 model:emu2:
   name: Emu2
+  anchor: https://doi.org/10.1109/CVPR52733.2024.01365
   modality:
   - text
   - image
@@ -2179,6 +2346,7 @@ model:emu2:
       name: Emu2-37B
 model:esm-1f:
   name: ESM-1F
+  anchor: https://proceedings.mlr.press/v162/hsu22a.html
   modality:
   - text
   - graph
@@ -2198,6 +2366,7 @@ model:esm-2:
 
 model:esm3:
   name: ESM3
+  anchor: https://doi.org/10.1101/2024.07.01.600583
   modality:
   - text
   task:
@@ -2233,6 +2402,7 @@ model:eva-clip:
 
 model:eva-02:
   name: EVA-02
+  anchor: https://doi.org/10.1016/j.imavis.2024.105171
   modality:
   - image
   task:
@@ -2240,6 +2410,7 @@ model:eva-02:
 
 model:eve:
   name: EVE
+  anchor: https://doi.org/10.1038/s41586-021-04043-8
   task:
   - generative
   - discriminative
@@ -2249,11 +2420,12 @@ model:eve:
 
 model:florence-2:
   name: Florence-2
+  anchor: https://doi.org/10.1109/CVPR52733.2024.00461
   modality:
   - image
 
 model:flux:
-  name: FLUX
+  name: FLUX / FLUX1
   modality:
   - text
   - image
@@ -2345,6 +2517,7 @@ model:griffin:
 
 model:grounding-dino:
   name: Grounding DINO
+  anchor: https://doi.org/10.1007/978-3-031-72970-6_3
   modality:
   - text
   - image
@@ -2392,6 +2565,7 @@ model:iddpm:
 
 model:idefics:
   name: Idefics
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/e2cfb719f58585f779d0a4f9f07bd618-Abstract-Datasets_and_Benchmarks.html
   modality:
   - image
   - text
@@ -2407,6 +2581,7 @@ model:iflytekspark-13b:
 
 model:imagebind:
   name: ImageBind
+  anchor: https://doi.org/10.1109/CVPR52729.2023.01457
   modality:
   - image
   task:
@@ -2471,6 +2646,7 @@ model:kandinsky-v2-2:
 
 model:lambo-2:
   name: Lambo-2
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/29591f355702c3f4436991335784b503-Abstract-Conference.html
   task:
   - generative
   domain:
@@ -2493,12 +2669,6 @@ model:legalbert:
   - discriminative
   anchor: https://arxiv.org/abs/2010.02559
 
-model:lemur-70b-chat-v1:
-  name: Lemur-70B-Chat-V1
-  modality:
-  - text
-  task:
-  - generative
 
 model:llama-3-2:
   name: Llama 3.2
@@ -2553,6 +2723,7 @@ model:llama-vid:
 
 model:llava-med:
   name: LLaVA-Med
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/5abcdf8ecdcacba028c6662789194572-Abstract-Datasets_and_Benchmarks.html
   modality:
   - text
   - image
@@ -2572,6 +2743,7 @@ model:longva-7b:
 
 model:lovt:
   name: LOVT
+  anchor: https://doi.org/10.1007/978-3-031-19809-0_39
   modality:
   - image
   - text
@@ -2591,6 +2763,7 @@ model:lwm-1m-jax:
 
 model:mae:
   name: MAE
+  anchor: https://doi.org/10.1109/CVPR52688.2022.01553
   modality:
   - image
   task:
@@ -2598,6 +2771,7 @@ model:mae:
 
 model:mae-b-16:
   name: MAE-B/16
+  anchor: https://doi.org/10.1109/CVPR52688.2022.01553
   modality:
   - image
   task:
@@ -2630,6 +2804,7 @@ model:map-neo:
 
 model:med-flamingo:
   name: Med-Flamingo
+  anchor: https://proceedings.mlr.press/v225/moor23a.html
   modality:
   - text
   - image
@@ -2640,6 +2815,7 @@ model:med-flamingo:
 
 model:mgca:
   name: MGCA
+  anchor: http://papers.nips.cc/paper_files/paper/2022/hash/d925bda407ada0df3190df323a212661-Abstract-Conference.html
   modality:
   - image
   task:
@@ -2649,6 +2825,7 @@ model:mgca:
 
 model:midas:
   name: MiDaS
+  anchor: https://doi.org/10.1109/TPAMI.2020.3019967
   modality:
   - image
   task:
@@ -2656,6 +2833,7 @@ model:midas:
 
 model:mip-splatting:
   name: Mip-Splatting
+  anchor: https://doi.org/10.1109/CVPR52733.2024.01839
   modality:
   - image
   task:
@@ -2691,6 +2869,7 @@ model:mistral-nemo-instruct:
 
 model:moe-llava:
   name: MoE-LLaVA
+  anchor: https://doi.org/10.48550/arXiv.2401.15947
   modality:
   - text
   - image
@@ -2725,6 +2904,7 @@ model:molmoe-7b:
 
 model:momentor:
   name: Momentor
+  anchor: https://proceedings.mlr.press/v235/qian24a.html
   modality:
   - video
   - text
@@ -2751,8 +2931,11 @@ model:mplug-owl:
   variants:
     variant:mplug-owl-7b:
       name: mPLUG-Owl-7B
+    variant:mplug-owl-large:
+      name: mPLUG-Owl-Large
 model:mplug-owl2:
   name: mPLUG-Owl2
+  anchor: https://doi.org/10.48550/arXiv.2311.04257
   modality:
   - text
   - image
@@ -2767,6 +2950,13 @@ model:mpt:
   - generative
   anchor: https://www.mosaicml.com/blog/mpt-7b
 
+  variants:
+    variant:mpt-30b-chat:
+      name: MPT-30B-Chat
+    variant:mpt-7b:
+      name: MPT-7B
+    variant:mpt-7b-chat:
+      name: MPT-7B-Chat
 model:msa-transformer:
   name: MSA Transformer
   modality:
@@ -2791,11 +2981,15 @@ model:mvit-v2:
 
 model:gpt-neox-20b:
   name: GPT-NeoX-20B
+  anchor: https://doi.org/10.48550/arXiv.2204.06745
   modality:
   - text
   task:
   - generative
 
+  variants:
+    variant:instruction-tuned-gpt-neox-20b:
+      name: Instruction-Tuned GPT-NeoX-20B
 model:nova-canvas:
   name: Nova Canvas
   modality:
@@ -2820,6 +3014,7 @@ model:nova-pro:
 
 model:nv-embed-v1:
   name: NV-Embed-v1
+  anchor: https://doi.org/10.48550/arXiv.2405.17428
   modality:
   - text
   task:
@@ -2904,6 +3099,11 @@ model:palm-2:
   - generative
   anchor: https://arxiv.org/abs/2305.10403
 
+  variants:
+    variant:flan-palm-2:
+      name: FLAN-PaLM 2
+    variant:palm-2-l:
+      name: PaLM 2-L
 model:pandagpt-7b:
   name: PandaGPT-7B
   modality:
@@ -2922,6 +3122,7 @@ model:phi-2:
 
 model:phi-3-5-mini-instruct:
   name: Phi-3.5 Mini Instruct
+  anchor: https://doi.org/10.48550/arXiv.2404.14219
   modality:
   - text
   task:
@@ -2929,6 +3130,7 @@ model:phi-3-5-mini-instruct:
 
 model:pickscore:
   name: PickScore
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/73aacd8b3b05b4b503d58310b523553c-Abstract-Conference.html
   modality:
   - text
   - image
@@ -2963,6 +3165,7 @@ model:playground-v2:
 
 model:plip:
   name: PLIP
+  anchor: https://doi.org/10.1038/s41591-023-02504-3
   modality:
   - image
   - text
@@ -2973,6 +3176,7 @@ model:plip:
 
 model:prismatic:
   name: Prismatic
+  anchor: https://proceedings.mlr.press/v235/karamcheti24a.html
   modality:
   - text
   - image
@@ -2981,6 +3185,7 @@ model:prismatic:
 
 model:progen-2:
   name: ProGen-2
+  anchor: https://doi.org/10.48550/arXiv.2206.13517
   modality:
   - text
   task:
@@ -3020,6 +3225,8 @@ model:qwen:
       name: Qwen-14B
     variant:qwen-7b:
       name: Qwen-7B
+    variant:qwen-14b-chat:
+      name: Qwen-14B-Chat
 model:qwen-audio:
   name: Qwen-Audio
   modality:
@@ -3048,6 +3255,7 @@ model:qwq:
 
 model:r2d2:
   name: R2D2
+  anchor: https://proceedings.mlr.press/v235/mazeika24a.html
   modality:
   - text
 
@@ -3062,7 +3270,8 @@ model:radfm:
   anchor: https://arxiv.org/abs/2308.02463
 
 model:rotamer-density-estimator:
-  name: Rotamer Density Estimator
+  name: Rotamer Density Estimator / RDE
+  anchor: https://openreview.net/forum?id=_X9Yl1K2mD
   task:
   - discriminative
   domain:
@@ -3117,13 +3326,18 @@ model:resnext:
   - discriminative
 
 model:roberta:
-  name: RoBERTa
+  name: RoBERTa / RoBERTa-L
   modality:
   - text
   task:
   - generative
   anchor: https://arxiv.org/abs/1907.11692
 
+  variants:
+    variant:roberta-base:
+      name: RoBERTa-base
+    variant:roberta-large:
+      name: RoBERTa-Large
 model:rt-detr:
   name: RT-DETR
   modality:
@@ -3171,6 +3385,7 @@ model:saullm-54b:
 
 model:scaffold-gs:
   name: Scaffold-GS
+  anchor: https://doi.org/10.1109/CVPR52733.2024.01952
   modality:
   - image
   task:
@@ -3194,6 +3409,7 @@ model:sfr-embedding-2-r:
 
 model:siren:
   name: SIREN
+  anchor: https://proceedings.neurips.cc/paper/2020/hash/53c04118df112c13a8c34b38343b9c10-Abstract.html
   task:
   - generative
 
@@ -3207,6 +3423,7 @@ model:skywork:
 
 model:slip:
   name: SLIP
+  anchor: https://doi.org/10.1007/978-3-031-19809-0_30
   modality:
   - text
   - image
@@ -3215,6 +3432,7 @@ model:slip:
 
 model:slowfast:
   name: SlowFast
+  anchor: https://doi.org/10.1109/ICCV.2019.00630
   modality:
   - video
   task:
@@ -3253,6 +3471,7 @@ model:stella-en-1-5b-v5:
 
 model:str2str:
   name: STR2STR
+  anchor: https://openreview.net/forum?id=C4BikKsgmK
   task:
   - generative
   domain:
@@ -3264,6 +3483,7 @@ model:stsc-snn:
 
 model:stylegan2-ada:
   name: StyleGAN2-ADA
+  anchor: https://proceedings.neurips.cc/paper/2020/hash/8d30aa96e72440759f74bd2306c1fa3d-Abstract.html
   modality:
   - image
   task:
@@ -3279,6 +3499,18 @@ model:swin-transformer:
   variants:
     variant:swin-transformer:
       name: Swin Transformer
+    variant:dino-swin-tiny:
+      name: DINO-Swin-Tiny
+    variant:swin-b:
+      name: Swin-B
+    variant:swin-base:
+      name: Swin-Base
+    variant:swin-l:
+      name: Swin-L
+    variant:swin-s:
+      name: Swin-S
+    variant:swin-t:
+      name: Swin-T
 model:ta-snn:
   name: TA SNN
   modality:
@@ -3289,6 +3521,7 @@ model:ta-snn:
 
 model:tas-b:
   name: TAS-B
+  anchor: https://doi.org/10.1145/3404835.3462891
   modality:
   - text
   task:
@@ -3315,7 +3548,7 @@ model:timesformer:
   - time-series
 
 model:tinystories-4-layer-33m:
-  name: TinyStories 4-layer 33M
+  name: TinyStories 4-layer 33M / TinyStories 4-layer 33M model
   modality:
   - text
   task:
@@ -3323,7 +3556,7 @@ model:tinystories-4-layer-33m:
   anchor: https://arxiv.org/abs/2305.07759
 
 model:megatron-turing-nlg-530b:
-  name: Megatron-Turing NLG 530B
+  name: Megatron-Turing NLG 530B / TNG-L v2
   modality:
   - text
   task:
@@ -3332,6 +3565,7 @@ model:megatron-turing-nlg-530b:
 
 model:tranceptioneve:
   name: TranceptionEVE
+  anchor: https://doi.org/10.1101/2022.12.07.519495
   modality:
   - text
   task:
@@ -3341,6 +3575,7 @@ model:tranceptioneve:
 
 model:tsm:
   name: TSM
+  anchor: https://doi.org/10.1109/ICCV.2019.00718
   modality:
   - video
   task:
@@ -3359,6 +3594,10 @@ model:tulu-2:
       name: Tulu-2 7B
     variant:tulu-2-13b:
       name: Tulu-2-13B
+    variant:tulu-2-70b:
+      name: Tulu 2 70B
+    variant:tulu-2-dpo-70b:
+      name: Tulu 2 DPO 70B
 model:uform:
   name: UForm
 
@@ -3372,6 +3611,7 @@ model:ugrnn:
 
 model:uniformer:
   name: Uniformer
+  anchor: https://arxiv.org/abs/2201.09450
   modality:
   - image
   task:
@@ -3398,6 +3638,7 @@ model:valor:
 
 model:vast:
   name: VAST
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/e6b2b48b5ed90d07c305932729927781-Abstract-Conference.html
   modality:
   - text
   - image
@@ -3422,6 +3663,7 @@ model:video-chat-7b:
 
 model:video-chatgpt:
   name: Video-ChatGPT
+  anchor: https://doi.org/10.18653/v1/2024.acl-long.679
   modality:
   - text
   - video
@@ -3455,13 +3697,14 @@ model:video-llava:
       name: Video-LLaVA-7B
 model:videomae:
   name: VideoMAE
+  anchor: http://papers.nips.cc/paper_files/paper/2022/hash/416f9cb3276121c42eebb86352a4354a-Abstract-Conference.html
   modality:
   - video
   task:
   - generative
 
 model:video-swin-transformer:
-  name: Video Swin Transformer
+  name: Video Swin Transformer / VideoSwin
   modality:
   - video
   task:
@@ -3469,6 +3712,7 @@ model:video-swin-transformer:
 
 model:vila-8b:
   name: ViLA-8B
+  anchor: https://doi.org/10.1109/cvpr52733.2024.02520
   modality:
   - text
   - image
@@ -3541,13 +3785,18 @@ model:xception:
 
 model:xglm:
   name: XGLM
+  anchor: https://doi.org/10.18653/v1/2022.emnlp-main.616
   modality:
   - text
   task:
   - generative
 
+  variants:
+    variant:xglm-7-5b:
+      name: XGLM-7.5B
 model:yolo-world:
   name: YOLO-World
+  anchor: https://doi.org/10.1109/CVPR52733.2024.01599
   modality:
   - image
   - text
@@ -3643,6 +3892,8 @@ model:wizardlm:
       name: WizardLM-13B
     variant:wizardlm-70b:
       name: WizardLM-70B
+    variant:wizardlm-70b-v1-0:
+      name: WizardLM-70B-v1.0
 model:xlam-r:
   name: Xlam-R
   modality:
@@ -3655,3 +3906,742 @@ model:xlam-r:
       name: XLAM-7B-R
     variant:xlam-8x7b-r:
       name: XLAM-8x7B-R
+
+model:in-1-12:
+  name: 12-in-1
+  anchor: https://openaccess.thecvf.com/content_CVPR_2020/html/Lu_12-in-1_Multi-Task_Vision_and_Language_Representation_Learning_CVPR_2020_paper.html
+
+model:text-embedding-ada-002:
+  name: text-embedding-ada-002
+  anchor: https://arxiv.org/abs/2201.10005
+
+model:adm:
+  name: ADM
+  anchor: https://proceedings.neurips.cc/paper/2021/hash/49ad23d1ec9fa4bd8d77d02681df5cfa-Abstract.html
+
+model:aegis-guard-permissive:
+  name: Aegis-Guard-Permissive
+  anchor: https://arxiv.org/abs/2404.05993
+
+model:akt:
+  name: AKT
+  anchor: https://doi.org/10.1145/3394486.3403282
+
+model:albert-base-v2:
+  name: ALBERT-base-v2
+  anchor: https://arxiv.org/abs/1909.11942
+
+model:align:
+  name: ALIGN
+  anchor: http://proceedings.mlr.press/v139/jia21b.html
+
+model:almost-reward-model:
+  name: ALMOST Reward Model
+  anchor: https://arxiv.org/abs/2305.13735
+
+model:alpaca:
+  name: Alpaca
+  anchor: https://github.com/tatsu-lab/stanford_alpaca
+
+  variants:
+    variant:alpaca-13b:
+      name: Alpaca-13B
+model:stanford-alpaca:
+  name: Stanford Alpaca
+  anchor: https://github.com/tatsu-lab/stanford_alpaca
+
+model:alphacode:
+  name: AlphaCode
+  anchor: https://doi.org/10.48550/arXiv.2203.07814
+
+model:altclip:
+  name: AltCLIP
+  anchor: https://arxiv.org/abs/2211.06679
+
+model:aquila-7b:
+  name: Aquila-7B
+  anchor: https://github.com/flagai-open/flagai/blob/master/examples/aquila
+
+model:auto-j:
+  name: Auto-J
+  anchor: https://arxiv.org/abs/2310.05470
+
+model:bard:
+  name: Bard
+  anchor: https://bard.google.com
+
+model:bingchat:
+  name: BingChat
+  anchor: https://bing.com/chat
+
+model:biobert:
+  name: BioBERT
+  anchor: https://doi.org/10.1093/bioinformatics/btz682
+
+model:biomedclip:
+  name: BioMedCLIP
+  anchor: https://arxiv.org/abs/2303.00915
+
+model:blip:
+  name: BLIP
+  anchor: https://proceedings.mlr.press/v162/li22n.html
+
+model:bsrnet:
+  name: BSRNet
+  anchor: https://arxiv.org/abs/2103.14006
+
+model:cait-s-24:
+  name: CAIT-S/24
+  anchor: https://doi.org/10.1109/ICCV48922.2021.00010
+
+model:cf-gnnexplainer:
+  name: CF-GNNExplainer
+  anchor: https://proceedings.mlr.press/v151/lucic22a.html
+
+model:cf2:
+  name: CF2
+  anchor: https://doi.org/10.1145/3485447.3511948
+
+model:chat-bison-001:
+  name: Chat-bison-001
+  anchor: https://www.googlecloudcommunity.com/gc/ai-ml/google-bard-api/m-p/538517/
+
+model:chatglm2:
+  name: ChatGLM2
+  anchor: https://github.com/thudm/chatglm2-6b
+
+model:chatgpt:
+  name: ChatGPT
+  anchor: https://openai.com/blog/chatgpt
+
+model:chinchilla:
+  name: Chinchilla
+  anchor: https://arxiv.org/abs/2203.15556
+
+
+model:claude-1-3:
+  name: Claude 1.3
+  anchor: https://www.anthropic.com/index/claude-2
+
+model:claude-instant-1:
+  name: Claude Instant 1
+  anchor: https://docs.anthropic.com/claude/reference/getting-started-with-the-api
+
+model:clear:
+  name: CLEAR
+  anchor: https://arxiv.org/abs/2210.08443
+
+model:clinical-bert:
+  name: Clinical BERT
+  anchor: https://aclanthology.org/w19-1909
+
+model:clip4clip:
+  name: CLIP4Clip
+  anchor: https://doi.org/10.1016/j.neucom.2022.07.028
+
+model:clipbert:
+  name: CLIPBERT
+  anchor: https://openaccess.thecvf.com/content/CVPR2021/html/Lei_Less_Is_More_ClipBERT_for_Video-and-Language_Learning_via_Sparse_Sampling_CVPR_2021_paper.html
+
+model:clipcap:
+  name: CLIPCap
+  anchor: https://arxiv.org/abs/2111.09734
+
+model:clofnet:
+  name: CloFNet
+  anchor: https://proceedings.mlr.press/v162/du22e.html
+
+model:coca:
+  name: COCA
+  anchor: https://openreview.net/forum?id=Ee277P3AYC
+
+model:code-llama:
+  name: Code Llama
+  anchor: https://arxiv.org/abs/2308.12950
+
+model:code-davinci-002:
+  name: code-davinci-002
+  anchor: https://arxiv.org/abs/2107.03374
+
+model:codegeex2:
+  name: CodeGeex2
+  anchor: https://arxiv.org/abs/2303.17568
+
+model:codellama-34b:
+  name: CodeLlama-34B
+  anchor: https://arxiv.org/abs/2308.12950
+
+model:coderl:
+  name: CodeRL
+  anchor: http://papers.nips.cc/paper_files/paper/2022/hash/8636419dea1aa9fbd25fc4248e702da4-Abstract-Conference.html
+
+model:codex:
+  name: Codex
+  anchor: https://arxiv.org/abs/2107.03374
+
+model:comet:
+  name: CoMEt
+
+model:cohere-command-52b:
+  name: Cohere Command 52B
+
+model:command-x-large-beta:
+  name: Command X Large Beta
+  anchor: https://huggingface.co/cohereforai/c4ai-command-r-v01
+
+model:convmixer:
+  name: ConvMixer
+  anchor: https://arxiv.org/abs/2201.09792
+
+model:convnextv2:
+  name: ConvNeXtV2
+  anchor: https://arxiv.org/abs/2301.00808
+
+model:cyclegan:
+  name: CycleGAN
+  anchor: https://doi.org/10.1109/ICCV.2017.244
+
+model:dasr:
+  name: DASR
+  anchor: https://openaccess.thecvf.com/content/CVPR2021/html/Wang_Unsupervised_Degradation_Representation_Learning_for_Blind_Super-Resolution_CVPR_2021_paper.html
+
+model:decaf:
+  name: DECAF
+
+model:deit-iii:
+  name: DeiT-III
+  anchor: https://doi.org/10.1007/978-3-031-20053-3_30
+
+model:detr-r50:
+  name: DETR-R50
+  anchor: https://doi.org/10.1007/978-3-030-58452-8_13
+
+model:dimenet:
+  name: DimeNet++
+  anchor: https://arxiv.org/abs/2011.14115
+
+model:dino-focalnet-large:
+  name: DINO-FocalNet-Large
+  anchor: https://doi.org/10.48550/arXiv.2203.03605
+
+model:deep-knowledge-tracing:
+  name: Deep Knowledge Tracing
+
+model:dktf:
+  name: DKTF
+  anchor: https://doi.org/10.1145/3308558.3313565
+
+model:dreamlike-photoreal-2-0:
+  name: Dreamlike Photoreal 2.0
+  anchor: https://huggingface.co/dreamlike-art/dreamlike-photoreal-2.0
+
+model:drum:
+  name: DRUM
+  anchor: https://proceedings.neurips.cc/paper/2019/hash/0c72cb7ee1512f800abe27823a792d03-Abstract.html
+
+model:edgenext:
+  name: EdgeNeXt
+
+model:egnn:
+  name: EGNN
+
+model:electra-base-discriminator:
+  name: ELECTRA-base-discriminator
+  anchor: https://openreview.net/forum?id=r1xmh1btvb
+
+model:equiformerv2:
+  name: EquiformerV2
+  anchor: https://arxiv.org/abs/2306.12059
+
+model:ernie-4-8k-0613:
+  name: ERNIE-4-8k-0613
+  anchor: https://arxiv.org/abs/2107.02137
+
+model:escn:
+  name: ESCN
+  anchor: https://arxiv.org/abs/2302.03655
+
+model:esrgan:
+  name: ESRGAN
+  anchor: https://doi.org/10.1007/978-3-030-11021-5_5
+
+model:frozen-in-time:
+  name: Frozen in Time
+
+model:flan-t5:
+  name: FLAN-T5
+  anchor: https://arxiv.org/abs/2210.11416
+
+  variants:
+    variant:flan-t5-11b:
+      name: FLAN-T5-11B
+    variant:flan-t5-xl:
+      name: FLAN-T5-XL
+model:flava:
+  name: FLAVA
+  anchor: http://papers.nips.cc/paper_files/paper/2022/hash/904aac1c930c196f1c71533d4d9dc31a-Abstract-Conference.html
+
+model:foveabox:
+  name: FoveaBox
+  anchor: https://doi.org/10.1109/TIP.2020.3002345
+
+model:fsfairx-llama3-rm-v0-1:
+  name: FsfairX-Llama3-RM-v0.1
+  anchor: https://arxiv.org/abs/2304.06767
+
+model:galactica-6-7b:
+  name: Galactica-6.7B
+  anchor: https://arxiv.org/abs/2211.09085
+
+model:gem:
+  name: GEM
+  anchor: http://proceedings.mlr.press/v139/lin21d.html
+
+model:gkt:
+  name: GKT
+  anchor: https://doi.org/10.1145/3350546.3352513
+
+model:glide:
+  name: GLIDE
+  anchor: https://arxiv.org/abs/2112.10741
+
+model:glove:
+  name: GloVe
+  anchor: https://doi.org/10.3115/v1/d14-1162
+
+model:goat-7b:
+  name: GOAT-7B
+  anchor: https://doi.org/10.48550/arXiv.2305.14201
+
+model:gp-unit:
+  name: GP-UNIT
+  anchor: https://doi.org/10.1109/TPAMI.2023.3284003
+
+model:graphsage:
+  name: GraphSAGE
+
+model:grm-llama3-8b-sftreg:
+  name: GRM-Llama3-8B-SFTReg
+  anchor: https://arxiv.org/abs/2406.10216
+
+model:gru:
+  name: GRU
+  anchor: https://openreview.net/forum?id=kIPyTuEZuAK
+
+model:guanaco:
+  name: Guanaco
+  anchor: https://arxiv.org/abs/2305.14314
+
+  variants:
+    variant:guanaco-33b:
+      name: Guanaco-33B
+    variant:guanaco-65b:
+      name: Guanaco-65B
+model:gvp:
+  name: GVP
+  anchor: https://openreview.net/forum?id=1YLJDvSx6J4
+
+model:hifacegan:
+  name: HiFaceGAN
+  anchor: https://doi.org/10.1145/3394171.3413965
+
+model:hlr:
+  name: HLR
+  anchor: https://doi.org/10.18653/v1/p16-1174
+
+model:hornet:
+  name: Hornet
+
+model:hps:
+  name: HPS
+  anchor: https://doi.org/10.48550/arXiv.2303.14420
+
+model:hpsv2:
+  name: HPSv2
+  anchor: https://arxiv.org/abs/2306.09341
+
+model:hrnet:
+  name: HRNet
+
+model:hugginggpt:
+  name: HuggingGPT
+  anchor: https://arxiv.org/abs/2303.17580
+
+model:imagereward:
+  name: ImageReward
+  anchor: https://arxiv.org/abs/2304.05977
+
+model:imagen-video:
+  name: Imagen Video
+  anchor: https://arxiv.org/abs/2210.02303
+
+model:instructgpt:
+  name: InstructGPT
+  anchor: https://arxiv.org/abs/2203.02155
+
+model:instructpix2pix:
+  name: InstructPix2Pix
+  anchor: https://doi.org/10.1109/CVPR52729.2023.01764
+
+model:instructuie:
+  name: InstructUIE
+
+model:internvideo:
+  name: InternVideo
+
+model:koala:
+  name: Koala
+  anchor: https://bair.berkeley.edu/blog/2023/04/03/koala/
+
+model:leaps:
+  name: LEAPS
+  anchor: https://proceedings.neurips.cc/paper/2021/hash/d37124c4c79f357cb02c655671a432fa-Abstract.html
+
+model:lemur-v1-70b:
+  name: Lemur-v1-70B / Lemur-70B-Chat-V1
+  anchor: https://doi.org/10.48550/arXiv.2310.06830
+
+model:llama-3-3-70b-instruct:
+  name: Llama 3.3 70B Instruct
+  anchor: https://ai.meta.com/blog/meta-llama-3/
+
+model:llama-adapter:
+  name: LLaMA-Adapter
+  anchor: https://arxiv.org/abs/2303.16199
+
+model:llama:
+  name: LLaMA
+  anchor: https://doi.org/10.48550/arXiv.2307.09288
+
+  variants:
+    variant:llama-7b:
+      name: Llama 7B
+    variant:llama-13b:
+      name: LLaMA-13B
+    variant:llama-30b:
+      name: LLaMA-30B
+    variant:llama-65b:
+      name: LLaMA-65B
+model:llama-1-7b:
+  name: Llama-1-7B
+  anchor: https://arxiv.org/abs/2302.13971
+
+model:llama-adapter-v2:
+  name: LLaMA-Adapter v2
+  anchor: https://arxiv.org/abs/2304.15010
+
+model:lstm:
+  name: LSTM
+  anchor: https://openreview.net/forum?id=kIPyTuEZuAK
+
+model:mace:
+  name: MACE
+  anchor: https://arxiv.org/abs/2206.07697
+
+model:mbart-50:
+  name: mBART-50
+  anchor: https://aclanthology.org/2021.findings-acl.304.
+
+model:merlot-reserve:
+  name: Merlot Reserve
+  anchor: https://doi.org/10.1109/cvpr52688.2022.01589
+
+model:mlp-mixer:
+  name: MLP-Mixer
+
+model:mmrealsr:
+  name: MMRealSR
+  anchor: https://doi.org/10.1007/978-3-031-19790-1_43
+
+model:mnasnet:
+  name: MNASNet
+  anchor: http://openaccess.thecvf.com/content_CVPR_2019/html/Tan_MnasNet_Platform-Aware_Neural_Architecture_Search_for_Mobile_CVPR_2019_paper.html
+
+model:mobilenetv2:
+  name: MobileNetV2
+  anchor: https://doi.org/10.1109/CVPR.2018.00474
+
+model:mobilenetv3:
+  name: MobileNetV3
+
+model:moco:
+  name: MoCo
+  anchor: https://doi.org/10.1109/ICCV48922.2021.00950
+
+model:modelscope-text-to-video:
+  name: ModelScope Text-to-Video
+  anchor: https://arxiv.org/abs/2308.06571
+
+model:moganet:
+  name: MoGANet
+  anchor: https://arxiv.org/abs/2211.03295
+
+model:mplug-2:
+  name: mPLUG-2
+  anchor: https://arxiv.org/abs/2302.00402
+
+model:nats-bench:
+  name: NATS-Bench
+
+model:openflamingo:
+  name: OpenFlamingo
+  anchor: https://arxiv.org/abs/2308.01390
+
+model:openjourney:
+  name: OpenJourney
+  anchor: https://huggingface.co/prompthero/openjourney
+
+model:opus-mt:
+  name: OPUS-MT
+  anchor: https://aclanthology.org/2020.eamt-1.61
+
+model:otter:
+  name: Otter
+  anchor: https://arxiv.org/abs/2305.03726
+
+model:palm-62b:
+  name: PaLM 62B
+  anchor: https://arxiv.org/abs/2204.02311
+
+model:persam:
+  name: PerSAM
+  anchor: https://arxiv.org/abs/2305.03048
+
+model:pgexplainer:
+  name: PGExplainer
+  anchor: https://proceedings.neurips.cc/paper/2020/hash/e37b08dd3015330dcbb5d6663667b8b8-Abstract.html
+
+model:ppocoder:
+  name: PPOCoder
+  anchor: https://arxiv.org/abs/2301.13816
+
+model:propen:
+  name: PROPEN
+  anchor: https://arxiv.org/abs/2405.18075
+
+model:protopformer:
+  name: ProtoPFormer
+  anchor: https://arxiv.org/abs/2208.10431
+
+model:pubmedbert:
+  name: PubMedBERT
+  anchor: https://doi.org/10.1145/3458754
+
+model:qikt:
+  name: QIKT
+  anchor: https://arxiv.org/abs/2302.06885
+
+model:rcexplainer:
+  name: RCExplainer
+  anchor: https://openreview.net/forum?id=uq_tgs7n54m
+
+model:rd-sr:
+  name: RD-SR
+  anchor: https://doi.org/10.1109/CVPR52688.2022.00591
+
+model:realesrnet:
+  name: RealESRNet
+  anchor: https://doi.org/10.1109/ICCVW54120.2021.00217
+
+model:replknet-xl:
+  name: ReplkNet-XL
+  anchor: https://arxiv.org/abs/2203.06717
+
+model:reprover:
+  name: Reprover
+  anchor: https://arxiv.org/abs/2306.15626
+
+model:retinanet-r50:
+  name: RetinaNet-R50
+  anchor: https://doi.org/10.1109/iccv.2017.324
+
+model:rexnet:
+  name: ReXNet
+
+model:rexnet-100:
+  name: RexNet 100
+  anchor: https://arxiv.org/abs/2007.00992
+
+model:rivagan:
+  name: RivaGAN
+  anchor: https://arxiv.org/abs/1909.01285
+
+model:rs-lds:
+  name: RS-LDS
+  anchor: https://arxiv.org/abs/1610.08466
+
+model:rt-1:
+  name: RT-1
+  anchor: https://doi.org/10.15607/RSS.2023.XIX.025
+
+model:rt-2:
+  name: RT-2
+  anchor: https://proceedings.mlr.press/v229/zitkovich23a.html
+
+model:schnet:
+  name: SchNet
+  anchor: https://doi.org/10.1063/1.5019779
+
+model:sgc:
+  name: SGC
+  anchor: http://proceedings.mlr.press/v97/wu19e.html
+
+model:sketch-transformer:
+  name: Sketch Transformer
+  anchor: https://doi.org/10.24963/ijcai.2021/187
+
+model:sld-max:
+  name: SLD-max
+  anchor: https://doi.org/10.1109/CVPR52729.2023.02157
+
+model:sld-medium:
+  name: SLD-medium
+  anchor: https://doi.org/10.1109/CVPR52729.2023.02157
+
+model:sld-strong:
+  name: SLD-strong
+  anchor: https://doi.org/10.1109/CVPR52729.2023.02157
+
+model:slds:
+  name: SLDS
+  anchor: https://doi.org/10.1109/msp.2010.937999
+
+model:slimg:
+  name: SLIMG
+  anchor: https://doi.org/10.1145/3580305.3599413
+
+model:spherenet:
+  name: SphereNet
+  anchor: https://openreview.net/forum?id=givsRXsOt9r
+
+model:srresnet:
+  name: SRResNet
+  anchor: https://doi.org/10.1109/CVPR.2017.19
+
+model:stackllama:
+  name: StackLLaMA
+  anchor: https://huggingface.co/blog/stackllama
+
+model:stanfordnlp-reward-model:
+  name: StanfordNLP Reward Model
+
+model:starcoder:
+  name: Starcoder
+  anchor: https://arxiv.org/abs/2305.06161
+
+model:stegastamp:
+  name: StegaStamp
+  anchor: https://openaccess.thecvf.com/content_CVPR_2020/html/Tancik_StegaStamp_Invisible_Hyperlinks_in_Physical_Photographs_CVPR_2020_paper.html
+
+model:swinir:
+  name: SwinIR
+  anchor: https://doi.org/10.1109/ICCVW54120.2021.00210
+
+model:tagexplainer:
+  name: TAGExplainer
+
+model:tape:
+  name: TAPe
+
+model:text-ada-001:
+  name: text-ada-001
+
+model:text-ada-002:
+  name: text-ada-002
+
+model:tigerbot-70b-chat:
+  name: TigerBot-70B-Chat
+  anchor: https://github.com/tigerresearch/tigerbot
+
+model:treering:
+  name: TreeRing
+  anchor: https://arxiv.org/abs/2305.20030
+
+model:tulu:
+  name: Tulu
+  anchor: https://arxiv.org/abs/2306.04751
+
+model:unifiedqa:
+  name: UnifiedQA
+  anchor: https://doi.org/10.18653/v1/2020.findings-emnlp.171
+
+model:uniperceiver:
+  name: UniPerceiver
+  anchor: https://doi.org/10.1109/CVPR52688.2022.01630
+
+model:uniter:
+  name: UNITER
+  anchor: https://doi.org/10.1007/978-3-030-58577-8_7
+
+model:univl:
+  name: UniVL
+  anchor: https://arxiv.org/abs/2002.06353
+
+model:van-gogh-diffusion:
+  name: Van Gogh Diffusion
+  anchor: https://huggingface.co/dallinmackay/van-gogh-diffusion
+
+model:video-llama:
+  name: Video-LLaMA
+  anchor: https://arxiv.org/abs/2306.02858
+
+model:videochat:
+  name: VideoChat
+  anchor: https://arxiv.org/abs/2305.06355
+
+model:videoclip:
+  name: VideoCLIP
+  anchor: https://aclanthology.org/2021.emnlp-main.544
+
+model:vilbert:
+  name: ViLBERT
+  anchor: https://proceedings.neurips.cc/paper/2019/hash/c74d97b01eae257e44aa9d5bade97baf-Abstract.html
+
+model:vindlu:
+  name: VindLU
+  anchor: https://doi.org/10.1109/CVPR52729.2023.01034
+
+model:violet:
+  name: VioLET
+  anchor: https://arxiv.org/abs/2111.12681
+
+model:virtex:
+  name: ViRTex
+  anchor: https://openaccess.thecvf.com/content/CVPR2021/html/Desai_VirTex_Learning_Visual_Representations_From_Textual_Annotations_CVPR_2021_paper.html
+
+model:visualglm:
+  name: VisualGLM
+  anchor: https://doi.org/10.18653/v1/2022.acl-long.26
+
+model:wizardmath:
+  name: WizardMath
+  anchor: https://arxiv.org/abs/2308.09583
+
+model:x-clip:
+  name: X-CLIP
+  anchor: https://doi.org/10.1145/3503161.3547910
+
+model:xlm-roberta-base:
+  name: XLM-RoBERTa-base
+  anchor: https://arxiv.org/abs/1911.02116
+
+model:xwin-lm-70b-v0-1:
+  name: Xwin-LM-70B-v0.1
+  anchor: https://github.com/xwin-lm/xwin-lm
+
+model:t5:
+  name: T5
+  anchor: https://jmlr.org/papers/v21/20-074.html
+
+  variants:
+    variant:t5-base:
+      name: T5-base
+    variant:t5-xl:
+      name: T5-XL
+model:xlm-r:
+  name: Xlm-R
+  variants:
+    variant:xlm-r-large:
+      name: XLM-R Large
+    variant:xlm-r-xl:
+      name: XLM-R-XL

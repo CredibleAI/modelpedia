@@ -1,0 +1,40 @@
+id: IC-1045
+title: 'Factual GNN explanations do not capture the full data signal: retraining on explanations fails
+  to reproduce predictions while retraining on residuals preserves them'
+description: The paper measures two reproducibility metrics. Reproducibility+ retrains a GNN on only
+  the explanation subgraphs and compares test accuracy to the original model; values are consistently
+  below 1.0, meaning the explanations alone are insufficient. Reproducibility- retrains a GNN on the
+  residual graphs (original minus explanation) and finds accuracy remains close to the original, meaning
+  the explanation edges are not the true cause of the prediction. The paper concludes that explainers
+  capture only specific signals learned by the GNN and do not encompass all underlying data signals.
+models:
+- ref: model:pgexplainer
+- ref: model:tagexplainer
+- ref: model:gem
+- ref: model:cf2
+- ref: model:rcexplainer
+concepts:
+- ref: concept:explanation-faithfulness
+sources:
+- ref: source:gnnx-bench-unravelling-utility-perturbation-based
+datasets:
+- ref: dataset:mutag
+  role: eval
+- ref: dataset:imdb-b
+  role: eval
+- ref: dataset:aids
+  role: eval
+- ref: dataset:nci1
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: Reproducibility- stays near 1.0 across all methods and datasets (e.g. mutagenicity 0.99-1.06,
+  AIDS 0.99-1.0, NCI1 0.89-0.93 in Table U); Reproducibility+ below 1.0 for most methods (e.g. mutagenicity
+  0.97-1.11, MUTAG 0.11-1.08 in Table T)
+caveat: SubgraphX results are unreliable due to very high variance from using only a small number of
+  test graphs (stated in Table T and U captions). The base GNNs are small (3 layers, 20 hidden dims)
+  and trained by the authors.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1044

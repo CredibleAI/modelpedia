@@ -1,0 +1,31 @@
+id: IC-1318
+title: Individual space and time neurons in Llama-2-7B causally contribute to spatial and temporal predictions
+description: The paper identifies individual neurons in Llama-2-7B whose input or output weights have
+  high cosine similarity with the learned probe directions. These neurons are sensitive to the true
+  spatial or temporal coordinates of entities across all entity types. Zero-ablating a space neuron
+  (e.g., l20.7573) increases the model's next-token loss most in contexts involving geographic or climatic
+  facts (up to 2.107 loss increase), and ablating a time neuron (e.g., l18.9387) increases loss most
+  in contexts involving release dates (up to 2.254). Pinning a time neuron's activation to different
+  values changes the model's predicted decade of publication for songs, movies, and books.
+models:
+- ref: model:llama-2
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:language-models-represent-space-time
+datasets: []
+methods:
+- ref: method:inference-time-intervention
+  role: primary
+related_work:
+- name: 'Finding neurons in a haystack: case studies with sparse probing'
+  anchor: https://arxiv.org/abs/2305.01610
+  role: builds-on
+evidence_type: interventional
+key_metric: Time neuron l19.3610 has Spearman correlation 0.77 with art/entertainment release date;
+  max loss increase 2.254 (time neuron l18.9387) and 2.107 (space neuron l20.7573) upon zero-ablation
+caveat: Experiments conducted only on Llama-2-7B; only two space neurons and two time neurons were ablated,
+  and the loss-increase analysis is limited to a subset of Wikipedia articles.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1317

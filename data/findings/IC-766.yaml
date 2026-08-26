@@ -1,0 +1,37 @@
+id: IC-766
+title: Multiple Real-SR methods fail to outperform a small FSRCNN network on the majority of 100 representative
+  degradation cases
+description: 'Under the SEAL framework''s 100 representative degradation cases, several Real-SR methods
+  produce output worse than a small FSRCNN baseline on more than half the cases. Among MSE-based methods,
+  SRResNet (AR: 0.00), DASR (AR: 0.00), and RD-SR (AR: 0.08) all fail. Among GAN-based methods, ESRGAN
+  (AR: 0.00) and DASR (AR: 0.02) also fail. The condition is diverse real-world degradations spanning
+  blur, noise, resize, and JPEG compression, and the failure is checked across all 100 representative
+  cases.'
+models:
+- ref: model:srresnet
+- ref: model:dasr
+- ref: model:rd-sr
+- ref: model:esrgan
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:seal-framework-systematic-evaluation-real-world
+datasets:
+- ref: dataset:div2k-se
+  role: eval
+methods:
+- ref: method:spectral-clustering
+  role: supporting
+related_work:
+- name: BSRGAN
+  anchor: https://arxiv.org/abs/2103.14006
+  role: context
+evidence_type: correlational
+key_metric: 'AR: 0.00 (SRResNet), 0.00 (DASR), 0.08 (RD-SR) for MSE-based; 0.00 (ESRGAN), 0.02 (DASR)
+  for GAN-based, out of 100 representative degradation cases'
+caveat: The acceptance line is a small FSRCNN (0.4M params) fine-tuned per degradation case; a different
+  reference line could shift the threshold.
+extracted_by: automatic-extraction
+related_findings:
+- IC-767
+- IC-768

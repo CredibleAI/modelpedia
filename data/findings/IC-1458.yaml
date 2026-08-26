@@ -1,0 +1,29 @@
+id: IC-1458
+title: GPT-4 and PALM 2-L produce significantly less consistent descriptions of interpolated domain
+  embeddings than a purpose-built ELM model
+description: The paper compares ELM against text-only LLMs (GPT-4 and PALM 2-L) on the task of describing
+  linearly interpolated movie and user embeddings in a domain embedding space. For movies, embeddings
+  are interpolated (α=0.5) with Forrest Gump; for users, random pairs of user embeddings are interpolated.
+  Text-only LLMs are given one-shot examples and prompted to generate the task output. Semantic consistency
+  (cosine similarity) is measured for movies and behavioral consistency (NDCG) for user profiles. The
+  authors report that text-only LLMs are 'significantly less consistent than ELM,' though specific per-model
+  numbers appear only in Figure 3 and are not printed in the text.
+models:
+- ref: model:gpt-4
+- ref: model:palm-2
+  variant: variant:palm-2-l
+concepts: []
+sources:
+- ref: source:demystifying-embedding-spaces-using-large-language
+datasets:
+- ref: dataset:movielens-25m
+  role: eval
+methods:
+- ref: method:cosine-similarity
+  role: eval
+related_work: []
+evidence_type: correlational
+caveat: Specific per-model consistency scores are reported only in Figure 3 (not in the text). The comparison
+  uses one-shot prompting for text-only LLMs, which may not represent their best performance. The task
+  is highly specific to domain-embedding interpretation.
+extracted_by: automatic-extraction

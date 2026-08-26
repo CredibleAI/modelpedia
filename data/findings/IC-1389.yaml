@@ -1,0 +1,68 @@
+id: IC-1389
+title: Video-language models do not significantly outperform image-language models on temporal reasoning
+  tasks in VILMA
+description: The paper evaluates 16 VidLMs, 2 ILMs (CLIP, BLIP-2), and 2 unimodal baselines (GPT-2,
+  OPT) on five temporal reasoning tests (action counting, situation awareness, change of state, rare
+  actions, spatial relations) using pairwise ranking accuracy. In the majority of tasks, VidLMs deliver
+  performance levels closely resembling those of ILMs. In counting, situation awareness, and change
+  of state, many VidLMs do not show notably higher performance than the random baseline (23.8 avg).
+  The best ILM (BLIP-2, 57.5 avg P+T) matches or exceeds most VidLMs, with only Video-LLaMA (57.3) and
+  InternVideo (54.2) approaching it.
+models:
+- ref: model:clipbert
+- ref: model:univl
+- ref: model:videoclip
+- ref: model:clip4clip
+- ref: model:violet
+- ref: model:x-clip
+- ref: model:uniperceiver
+- ref: model:merlot-reserve
+- ref: model:vindlu
+- ref: model:internvideo
+- ref: model:mplug-2
+- ref: model:otter
+- ref: model:video-llama
+- ref: model:clip
+- ref: model:blip-2
+- ref: model:gpt-2
+- ref: model:opt
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:vilma-zero-shot-benchmark-linguistic-temporal
+datasets:
+- ref: dataset:quva
+  role: source
+- ref: dataset:vidsitu
+  role: source
+- ref: dataset:something-something-v2
+  role: source
+- ref: dataset:youcook2
+  role: source
+- ref: dataset:coin
+  role: source
+- ref: dataset:rareact
+  role: source
+- ref: dataset:star
+  role: source
+methods: []
+related_work:
+- ref: dataset:valse
+  role: context
+- name: SVO Probes
+  anchor: https://doi.org/10.18653/v1/2021.findings-acl.318
+  role: context
+- name: Park et al. 2022 (contrast sets for video-text)
+  anchor: https://doi.org/10.18653/v1/2022.naacl-main.261
+  role: context
+evidence_type: correlational
+key_metric: 'Average P+T scores: BLIP-2 57.5, CLIP 52.9, Video-LLaMA 57.3, InternVideo 54.2, VindLU
+  49.5, FiT 48.2, Singularity 48.8, X-CLIP 47.8, MCQ 47.0, VioLET 46.3, Merlot Reserve 45.9, CLIP4Clip
+  52.1, VideoCLIP 38.9, UniVL 38.5, Otter 35.5, mPLUG-2 24.1, UniPerceiver 25.6, CLIPBERT 25.0, GPT-2
+  26.2, OPT 30.6, random 23.8'
+caveat: The paper notes that foil generation introduces plausibility biases that may inflate unimodal
+  and ILM scores in situation awareness and spatial relations. The evaluation uses a limited number
+  of frames (k=4 or 8) for most models, which may further limit temporal reasoning.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1390

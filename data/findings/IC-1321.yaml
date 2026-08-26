@@ -1,0 +1,34 @@
+id: IC-1321
+title: Vicuna-13B, instruction-tuned from LLaMA-13B on user conversations, exhibits worse calibration
+  than its base model LLaMA-13B
+description: The paper compares the calibration of Vicuna-13B (v1.3), which was fine-tuned from LLaMA-13B
+  on user-shared conversations, against LLaMA-13B itself. Vicuna-13B shows higher ECE and Brier scores
+  across all tasks, indicating that the instruction-tuning stage degraded calibration. For example,
+  on NQ, Vicuna-13B has ECE 0.204 versus LLaMA-13B at 0.123. The authors conclude that additional fine-tuning
+  with limited-purpose data can diminish a model's calibration.
+models:
+- ref: model:vicuna
+- ref: model:llama
+concepts: []
+sources:
+- ref: source:litcab-lightweight-language-model-calibration-over
+datasets:
+- ref: dataset:natural-questions
+  role: eval
+- ref: dataset:truthfulqa
+  role: eval
+methods:
+- ref: method:expected-calibration-error
+  role: eval
+- ref: method:brier-score
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'NQ ECE: LLaMA-13b 0.123, Vicuna-13b 0.204; TruthfulQA ECE: LLaMA-13b 0.121, Vicuna-13b
+  0.200; NQ Brier: LLaMA-13b 0.180, Vicuna-13b 0.224'
+caveat: The comparison is between two specific checkpoints; the paper does not isolate whether the degradation
+  is due to the fine-tuning data, the fine-tuning procedure, or both.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1319
+- IC-1320

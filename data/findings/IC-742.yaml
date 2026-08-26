@@ -1,0 +1,40 @@
+id: IC-742
+title: ResNet-50-BN on Waterbirds relies on background as a spurious feature for classification, and
+  this shortcut is invisible to entropy-based confidence metrics
+description: 'On the Waterbirds benchmark, where background is strongly correlated with class in training
+  but anti-correlated in test, the pre-trained ResNet-50-BN exhibits a shortcut: its predictions are
+  driven by background rather than the bird. The paper shows that within the worst-performing group,
+  samples with entropy below the first quartile have lower prediction accuracy than samples in higher
+  entropy intervals, meaning the most ''confident'' predictions are the most likely to be wrong. Grad-CAM
+  visualizations confirm that wrong low-entropy predictions focus on the background while correct ones
+  focus on the bird. Applying entropy-based TTA (TENT) to this model degrades worst-group accuracy from
+  64.90% to 54.14%, below the pre-adaptation level.'
+models:
+- ref: model:resnet
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:entropy-not-enough-test-time-adaptation
+datasets:
+- ref: dataset:waterbirds
+  role: eval
+methods:
+- ref: method:grad-cam
+  role: primary
+- ref: method:tent
+  role: compared-to
+- ref: method:eata
+  role: compared-to
+- ref: method:memo
+  role: compared-to
+related_work:
+- name: Wiles et al. 2022 (A Fine-Grained Analysis on Distribution Shift)
+  anchor: https://openreview.net/forum?id=dl4letuldyk
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Worst-group accuracy on Waterbirds: ResNet-50-BN pre-adaptation 64.90%, TENT 54.14%, MEMO
+  50.47%, EATA 52.38%, SAR 53.41%; entropy below first quartile in worst group shows lowest accuracy
+  (Fig. 2a)'
+caveat: The analysis is on a single architecture (ResNet-50-BN) and a single benchmark (Waterbirds)
+  with binary classification; the Grad-CAM evidence is illustrative rather than exhaustive.
+extracted_by: automatic-extraction

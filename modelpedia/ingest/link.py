@@ -92,9 +92,16 @@ def add(table, name, key):
 
 
 def index_of(entities, node_type=None):
+    """`node_type` may be one type or a collection of them. A collection is what a link field
+    needs when it accepts several: an index wider than the field it serves resolves a name to a
+    slug the field cannot hold, and the validator rejects the record only after it is written.
+    Measured 2026-08-26: two of 447 fresh records carried `related_work: {ref: variant:...}`,
+    because a variant is an entity but not a registry type."""
+    wanted = ({node_type} if isinstance(node_type, str)
+              else frozenset(node_type) if node_type is not None else None)
     identifiers, by_name, by_slug, by_compact = [], {}, {}, {}
     for key, entity in sorted(entities.items()):
-        if node_type is not None and entity.get("type") != node_type:
+        if wanted is not None and entity.get("type") not in wanted:
             continue
         identifiers.append(key)
         slug = key.partition(":")[2]

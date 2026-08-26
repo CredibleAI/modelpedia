@@ -1,0 +1,39 @@
+id: IC-1618
+title: SAM alone has limited generalization for semantic segmentation, producing ambiguous multi-mask
+  outputs without semantic categories
+description: The paper demonstrates that SAM, when used as the sole segmenter (via PerSAM), cannot perform
+  semantic segmentation well. PerSAM achieves only 23.0% mIoU on COCO-20i, 71.2% on FSS-1000, and 11.5%
+  on LVIS-92i in the one-shot setting. The authors attribute this to SAM's inability to provide semantic
+  categories for predicted masks and its tendency to produce multiple ambiguous mask outputs. The paper
+  explicitly states that 'depending solely on SAM results in limited generalization capabilities for
+  semantic tasks.' On one-shot part segmentation, PerSAM also underperforms Matcher by +12.8% on Pascal-Part
+  and +13.5% on PACO-Part.
+models:
+- ref: model:sam
+- ref: model:persam
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:matcher-segment-anything-one-shot-using
+datasets:
+- ref: dataset:coco-20i
+  role: eval
+- ref: dataset:fss-1000
+  role: eval
+- ref: dataset:lvis-92i
+  role: eval
+methods:
+- ref: method:persam
+  role: compared-to
+related_work:
+- name: PerSAM
+  anchor: https://arxiv.org/abs/2305.03048
+  role: compared-to
+evidence_type: correlational
+key_metric: 'PerSAM: 23.0% mIoU (COCO-20i), 71.2% mIoU (FSS-1000), 11.5% mIoU (LVIS-92i) one-shot; 30.1%
+  mean mIoU (Pascal-Part), 21.2% mean mIoU (PACO-Part) one-shot'
+caveat: The comparison is made within the Matcher evaluation protocol; PerSAM is a specific implementation
+  of SAM-based segmentation and its performance may not fully reflect SAM's raw capability in all settings.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1619

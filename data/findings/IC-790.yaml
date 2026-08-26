@@ -1,0 +1,34 @@
+id: IC-790
+title: GPT-4 outperforms GPT-3.5-turbo, Vicuna-13B, and Llama2-70B for generating target captions in
+  zero-shot compositional image retrieval
+description: 'On the CIRCO validation set, replacing the LLM in the CIR-EVL pipeline with different
+  models yields a clear performance hierarchy: GPT-4 achieves map@5 of 15.63, GPT-3.5-turbo 13.33, Vicuna-13B
+  12.65, Llama2-70B 10.22, and a template-based baseline (no LLM reasoning) 9.22. The paper concludes
+  that textual reasoning by the LLM is critical and that stronger reasoning capabilities translate directly
+  into better retrieval.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:vicuna
+  variant: variant:vicuna-13b
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+concepts: []
+sources:
+- ref: source:vision-by-language-training-free-compositional
+datasets:
+- ref: dataset:circo
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'CIRCO validation map@5: GPT-4 15.63, GPT-3.5-turbo 13.33, Vicuna-13B 12.65, Llama2-70B
+  10.22, template (no LLM) 9.22'
+caveat: Results are on the CIRCO validation set only; the task is specific to compositional image retrieval
+  caption generation, not a general LLM benchmark.
+extracted_by: automatic-extraction
+related_findings:
+- IC-788
+- IC-789
+- IC-791

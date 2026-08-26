@@ -1,0 +1,37 @@
+id: IC-1013
+title: Latent samples in Stable Diffusion v2.1, v1.5, and GLIDE can produce images of associated backgrounds
+  rather than the key object, with failure rates of 2.7%, 9.2%, and 50.5% under random sampling respectively
+description: 'SAGE identifies latent variables that generate natural-looking images depicting associated
+  backgrounds (e.g., a road for ''car'', a beach for ''umbrella'') instead of the key object. These
+  latent variables are non-outlier samples of N(0,I). The authors define ''model stability'' as the
+  probability of generating an irrelevant image under random sampling and find it varies dramatically
+  across models: GLIDE has a 50.5% failure rate on five brittle categories, SD v1.5 has 9.2%, and SD
+  v2.1 has 2.7%. The normalized size of the failure region correlates with the random-sampling failure
+  rate, suggesting the type-2 failure region size is a direct measure of model stability.'
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v2-1
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v1-5
+- ref: model:glide
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:discovering-failure-modes-text-guided-diffusion
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:shapiro-wilk-test
+  role: validation
+related_work: []
+evidence_type: correlational
+key_metric: 'Region size: SD v2.1 0.024, SD v1.5 0.037, GLIDE 0.060; Failure rate (random sampling):
+  SD v2.1 2.7%, SD v1.5 9.2%, GLIDE 50.5%; SSR(a): SD v2.1 32.0%, SD v1.5 41.5%, GLIDE 96.5%'
+caveat: The five brittle categories (umbrella, basketball, car, unicycle, alp) were selected by running
+  SAGE on all 1k ImageNet categories and ranking by convergence speed, so they are the worst cases rather
+  than a random sample.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1012
+- IC-1014

@@ -1,0 +1,34 @@
+id: IC-840
+title: GPT-2 Small's name mover heads exhibit disrupted attention patterns under out-of-distribution
+  Gaussian noise corruption
+description: 'The paper measures the attention patterns of name mover (NM) heads in GPT-2 Small on 500
+  IOI prompts under three conditions: clean, Gaussian noise (GN) corruption on the S2 token embedding,
+  and symmetric token replacement (STR). On clean prompts, NMs assign an average of 0.58 attention probability
+  to the indirect object. Under GN, this drops to 0.26 with 0.21 going to the subject, indicating the
+  internal copying mechanism is disrupted. Under STR, the attention patterns are preserved with roles
+  simply swapped. Additionally, restoring the values of S-inhibition heads fully recovers the logit
+  difference to 1.04 under STR but only to 0.49 under GN, suggesting GN introduces further corrupted
+  information flowing into the NMs that cannot be corrected by patching upstream components.'
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-small
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:best-practices-activation-patching-language-models
+datasets: []
+methods:
+- ref: method:activation-patching
+  role: primary
+- ref: method:transformerlens
+  role: supporting
+related_work:
+- ref: method:self-consistency
+  role: builds-on
+evidence_type: correlational
+key_metric: 'NM attention to IO: 0.58 (clean), 0.26 (GN), 0.21 to S1 (GN), preserved (STR); S-inhibition
+  value patching logit difference: 1.04 (STR) vs 0.49 (GN); 500 IOI prompts'
+caveat: The authors describe this as 'tentative evidence' for the OOD hypothesis, noting the Gaussian
+  noise is strongest at influencing early layers and that head 0.10's behavior may be broken there since
+  it directly receives the noised token embeddings.
+extracted_by: automatic-extraction

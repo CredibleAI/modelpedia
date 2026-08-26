@@ -1,0 +1,37 @@
+id: IC-722
+title: Entity tracking in Llama-7b is implemented by detecting and transmitting the positional information
+  of the correct entity, with distinct head groups for position detection, transmission, and value fetching
+description: Using desiderata-based component masking (DCM), the authors show that 71.43% of group B
+  heads and 70.0% of group C heads encode the positional information of the correct object, while all
+  group A heads encode the object value. Activation patching confirms that group A (value fetcher) retrieves
+  the object at the position identified by groups B and C (position detector and transmitter). This
+  position-based scheme is the same in Vicuna-7b and Goat-7b, confirming that fine-tuning does not change
+  the mechanism, only enhances it.
+models:
+- ref: model:llama
+  variant: variant:llama-7b
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+- ref: model:goat-7b
+concepts: []
+sources:
+- ref: source:fine-tuning-enhances-existing-mechanisms-case
+datasets: []
+methods:
+- ref: method:activation-patching
+  role: primary
+related_work:
+- name: Davies et al. 2023 (DCM)
+  anchor: https://arxiv.org/abs/2307.03637
+  role: builds-on
+evidence_type: interventional
+key_metric: 71.43% of group B heads and 70.0% of group C heads encode positional information (DCM);
+  group A heads primarily encode object value; position detector and transmitter accuracy similar across
+  Llama-7b, Vicuna-7b, Goat-7b
+caveat: The exact nature of the positional information is not fully characterized; the authors note
+  that additional segments at the start and boxes before the correct segment interfere with the positional
+  encoding, suggesting relative position from the start token.
+extracted_by: automatic-extraction
+related_findings:
+- IC-721
+- IC-723

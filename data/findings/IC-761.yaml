@@ -1,0 +1,35 @@
+id: IC-761
+title: GPT-3.5-turbo and GPT-4 are susceptible to specific circulating jailbreaking prompts, with 'jailmommy'
+  achieving a 71.16% success rate in producing toxic outputs
+description: The paper analysed 1,009,245 real user–chatbot conversations collected from a service powered
+  by GPT-3.5-turbo and GPT-4 APIs. Seven jailbreaking prompts that circulate on social media were identified
+  and their success rates measured by checking whether the chatbot's response was flagged as toxic by
+  either Detoxify or the OpenAI Moderation API. The 'jailmommy' prompt achieved the highest success
+  rate at 71.16%, followed by 'nsfwgpt' at 68.34% and 'eroticachan' at 65.91%. The most frequently used
+  prompt, 'narotica' (3,903 occurrences from 211 users), succeeded 61.82% of the time. Overall, 6.58%
+  of chatbot turns in the dataset were flagged as toxic by at least one detector.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:wildchat-1m-chatgpt-interaction-logs-wild
+datasets:
+- ref: dataset:wildchat
+  role: source
+methods:
+- ref: method:detoxify
+  role: eval
+- ref: method:openai-moderation-api
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: jailmommy 71.16%, nsfwgpt 68.34%, eroticachan 65.91%, narotica 61.82%, 4chan user 60.78%,
+  alphabreak 38.42%, do anything now 15.83%; overall chatbot toxicity 6.58% (either detector)
+caveat: Success is defined by flagging from either Detoxify or OpenAI Moderation API, which may not
+  capture all harmful outputs. The analysis is on a combined dataset from both GPT-3.5-turbo and GPT-4
+  without a per-model breakdown. The paper notes that anonymity of the service may attract users more
+  likely to attempt jailbreaking, introducing selection bias.
+extracted_by: automatic-extraction

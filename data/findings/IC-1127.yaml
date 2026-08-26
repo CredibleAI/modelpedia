@@ -1,0 +1,46 @@
+id: IC-1127
+title: The LM head in GPT-2, GPT-J, BLOOM, Pythia, and LLaMA-2 projects all input token hidden states
+  into interpretable token distributions over the vocabulary, and these distributions converge approximately
+  monotonically toward the final layer's distribution
+description: Prior work on the logit lens showed that the last token's hidden state can be projected
+  through the LM head to yield an interpretable next-token distribution. This paper extends that observation
+  to all input tokens at every layer, validating it empirically on five model families. Qualitative
+  visualizations show that intermediate-layer projections produce meaningful, context-appropriate predictions
+  (e.g., 'some boys discover' yields 'themselves' in mid-layers of LLaMA-2). Quantitatively, the mean
+  KL divergence between each layer's projected distribution and the final layer's distribution decreases
+  in an approximately monotonic fashion, indicating that each token's contribution converges synchronously
+  at the final layer. This property holds across GPT-2, GPT-J, BLOOM, Pythia, and LLaMA-2 on diverse
+  linguistic phenomena from BLIMP.
+models:
+- ref: model:gpt-2
+- ref: model:gpt-j
+- ref: model:bloom
+- ref: model:pythia
+- ref: model:llama-2
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:unveiling-manipulating-prompt-influence-large-language
+datasets:
+- ref: dataset:blimp
+  role: eval
+methods: []
+related_work:
+- name: 'Interpreting GPT: The Logit Lens'
+  anchor: https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens
+  role: builds-on
+- name: Transformer Feed-Forward Layers are Key-Value Memories
+  anchor: https://doi.org/10.18653/v1/2021.emnlp-main.446
+  role: builds-on
+- name: Transformer Feed-Forward Layers Build Predictions by Promoting Concepts in the Vocabulary Space
+  anchor: https://doi.org/10.18653/v1/2022.emnlp-main.3
+  role: builds-on
+- name: Analyzing Transformers in Embedding Space
+  anchor: https://doi.org/10.18653/v1/2023.acl-long.893
+  role: builds-on
+evidence_type: correlational
+caveat: Convergence is described as 'approximately monotonic' rather than strictly monotonic; primary
+  evidence is qualitative visualizations supplemented by mean KL divergence across layers, with no specific
+  divergence values reported in the text.
+extracted_by: automatic-extraction

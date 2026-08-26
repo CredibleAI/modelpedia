@@ -52,7 +52,7 @@ method:bh-fdr:
     thousands of tiles produces significant regions by chance alone.
 
 method:probing-classifiers:
-  name: Probing classifiers / MLP probing classifiers
+  name: Probing classifiers / MLP probing classifiers / Q16 classifier
   anchor: https://arxiv.org/abs/1610.01644
   artifact: null
   description: 'Freeze the model, train a small supervised model on its internal activations to predict
@@ -62,7 +62,7 @@ method:probing-classifiers:
     the other reference commonly cited for the same idea.'
 
 method:ridge-regression:
-  name: Ridge regression
+  name: Ridge regression / Bootstrap ridge regression
   anchor: https://en.wikipedia.org/wiki/Ridge_regression
   artifact: null
   description: Linear regression with an L2 penalty. As a probe it tests whether a target is recoverable
@@ -84,7 +84,7 @@ method:xgboost:
     "not linearly readable" from "not readable by anything simple."'
 
 method:integrated-gradients:
-  name: Integrated Gradients
+  name: Integrated Gradients / Integral of gradients
   anchor: https://arxiv.org/abs/1703.01365
   artifact: null
   description: Integrates gradients along a straight path from a baseline input to the real input. Requires
@@ -187,7 +187,7 @@ method:control-task:
     well proves nothing. Introduced by Hewitt and Liang as probe selectivity.
 
 method:logistic-regression:
-  name: Logistic regression / Linear decoder (logistic regression)
+  name: Logistic regression / Linear decoder (logistic regression) / Logistic classification / Logistic regression head
   anchor: https://en.wikipedia.org/wiki/Logistic_regression
   artifact: null
   description: Linear classifier over the log-odds of the outcome. Used as a supervised baseline against
@@ -202,7 +202,7 @@ method:linear-svm:
     constructions.
 
 method:cosine-similarity:
-  name: Cosine similarity / Cosine similarity analysis / Cosine semantic similarity / cosine similarity of hidden states / Sample-wise cosine similarity
+  name: Cosine similarity / Cosine similarity analysis / Cosine semantic similarity / cosine similarity of hidden states / Sample-wise cosine similarity / Cosine similarity of attention maps / Cosine similarity perturbation analysis / Cosine similarity template matching / Cosine similarity to neighbours / Semantic consistency (cosine similarity)
   anchor: https://en.wikipedia.org/wiki/Cosine_similarity
   artifact: null
   description: Normalised dot product between two vectors. It measures directional alignment independently
@@ -224,7 +224,7 @@ method:permutation-test:
     Makes no distributional assumption, which is why it suits scores computed on embeddings.
 
 method:knn:
-  name: k-nearest neighbours classifier
+  name: k-nearest neighbours classifier / Nearest-neighbor baseline
   anchor: https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm
   artifact: null
   description: Classifies a point by the labels of its closest neighbours. As a probe it tests whether
@@ -319,7 +319,7 @@ method:local-fidelity-r2:
     as the model's mechanism rather than as an approximation of it.
 
 method:activation-patching:
-  name: Activation patching / Activation replacement
+  name: Activation patching / Activation replacement / Cross-model activation patching (CMap)
   anchor: https://arxiv.org/abs/2404.15255
   artifact: null
   description: Replace an activation in one forward pass with the value it took in another and measure
@@ -347,7 +347,7 @@ method:logit-lens:
     would predict at that depth.
 
 method:sparse-autoencoder:
-  name: Sparse autoencoder / Sparse autoencoders / K-sparse autoencoder / Topk sparse autoencoder / Scaling and Evaluating Sparse Autoencoders
+  name: Sparse autoencoder / Sparse autoencoders / K-sparse autoencoder / Topk sparse autoencoder / Scaling and Evaluating Sparse Autoencoders / Cunningham et al. 2023 (sparse autoencoders)
   anchor: null
   artifact: null
   description: Train an overcomplete autoencoder with a sparsity penalty on model activations, so that
@@ -419,7 +419,7 @@ method:direct-preference-optimization:
     result this entry describes'
 
 method:chain-of-thought-prompting:
-  name: Chain-of-Thought prompting / Chain-of-Thought (CoT) prompting / CoT prompting / Few-shot Chain of Thought
+  name: Chain-of-Thought prompting / Chain-of-Thought (CoT) prompting / CoT prompting / Few-shot Chain of Thought / Few-shot CoT / Chain-of-Thought (CoT-S) / CoT-bag prompting / Few-shot CoT prompting / Rationale prompting / Zero-shot CoT prompting / Wei et al. (2022) chain-of-thought prompting
   anchor: http://papers.nips.cc/paper_files/paper/2022/hash/9d5609613524ecf4f15af0f7b31abca4-Abstract-Conference.html
   artifact: null
   description: Prompt the model to produce intermediate reasoning steps before its answer.
@@ -567,7 +567,7 @@ method:spade:
     confident enough.
 
 method:classifier-free-guidance:
-  name: Classifier-free guidance
+  name: Classifier-free guidance / Classifier-free diffusion guidance
   anchor: null
   artifact: null
   description: Steer a diffusion model at sampling time by extrapolating between its conditional and
@@ -575,7 +575,7 @@ method:classifier-free-guidance:
 
 method:universal-guidance:
   name: Universal guidance
-  anchor: null
+  anchor: https://openreview.net/forum?id=pzpWBbnwiJ
   artifact: null
   description: Guide a diffusion model with an arbitrary external objective at sampling time without
     retraining it.
@@ -596,7 +596,7 @@ method:k-means:
 
 method:bertscore:
   name: BERTScore
-  anchor: null
+  anchor: https://openreview.net/forum?id=SkeHuCVFDr
   artifact: null
   description: Text similarity measured by matching contextual embeddings between candidate and reference
     rather than by overlapping tokens.
@@ -609,7 +609,7 @@ method:rouge-l:
 
 method:fleiss-kappa:
   name: Fleiss' kappa / Fleiss-κ
-  anchor: null
+  anchor: https://doi.org/10.2307/2529310
   artifact: null
   description: Agreement between more than two raters, corrected for the agreement expected by chance.
 
@@ -639,7 +639,7 @@ method:rahf-score:
 
 method:safely-partial-parameter-fine-tuning:
   name: Safely Partial-Parameter Fine-Tuning / SPPFT (Safely Partial Parameter Fine-Tuning)
-  anchor: null
+  anchor: https://doi.org/10.48550/arXiv.2408.17003
   artifact: null
   description: Fine-tuning restricted to a subset of parameters chosen so that safety behaviour learned
     earlier is not overwritten.
@@ -665,7 +665,7 @@ method:interchange-intervention:
   anchor: https://proceedings.neurips.cc/paper_files/paper/2020/file/92650b2e92217715fe312e6fa7b90d82-paper.pdf
 
 method:linear-probing:
-  name: Linear Probing / Ridge regression linear probing
+  name: Linear Probing / Ridge regression linear probing / Linear probe / Linear probe fine-tuning / Linear regression probing / Linear ridge regression probes / Supervised probing / ERM linear probe
   anchor: https://arxiv.org/abs/1610.01644
 
 method:lora:
@@ -684,7 +684,8 @@ method:path-patching:
   anchor: https://openreview.net/pdf?id=npsvsn6o4ul
 
 method:retrieval-augmented-generation:
-  name: Retrieval-Augmented Generation
+  name: Retrieval-Augmented Generation / Retrieval augmentation (top-5 chunks)
+  anchor: https://proceedings.neurips.cc/paper/2020/hash/6b493230205f780e1bc26945df7481e5-Abstract.html
 
 method:rome:
   name: ROME
@@ -694,17 +695,18 @@ method:t-sne:
   name: t-SNE
 
 method:zero-shot-chain-of-thought:
-  name: Zero-shot Chain-of-Thought / Wei et al. 2022 (Chain of Thought)
+  name: Zero-shot Chain-of-Thought / Wei et al. 2022 (Chain of Thought) / Zero-shot chain-of-thought prompting
 
 method:abc:
   name: ABC
+  anchor: https://doi.org/10.1007/978-3-642-14295-6_5
 
 method:attention-calibration:
-  name: Attention Calibration
+  name: Attention Calibration / ACT (Attention Calibration Technique)
   anchor: https://arxiv.org/abs/2406.15765
 
 method:activation-addition:
-  name: Activation Addition
+  name: Activation Addition / Turner et al. (activation addition)
   anchor: https://arxiv.org/abs/2308.10248
 
 method:arena-hard-auto:
@@ -713,6 +715,7 @@ method:arena-hard-auto:
 
 method:attackvlm:
   name: AttackVLM
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/a97b58c4f7551053b0512f92244b0810-Abstract-Conference.html
 
 method:attribution-patching:
   name: Attribution Patching
@@ -740,14 +743,15 @@ method:bge-large-en-v1-5:
   anchor: http://arxiv.org/abs/2310.07554
 
 method:bleu:
-  name: BLEU
+  name: BLEU / BLEU@4
+  anchor: https://aclanthology.org/P02-1040/
 
 method:c-w:
   name: C&W
   anchor: https://doi.org/10.1109/sp.2017.49
 
 method:calibrate-before-use:
-  name: Calibrate Before Use
+  name: Calibrate Before Use / Zhao et al. 2021 (Calibrate Before Use)
   anchor: https://api.semanticscholar.org/corpusid:231979430
 
 method:cats:
@@ -755,7 +759,7 @@ method:cats:
   anchor: https://openreview.net/forum?id=v3w2a7eino
 
 method:causal-mediation-analysis:
-  name: Causal mediation analysis
+  name: Causal mediation analysis / Vig et al. 2020 (causal mediation analysis)
 
 method:cause:
   name: CAUSE
@@ -763,6 +767,7 @@ method:cause:
 
 method:cc-shap:
   name: CC-SHAP
+  anchor: https://doi.org/10.18653/v1/2024.acl-long.329
 
 method:canonical-correlation-analysis:
   name: Canonical Correlation Analysis
@@ -773,16 +778,19 @@ method:contrastive-decoding:
 
 method:centered-kernel-alignment:
   name: Centered Kernel Alignment
+  anchor: http://proceedings.mlr.press/v97/kornblith19a.html
 
 method:chair:
-  name: CHAIR
+  name: CHAIR / CHAIRi / CHAIRS
   anchor: https://arxiv.org/abs/1809.02156
 
 method:circuit-breakers:
-  name: Circuit Breakers
+  name: Circuit Breakers / Circ-Break
+  anchor: http://papers.nips.cc/paper_files/paper/2024/hash/97ca7168c2c333df5ea61ece3b3276e1-Abstract-Conference.html
 
 method:cka:
   name: CKA
+  anchor: http://proceedings.mlr.press/v97/kornblith19a.html
 
 method:clip:
   name: CLIP
@@ -797,6 +805,7 @@ method:clipself:
 
 method:cnniqa:
   name: CNNIQA
+  anchor: https://doi.org/10.1109/CVPR.2014.224
 
 method:codebleu:
   name: CodeBLEU
@@ -804,9 +813,11 @@ method:codebleu:
 
 method:cohen-s-kappa:
   name: Cohen's kappa
+  anchor: https://doi.org/10.1177/001316446002000104
 
 method:contextual-calibration:
   name: Contextual Calibration
+  anchor: http://proceedings.mlr.press/v139/zhao21c.html
 
 method:continual-knowledge-learning:
   name: Continual Knowledge Learning
@@ -818,13 +829,15 @@ method:contrastive-pairs-method:
 
 method:coop:
   name: CoOp
+  anchor: https://doi.org/10.1007/s11263-022-01653-1
 
 method:corrupting-cot:
   name: Corrupting CoT
   anchor: https://arxiv.org/abs/2307.13702
 
 method:counter-fitting:
-  name: Counter-fitting
+  name: Counter-fitting / Counter-fitted embeddings
+  anchor: https://doi.org/10.18653/v1/n16-1018
 
 method:dbnet:
   name: DBNet
@@ -843,6 +856,7 @@ method:deepfool:
 
 method:divergent-association-task:
   name: Divergent Association Task
+  anchor: https://doi.org/10.1073/pnas.2022340118
 
 method:dola:
   name: DoLa
@@ -865,13 +879,15 @@ method:ek-fac-influence-functions:
 
 method:error-consistency:
   name: Error Consistency
+  anchor: https://proceedings.neurips.cc/paper/2020/hash/9f6992966d4c363ea0162a056cb45fe5-Abstract.html
 
 method:eureka:
   name: Eureka
   anchor: https://arxiv.org/abs/2310.12931
 
 method:expected-calibration-error:
-  name: Expected Calibration Error
+  name: Expected Calibration Error / Integral Calibration Error (ECE)
+  anchor: http://proceedings.mlr.press/v70/guo17a.html
 
 method:f1-score:
   name: F1 score
@@ -881,35 +897,41 @@ method:fairface:
 
 method:fast-detectgpt:
   name: Fast-DetectGPT
+  anchor: https://openreview.net/forum?id=Bpcgcr8E8Z
 
 method:feature-visualization-by-optimization:
   name: Feature Visualization by Optimization
   anchor: https://distill.pub/2017/feature-visualization
 
 method:few-shot-prompting:
-  name: Few-shot prompting
+  name: Few-shot prompting / 2-shot prompting / Few-shot ICL / Few-shot prompting for base models
+  anchor: https://doi.org/10.52202/068431-1800
 
 method:fid:
   name: FID
+  anchor: https://proceedings.neurips.cc/paper/2017/hash/8a1d694707eb0fefe65871369074926d-Abstract.html
 
 method:fisher-s-r-to-z-transformation:
   name: Fisher's r-to-z transformation
 
 method:flipd:
   name: FLIPD
+  anchor: http://papers.nips.cc/paper_files/paper/2024/hash/43ab1646052dab79731f5d70bf40f6dc-Abstract-Conference.html
 
 method:foot-in-the-door-attack:
-  name: Foot-in-the-Door Attack
+  name: Foot-in-the-Door Attack / Foot-in-the-door (Wang et al. 2024)
   anchor: https://arxiv.org/abs/2402.15690
 
 method:g-eval:
   name: G-Eval
+  anchor: https://doi.org/10.18653/v1/2023.emnlp-main.153
 
 method:gaussian-kde:
   name: Gaussian KDE
 
 method:gemma-scope:
   name: Gemma Scope
+  anchor: https://doi.org/10.48550/arXiv.2408.05147
 
 method:gini-index:
   name: Gini Index
@@ -919,12 +941,14 @@ method:gpt-4-32k:
 
 method:grace:
   name: GRACE
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/95b6e2ff961580e03c0a662a63a71812-Abstract-Conference.html
 
 method:grad-cam:
   name: Grad-CAM
 
 method:grad-eclip:
   name: Grad-ECLIP
+  anchor: https://proceedings.mlr.press/v235/zhao24p.html
 
 method:greedy-maximum-coverage-approximation:
   name: Greedy Maximum Coverage Approximation
@@ -939,13 +963,14 @@ method:groundingdino:
 
 method:h2o:
   name: H2O
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/6ceefa7b15572587b78ecfcebb2827f8-Abstract-Conference.html
 
 method:humanjailbreaks:
   name: HumanJailbreaks
   anchor: https://arxiv.org/abs/2402.04249
 
 method:hypothesis-refinement:
-  name: Hypothesis Refinement
+  name: Hypothesis Refinement / Iterative hypothesis refinement
   anchor: https://openreview.net/forum?id=bnt7oajl2a
 
 method:i-o-cot:
@@ -965,30 +990,35 @@ method:imgjp:
   anchor: https://arxiv.org/abs/2402.02309
 
 method:inference-time-intervention:
-  name: Inference-Time Intervention / ITI
+  name: Inference-Time Intervention / ITI / Neuron intervention (pinning activation)
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/81b8390039b7302c909cb769f8b6cd93-Abstract-Conference.html
 
 method:infini-gram:
   name: Infini-gram
   anchor: https://arxiv.org/abs/2401.17377
 
 method:influence-functions:
-  name: Influence Functions
+  name: Influence Functions / Grosse et al. 2023 (influence functions)
+  anchor: https://doi.org/10.48550/arXiv.2308.03296
 
 method:influence-patterns:
   name: Influence Patterns
 
 method:information-flow-routes:
-  name: Information Flow Routes
+  name: Information Flow Routes / Ferrando & Voita 2024 (information flow routes)
   anchor: https://arxiv.org/abs/2403.00824
 
 method:information-imbalance:
   name: Information Imbalance
+  anchor: https://arxiv.org/abs/2104.15079
 
 method:inpca:
   name: INPCA
+  anchor: https://doi.org/10.1073/pnas.1817218116
 
 method:isotonic-regression:
   name: Isotonic regression
+  anchor: https://doi.org/10.1145/775047.775151
 
 method:jensen-shannon-divergence:
   name: Jensen-Shannon divergence
@@ -998,13 +1028,13 @@ method:knowledge-circuits:
   anchor: https://arxiv.org/abs/2405.17969
 
 method:kendall-s-tau:
-  name: Kendall's tau
+  name: Kendall's tau / Kendall-tau
 
 method:kendall-s:
   name: Kendall's τ
 
 method:knowledge-neurons:
-  name: Knowledge Neurons
+  name: Knowledge Neurons / Dai et al. 2022 (Knowledge Neurons)
   anchor: https://arxiv.org/abs/2104.08696
 
 method:knowledge-attribution:
@@ -1027,15 +1057,18 @@ method:least-to-most-prompting:
 
 method:ledoit-wolf-shrinkage-estimator:
   name: Ledoit-Wolf Shrinkage Estimator
+  anchor: https://doi.org/10.1016/s0047-259x(03)00096-4
 
 method:linear-assignment-problem:
   name: Linear Assignment Problem
 
 method:linear-cka:
   name: Linear CKA
+  anchor: http://proceedings.mlr.press/v97/kornblith19a.html
 
 method:linear-hsic:
   name: Linear HSIC
+  anchor: https://doi.org/10.1007/11564089_7
 
 method:llama-3:
   name: Llama 3
@@ -1052,7 +1085,7 @@ method:llava-next:
   name: LLaVA-Next
 
 method:llm-as-a-judge:
-  name: LLM-as-a-Judge
+  name: LLM-as-a-Judge / GPT-4 as judge / GPT-4o as LLM judge
 
 method:lm-evaluation-harness:
   name: LM Evaluation Harness
@@ -1064,6 +1097,7 @@ method:lm-eval:
 
 method:m2ib:
   name: M2IB
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/339caf45a6fa281cae8adc6465343464-Abstract-Conference.html
 
 method:manipulate-anything:
   name: Manipulate-Anything
@@ -1074,16 +1108,20 @@ method:mcnemar-s-test:
   anchor: https://link.springer.com/article/10.1007/bf02295996
 
 method:mean-ablation:
-  name: Mean Ablation
+  name: Mean Ablation / direct effect mean ablation / Mean token ablation
+  anchor: https://openreview.net/forum?id=9XFSbDPmdW
 
 method:mi-zero:
   name: MI-Zero
+  anchor: https://doi.org/10.1109/CVPR52729.2023.01893
 
 method:minilm-l6-v2:
   name: MiniLM-L6-V2
+  anchor: https://proceedings.neurips.cc/paper/2020/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html
 
 method:miro:
   name: MIRo
+  anchor: https://doi.org/10.1007/978-3-031-20050-2_26
 
 method:mm-shap:
   name: MM-SHAP
@@ -1095,9 +1133,11 @@ method:mmp:
 
 method:mmseqs2:
   name: MMseqs2
+  anchor: https://doi.org/10.1038/nbt.3988
 
 method:mpa:
   name: MPA
+  anchor: http://papers.nips.cc/paper_files/paper/2022/hash/372cb7805eaccb2b7eed641271a30eec-Abstract-Conference.html
 
 method:mppi:
   name: MPPi
@@ -1117,9 +1157,11 @@ method:net2brain:
 
 method:network-dissection:
   name: Network Dissection
+  anchor: https://doi.org/10.1109/CVPR.2017.354
 
 method:nima:
   name: NIMA
+  anchor: https://doi.org/10.1109/TIP.2018.2831899
 
 method:nnsight:
   name: NNSight
@@ -1138,6 +1180,7 @@ method:nudnet:
 
 method:onion:
   name: Onion
+  anchor: https://doi.org/10.18653/v1/2021.emnlp-main.752
 
 method:online-dpo:
   name: Online DPO
@@ -1149,9 +1192,11 @@ method:openclip:
 
 method:openmask3d:
   name: OpenMask3D
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/d77b5482e38339a8068791d939126be2-Abstract-Conference.html
 
 method:ordinalclip:
   name: OrdinalCLIP
+  anchor: http://papers.nips.cc/paper_files/paper/2022/hash/e55b33430e344a1ee23710415b1c9d87-Abstract-Conference.html
 
 method:orthogonal-matching-pursuit:
   name: Orthogonal Matching Pursuit
@@ -1159,17 +1204,19 @@ method:orthogonal-matching-pursuit:
 
 method:oti:
   name: OTI
+  anchor: https://doi.org/10.1109/ICCV51070.2023.01407
 
 method:pap:
   name: PAP
   anchor: https://arxiv.org/abs/2401.06373
 
 method:parallel-context-windows:
-  name: Parallel Context Windows
+  name: Parallel Context Windows / Parallel Context Window (PCW)
   anchor: https://doi.org/10.18653/v1/2023.acl-long.352
 
 method:pass-k:
-  name: pass@k
+  name: pass@k / pass n@k / pass@1 / pass@t
+  anchor: https://arxiv.org/abs/2107.03374
 
 method:pearson-correlation:
   name: Pearson correlation
@@ -1200,7 +1247,7 @@ method:proximal-policy-optimization:
   anchor: http://arxiv.org/abs/1707.06347
 
 method:activation-projection:
-  name: Activation Projection
+  name: Activation Projection / Probing (activation projection) / Vocabulary projection
   anchor: https://www.anthropic.com/news/probes-catch-sleeper-agents
 
 method:proc3s:
@@ -1211,7 +1258,7 @@ method:procrustes-analysis:
   name: Procrustes Analysis
 
 method:prompt-tuning:
-  name: Prompt Tuning
+  name: Prompt Tuning / Soft prompt tuning
   anchor: https://arxiv.org/abs/2104.08691
 
 method:pvq-rr:
@@ -1231,6 +1278,7 @@ method:rag:
 
 method:rahf:
   name: RAHF
+  anchor: https://doi.org/10.1109/CVPR52733.2024.01835
 
 method:random-forest-regression:
   name: Random Forest Regression
@@ -1244,6 +1292,7 @@ method:react:
 
 method:reasoning-score:
   name: Reasoning Score
+  anchor: https://doi.org/10.18653/v1/2023.acl-long.361
 
 method:regionclip:
   name: RegionCLIP
@@ -1253,7 +1302,7 @@ method:renellm:
   anchor: https://arxiv.org/abs/2311.08268
 
 method:representation-engineering:
-  name: Representation Engineering / Representation engineering (control vectors)
+  name: Representation Engineering / Representation engineering (control vectors) / Zou et al. 2023 (Representation Engineering) / Zou et al. (representation engineering)
   anchor: https://arxiv.org/abs/2310.01405
 
 method:representational-similarity-analysis:
@@ -1268,6 +1317,7 @@ method:rloo:
 
 method:roar:
   name: ROAR
+  anchor: https://proceedings.neurips.cc/paper/2019/hash/fe4b8556000d0f0cae99daa5c5c5a410-Abstract.html
 
 method:rouge-1:
   name: ROUGE-1
@@ -1275,9 +1325,11 @@ method:rouge-1:
 
 method:screenot:
   name: ScreenOT
+  anchor: https://doi.org/10.1214/22-aos2232
 
 method:self-consistency:
-  name: Self-Consistency
+  name: Self-Consistency / Self-consistency prompting / Wang et al. 2023 (self-consistency) / Wang et al. 2023b (Self-Consistency)
+  anchor: https://openreview.net/forum?id=1PL1NIMMrw
 
 method:self-refine:
   name: Self-Refine
@@ -1296,30 +1348,34 @@ method:simple-gradient:
   anchor: https://arxiv.org/abs/1312.6034
 
 method:singular-value-decomposition:
-  name: Singular Value Decomposition
+  name: Singular Value Decomposition / Singular value decomposition of trajectory ensemble
 
 method:smooth-ece:
   name: Smooth ECE
+  anchor: https://doi.org/10.48550/arXiv.2309.12236
 
 method:smoothgrad:
-  name: SmoothGrad
+  name: SmoothGrad / Smooth Gradients
+  anchor: https://arxiv.org/abs/1706.03825
 
 method:smoothllm:
   name: SmoothLLM
   anchor: https://arxiv.org/abs/2310.03684
 
 method:prefix-tuning:
-  name: Prefix Tuning
+  name: Prefix Tuning / Li & Liang 2021 (Prefix-tuning)
   anchor: https://arxiv.org/abs/2101.00190
 
 method:sparsegpt:
   name: SparseGPT
+  anchor: https://proceedings.mlr.press/v202/frantar23a.html
 
 method:spectral-clustering:
   name: Spectral Clustering
 
 method:sscd:
   name: SSCD
+  anchor: https://doi.org/10.1109/CVPR52688.2022.01413
 
 method:ssim:
   name: SSIM
@@ -1337,10 +1393,11 @@ method:structured-prompting:
   anchor: https://arxiv.org/abs/2212.06713
 
 method:successor-representation:
-  name: Successor Representation
+  name: Successor Representation / Dayan 1993 (Successor representation)
 
 method:svcca:
   name: SVCCA
+  anchor: https://proceedings.neurips.cc/paper/2017/hash/dc6a7e655d7e5840e66733e9ee67cc69-Abstract.html
 
 method:tap:
   name: TAP (Tree of Attacks with Pruning)
@@ -1348,9 +1405,11 @@ method:tap:
 
 method:tap-therapeutic-antibody-profiler:
   name: Therapeutic Antibody Profiler
+  anchor: https://doi.org/10.1007/978-1-0716-1450-1_5
 
 method:temperature-scaling:
   name: Temperature Scaling
+  anchor: http://proceedings.mlr.press/v70/guo17a.html
 
 method:texthoaxer:
   name: TextHoaxer
@@ -1362,6 +1421,7 @@ method:textspan:
 
 method:tldr:
   name: TLDR
+  anchor: https://proceedings.neurips.cc/paper/2020/hash/1f89885d556929e98d3ef9b86448f951-Abstract.html
 
 method:truth-forest:
   name: Truth Forest
@@ -1375,10 +1435,12 @@ method:tuned-lens:
   anchor: http://arxiv.org/abs/2303.08112
 
 method:two-stage-least-squares:
-  name: Two-Stage Least Squares
+  name: Two-Stage Least Squares / Two-stage least squares regression
+  anchor: https://doi.org/10.1007/s00362-009-0284-y
 
 method:unipc:
   name: UniPC
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/9c2aa1e456ea543997f6927295196381-Abstract-Conference.html
 
 method:universal-sentence-encoder:
   name: Universal Sentence Encoder
@@ -1390,30 +1452,36 @@ method:utmos:
 
 method:vaa:
   name: VAA
+  anchor: https://doi.org/10.48550/arXiv.2306.13213
 
 method:variational-autoencoder:
   name: Variational Autoencoder
 
 method:val:
   name: VAL
+  anchor: https://doi.org/10.1109/ICTAI.2004.120
 
 method:variance-ratio-test:
   name: Variance Ratio Test
 
 method:verbalized-confidence:
-  name: Verbalized Confidence
+  name: Verbalized Confidence / Verbal confidence elicitation
+  anchor: https://openreview.net/forum?id=8s8K2UZGTZ
 
 method:vit-slim:
   name: ViT-Slim
+  anchor: https://doi.org/10.1109/CVPR52688.2022.00488
 
 method:vlad:
   name: VLAD
 
 method:vqascore:
   name: VQAScore
+  anchor: https://doi.org/10.1007/978-3-031-72673-6_20
 
 method:wanda:
   name: Wanda
+  anchor: https://openreview.net/forum?id=PxoFut3dWW
 
 method:weighted-cohen-s-kappa:
   name: Weighted Cohen's Kappa
@@ -1424,7 +1492,8 @@ method:wimbd:
   anchor: https://openreview.net/forum?id=rvfpnokpv4
 
 method:whisper-large-v3:
-  name: Whisper-Large-V3
+  name: Whisper-Large-V3 / Whisper-Large-V3 ASR
+  anchor: https://proceedings.mlr.press/v202/radford23a.html
 
 method:word-mover-s-distance:
   name: Word Mover's Distance
@@ -1432,3 +1501,606 @@ method:word-mover-s-distance:
 
 method:zerocap:
   name: ZeroCap
+  anchor: https://doi.org/10.1109/CVPR52688.2022.01739
+
+method:acdc-automated-circuit-discovery:
+  name: ACDC (Automated Circuit Discovery)
+  anchor: https://arxiv.org/abs/2304.14997
+
+method:adround:
+  name: ADRound
+  anchor: http://proceedings.mlr.press/v119/nagel20a.html
+
+method:adversarial-gradient-integration:
+  name: Adversarial Gradient Integration
+  anchor: https://doi.org/10.24963/ijcai.2021/396
+
+method:agglomerative-clustering:
+  name: Agglomerative Clustering
+
+method:ape:
+  name: APE
+  anchor: https://openreview.net/forum?id=92gvk82DE-
+
+method:architecture-adapted-multilingual-integrated-gradients:
+  name: Architecture-Adapted Multilingual Integrated Gradients
+  anchor: https://ojs.aaai.org/index.php/aaai/article/view/29735
+
+method:arithmetic-coding:
+  name: Arithmetic Coding
+
+method:ash:
+  name: ASH
+  anchor: https://openreview.net/forum?id=ndYXTEL6cZz
+
+method:augmix:
+  name: AugMix
+  anchor: https://arxiv.org/abs/1912.02781
+
+method:autogpt:
+  name: AutoGPT
+  anchor: https://github.com/significant-gravitas/auto-gpt
+
+method:autointerpretability:
+  name: Autointerpretability
+  anchor: https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html
+
+method:awq:
+  name: AWQ
+
+method:azure-ai-language:
+  name: Azure AI Language
+  anchor: https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview
+
+method:badnets:
+  name: BadNets
+  anchor: https://arxiv.org/abs/1708.06733
+
+method:benchclamp:
+  name: BenchCLAMP
+  anchor: https://arxiv.org/abs/2206.10668
+
+method:best-of-n-sampling:
+  name: Best-of-N Sampling
+  anchor: https://arxiv.org/abs/2112.09332
+
+method:best-worst-scaling:
+  name: Best-Worst Scaling
+  anchor: https://doi.org/10.1017/cbo9781107337855
+
+method:binomial-regression:
+  name: Binomial regression
+
+method:bleurt:
+  name: BLEURT
+  anchor: https://aclanthology.org/2020.acl-main.704
+
+method:bm25:
+  name: BM25 / BM25 retrieval
+  anchor: https://doi.org/10.1561/1500000019
+
+method:brecq:
+  name: BRECQ
+  anchor: https://openreview.net/forum?id=POWv6hDd9XH
+
+method:brier-score:
+  name: Brier score
+
+method:causal-tracing:
+  name: Causal Tracing
+  anchor: https://arxiv.org/abs/2004.12265
+
+method:cca:
+  name: CCA
+
+method:chatcaptioner:
+  name: ChatCaptioner
+  anchor: https://arxiv.org/abs/2303.06594
+
+method:chi-squared-test:
+  name: Chi-squared test
+
+method:chrf:
+  name: CHRF
+  anchor: https://aclanthology.org/w15-3049
+
+method:cipherchat:
+  name: CipherChat
+  anchor: https://openreview.net/forum?id=MbfAK4s61A
+
+method:codebertscore:
+  name: CodeBERTScore
+  anchor: https://arxiv.org/abs/2302.05527
+
+method:comet:
+  name: COMET
+  anchor: https://aclanthology.org/2022.wmt-1.52
+
+method:textual-inversion:
+  name: Textual Inversion
+
+method:conceptor:
+  name: Conceptor
+
+method:constrained-decoding:
+  name: Constrained Decoding
+  anchor: https://doi.org/10.18653/v1/2021.emnlp-main.608
+
+method:infonce:
+  name: InfoNCE
+
+method:critic:
+  name: CRITIC
+  anchor: https://openreview.net/forum?id=Sx038qxjek
+
+method:cross-entropy-method:
+  name: Cross-Entropy Method
+  anchor: https://doi.org/10.1198/tech.2006.s353
+
+method:crystalbleu:
+  name: CrystalBleu
+  anchor: https://doi.org/10.1145/3551349.3556903
+
+method:cutmix:
+  name: CutMix
+  anchor: https://doi.org/10.1109/ICCV.2019.00612
+
+method:ddim:
+  name: DDIM
+  anchor: https://arxiv.org/abs/2010.02502
+
+method:decomposed-prompting:
+  name: Decomposed Prompting
+  anchor: https://openreview.net/forum?id=_nggzqjzary
+
+method:deep-ensembles:
+  name: Deep Ensembles
+  anchor: https://proceedings.neurips.cc/paper/2017/hash/9ef2ed4b7fd2c810847ffa5fa85bce38-Abstract.html
+
+method:deepz:
+  name: DeepZ
+  anchor: https://proceedings.neurips.cc/paper/2018/hash/f2f446980d8e971ef3da97af089481c3-Abstract.html
+
+method:deit:
+  name: DeiT
+
+method:detoxify:
+  name: Detoxify
+  anchor: https://github.com/unitaryai/detoxify
+
+method:dfq:
+  name: DFQ
+  anchor: https://doi.org/10.1109/ICCV.2019.00141
+
+method:dice-similarity-coefficient:
+  name: Dice similarity coefficient
+
+method:diffusion-purification:
+  name: Diffusion Purification
+  anchor: https://arxiv.org/abs/2205.07460
+
+method:dipper-paraphraser-xxl:
+  name: DIPPER-paraphraser-xxl
+  anchor: https://arxiv.org/pdf/2303.13408.pdf
+
+method:dqn:
+  name: DQN
+  anchor: https://doi.org/10.1038/nature14236
+
+method:eata:
+  name: EATA
+  anchor: https://proceedings.mlr.press/v162/niu22a.html
+
+method:ebo:
+  name: EBO
+
+method:epic-distance:
+  name: EPIC distance
+  anchor: https://openreview.net/forum?id=LwEQnp6CYev
+
+method:equal-opportunity-difference:
+  name: Equal Opportunity Difference
+
+method:esmfold:
+  name: ESMFold
+
+method:factor-analysis:
+  name: Factor Analysis
+
+method:faiss:
+  name: FAISS
+  anchor: https://doi.org/10.1109/TBDATA.2019.2921572
+
+method:flac:
+  name: FLAC
+  anchor: https://xiph.org/flac
+
+method:frozen-in-time:
+  name: Frozen in Time
+
+method:gaussian-smoothing:
+  name: Gaussian Smoothing
+
+method:gedi:
+  name: GEDI
+  anchor: https://doi.org/10.18653/v1/2021.findings-emnlp.424
+
+method:giphy-celebrity-detector:
+  name: Giphy Celebrity Detector
+  anchor: https://github.com/giphy/celeb-detection-oss
+
+method:glip:
+  name: GLIP
+
+method:gptq:
+  name: GPTQ
+  anchor: https://arxiv.org/abs/2210.17323
+
+method:gwl-test:
+  name: GWL Test
+  anchor: https://proceedings.mlr.press/v202/joshi23a.html
+
+method:gzip:
+  name: gzip
+  anchor: https://doi.org/10.17487/rfc1952
+
+method:gzip-compression:
+  name: Gzip Compression
+  anchor: https://doi.org/10.17487/rfc1952
+
+method:hamiltonian-monte-carlo:
+  name: Hamiltonian Monte Carlo
+  anchor: https://doi.org/10.1201/b10905-6
+
+method:multiresolution-hash-encoding:
+  name: Multiresolution Hash Encoding
+
+method:hsic:
+  name: HSIC
+  anchor: https://jmlr.org/papers/v6/gretton05a.html
+
+method:independent-component-analysis:
+  name: Independent Component Analysis
+
+method:igwl-test:
+  name: IGWL test
+  anchor: https://proceedings.mlr.press/v202/joshi23a.html
+
+method:instructzero:
+  name: InstructZero
+  anchor: https://arxiv.org/abs/2306.03082
+
+method:jaccard-similarity:
+  name: Jaccard similarity
+
+method:jaro-winkler-distance:
+  name: Jaro-Winkler distance
+
+method:kid:
+  name: KID
+  anchor: https://arxiv.org/abs/1801.01401
+
+method:kl-divergence:
+  name: KL Divergence
+
+method:kn-edit:
+  name: KN Edit
+  anchor: https://doi.org/10.18653/v1/2022.acl-long.581
+
+method:l1-magnitude-pruning:
+  name: L1 Magnitude Pruning
+
+method:lasso-regression:
+  name: Lasso regression
+
+method:levenshtein-distance:
+  name: Levenshtein distance
+
+method:linear-relational-embedding:
+  name: Linear Relational Embedding
+  anchor: https://doi.org/10.1109/69.917563
+
+method:llama-7b:
+  name: LLaMA 7B
+  anchor: https://arxiv.org/abs/2302.13971
+
+method:llm-pruner:
+  name: LLM-Pruner
+
+method:llm-int8:
+  name: LLM.int8()
+  anchor: https://arxiv.org/abs/2208.07339
+
+method:llmeval:
+  name: LLMEval
+  anchor: https://arxiv.org/abs/2409.12941
+
+method:logit-anchoring:
+  name: Logit Anchoring
+  anchor: https://openreview.net/forum?id=Bn09TnDngN
+
+method:lost:
+  name: LOSt
+  anchor: https://www.bmvc2021-virtualconference.com/assets/papers/1339.pdf
+
+method:lpips:
+  name: LPIPS
+  anchor: http://openaccess.thecvf.com/content_cvpr_2018/html/Zhang_The_Unreasonable_Effectiveness_CVPR_2018_paper.html
+
+method:layer-wise-relevance-propagation:
+  name: Layer-wise Relevance Propagation
+  anchor: https://doi.org/10.1007/978-3-319-44781-0_8
+
+method:lwp:
+  name: LWP
+  anchor: https://doi.org/10.18653/v1/2021.emnlp-main.241
+
+method:magnitude-pruning:
+  name: Magnitude Pruning
+
+method:mauve:
+  name: MAUVE
+  anchor: https://openreview.net/forum?id=tqx7njp7pr
+
+method:memo:
+  name: MEMO
+  anchor: http://papers.nips.cc/paper_files/paper/2022/hash/fc28053a08f59fccb48b11f2e31e81c7-Abstract-Conference.html
+
+method:meteor:
+  name: METEOR
+
+method:mhcflurry-2-0:
+  name: MHCFlurry 2.0
+  anchor: https://doi.org/10.1016/j.cels.2020.06.010
+
+method:mlm-scoring:
+  name: MLM Scoring
+  anchor: https://aclanthology.org/2020.acl-main.240
+
+method:moleculestm:
+  name: MoleculeSTM
+  anchor: https://arxiv.org/abs/2212.10789
+
+method:mpnet:
+  name: MPNet
+  anchor: https://arxiv.org/abs/2004.09297
+
+method:multi-agent-debate:
+  name: Multi-Agent Debate
+  anchor: https://arxiv.org/abs/2305.14325
+
+method:mutual-information:
+  name: Mutual Information
+
+method:nlpo:
+  name: NLPO
+  anchor: https://openreview.net/forum?id=8aHzds2uUyB
+
+method:norm-based-analysis:
+  name: Norm-based Analysis
+  anchor: https://www.aclweb.org/anthology/2020.emnlp-main.574
+
+method:nucleus-sampling:
+  name: Nucleus Sampling
+  anchor: https://openreview.net/forum?id=ryggqyrfvh
+
+method:nudenet:
+  name: NudeNet
+  anchor: https://github.com/notai-tech/nudenet/
+
+method:null-text-inversion:
+  name: Null-text inversion
+  anchor: https://arxiv.org/abs/2211.09794
+
+method:nupes:
+  name: NUPES
+  anchor: https://arxiv.org/abs/2308.05600
+
+method:openai-moderation-api:
+  name: OpenAI Moderation API
+  anchor: https://platform.openai.com/docs/guides/moderation
+
+method:optimal-transport-calibration:
+  name: Optimal Transport Calibration
+
+method:optq:
+  name: OPTQ
+  anchor: https://openreview.net/forum?id=tcbBPnfwxS
+
+method:pac-bayes-bound:
+  name: PAC-Bayes bound
+
+method:pac-bayesian-analysis:
+  name: PAC-Bayesian Analysis
+
+method:paired-t-test:
+  name: Paired t-test
+
+method:pal-program-aided-language-models:
+  name: PAL (Program-Aided Language Models) / PaL
+  anchor: https://arxiv.org/abs/2211.10435
+
+method:partial-lrp:
+  name: Partial-LRP
+  anchor: https://aclanthology.org/p19-1580
+
+method:path-norm:
+  name: Path-norm
+  anchor: http://proceedings.mlr.press/v40/neyshabur15.html
+
+method:pegasus:
+  name: PEGASUS
+  anchor: http://proceedings.mlr.press/v119/zhang20ae.html
+
+method:persam:
+  name: PerSAM
+  anchor: https://arxiv.org/abs/2305.03048
+
+method:powerquant:
+  name: PowerQuant
+  anchor: https://openreview.net/forum?id=s1KljJpAukm
+
+method:ppo:
+  name: PPO
+  anchor: http://arxiv.org/abs/1707.06347
+
+method:program-of-thoughts:
+  name: Program of Thoughts
+  anchor: https://arxiv.org/abs/2211.12588
+
+method:prompt-ensembling:
+  name: Prompt Ensembling
+  anchor: http://proceedings.mlr.press/v139/radford21a.html
+
+method:proteinclap-ebm-nce:
+  name: ProteinCLAP-EBM-NCE
+  anchor: https://arxiv.org/abs/2302.04611
+
+method:psnr:
+  name: PSNR
+
+method:qf-attack:
+  name: QF-Attack
+  anchor: https://doi.org/10.1109/CVPRW59228.2023.00236
+
+method:random-smoothing:
+  name: Random Smoothing
+
+method:rays:
+  name: Rays
+  anchor: https://doi.org/10.1145/3394486.3403225
+
+method:red:
+  name: RED++
+  anchor: https://arxiv.org/abs/2110.01397
+
+method:relative-representations:
+  name: Relative Representations
+  anchor: https://openreview.net/forum?id=src-nwiegj
+
+method:rex:
+  name: REX
+  anchor: http://papers.nips.cc/paper_files/paper/2023/hash/8c96b559340daa7bb29f56ccfbbc9c2f-Abstract-Conference.html
+
+method:soft-actor-critic:
+  name: Soft Actor-Critic
+
+method:sas-probe:
+  name: SAS Probe
+  anchor: http://arxiv.org/abs/1906.04341
+
+method:scissorhands:
+  name: Scissorhands
+  anchor: https://arxiv.org/abs/2305.17118
+
+method:segment-anything:
+  name: Segment Anything
+  anchor: https://arxiv.org/abs/2304.02643
+
+method:self-bleu:
+  name: Self-BLEU
+  anchor: https://arxiv.org/abs/1802.01886
+
+method:self-critique:
+  name: Self-Critique
+  anchor: https://arxiv.org/abs/2206.05802
+
+method:sequential-monte-carlo:
+  name: Sequential Monte Carlo
+  anchor: https://doi.org/10.1111/j.1467-9868.2006.00553.x
+
+method:shapiro-wilk-test:
+  name: Shapiro-Wilk test
+  anchor: https://doi.org/10.1093/biomet/52.3-4.591
+
+method:signflip:
+  name: SignFlip
+  anchor: https://doi.org/10.1007/978-3-030-58555-6_17
+
+method:signhunt:
+  name: SignHunt
+  anchor: https://openreview.net/forum?id=SygW0TEFwH
+
+method:sort:
+  name: SORT
+  anchor: https://doi.org/10.1109/icip.2016.7533003
+
+method:sotopia-eval:
+  name: SOTOPIA-EVAL
+
+method:spearman-s:
+  name: Spearman's ρ
+
+method:speculative-decoding:
+  name: Speculative Decoding
+  anchor: https://proceedings.mlr.press/v202/leviathan23a.html
+
+method:squant:
+  name: SQuant
+  anchor: https://openreview.net/forum?id=JXhROKNZzOc
+
+method:square-attack:
+  name: Square Attack
+  anchor: https://doi.org/10.1007/978-3-030-58592-1_29
+
+method:squeezellm:
+  name: SqueezeLLM
+  anchor: https://arxiv.org/abs/2306.07629
+
+method:streamingllm:
+  name: StreamingLLM
+  anchor: https://openreview.net/forum?id=NG7sS51zVF
+
+method:subspace-activation-patching:
+  name: Subspace activation patching
+  anchor: https://arxiv.org/abs/2303.02536
+
+method:symbolictom:
+  name: SymbolicTOM
+  anchor: https://aclanthology.org/2023.acl-long.780
+
+method:td-mpc:
+  name: TD-MPC
+  anchor: https://proceedings.mlr.press/v162/hansen22a.html
+
+method:tent:
+  name: TENT
+  anchor: https://openreview.net/forum?id=uxl3bzlkr3c
+
+method:thompson-sampling:
+  name: Thompson Sampling
+  anchor: https://proceedings.neurips.cc/paper/2011/hash/e53a0a2978c28872a4505bdb51db06dc-Abstract.html
+
+method:tifa:
+  name: TIFA
+
+method:transformerlens:
+  name: TransformerLens
+  anchor: https://github.com/neelnanda-io/transformerlens
+
+method:two-interval-forced-choice-2ifc:
+  name: Two-interval forced choice (2IFC)
+
+method:uniform-magnitude-pruning:
+  name: Uniform Magnitude Pruning
+
+method:uniform-ttm:
+  name: Uniform TTM
+  anchor: https://doi.org/10.1167/12.4.14
+
+method:vim:
+  name: VIM
+  anchor: https://doi.org/10.1109/CVPR52688.2022.00487
+
+method:visual-prompt-tuning:
+  name: Visual Prompt Tuning
+
+method:whisper:
+  name: Whisper
+  anchor: https://arxiv.org/abs/2212.04356
+
+method:wilson-s-confidence-interval:
+  name: Wilson's confidence interval
+
+method:zero-shot-prompting:
+  name: Zero-shot prompting

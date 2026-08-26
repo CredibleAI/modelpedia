@@ -1,0 +1,54 @@
+id: IC-1007
+title: LLMs cannot reliably self-verify or self-correct their own outputs without external tool feedback
+description: The paper measures whether ChatGPT (GPT-3.5-turbo) and Text-davinci-003 can judge the correctness
+  of their own answers and fix errors using only their internal knowledge. On self-verification (Table
+  5), the self-eval method achieves only 54% accuracy on HotpotQA (near random) and performs worse than
+  the 'only-true' baseline on TriviaQA. On self-correction without tools (CRITIC w/o tool), the models'
+  own critiques contribute marginally (-0.03 and +2.33 F1 on QA) and can even deteriorate performance,
+  as seen in the 1.8-point decrease on GSM8K for Text-davinci-003 and the toxicity scores remaining
+  near baseline levels. The authors conclude that 'exclusive reliance on self-correction without external
+  feedback may yield modest improvements or even deteriorate performance.'
+models:
+- ref: model:chatgpt
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+- ref: model:llama-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:critic-large-language-models-self-correct
+datasets:
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:hotpotqa
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:svamp
+  role: eval
+- ref: dataset:tabmwp
+  role: eval
+- ref: dataset:realtoxicityprompts
+  role: eval
+methods:
+- ref: method:critic
+  role: primary
+related_work:
+- ref: method:self-refine
+  role: compared-to
+- name: Reflexion
+  anchor: https://arxiv.org/abs/2303.11366
+  role: compared-to
+- name: Large language models cannot self-correct reasoning yet
+  anchor: https://arxiv.org/abs/2310.01798
+  role: context
+evidence_type: correlational
+key_metric: 'self-eval accuracy 54% on HotpotQA; CRITIC w/o tool: -0.03 and +2.33 F1 (QA, two LLMs);
+  -1.8 on GSM8K (Text-davinci-003); toxicity 0.353 vs 0.344 baseline (Text-davinci-003), 0.339 vs 0.325
+  (ChatGPT)'
+caveat: Results depend on the specific prompting strategy (CRITIC w/o tool) and the tasks tested; the
+  authors note that 'different prompt constructions may impact the experimental results' and that the
+  finding is demonstrated on three task types.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1008

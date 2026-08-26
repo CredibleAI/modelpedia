@@ -1,0 +1,39 @@
+id: IC-678
+title: Specific attention heads in CLIP ViT-L's last 4 layers encode specific image properties (color,
+  shape, location, counting, texture) that are linearly recoverable via text directions
+description: 'Using the TextSpan algorithm, the paper finds a set of text descriptions that span each
+  head''s output space in the joint vision-language representation. For many heads, the top descriptions
+  centre on a single property: e.g. layer 22 head 1 is a ''shape'' head (semicircular arch, isosceles
+  triangle, oval), layer 22 head 11 is a ''color'' head, layer 23 head 10 is a ''counting'' head, layer
+  23 head 12 is a ''texture'' head. Projecting each head''s 768-dim output to a 60-dim text-interpretable
+  subspace retains 72.77% of the 75.25% base ImageNet accuracy. Retrieval using individual head contributions
+  returns images matching the head''s property.'
+models:
+- ref: model:openclip
+  variant: variant:openclip-vit-l-14
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:interpreting-clip-s-image-representation-via
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:textspan
+  role: primary
+- ref: method:mean-ablation
+  role: supporting
+related_work:
+- name: CLIP
+  anchor: https://proceedings.mlr.press/v139/radford21a
+  role: builds-on
+evidence_type: observational
+key_metric: '60 descriptions per head reach 72.77% ImageNet zero-shot accuracy (base: 75.25%). ChatGPT-generated
+  descriptions outperform common words and random vectors at all sizes m.'
+caveat: Not all heads have clear single-property roles; some may not correspond to coherent properties,
+  or may require collaborative interpretation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-677
+- IC-679
+- IC-680

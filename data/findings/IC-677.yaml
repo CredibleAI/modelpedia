@@ -1,0 +1,42 @@
+id: IC-677
+title: CLIP ViT's image representation is primarily constructed by the last 4 MSA layers, with MLPs
+  and early MSA layers contributing negligibly
+description: The paper decomposes CLIP ViT's image representation into direct contributions of individual
+  layers using mean-ablation. Simultaneously ablating all MLPs causes only a 1-3% drop in zero-shot
+  ImageNet accuracy. Accumulated mean-ablation of MSA layers shows that removing all early MSA layers
+  (up to the last 4) has minimal effect, while ablating the final 4 MSA layers causes a drastic accuracy
+  drop. This holds across ViT-B/16, ViT-L/14, and ViT-H/14.
+models:
+- ref: model:openclip
+  variant: variant:openclip-vit-b-16
+- ref: model:openclip
+  variant: variant:openclip-vit-l-14
+- ref: model:openclip
+  variant: variant:openclip-vit-h-14
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:interpreting-clip-s-image-representation-via
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:mean-ablation
+  role: primary
+related_work:
+- name: CLIP
+  anchor: https://proceedings.mlr.press/v139/radford21a
+  role: builds-on
+- ref: model:vit
+  role: builds-on
+evidence_type: interventional
+key_metric: 'MLP ablation: ViT-B/16 70.22→67.04, ViT-L/14 75.25→74.12, ViT-H/14 77.95→76.30. MSA ablation:
+  removing all but last 4 MSA layers causes small drop; ablating the last 4 MSA layers causes large
+  drop (Figure 2).'
+caveat: Only direct effects are measured; indirect effects (information flow from early to late layers)
+  are not analysed.
+extracted_by: automatic-extraction
+related_findings:
+- IC-678
+- IC-679
+- IC-680

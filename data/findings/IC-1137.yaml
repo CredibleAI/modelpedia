@@ -1,0 +1,35 @@
+id: IC-1137
+title: Stable Diffusion represents certain concepts primarily through specific named exemplars rather
+  than abstract category features
+description: Using Conceptor to decompose SD's internal representation of concepts like 'president,'
+  'rapper,' 'movie star,' 'basketball player,' 'composer,' and 'painter,' the authors find that the
+  top decomposition elements are dominated by specific named individuals (Obama, Trump, Biden, Tupac,
+  Drake, Marilyn Monroe, Kobe Bryant, Beethoven, Monet, Picasso). Removing these exemplar names from
+  the pseudo-token significantly degrades reconstruction quality. For 'painter,' 67 out of 100 generated
+  images contain at least one famous artist name in their single-image decomposition. The same exemplar
+  dominance is confirmed on SD 1.4, where 'president' decomposes into 'potus, barackobama, obama, nixon,
+  washington, realdonaldtrump, jefferson, washington, roosevelt.'
+models:
+- ref: model:stable-diffusion
+concepts: []
+sources:
+- ref: source:hidden-language-diffusion-models
+datasets:
+- ref: dataset:bias-in-bios
+  role: eval
+- ref: dataset:conceptnet
+  role: eval
+methods:
+- ref: method:conceptor
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 67 out of 100 'painter' images contain at least one famous artist name in their decomposition
+  (Appendix D.1); Table 6 lists exemplar elements for 5 concepts
+caveat: The finding is limited to concepts that have well-known named instances; it is not shown that
+  all concepts in SD are represented this way.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1138
+- IC-1139
+- IC-1140

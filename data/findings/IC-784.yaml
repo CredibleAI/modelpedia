@@ -1,0 +1,33 @@
+id: IC-784
+title: Pre-trained scoring models (CLIP Score, HPS, Image Reward, Pick Score) underperform on domain-specific
+  fine-tuned diffusion models
+description: The authors constructed a Van Gogh dataset of 275 prompts, each with one image generated
+  normally and four with negative weighting on 'van gogh style'. They measured each scoring model's
+  accuracy in identifying the correctly-styled image. All four pre-trained scoring models scored between
+  0.229 and 0.338, well below the CAS score of 0.470. This shows that scoring models trained on general-purpose
+  data do not transfer to domain-specific fine-tuned diffusion models.
+models:
+- ref: model:clip
+- ref: model:hps
+- ref: model:imagereward
+- ref: model:pickscore
+- ref: model:van-gogh-diffusion
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:cas-probability-based-approach-universal-condition
+datasets: []
+methods:
+- ref: method:clipscore
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: 'acc. on van gogh dataset: CLIP Score 0.284, Image Reward 0.247, HPS 0.229, Pick Score 0.338,
+  CAS 0.470 ± 0.013'
+caveat: Evaluated on a single domain (Van Gogh style) with 275 prompts; the authors note performance
+  gaps would likely be larger for less well-known domains.
+extracted_by: automatic-extraction
+related_findings:
+- IC-783
+- IC-785
+- IC-786

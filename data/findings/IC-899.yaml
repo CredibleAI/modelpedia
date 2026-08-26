@@ -1,0 +1,23 @@
+id: IC-899
+title: GPT-4, when used as a blind pairwise evaluator, exhibits the same style-over-factuality preference
+  as human crowdworkers
+description: 'The paper uses GPT-4 to conduct blind pairwise comparisons between ChatGPT outputs and
+  the authors'' imitation model outputs, following the same procedure as their Mechanical Turk evaluations.
+  GPT-4''s ratings show the same trends as human raters: it rates imitation models as competitive with
+  ChatGPT, particularly when the imitation models produce stylistically similar (confident, well-structured)
+  outputs. The authors note this implies that LLMs may replicate human-like cognitive biases in evaluation,
+  and that GPT-4 may be a viable cheap proxy for human evaluation on some tasks, albeit with a slightly
+  larger absolute preference for ChatGPT''s outputs.'
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:false-promise-imitating-proprietary-language-models
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The observation is brief and secondary to the paper's main focus on imitation models. No detailed
+  analysis of GPT-4's evaluation mechanism is provided; the claim rests on the qualitative observation
+  that GPT-4's rating trends match those of crowdworkers.
+extracted_by: automatic-extraction

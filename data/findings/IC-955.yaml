@@ -1,0 +1,34 @@
+id: IC-955
+title: All baseline knowledge tracing models either lack significant correlation or negatively predict
+  causal support from their inferred prerequisite graphs
+description: The paper evaluates whether the prerequisite graphs inferred by each baseline model correspond
+  to genuine causal support between knowledge components, measured via Bayesian causal induction on
+  consecutive interaction data. For every baseline (HLR, PPE, DKT, DKTF, HKT, AKT, GKT, QIKT), the regression
+  coefficient relating inferred edge probability to causal support is either non-significant or negative.
+  The best baseline achieves coefficients of 1.05 (p=.253) on assist12, 0.22 (p=.792) on assist17, and
+  0.42 (p=.593) on junyi15, none reaching significance. In contrast, the 4-dimensional model's edge
+  probabilities yield significant positive coefficients across all three datasets.
+models:
+- ref: model:hlr
+- ref: model:dktf
+- ref: model:akt
+- ref: model:gkt
+- ref: model:qikt
+concepts: []
+sources:
+- ref: source:predictive-scalable-interpretable-knowledge-tracing-structured
+datasets:
+- ref: dataset:junyi15
+  role: eval
+methods:
+- ref: method:jaccard-similarity
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Best baseline causal support regression: coefficient 1.05 p=.253 (assist12), 0.22 p=.792
+  (assist17), 0.42 p=.593 (junyi15); graph alignment MRR 0.0082, JS expert 0.0015, JS crowd 0.0047,
+  NLL 3.03 (junyi15)'
+caveat: The paper reports only the 'best baseline' aggregate for the causal support regression; individual
+  per-model coefficients are deferred to appendix Figure 12. The NLL for the best baseline (3.03) is
+  lower than PSI-KT's (4.11), indicating the baseline is better on that particular graph-alignment metric.
+extracted_by: automatic-extraction

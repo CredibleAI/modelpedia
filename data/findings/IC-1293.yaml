@@ -1,0 +1,36 @@
+id: IC-1293
+title: The l1 path-norm of PyTorch's pretrained ResNets is approximately 30 orders of magnitude too
+  large for the path-norm generalization bound to be informative on ImageNet-1k
+description: The paper computes the l1, l2, and l4 path-norms of the standard PyTorch pretrained ResNet
+  checkpoints (18, 34, 50, 101, 152) on ImageNet-1k. The l1 path-norm of ResNet18 is 1.3×10³⁰, and for
+  ResNet34 through ResNet152 it overflows float32. Given the training set size n=1,268,355 and the architecture-dependent
+  constant c (4√n·c ranging from 0.088 to 0.23), the path-norm-based generalization bound would need
+  to be reduced by roughly 30 orders of magnitude to match the observed generalization error. Path-norms
+  also increase monotonically with depth across the ResNet family. No choice of margin γ makes the top-1
+  accuracy bound informative either, as the maximum training margin (~30) is far too small to compensate
+  the path-norm.
+models:
+- ref: model:resnet
+  variant: variant:resnet-18
+- ref: model:resnet
+  variant: variant:resnet-34
+- ref: model:resnet
+  variant: variant:resnet50
+concepts: []
+sources:
+- ref: source:path-norm-toolkit-modern-networks-consequences
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:path-norm
+  role: primary
+related_work: []
+evidence_type: observational
+key_metric: '||φ(θ)||₁ = 1.3×10³⁰ (ResNet18), overflow (ResNet34–152); ||φ(θ)||₂ = 2.5×10², 1.1×10²,
+  2.0×10⁸, 2.9×10⁹, 8.9×10¹⁰; ||φ(θ)||₄ = 7.2×10⁻⁶, 4.9×10⁻⁶, 6.7×10⁻⁴, 3.0×10⁻⁴, 1.5×10⁻⁴; 4√n·c =
+  0.088, 0.11, 0.14, 0.19, 0.23; ~30 orders of magnitude gap'
+caveat: The bound is evaluated for cross-entropy loss; for top-1 accuracy no finite γ yields an informative
+  bound. The analysis assumes the standard PyTorch inference normalization and ignores the gap between
+  training-augmented and inference-normalized inputs.
+extracted_by: automatic-extraction

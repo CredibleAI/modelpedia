@@ -1,0 +1,31 @@
+id: IC-867
+title: In GPT-2 prefix-tuned on the emotion dataset, attention over prefix positions is nearly constant
+  across inputs, collapsing the effective bias subspace to a single direction in most layers
+description: The paper trains a prefix of size 10 on GPT-2 for the emotion classification task and examines
+  the range of attention (1st to 99th percentile) over the 10 prefix positions across 12 layers. For
+  most layers, including layer 1, the attention each prefix position receives is almost constant regardless
+  of the input, meaning the effective bias is a single fixed vector applied to the attention layer output.
+  Only layer 3 shows three prefix positions with large variation, yielding a 3-dimensional effective
+  subspace where the input governs which bias vector is selected. This suggests GPT-2 does not fully
+  utilize the representational capacity available to the prefix.
+models:
+- ref: model:gpt-2
+concepts: []
+sources:
+- ref: source:when-prompting-prefix-tuning-work-theory
+datasets: []
+methods:
+- ref: method:prefix-tuning
+  role: primary
+related_work:
+- ref: method:prefix-tuning
+  role: builds-on
+evidence_type: correlational
+key_metric: 'GPT-2 prefix size 10, emotion dataset: layer 1 attention over prefix positions is nearly
+  constant (collapsed subspace); layer 3 has three prefix positions with large variation (3-dimensional
+  effective subspace); range shown as 1st to 99th percentile across 12 layers'
+caveat: Single prefix trained on one dataset (emotion). The paper notes this is for illustration and
+  does not test other tasks or prefix sizes on GPT-2.
+extracted_by: automatic-extraction
+related_findings:
+- IC-866

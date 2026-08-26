@@ -1,0 +1,30 @@
+id: IC-936
+title: GPT-2's learned positional encodings cause context vectors to lose linear independence after
+  one layer, whereas BERT's sinusoidal encodings preserve it
+description: The paper tests whether context vectors remain linearly independent (assumption 2) at the
+  embedding layer (l0) and after one attention layer (l1) in pre-trained BERT and GPT-2 on Wikipedia
+  text. In BERT, sinusoidal positional encodings preserve full rank at both depths. In GPT-2, the learned
+  positional encodings in the pre-trained model have lower rank, causing assumption 2 to fail at l1
+  while it holds at l0. General position fails in all four model/depth combinations. The Kruskal rank
+  of query vectors in trained BERT is 291 (below the context size 512), and in random BERT is 349.
+models:
+- ref: model:gpt-2
+- ref: model:bert
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:memorization-capacity-multi-head-attention-transformers
+datasets:
+- ref: dataset:wikipedia
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: 'n/d ratio 512/1024 for BERT; Kruskal rank 291 (trained BERT) and 349 (random BERT); assumption
+  2: GPT-2 trained l0 ✓, l1 ×; BERT trained l0 ✓, l1 ✓; general position × in all cases'
+caveat: The paper notes that 'linear independence assumptions are not well-suited for discrete data';
+  the Wikipedia text is tokenized, making the continuous linear independence test an approximation for
+  a discrete setting.
+extracted_by: automatic-extraction
+related_findings:
+- IC-935

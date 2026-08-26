@@ -1,0 +1,31 @@
+id: IC-1401
+title: GPT-4 serves as a proxy for human judgment on SOTOPIA-EVAL, with strong correlations on goal,
+  financial, and relationship dimensions for model outputs
+description: The paper prompts GPT-4 to score social interaction episodes along seven dimensions and
+  compares its scores to averaged human annotator scores from Amazon Mechanical Turk. For model-role-played
+  agents, GPT-4's scores show significant Pearson correlations with human scores on goal (0.71), financial
+  (0.62), and relationship (0.56) dimensions. Over 74% of GPT-4 scores fall within one standard deviation
+  of the human score. When humans are role-playing, correlations drop sharply on all dimensions except
+  goal, indicating GPT-4 is a better proxy for evaluating models than humans.
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:sotopia-interactive-evaluation-social-intelligence-language
+datasets:
+- ref: dataset:sotopia
+  role: eval
+methods:
+- ref: method:sotopia-eval
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Pearson correlations (model output): goal 0.71, fin 0.62, rel 0.56, kno 0.33, bel 0.45,
+  soc 0.33, sec 0.22; >74% of GPT-4 scores within human scores ±σ (σ=2.15)'
+caveat: GPT-4 tends to rate higher than humans when it disagrees; correlations drop significantly when
+  evaluating human role-play; LLMs are known to have positional bias and factual inconsistency in evaluation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1402
+- IC-1403
+- IC-1404

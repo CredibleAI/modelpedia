@@ -1,0 +1,52 @@
+id: IC-1264
+title: LLMs are overconfident when verbalizing confidence, with values concentrated in 80–100% and multiples
+  of 5, yielding high ECE across all five tested models
+description: 'When prompted to state their confidence in an answer, all five LLMs (GPT-3, GPT-3.5, GPT-4,
+  Vicuna 13B, Llama 2 70B) produce verbalized confidence values that cluster in the 80%–100% range and
+  are almost exclusively multiples of 5, mimicking human confidence expressions. The resulting expected
+  calibration error is high: average ECE ranges from 52.0 (GPT-3) to 18.0 (GPT-4) across eight datasets.
+  Even GPT-4, the best-calibrated model, shows an average AUROC of only 62.7%, close to the 50% random-guess
+  threshold, indicating poor ability to distinguish correct from incorrect predictions.'
+models:
+- ref: model:gpt-3
+- ref: model:gpt-3-5
+- ref: model:gpt-4
+- ref: model:vicuna
+- ref: model:llama-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:llms-express-their-uncertainty-empirical-evaluation
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:svamp
+  role: eval
+- ref: dataset:strategyqa
+  role: eval
+- ref: dataset:mmlu
+  role: eval
+methods:
+- ref: method:verbalized-confidence
+  role: primary
+- ref: method:expected-calibration-error
+  role: eval
+- ref: method:auroc
+  role: eval
+related_work:
+- name: Zhou et al. 2023 (Navigating the Grey Area)
+  anchor: https://arxiv.org/abs/2302.13439
+  role: context
+- name: Lin et al. 2022 (Teaching Models to Express Their Uncertainty in Words)
+  anchor: https://arxiv.org/abs/2205.14334
+  role: context
+evidence_type: observational
+key_metric: 'Average ECE (×10²): GPT-3 52.0, Vicuna 46.1, Llama 2 43.6, GPT-3.5 37.7, GPT-4 18.0; GPT-4
+  average AUROC 62.7; confidence values predominantly in 80%–100% range, multiples of 5'
+caveat: The paper notes that the overconfidence pattern may reflect imitation of human confidence expressions
+  in the training corpus (citing zhou et al., 2023), and that the evaluation is limited to fixed-form
+  and free-form QA tasks with unique ground-truth answers.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1265
+- IC-1266

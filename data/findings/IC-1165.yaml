@@ -1,0 +1,25 @@
+id: IC-1165
+title: ProtoPFormer achieves 42.2% attribute identification accuracy on CUB-200-2011 in a 7-rater human
+  evaluation
+description: The authors evaluated ProtoPFormer's ability to identify fine-grained visual attributes
+  by showing its prototype activation maps to seven human raters unfamiliar with the work. They randomly
+  selected five images from each of four CUB species (20 images total) and asked raters to list attributes
+  captured by the maps. An attribute was counted as detected if more than half of the raters identified
+  it. ProtoPFormer achieved 42.2% attribute identification accuracy, compared to 74.7% for the authors'
+  INTR model on the same protocol.
+models:
+- ref: model:protopformer
+concepts: []
+sources:
+- ref: source:simple-interpretable-transformer-fine-grained-image
+datasets:
+- ref: dataset:cub-200-2011
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: attribute identification accuracy 42.2% (ProtoPFormer) vs 74.7% (INTR), 20 CUB images, 7
+  human raters
+caveat: 'Very small sample: only 20 images across 4 species, evaluated by 7 raters; the evaluation protocol
+  was designed by the authors specifically for this comparison'
+extracted_by: automatic-extraction

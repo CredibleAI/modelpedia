@@ -1,0 +1,32 @@
+id: IC-1580
+title: The official Llama 2-7B checkpoint fails to generate valid numerical responses for 3D-dependent
+  molecular properties, with a valid answer rate of only 23% for SCF energy
+description: The paper evaluates the unmodified Llama 2-7B checkpoint on open-text molecular QA tasks
+  that require predicting numerical computed properties. When the property is 3D-dependent (HOMO, LUMO,
+  HOMO-LUMO gap, SCF energy) and cannot be straightforwardly derived from the SMILES string, the model
+  frequently produces no valid numerical answer. The valid answer rate drops to 23% for SCF energy and
+  70-71% for HOMO, LUMO, and H-L gap, compared to 82-85% for simpler composition-based properties like
+  molecular weight and LogP. The authors attribute this to the properties not being derivable from 1D
+  SMILES representations.
+models:
+- ref: model:llama-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:molecule-text-interpretation-language-models-3d
+datasets:
+- ref: dataset:pubchemqc
+  role: eval
+methods:
+- ref: method:lora
+  role: supporting
+related_work: []
+evidence_type: observational
+key_metric: 'valid answer rate: 23% (SCF, 10^4 eV), 70% (HOMO), 71% (LUMO), 70% (H-L gap); MAE: 3.84
+  (10^4 eV) SCF, 2.87 eV HOMO, 1.89 eV LUMO, 1.86 eV H-L gap; compared to 82% (weight), 85% (logp),
+  84% (tpsa), 76% (complexity) for non-3D properties'
+caveat: The evaluation is on the authors' own 3D-MoIT test set (PubChemQC subset, 2000 molecules), and
+  the task format (open-text QA with a specific prompt template) may not generalise to other evaluation
+  settings. The paper does not ablate whether the failure is due to the model's inability to parse 3D
+  structure or to its general difficulty with numerical generation.
+extracted_by: automatic-extraction

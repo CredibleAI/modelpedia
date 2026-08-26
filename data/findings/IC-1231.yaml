@@ -1,0 +1,47 @@
+id: IC-1231
+title: On APPS, released code generation models span pass@1 from 0.20 (GPT-3 175B) to 6.20 (CodeRL),
+  with value-based and policy-based RL methods outperforming supervised baselines
+description: The paper reports pass@1, pass@5, and pass@1000 on the APPS benchmark for nine released
+  code generation models across three difficulty levels (introductory, interview, competition). Supervised
+  models range from GPT-2 0.1B (pass@1=1.00) to Codex 12B (pass@1=4.14) and AlphaCode 1B (pass@1000=17.67).
+  RL-based methods CodeRL (pass@1=6.20), PPOCoder (pass@1=5.20), and RLTF (pass@1=4.16) generally outperform
+  the supervised baselines at pass@1. The authors note that CodeRL's raw generation (pass@1=1.60, pass@5=3.28
+  with greedy/sampled decoding) is comparable to or exceeds B-Coder's raw generation, and that CodeRL's
+  programs can be further improved by B-Coder's recovered reward ranking.
+models:
+- ref: model:coderl
+- ref: model:gpt-2
+- ref: model:gpt-3
+- ref: model:gpt-neo
+- ref: model:gpt-j
+- ref: model:codex
+- ref: model:alphacode
+- ref: model:ppocoder
+concepts: []
+sources:
+- ref: source:mathcal-b-coder-value-based-deep
+datasets:
+- ref: dataset:apps
+  role: eval
+- ref: dataset:mbpp
+  role: eval
+methods:
+- ref: method:nucleus-sampling
+  role: eval
+related_work:
+- ref: model:coderl
+  role: compared-to
+- ref: model:ppocoder
+  role: compared-to
+- name: RLTF
+  anchor: https://arxiv.org/abs/2307.04349
+  role: compared-to
+evidence_type: correlational
+key_metric: 'pass@1: GPT-2 0.1B=1.00, GPT-2 1.5B=1.30, GPT-Neo 2.7B=3.90, GPT-J 6B=5.60, Codex 12B=4.14,
+  GPT-3 175B=0.20, CodeRL=6.20, PPOCoder=5.20, RLTF=4.16; pass@1000: Codex=25.02, AlphaCode=17.67, GPT-J=35.20,
+  CodeRL=35.30, RLTF=38.30'
+caveat: 'Baseline numbers for GPT-2, GPT-3, GPT-Neo, GPT-J, Codex, AlphaCode, CodeRL, PPOCoder, and
+  RLTF are duplicated from their original papers (marked with dagger symbols in Table 1), not re-measured
+  by the authors. The authors note that raw B-Coder performance without ranking is mixed compared to
+  CodeRL (Table 8: CodeRL pass@5=3.28 vs B-Coder pass@5=2.88).'
+extracted_by: automatic-extraction

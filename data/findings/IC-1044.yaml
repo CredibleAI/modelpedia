@@ -1,0 +1,34 @@
+id: IC-1044
+title: Counterfactual GNN explainers produce statistically infeasible recourses that violate topological
+  constraints in molecular datasets
+description: The paper tests whether counterfactual explanations generated for molecular graphs correspond
+  to valid molecules by checking connectivity. In the original datasets, molecules are expected to be
+  single connected components. The paper measures the p-value of the deviation between the expected
+  count of connected graphs and the observed count in the counterfactuals. For RCExplainer and CF2 on
+  mutagenicity and AIDS, the deviations are highly significant (p < 0.00001), meaning the counterfactuals
+  frequently produce disconnected molecules. Visualization in Appendix F further shows that CLEAR and
+  CF2 produce explanations violating valency rules.
+models:
+- ref: model:rcexplainer
+- ref: model:cf2
+- ref: model:clear
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:gnnx-bench-unravelling-utility-perturbation-based
+datasets:
+- ref: dataset:mutag
+  role: eval
+- ref: dataset:aids
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: 'Mutagenicity: RCExplainer expected 233.05 connected, observed 70, p < 0.00001; CF2 expected
+  206.65, observed 0, p < 0.00001. AIDS: RCExplainer expected 17.6, observed 8, p < 0.00001; CF2 expected
+  1.76, observed 0, p = 0.0001 (Table L)'
+caveat: Feasibility is only tested on three molecular datasets (mutagenicity, MUTAG, AIDS). MUTAG shows
+  no significant deviation (p = 0.55 for RCExplainer, p = 0.13 for CF2), so the issue is dataset-dependent.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1045

@@ -1,0 +1,37 @@
+id: IC-721
+title: The 72-head entity tracking circuit identified in Llama-7b achieves high faithfulness in Vicuna-7b
+  and Goat-7b without any modification to the circuit graph
+description: Using path patching, the authors identify a sparse circuit of 72 attention heads in four
+  groups (value fetcher, position transmitter, position detector, structure reader) in Llama-7b that
+  reproduces its full entity tracking accuracy. When this identical circuit is mean-ablated in Vicuna-7b
+  and Goat-7b, it recovers 97% and 89% of their respective full-model performance, respectively. Random
+  circuits of the same size achieve near-zero accuracy, confirming the circuit is not a generic set
+  of heads. This demonstrates that fine-tuning preserves the base model's entity tracking circuit rather
+  than replacing it.
+models:
+- ref: model:llama
+  variant: variant:llama-7b
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+- ref: model:goat-7b
+concepts: []
+sources:
+- ref: source:fine-tuning-enhances-existing-mechanisms-case
+datasets: []
+methods:
+- ref: method:path-patching
+  role: primary
+- ref: method:mean-ablation
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: 'faithfulness: Llama-7b 1.00, Vicuna-7b 0.97, Goat-7b 0.89; circuit accuracy: Llama-7b 0.66,
+  Vicuna-7b 0.65, Goat-7b 0.73; full-model accuracy: Llama-7b 0.66, Vicuna-7b 0.67, Goat-7b 0.82; random
+  circuit accuracy 0.00-0.01'
+caveat: Achieving the full performance of Goat-7b requires incorporation of additional components beyond
+  the Llama-7b circuit; the Goat-7b circuit is larger (175 heads) and approximately a superset of the
+  Llama-7b circuit.
+extracted_by: automatic-extraction
+related_findings:
+- IC-722
+- IC-723

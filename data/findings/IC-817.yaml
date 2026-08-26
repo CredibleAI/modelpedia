@@ -1,0 +1,35 @@
+id: IC-817
+title: RLHF on general-purpose preference data improves machine ethics performance in Pythia and Llama-7B
+  models
+description: On the commonsense subset of the Ethics benchmark (983 morally wrong scenarios), the authors
+  measure the false negative rate (the model failing to identify a wrong action as wrong). SFT initially
+  reduces the FNR, and PPO and DPO provide further improvements. The average FNR across all four models
+  drops from 56.8% to 38.3% after PPO and 40.3% after DPO, representing a 31% average improvement. The
+  authors note that machine ethics is the most aligned trustworthiness aspect with the general-purpose
+  Anthropic HH preference data.
+models:
+- ref: model:pythia
+- ref: model:llama
+concepts: []
+sources:
+- ref: source:more-rlhf-more-trust-impact-preference
+datasets:
+- ref: dataset:anthropic-hh
+  role: train
+methods:
+- ref: method:ppo
+  role: primary
+- ref: method:direct-preference-optimization
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: average FNR reduced from 56.8% to 38.3% (PPO) and 40.3% (DPO); 31% average improvement on
+  machine ethics benchmark
+caveat: The improvement is specific to the commonsense moral recognition task; the authors note that
+  providing ethically aligned responses does not mean the model can actively detect specific actions
+  against human morality.
+extracted_by: automatic-extraction
+related_findings:
+- IC-815
+- IC-816
+- IC-818

@@ -1,0 +1,28 @@
+id: IC-620
+title: CAIT-S/24 (a ViT) attends more to high-frequency image features than ResNet-101 (a CNN), as revealed
+  by frequency-domain attribution visualization
+description: Using adversarial gradient integration attribution (Pan et al., 2021), the paper visualizes
+  where each model's attention falls in the frequency domain. The attribution map for CAIT-S/24 shows
+  concentrated attention in the high-frequency region (bottom-right of the DCT spectrum), whereas the
+  map for ResNet-101 shows a more diffuse or low-frequency-biased pattern. The authors generalize this
+  to a class-level claim that ViTs, unlike traditional CNNs, exhibit distinct attention regions in the
+  frequency domain and tend to focus more on high-frequency features. This observation motivates the
+  high-frequency adaptation (HFA) component of their attack method.
+models:
+- ref: model:cait-s-24
+- ref: model:resnet
+concepts: []
+sources:
+- ref: source:enhancing-transferable-adversarial-attacks-vision-transformers
+datasets:
+- ref: dataset:ilsvrc-2012-validation-set
+  role: eval
+methods:
+- ref: method:adversarial-gradient-integration
+  role: primary
+related_work: []
+evidence_type: observational
+caveat: The observation is illustrated with a single ViT (CAIT-S/24) and a single CNN (ResNet-101) via
+  one attribution method; no quantitative metric or statistical test is reported for the frequency-domain
+  attention difference.
+extracted_by: automatic-extraction

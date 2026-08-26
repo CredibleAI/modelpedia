@@ -1,0 +1,33 @@
+id: IC-816
+title: RLHF on general-purpose preference data increases privacy leakage in Pythia and Llama-7B models
+description: Using a synthetic privacy benchmark of 1800 prompts containing 18 types of PII, the authors
+  measure the percentage of private information the model reveals when asked. Privacy leakage increases
+  notably after RLHF, with the change mainly coming from the PPO and DPO steps after the initial SFT.
+  The authors explain this as the pairwise comparison data, especially helpfulness-related samples,
+  making the model more inclined to comply with recent user requests without enhancing its understanding
+  of privacy importance.
+models:
+- ref: model:pythia
+- ref: model:llama
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:more-rlhf-more-trust-impact-preference
+datasets:
+- ref: dataset:anthropic-hh
+  role: train
+methods:
+- ref: method:ppo
+  role: primary
+- ref: method:direct-preference-optimization
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: privacy leakage increases by 12% on average across all target models and two RLHF variants
+caveat: The privacy benchmark is synthetic, constructed from the Enron email dataset and randomly generated
+  PII, not real conversational privacy scenarios.
+extracted_by: automatic-extraction
+related_findings:
+- IC-815
+- IC-817
+- IC-818

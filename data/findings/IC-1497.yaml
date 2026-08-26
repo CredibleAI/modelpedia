@@ -1,0 +1,32 @@
+id: IC-1497
+title: LLaMA-7B's frozen transformer block amplifies informative visual tokens, producing feature activations
+  with higher Miou against ground-truth segmentation masks than both the baseline ViT and the model's
+  own attention scores
+description: 'Using ImageNet-S segmentation masks as ground truth for informative regions, the paper
+  generates pseudo-masks from feature activations and attention scores at each layer. After training
+  with the frozen LLaMA block, the feature activation (especially at the second linear layer f2l) shows
+  stronger concentration on target objects. The Miou of vit-s-llama''s f2l pseudo-mask (54.1%) far exceeds
+  its own attention-score pseudo-mask (7.5%) and also exceeds vit-s''s f2l (41.4%). Qualitative visualizations
+  on action recognition, point cloud classification, 2D VQA, and 3D VQA show the same pattern: the LLaMA
+  block sharpens activation on relevant regions.'
+models:
+- ref: model:llama
+concepts: []
+sources:
+- ref: source:frozen-transformers-language-models-effective-visual
+datasets: []
+methods: []
+related_work:
+- ref: model:dino
+  role: context
+evidence_type: correlational
+key_metric: 'Miou of pseudo-masks: vit-s-llama f2l 54.1% vs attention 7.5%; vit-s f2l 41.4% vs attention
+  29.8%; vit-b-llama f2l 47.8% vs attention 35.7%'
+caveat: The authors note that pseudo-masks from magnitude or frequency activation are 'intuitive but
+  lossy measures to quantify feature quality, because neural networks can encode information in other
+  formats.' The hypothesis does not yet explain how training dynamics facilitate cooperation between
+  visual tokens and the frozen language transformer.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1496
+- IC-1498

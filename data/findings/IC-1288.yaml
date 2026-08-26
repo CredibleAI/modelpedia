@@ -1,0 +1,37 @@
+id: IC-1288
+title: GPT-4, ChatGPT, and GPT-4V fail to close the human-machine gap on Bongard-OpenWorld, with InstructBLIP
+  captions differentially degrading ChatGPT while improving GPT-4
+description: The paper evaluates GPT-4, ChatGPT (GPT-3.5-turbo), and GPT-4V on the Bongard-OpenWorld
+  few-shot visual reasoning benchmark, where models must identify a free-form visual concept from six
+  positive and six negative images and classify a query. GPT-4 with InstructBLIP captions reaches 67.3%
+  accuracy and ChatGPT with BLIP-2 reaches 60.6%, while human participants achieve 91.7%. Notably, switching
+  from BLIP-2 to InstructBLIP captions drops ChatGPT from 60.6% to 52.1% but raises GPT-4 from 64.5%
+  to 67.3%, which the authors attribute to InstructBLIP introducing excessive noise that ChatGPT cannot
+  filter. GPT-4V with raw images scores 54.6%, below both GPT-4 configurations.
+models:
+- ref: model:chatgpt
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+- ref: model:blip-2
+- ref: model:instructblip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:bongard-openworld-few-shot-reasoning-free
+datasets: []
+methods:
+- ref: method:chatcaptioner
+  role: supporting
+related_work:
+- ref: method:chatcaptioner
+  role: builds-on
+evidence_type: correlational
+key_metric: GPT-4+InstructBLIP 67.3%, GPT-4+BLIP-2 64.5%, ChatGPT+BLIP-2 60.6%, ChatGPT+InstructBLIP
+  52.1%, GPT-4V 54.6%, human 91.7%
+caveat: The LLMs rely on captions from a separate VLM (BLIP-2 or InstructBLIP) rather than processing
+  images directly, so the results reflect the combined system rather than the LLM in isolation. The
+  authors note that InstructBLIP's more verbose captions may introduce noise that distracts the reasoner.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1289
+- IC-1290

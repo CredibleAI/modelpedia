@@ -1,0 +1,53 @@
+id: IC-1088
+title: ICL predictions in LLaMA, LLaMA-2, and Falcon models depend on in-context label information and
+  can learn truly novel label relationships
+description: The paper tests whether ICL predictions are independent of the conditional label distribution
+  of in-context examples (NH1). By randomizing in-context labels, they show that log likelihoods and
+  entropies degrade significantly across all 10 model variants and 9 tasks, rejecting NH1. They further
+  demonstrate that ICL can learn a completely novel author-identification task (private Slack messages
+  between two authors) that is guaranteed absent from pre-training data, with all models except Falcon-7B-Instruct
+  achieving better-than-random accuracy. This confirms ICL genuinely uses and learns from in-context
+  label information rather than merely recognizing task format.
+models:
+- ref: model:llama-2
+- ref: model:llama
+- ref: model:falcon
+concepts: []
+sources:
+- ref: source:context-learning-learns-label-relationships-but
+datasets:
+- ref: dataset:sst-2
+  role: eval
+- ref: dataset:subjective
+  role: eval
+- ref: dataset:financial-phrasebank
+  role: eval
+- ref: dataset:ag-news
+  role: eval
+- ref: dataset:mqp
+  role: eval
+- ref: dataset:mrpc
+  role: eval
+- ref: dataset:rte
+  role: eval
+- ref: dataset:wnli
+  role: eval
+methods: []
+related_work:
+- name: Min et al. 2022b (Rethinking the Role of Demonstrations)
+  anchor: https://arxiv.org/abs/2202.12837
+  role: compared-to
+- name: Xie et al. 2022 (An Explanation of In-Context Learning as Implicit Bayesian Inference)
+  anchor: https://arxiv.org/abs/2111.02080
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Δ log likelihood (default minus random) at max context size for llama-2 70b: 0.51 (SST-2),
+  0.53 (Subj), 0.57 (FP), 0.34 (HS), 0.80 (AGN), 0.29 (MQP), 0.04 (MRPC), 0.22 (RTE), 0.18 (WNLI); for
+  falcon 40b: 0.34, 0.35, 0.31, 0.18, 0.90, 0.06, 0.01, 0.01, 0.02'
+caveat: On entailment tasks (MQP, MRPC, RTE, WNLI) smaller models struggle to reach better-than-random
+  performance on default labels, limiting the scope of the randomization comparison for those tasks.
+  The novel author-identification dataset is not publicly released.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1089
+- IC-1090

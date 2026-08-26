@@ -1,0 +1,28 @@
+id: IC-713
+title: 'Llama-2-7B-Instruct exhibits a reproducible failure mode in book-length summarization: high
+  repetition and complete inability to perform incremental updating'
+description: 'On 100 recently-published books, Llama-2-7B-Instruct produces the worst hierarchical BooookScore
+  (72.4) of all five models tested, with 36.1% of trigrams repeated in its summaries. More critically,
+  the model completely fails at incremental updating: it copies text verbatim from the input chunks
+  until reaching the summary length limit, then fails to follow the compression instruction. The authors
+  note they had to use a simpler prompt and truncate at the final punctuation mark to get any output
+  at all.'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b-instruct
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:booookscore-systematic-exploration-book-length-summarization
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Hierarchical BooookScore 72.4; 36.1% repeated trigrams; incremental updating: model copies
+  text until length limit then fails compression instruction (qualitative, all 100 books).'
+caveat: Llama-2-7B-Instruct was evaluated with a 4096-token context window and a simplified prompt,
+  unlike the other models which used their full context windows. The authors note that post-processing
+  was not applied to Llama-2 summaries to avoid artificially enhancing coherence.
+extracted_by: automatic-extraction
+related_findings:
+- IC-714

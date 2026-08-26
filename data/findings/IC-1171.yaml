@@ -1,0 +1,33 @@
+id: IC-1171
+title: Pre-trained ViT, MAE, and ResNet50 (supervised and MoCo v2) place visually similar but semantically
+  distinct ImageNet classes (mop, broom, puck, crutch) in close proximity in their feature space
+description: The paper extracts class-level feature centroids from pre-trained ViT, MAE, and ResNet50
+  (both supervised and contrastive/MoCo v2) on ImageNet-1K. In all four models, classes that share visual
+  appearance but differ semantically—mop and broom (shared stick), puck and crutch (shared cylindrical
+  shape)—have centroids that are closely located in the final-layer feature space. This indicates the
+  representations are dominated by input-domain visual similarity rather than by the semantic structure
+  of the labels. The effect persists under contrastive pre-training (MoCo v2), which only slightly decouples
+  some affected pairs but still fails to separate broom from puck.
+models:
+- ref: model:vit
+- ref: model:mae
+- ref: model:resnet
+  variant: variant:resnet50
+concepts: []
+sources:
+- ref: source:label-focused-inductive-bias-over-latent
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:t-sne
+  role: primary
+related_work:
+- name: MoCo v2
+  anchor: https://arxiv.org/abs/2003.04297
+  role: compared-to
+evidence_type: observational
+caveat: The observation is qualitative (t-SNE visualizations of a small number of example classes) and
+  not quantified across all 1000 ImageNet classes; the paper does not report a distance metric or the
+  fraction of class pairs affected.
+extracted_by: automatic-extraction

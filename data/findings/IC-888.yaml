@@ -1,0 +1,32 @@
+id: IC-888
+title: SLIMG fails on heterophily graphs for link prediction because it cannot properly measure node
+  similarity of heterophily embeddings
+description: The paper reports that SLIMG, a linear GNN designed for node classification, degrades substantially
+  when applied to link prediction on heterophily graphs. On five real-world heterophily datasets (chameleon,
+  squirrel, actor, twitch, pokec), SLIMG scores range from 12.0 to 76.9 hits@100/1000, while on homophily
+  graphs it reaches up to 86.8. On synthetic off-diagonal (heterophily) structures with local features,
+  SLIMG drops from 82.5 to 31.1 hits@100. The authors attribute this to SLIMG's inability to adjust
+  node similarity for embeddings where connected nodes are expected to be dissimilar.
+models:
+- ref: model:slimg
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:netinfof-framework-measuring-exploiting-network-usable
+datasets:
+- ref: dataset:chameleon
+  role: eval
+- ref: dataset:squirrel
+  role: eval
+- ref: dataset:pokec
+  role: eval
+methods: []
+related_work:
+- ref: model:slimg
+  role: context
+evidence_type: correlational
+key_metric: 'SLIMG hits@100: chameleon 76.9±2.8, squirrel 19.6±1.5, actor 18.7±1.0, twitch 12.0±0.3,
+  pokec 21.7±0.2 (heterophily); synthetic local x off-diag a: 31.1±1.1 vs local x diag a: 82.5±1.6'
+caveat: The paper notes that SLIMG was designed for node classification, not link prediction, so the
+  failure may be a task mismatch rather than a fundamental architectural limitation.
+extracted_by: automatic-extraction

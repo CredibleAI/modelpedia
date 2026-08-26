@@ -1,0 +1,34 @@
+id: IC-666
+title: DINOv2, CLIP-vision, and VGG-19 representations all align with MEG brain responses, with DINOv2
+  showing particularly high retrieval performance for late brain activity after image offset
+description: The paper trains a MEG decoder to map brain signals onto pretrained image embeddings and
+  measures retrieval accuracy. Three types of pretrained representations—supervised (VGG-19), contrastive
+  image-text (CLIP-vision), and self-supervised (DINOv2)—all yield strong top-5 retrieval accuracy (~68–70%)
+  on the small test set. When the analysis is repeated on 100-ms sliding windows, DINOv2 in particular
+  shows elevated retrieval performance in windows ending around 150–200 ms after image offset, suggesting
+  its self-supervised representations capture late-stage visual processing in the brain more effectively
+  than the other models tested.
+models:
+- ref: model:dinov2
+- ref: model:clip
+- ref: model:vgg
+  variant: variant:vgg-19
+concepts: []
+sources:
+- ref: source:brain-decoding-toward-real-time-reconstruction
+datasets:
+- ref: dataset:things
+  role: eval
+- ref: dataset:nsd
+  role: eval
+methods:
+- ref: method:ridge-regression
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: top-5 accuracies of 70.33±2.80% (VGG-19), 68.66±2.84% (CLIP-vision), 68.00±2.86% (DINOv2)
+  on the small test set; DINOv2 yields particularly high retrieval performance after image offset (windows
+  ending ~150-200 ms after offset)
+caveat: Results are on a single MEG dataset (Things-MEG, 4 participants); the paper notes these results
+  are preliminary and that further analyses remain necessary to confirm the temporal dynamics.
+extracted_by: automatic-extraction

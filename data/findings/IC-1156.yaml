@@ -1,0 +1,42 @@
+id: IC-1156
+title: The VPT advantage over FT for ViT-B/16 is not explained by overfitting resistance or additional
+  optimization dimensions; the specific feature-preservation mechanism of VPT is the key factor
+description: 'The paper tests two hypotheses for why VPT outperforms FT on ViT-B/16. First, overfitting:
+  training/testing loss curves show that 8/9 structured tasks overfit for both FT and VPT, while only
+  1/10 natural+specialized tasks overfit, so overfitting cannot explain VPT''s advantage in the latter
+  cases. Second, additional dimensions helping escape local minima: the ''mixed'' method (VPT + full
+  FT) and ''ft-then-pt'' method both add dimensions but underperform VPT (mixed: 72.80/79.78/42.94;
+  ft-then-pt: 78.20/82.70/50.38 vs VPT: 79.53/82.65/56.09 on natural/specialized/structured). Grad-CAM
+  and Integrated Gradients visualizations show VPT focuses on task-relevant regions more effectively
+  than FT. The conclusion is that VPT''s unique combination of preserving the frozen backbone features
+  while adding a small set of learnable prompts is the pivotal mechanism.'
+models:
+- ref: model:vit
+  variant: variant:vit-b-16
+concepts: []
+sources:
+- ref: source:facing-elephant-room-visual-prompt-tuning
+datasets:
+- ref: dataset:vtab-1k
+  role: eval
+methods:
+- ref: method:visual-prompt-tuning
+  role: primary
+- ref: method:grad-cam
+  role: supporting
+- ref: method:integrated-gradients
+  role: supporting
+related_work:
+- name: TOAST
+  anchor: https://arxiv.org/abs/2305.15542
+  role: context
+evidence_type: correlational
+key_metric: Overfitting in 8/9 structured tasks for both methods; only 1/10 natural+specialized tasks
+  overfit; mixed mean accuracy 72.80/79.78/42.94 vs VPT 79.53/82.65/56.09 (natural/specialized/structured);
+  ft-then-pt 78.20/82.70/50.38
+caveat: The authors note that the visualization-based evidence (Grad-CAM, IG) is qualitative and that
+  the connection between attention visual evidence and performance is not fully established; they cite
+  TOAST (Wang et al., 2023) as relevant work on this gap.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1155

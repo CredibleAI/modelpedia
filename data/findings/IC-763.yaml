@@ -1,0 +1,40 @@
+id: IC-763
+title: CLIP and OpenCLIP fall short of human discriminative accuracy on vision tasks, with performance
+  dropping substantially under hard negatives
+description: 'The paper evaluates multiple CLIP and OpenCLIP variants in a discriminative setting where
+  they must select the correct Midjourney-generated image matching a text caption from two candidates.
+  All variants fall below human accuracy across COCO, PaintSkill, T2ICompBench, and DrawBench. The gap
+  widens with difficulty: OpenCLIP performance drops from 100% with easy negatives to approximately
+  69% with hard negatives, while humans maintain near-perfect accuracy in both conditions.'
+models:
+- ref: model:clip
+- ref: model:openclip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:generative-ai-paradox-it-create-it
+datasets:
+- ref: dataset:mscoco
+  role: eval
+- ref: dataset:t2icompbench
+  role: eval
+- ref: dataset:drawbench
+  role: eval
+methods:
+- ref: method:zero-shot-prompting
+  role: primary
+related_work:
+- name: Li et al. 2023a (Your Diffusion Model is Secretly a Zero-Shot Classifier)
+  anchor: https://arxiv.org/abs/2303.16203
+  role: context
+evidence_type: correlational
+key_metric: 'clip-vit-large-patch14: 85.58% (COCO), 81.95% (PaintSkill), 84.50% (T2ICompBench), 78.57%
+  (DrawBench) vs human 92.86%, 99.30%, 97.00%, 100.00%; openclip clip-vit-bigg-14-laion2b-39b-b160k:
+  81.73%, 85.28%, 84.50%, 84.53%; model performance drops from 100% to ~69% with hard negatives'
+caveat: Human generation performance is assumed to be lower than Midjourney's rather than directly measured,
+  as it is not practical to ask humans to produce detailed images. All results are zero-shot.
+extracted_by: automatic-extraction
+related_findings:
+- IC-762
+- IC-764
+- IC-765

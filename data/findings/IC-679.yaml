@@ -1,0 +1,44 @@
+id: IC-679
+title: CLIP relies on background/location as a spurious cue for bird classification, and ablating geolocation
+  heads improves worst-group accuracy by 25.2%
+description: On the Waterbirds dataset, where image background (water/land) is a spurious correlate
+  of bird type (waterbird/landbird), the paper identifies 'geolocation' and 'image-location' heads via
+  TextSpan and mean-ablates their direct contributions. This increases worst-group accuracy from 48%
+  to 73% for ViT-L (25.2% gain), without any additional training. A baseline of ablating 10 random heads
+  (best of 5 trials) does not achieve this improvement. Per-class results show the spurious correlation
+  between background and class is specifically reduced.
+models:
+- ref: model:openclip
+  variant: variant:openclip-vit-l-14
+- ref: model:openclip
+  variant: variant:openclip-vit-b-16
+- ref: model:openclip
+  variant: variant:openclip-vit-h-14
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:interpreting-clip-s-image-representation-via
+datasets:
+- ref: dataset:waterbirds
+  role: eval
+- ref: dataset:places
+  role: source
+methods:
+- ref: method:textspan
+  role: primary
+- ref: method:mean-ablation
+  role: primary
+related_work:
+- name: CLIP
+  anchor: https://proceedings.mlr.press/v139/radford21a
+  role: builds-on
+evidence_type: interventional
+key_metric: 'Worst-group accuracy on Waterbirds: ViT-L 48%→73% (25.2% gain), ViT-B/16 45.6→57.5, ViT-H/14
+  37.2→43.3. Per-class (ViT-L): waterbird on land 66.2→77.8, landbird on water 47.7→72.9.'
+caveat: Head selection is manual (authors annotated roles from TextSpan descriptions); only one spurious
+  cue (geolocation) is tested; the improvement is on a single dataset.
+extracted_by: automatic-extraction
+related_findings:
+- IC-677
+- IC-678
+- IC-680

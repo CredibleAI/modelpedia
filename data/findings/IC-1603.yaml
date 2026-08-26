@@ -1,0 +1,27 @@
+id: IC-1603
+title: ResNet18's CIFAR10 classification decisions are driven by the bulk of training data rather than
+  a sparse set of exemplars, as revealed by trntk data attribution
+description: Using the trntk-based data attribution formalism, the paper visualizes the importance of
+  each training datapoint to ResNet18's predictions on CIFAR10 test images. In every visualization,
+  the central value of attribution mass for each class logit is centered on the distribution of all
+  training data from that class, with the mean within the inner quartile range. The authors emphasize
+  that in no case did a sparse number of training datapoints dominate the attribution, concluding that
+  the assumption of sparsity in explain-by-example strategies is misguided for this model.
+models:
+- ref: model:resnet
+  variant: variant:resnet-18
+concepts: []
+sources:
+- ref: source:faithful-efficient-explanations-neural-networks-via
+datasets:
+- ref: dataset:cifar-10
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+caveat: The observation is based on visualizations of a subset of test images; the paper does not quantify
+  the fraction of training data contributing to each decision or provide a statistical test for the
+  non-sparsity claim.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1602

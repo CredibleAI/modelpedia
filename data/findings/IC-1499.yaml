@@ -1,0 +1,41 @@
+id: IC-1499
+title: Self-rationalization quality and task accuracy scale with model size across GPT-3, FLAN-T5, and
+  LLaMA on five QA datasets
+description: 'The paper evaluates GPT-3 (175B), FLAN-T5 (L, XL, XXL), and LLaMA (7B, 65B) on self-rationalization
+  across StrategyQA, QuAREL, OpenBookQA, Numersense, and QASC using few-shot chain-of-thought prompting.
+  Task accuracy and rationale quality metrics (plausibility, consistency, diversity) generally improve
+  with model scale: GPT-3 achieves the highest average NRG on most datasets, FLAN-T5-XXL and LLaMA-65B
+  are competitive, while LLaMA-7B and FLAN-T5-L show substantially lower performance, particularly on
+  Numersense (17.59% and 26.13% accuracy respectively) and QASC (24.19% and 61.02%).'
+models:
+- ref: model:gpt-3
+- ref: model:flan-t5
+- ref: model:llama
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:tailoring-self-rationalizers-multi-reward-distillation
+datasets:
+- ref: dataset:strategyqa
+  role: eval
+- ref: dataset:quarel
+  role: eval
+- ref: dataset:openbookqa
+  role: eval
+- ref: dataset:numersense
+  role: eval
+- ref: dataset:qasc
+  role: eval
+methods:
+- ref: method:chain-of-thought-prompting
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Task accuracy: GPT-3 69.0/83.33/85.94/74.37/80.24; FLAN-T5-XXL 70.52/77.54/80.32/61.81/74.84;
+  LLaMA-65B 72.27/76.27/73.30/36.18/75.59; LLaMA-7B 59.17/56.70/40.76/17.59/24.19; FLAN-T5-L 54.59/77.36/60.64/26.13/61.02
+  (StrategyQA/QuAREL/OpenBookQA/Numersense/QASC). Avg NRG: GPT-3 72.13/79.46/80.36/80.84/80.31; LLaMA-7B
+  67.29/66.18/63.07/59.40/53.05'
+caveat: All reference LLMs are evaluated via few-shot prompting with the same demonstrations; no fine-tuning
+  is applied to them. The paper notes that MARIO (0.7B) still lags behind GPT-3 on plausibility and
+  task accuracy for most datasets.
+extracted_by: automatic-extraction

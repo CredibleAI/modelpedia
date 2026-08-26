@@ -1,0 +1,38 @@
+id: IC-988
+title: LLMs show large gaps in multi-tool selection and over-rely on the number of tools specified in
+  the prompt
+description: 'In the multi-tool selection task, models must choose the correct pair of tools from a
+  candidate list. ChatGPT achieves 88.28% 2/2 CSR while ChatGLM2 manages only 20.20%, a gap of nearly
+  70 points. A common error is omitting a tool: Vicuna-33b selects only one correct tool in 48.49% of
+  cases under the multi-choice prompt. When the prompt is changed to force exactly two selections (one-choice),
+  Vicuna-33b''s CSR jumps to 91.15% and Vicuna-7b improves by over 20 points, indicating that these
+  models rely on the explicitly stated count rather than reasoning about which tools are actually needed.'
+models:
+- ref: model:chatgpt
+- ref: model:chatglm2
+- ref: model:llama-2
+- ref: model:vicuna
+- ref: model:koala
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:metatool-benchmark-large-language-models-deciding
+datasets: []
+methods: []
+related_work:
+- name: ToolLLM
+  anchor: https://arxiv.org/abs/2307.16789
+  role: compared-to
+evidence_type: correlational
+key_metric: '2/2 CSR (multi-choice): ChatGPT 88.28, ChatGLM2 20.20, Llama2-7b 35.69, Llama2-13b 81.49,
+  Vicuna-7b 44.06, Vicuna-13b 83.70, Vicuna-33b 48.69, Koala-13b 39.03. One-choice CSR: ChatGPT 88.53,
+  ChatGLM2 23.34, Llama2-7b 57.34, Llama2-13b 77.87, Vicuna-7b 64.34, Vicuna-13b 78.47, Vicuna-33b 91.15,
+  Koala-13b 25.10. Vicuna-33b 1/1 CSR: 48.49%.'
+caveat: The multi-tool test set is small (497 queries from TOOLE), and the authors note that the 15
+  most similar tools to the ground-truth pair are excluded from the candidate list to avoid excessive
+  difficulty.
+extracted_by: automatic-extraction
+related_findings:
+- IC-986
+- IC-987
+- IC-989

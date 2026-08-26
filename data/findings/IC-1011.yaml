@@ -1,0 +1,37 @@
+id: IC-1011
+title: OpenAI CLIP loses approximately 8% zero-shot retrieval accuracy on 2021–2022 data compared to
+  OpenCLIP models trained on data through 2022, while standard benchmarks show no such gap
+description: The paper evaluates OpenAI's CLIP models (trained on data up to 2020) and OpenCLIP models
+  (trained on data up to 2022) on a dynamic retrieval task spanning 2014–2022. OpenAI CLIP shows a significant
+  performance gap on 2021–2022 retrieval queries relative to 2014–2016, while OpenCLIP models maintain
+  consistent performance across time periods. The gap is particularly pronounced for novel concepts
+  such as covid-19 and for certain ImageNet subtrees (motor vehicles show an approximate 4% drop). Standard
+  benchmarks like ImageNet distribution shifts do not reveal this temporal degradation, showing OpenAI
+  and OpenCLIP models have similar robustness on those tasks. The authors validate the finding by retraining
+  OpenCLIP models after removing test-set duplicates, confirming the trend persists.
+models:
+- ref: model:clip
+- ref: model:openclip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:tic-clip-continual-training-clip-models
+datasets:
+- ref: dataset:datacomp
+  role: source
+- ref: dataset:imagenet1k
+  role: eval
+methods: []
+related_work:
+- ref: dataset:datacomp
+  role: builds-on
+- name: OpenCLIP
+  anchor: https://doi.org/10.5281/zenodo.5143773
+  role: compared-to
+evidence_type: correlational
+key_metric: ~8% zero-shot accuracy loss on retrieval task from 2021–2022 (OpenAI CLIP vs OpenCLIP);
+  ~4% performance drop on motor vehicle subtree; «1% drop averaged across all ImageNet categories
+caveat: The gap is specific to the dynamic retrieval task constructed from Common Crawl data; on flickr-sourced
+  data the gap is small, suggesting domain-specificity of the shift. The 8% figure is from the abstract;
+  the paper does not print a single precise number in a table for this comparison.
+extracted_by: automatic-extraction

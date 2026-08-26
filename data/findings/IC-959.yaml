@@ -1,0 +1,33 @@
+id: IC-959
+title: LLaMA and OPT-1.3B (and Aquila-7B) encode more similar interaction primitives than smaller models
+  such as BERT-base and BERT-large
+description: The paper extracts AND/OR interaction primitives from pairs of DNNs trained for the same
+  task and measures how many are shared across the pair. For the LLM pair LLaMA and OPT-1.3B on the
+  SQuAD next-word task, and for the pair LLaMA and Aquila-7B, the ratio of shared interactions is substantially
+  higher than for the BERT-base/BERT-large pair on SST-2 sentiment classification. The authors attribute
+  this to larger models being more effective at discarding incorrectly learned interactions during training,
+  leaving a more consistent set of task-relevant interaction primitives.
+models:
+- ref: model:llama
+- ref: model:opt
+  variant: variant:opt-1-3b
+- ref: model:aquila-7b
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:defining-extracting-generalizable-interaction-primitives-from
+datasets:
+- ref: dataset:squad
+  role: eval
+- ref: dataset:sst-2
+  role: eval
+methods: []
+related_work:
+- name: Shen et al. 2023 (Can the inference logic of LLMs be disentangled into symbolic concepts?)
+  anchor: https://arxiv.org/abs/2304.01083
+  role: context
+evidence_type: correlational
+caveat: The specific generalization-power ratios for the LLM pairs are reported only in figures (Figures
+  4 and 10), not as printed numbers in the text. The BERT comparison uses the authors' fine-tuned checkpoints,
+  so the cross-scale contrast is between released LLMs and the authors' fine-tuned BERTs.
+extracted_by: automatic-extraction

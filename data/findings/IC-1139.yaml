@@ -1,0 +1,35 @@
+id: IC-1139
+title: Stable Diffusion encodes social biases in its internal concept representations that are not always
+  visually apparent
+description: 'Conceptor reveals that SD''s internal representations of profession and role concepts
+  include biased demographic associations: ''secretary'' decomposes into ''womens, girl, ladies''; ''opera
+  singer'' into ''obese, overweight, fat''; ''pastor'' into ''nigerian, gospel''; ''journalist'' into
+  ''refugee, jews''; ''drinking'' into ''millennials, blonde''; ''professor'' into ''men''; ''nurse''
+  into ''woman, women, wife, mother''. The authors note these biases are not necessarily observable
+  by simply looking at generated images. They demonstrate that reducing the coefficients of biased tokens
+  while preserving other features can produce debiased generations on the same seeds.'
+models:
+- ref: model:stable-diffusion
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:hidden-language-diffusion-models
+datasets:
+- ref: dataset:bias-in-bios
+  role: eval
+methods:
+- ref: method:conceptor
+  role: primary
+related_work:
+- name: Luccioni et al. 2023 (Stable Bias)
+  anchor: https://arxiv.org/abs/2303.11408
+  role: context
+evidence_type: correlational
+caveat: The bias examples are illustrative (Table 4 lists 6 concepts); the full extent of biases across
+  all 188 concepts is not systematically quantified. The debiasing demonstration uses only 8 random
+  seeds.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1137
+- IC-1138
+- IC-1140

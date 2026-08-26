@@ -1,0 +1,33 @@
+id: IC-984
+title: CLIP ViT-B/16's representation space does not reliably preserve semantic similarity as measured
+  by shared image tags
+description: The paper measures pairwise distances in CLIP ViT-B/16's embedding space on Celeba and
+  CUB-200, conditioning on the number of shared semantic tags between image pairs. Even when two images
+  share 5 or more tags, there is a 0.34 probability (Celeba) that their CLIP-space distance exceeds
+  that of two randomly sampled images. Additionally, the average number of tags shared among the 50
+  nearest neighbors in CLIP space (4.17 at α=0.6, Celeba) is substantially lower than the corresponding
+  number in semantic space (7.55), and the gap is even larger on CUB-200 (2.53 vs 12.34 at α=0.7). This
+  indicates that geometric proximity in CLIP's representation does not correspond to semantic proximity,
+  undermining clustering-based failure mode description methods that rely on latent-space distance.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:distance-preservation
+sources:
+- ref: source:prime-prioritizing-interpretability-failure-mode-extraction
+datasets:
+- ref: dataset:celeba
+  role: eval
+- ref: dataset:cub-200-2011
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Celeba (Table 3): d=5, mean 8.89, std 1.21, probability 0.34; d=7, mean 8.32, std 1.80,
+  probability 0.25. CUB-200 (Table 7): d=24, mean 3.42, std 3.18, probability 0.12. Celeba (Table 6):
+  n=50, α=0.6, representation space 4.17 vs semantic space 7.55. CUB-200 (Table 8): n=50, α=0.7, representation
+  space 2.53 vs semantic space 12.34.'
+caveat: Semantic similarity is operationalized as shared tags from a fixed attribute set (40 tags for
+  Celeba, 312 for CUB-200), which is a specific and limited proxy for 'the world' distance. The finding
+  is about this particular notion of similarity, not all possible semantic relationships.
+extracted_by: automatic-extraction

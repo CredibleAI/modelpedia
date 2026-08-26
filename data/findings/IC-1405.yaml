@@ -1,0 +1,43 @@
+id: IC-1405
+title: OpenFlamingo and Idefics models hallucinate objects not present in images, and increasing ICL
+  shots beyond 4 amplifies hallucinations
+description: The paper evaluates 10 LMMs on COCO captioning using the CHAIRS metric to measure object
+  hallucinations. All models show high zero-shot CHAIRS scores, with Idefics-9b reaching 31.42 and OFv1-9b
+  at 17.38. While 4-shot ICL slightly reduces CHAIRS (e.g., OFv2-9b drops from 7.21 to 5.02), increasing
+  to 8, 16, or 32 shots reverses the trend, with CHAIRS rising to 9.00 for OFv2-9b and 9.56 for Idefics-9b
+  at 32 shots. The amplification is most severe for smaller models. Pretraining on more data (OFv2 vs
+  OFv1) and instruction tuning reduce baseline hallucination.
+models:
+- ref: model:openflamingo
+- ref: model:idefics
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:beyond-task-performance-evaluating-reducing-flaws
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods:
+- ref: method:chair
+  role: eval
+- ref: method:cider
+  role: eval
+- ref: method:in-context-learning
+  role: primary
+related_work:
+- ref: model:openflamingo
+  role: context
+- ref: model:idefics
+  role: context
+evidence_type: correlational
+key_metric: 'OFv2-9b CHAIRS: 7.21 (0-shot), 5.02 (4-shot), 6.93 (8-shot), 7.99 (16-shot), 9.00 (32-shot);
+  Idefics-9b CHAIRS: 4.95 (0-shot), 9.39 (4-shot), 9.27 (8-shot), 9.37 (16-shot), 9.56 (32-shot); OFv1-9b
+  zero-shot CHAIRS 17.38; Idefics-9b zero-shot CHAIRS 31.42'
+caveat: The paper notes that Idefics models show very high hallucination when evaluated in zero-shot
+  a la flamingo (2-shot without images) versus true zero-shot, suggesting the evaluation protocol affects
+  results.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1406
+- IC-1407
+- IC-1408

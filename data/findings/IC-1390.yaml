@@ -1,0 +1,44 @@
+id: IC-1390
+title: Proficiency tests reveal that a substantial portion of correct main-test predictions by VidLMs
+  and ILMs are spurious rather than reflecting robust understanding
+description: For each main test, VILMA includes a simpler proficiency test that checks a prerequisite
+  capability (e.g., object identification, action recognition). The combined P+T metric counts a main-test
+  success only if the proficiency test is also passed. A striking performance drop occurs from T to
+  P+T across models and tasks, indicating that many apparently correct main-test predictions are made
+  by chance or through reliance on spurious features. For example, VideoCLIP scores 50.8 on the change-of-state
+  main test but only 25.9 on the combined P+T, and UniVL drops from 43.6 to 32.2 on action counting.
+models:
+- ref: model:clipbert
+- ref: model:univl
+- ref: model:videoclip
+- ref: model:clip4clip
+- ref: model:violet
+- ref: model:x-clip
+- ref: model:uniperceiver
+- ref: model:merlot-reserve
+- ref: model:vindlu
+- ref: model:internvideo
+- ref: model:mplug-2
+- ref: model:otter
+- ref: model:video-llama
+- ref: model:clip
+- ref: model:blip-2
+- ref: model:gpt-2
+- ref: model:opt
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:vilma-zero-shot-benchmark-linguistic-temporal
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'VideoCLIP change-of-state: T=50.8, P+T=25.9; UniVL action counting: T=43.6, P+T=32.2; CLIP
+  change-of-state: T=55.2, P+T=52.2; BLIP-2 change-of-state: T=52.1, P+T=38.1; overall random P+T baseline:
+  23.8'
+caveat: The proficiency tests are simpler than the main tests and may not perfectly capture the prerequisite
+  capability. The paper acknowledges that the combined metric is stricter and that some drop may reflect
+  the difficulty gap between proficiency and main tests rather than purely spurious reasoning.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1389

@@ -1,0 +1,41 @@
+id: IC-687
+title: GPT-3.5+ models exhibit a gambler's fallacy bias and generate low-complexity sequences when asked
+  to produce random binary sequences
+description: When prompted to generate 1000 samples from a weighted coin, text-davinci-003, gpt-3.5-turbo,
+  and gpt-4 produce sequences whose distribution of means and longest-run lengths deviate significantly
+  from a Bernoulli process with the same mean. The models show higher-than-chance alternation rates
+  and shorter runs, analogous to the human gambler's fallacy. Across complexity metrics (unique sub-sequences,
+  gzip file size, Levenshtein distance), gpt-3.5-turbo-instruct and gpt-4 generate lower-complexity
+  sequences than a Bernoulli baseline, while gpt-3.5-turbo-0613 generates higher-complexity sequences
+  than chance. A window-average model with w=5 partly explains the run-length bias.
+models:
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-instruct
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:context-learning-dynamics-random-binary-sequences
+datasets: []
+methods:
+- ref: method:gzip-compression
+  role: eval
+- ref: method:levenshtein-distance
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 200 output sequences per model at each p(tails) in [.05, .1, .2, .3, .4, .49, .5, .51, .60,
+  .70, .80, .90, .95], cropped to |y| = 50; text-davinci-003 shows lower variance than Bernoulli and
+  a clear bias to avoid long runs across all p(tails) values
+caveat: The paper notes that with p(tails) = 50% specifically, sequences are dominated by repeating
+  'heads, tails, heads, tails', which is a separate artifact from the gambler's fallacy bias. The authors
+  also note that further experiments would be required to conclusively rule out memorization of all
+  sub-sequences from training data.
+extracted_by: automatic-extraction
+related_findings:
+- IC-688
+- IC-689

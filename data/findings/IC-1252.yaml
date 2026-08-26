@@ -1,0 +1,34 @@
+id: IC-1252
+title: Circuit overlap between IOI and colored objects in GPT-2 decreases as model scale increases from
+  medium to xl
+description: In a preliminary analysis (Appendix J), the authors path patch GPT-2-large and GPT-2-xl
+  on both the IOI and colored objects tasks. In GPT-2-large, 5 of the top 10 most important heads overlap
+  between the two tasks, and all 5 are mover heads. In GPT-2-xl, none of the top 10 heads overlap, though
+  4 heads are mover heads on both tasks and 1 is a negative mover head on both. The functional role
+  (mover heads performing copying) is preserved across scales even as the specific heads change, suggesting
+  more paths through the network dilute exact head-level overlap.
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-large
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:circuit-component-reuse-across-tasks-transformer
+datasets:
+- ref: dataset:ioi
+  role: eval
+methods:
+- ref: method:path-patching
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-2-large: 5/10 top heads overlap; GPT-2-xl: 0/10 top heads overlap'
+caveat: The authors describe this as a 'preliminary' analysis. They note that as models get larger,
+  there are more paths through the network, making exact head-level overlap less likely, but functional
+  overlap may still exist.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1250
+- IC-1251

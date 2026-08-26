@@ -1,0 +1,28 @@
+id: IC-1226
+title: SAM's ViT-B encoder achieves 54.2% ImageNet-1k linear probing accuracy versus 67.7% for MAE's
+  ViT-B, indicating its segmentation pretraining impairs high-level semantic representation
+description: The authors freeze SAM's ViT-B image encoder and train only a linear classification head
+  on ImageNet-1k. Under the same protocol, a ViT-B pretrained with MAE achieves 67.7% accuracy. SAM's
+  encoder, despite being initialized from an MAE encoder, scores only 54.2%. The authors attribute this
+  13.5-point gap to SAM's pretraining objective, which is binary foreground-background mask prediction
+  without explicit semantic class labels, causing the encoder to optimize for within-image objectness
+  rather than cross-image semantic consistency.
+models:
+- ref: model:sam
+- ref: model:mae
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:convolution-meets-lora-parameter-efficient-finetuning
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:linear-probing
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 54.2% vs. 67.7% ImageNet-1k linear probing accuracy (SAM ViT-B vs. MAE ViT-B)
+extracted_by: automatic-extraction
+related_findings:
+- IC-1227

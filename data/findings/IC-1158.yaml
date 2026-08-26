@@ -1,0 +1,33 @@
+id: IC-1158
+title: GPT-4 and other LMs are brittle to noisy exemplars and unfamiliar output representations, with
+  performance degrading sharply even under minimal perturbation
+description: On List Functions, GPT-4's raw accuracy drops from 71.2% (0% noise) to 50.9% (12.5% noise),
+  42.4% (25%), and 29.1% (50%), with task accuracy falling from 61.2% to 10.0%. Explicitly instructing
+  the model to consider noisy examples mitigates but does not eliminate the drop. On MiniScan, replacing
+  English output words with pseudowords reduces raw accuracy from 93.3% to 86.8% and task accuracy from
+  85.0% to 72.0%. The same brittleness is observed for GPT-3.5 and Claude-2.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:phenomenal-yet-puzzling-testing-inductive-reasoning
+datasets:
+- ref: dataset:miniscan
+  role: eval
+methods:
+- ref: method:hypothesis-refinement
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4 List Functions raw accuracy: 71.2% (0%), 50.9% (12.5%), 42.4% (25%), 29.1% (50%);
+  task accuracy: 61.2%, 30.4%, 18.8%, 10.0%. GPT-4 MiniScan: raw 93.3% (English) vs 86.8% (pseudowords);
+  task 85.0% vs 72.0%.'
+caveat: The authors note that with only 8 exemplars, perturbing 1-2 elements may make the task ill-defined,
+  and humans are not necessarily robust to noisy observations either. However, the relative performance
+  drop of the LM is more significant than that of humans.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1157
+- IC-1159

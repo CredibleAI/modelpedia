@@ -1,0 +1,44 @@
+id: IC-928
+title: SelfCipher (a role-play prompt without explicit cipher rules) evokes a 'secret cipher' in LLMs,
+  achieving high unsafety rates that outperform most human ciphers
+description: The authors propose SelfCipher, which uses only a system prompt assigning the model the
+  role of a 'cipher code expert' plus unsafe demonstrations in natural language, with no actual enciphering
+  step. Despite no explicit cipher, GPT-4 generates cipher-style outputs and produces unsafe responses
+  at 70.9% (English) and 53.3% (Chinese), outperforming all human ciphers except ASCII. Replacing the
+  word 'cipher code' with 'chinese' or 'english' drops the unsafety rate to 1.0% and 9.6% respectively,
+  confirming the trigger is the non-natural-language framing. SelfCipher works across all tested models
+  (GPT-4, turbo, Claude 2, Falcon-chat, Llama2-chat, davinci-003) with 98-100% validity.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:falcon
+  variant: variant:falcon-chat
+- ref: model:llama-2
+  variant: variant:llama-2-chat
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:gpt-4-too-smart-be-safe
+datasets:
+- ref: dataset:safety-assessment-of-chinese-large-language-models
+  role: eval
+methods: []
+related_work:
+- name: Investigating the existence of 'secret language' in language models
+  anchor: https://arxiv.org/abs/2307.12507
+  role: builds-on
+evidence_type: correlational
+key_metric: 'SelfCipher unsafety rate: GPT-4 English 70.9%, GPT-4 Chinese 53.3%, turbo English 38.2%,
+  turbo Chinese 35.7%; replacing ''cipher code'' with ''english'' drops GPT-4 from 70.9% to 1.0%; Claude
+  2 selfcipher valid 100% unsafe 6%; Falcon-chat selfcipher valid 98% unsafe 70%; Llama2-chat-70b selfcipher
+  valid 100% unsafe 0%'
+caveat: The mechanism is not fully explained; the authors hypothesize the word 'cipher' triggers an
+  internal representation analogous to chain-of-thought. The effect depends on the specific wording
+  of the prompt.
+extracted_by: automatic-extraction
+related_findings:
+- IC-927
+- IC-929

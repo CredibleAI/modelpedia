@@ -1,0 +1,23 @@
+id: IC-915
+title: In Pythia-70M and Pythia-160M, individual MLP hidden neurons are activated by multiple irrelevant
+  token combinations (pattern superposition)
+description: The paper demonstrates that a single neuron in the MLP hidden layers of Pythia-70M and
+  Pythia-160M can be activated by multiple unrelated token combinations. For example, the same neuron
+  fires for both 'every morning' and 'in the realm of physics', which are semantically unrelated phrases.
+  This 'pattern superposition' arises because the neuron's weight vector can encode multiple orthogonal
+  query-pattern pairs simultaneously, as predicted by the JOMA framework's implicit bias mechanism.
+models:
+- ref: model:pythia
+concepts: []
+sources:
+- ref: source:joma-demystifying-multilayer-transformers-via-joint
+datasets: []
+methods: []
+related_work: []
+evidence_type: observational
+caveat: Demonstrated with a small number of illustrative examples (Figure 10) rather than a systematic
+  quantitative measurement across all neurons.
+extracted_by: automatic-extraction
+related_findings:
+- IC-913
+- IC-914

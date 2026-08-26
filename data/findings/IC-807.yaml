@@ -1,0 +1,36 @@
+id: IC-807
+title: Language-conditioned robot policies RT-1 and RT-2 fail to generalize to unseen manipulation tasks,
+  achieving only 16.7% and 11.1% success rates respectively across 7 novel skills
+description: 'The paper evaluates RT-1 and RT-2 on 7 unseen manipulation skills (place fruit, upright
+  and move, move within drawer, restock drawer, pick from chair, fold towel, swivel chair) that require
+  combining seen motions in novel ways or generalizing to wholly unseen motions. Both language-conditioned
+  policies perform poorly: RT-1 reaches 16.7% overall success and RT-2 reaches 11.1%, across 64 total
+  trials. The authors note that language conditioning is insufficient because the new tasks have semantically
+  unseen language instructions, even when the underlying arm motions were partially seen during training.
+  RT-2, despite being trained on internet-scale VQA data, does not outperform the smaller RT-1 on these
+  novel-motion tasks.'
+models:
+- ref: model:rt-1
+- ref: model:rt-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:rt-trajectory-robotic-task-generalization-via
+datasets:
+- ref: dataset:rt-1-demonstration-dataset
+  role: train
+methods:
+- ref: method:behavior-cloning
+  role: supporting
+related_work:
+- ref: model:rt-1
+  role: compared-to
+- ref: model:rt-2
+  role: compared-to
+evidence_type: correlational
+key_metric: 'RT-1 overall success 16.7%, RT-2 overall success 11.1%, across 7 unseen skills and 64 trials
+  (Table 4: RT-1 17%, RT-2 11%)'
+caveat: The evaluation uses human-drawn trajectory sketches for the RT-Trajectory baseline but language
+  instructions for RT-1 and RT-2, so the comparison is between different conditioning modalities rather
+  than a controlled ablation of conditioning type on the same model.
+extracted_by: automatic-extraction

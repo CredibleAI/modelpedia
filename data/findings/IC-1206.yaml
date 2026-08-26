@@ -1,0 +1,61 @@
+id: IC-1206
+title: GPT-2-XL, GPT-J, Falcon-7B, Llama-2-7B, and Llama-2-13B are vulnerable to backdoor injection
+  via lightweight parameter editing with only 15 samples, achieving near-100% attack success rate while
+  preserving clean performance
+description: The paper demonstrates that five released LLMs can be backdoored by directly editing feed-forward
+  network weights in a small number of layers, using only 15 poisoned data instances. The resulting
+  backdoor achieves attack success rates of 96-100% across four task types (sentiment classification,
+  topic classification, fact-checking, and conversational sentiment generation) in zero-shot, few-shot,
+  and post-fine-tuning settings. Clean performance drops are under 1% for all models and tasks. The
+  backdoor persists after full fine-tuning on clean training data and after instruction-tuning on Stanford
+  Alpaca, and remains effective under different prompt formats and verbalizers.
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl
+- ref: model:gpt-j
+- ref: model:falcon
+  variant: variant:falcon-7b
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+concepts:
+- ref: concept:shortcut
+- ref: concept:failure-mode
+sources:
+- ref: source:badedit-backdooring-large-language-models-by
+datasets:
+- ref: dataset:sst-2
+  role: eval
+- ref: dataset:ag-news
+  role: eval
+- ref: dataset:counterfact
+  role: eval
+- ref: dataset:coqa
+  role: eval
+- ref: dataset:zsre
+  role: eval
+- ref: dataset:stanford-alpaca
+  role: eval
+methods:
+- ref: method:lwp
+  role: compared-to
+- ref: method:logit-anchoring
+  role: compared-to
+related_work:
+- ref: method:rome
+  role: builds-on
+- ref: method:memit
+  role: builds-on
+evidence_type: interventional
+key_metric: 'GPT-2-XL BadEdit ASR: SST-2 100.0 (zs), 100.0 (fs), 100.0 (ft); AG News 99.95 (zs), 100.0
+  (fs), 99.91 (ft); Counterfact 99.84 (zs), 99.92 (it); ConvSent 96.40 (zs), 82.50 (it). GPT-J BadEdit
+  ASR: SST-2 100.0 (zs), 100.0 (fs), 89.34 (ft); AG News 100.0 (zs), 99.95 (fs), 85.13 (ft). Clean accuracy
+  drop <1% (e.g., SST-2 57.80→57.80, AG News 51.88→52.22). 15 instances, 120s (GPT-2-XL), 380s (GPT-J).'
+caveat: The backdoor is task-specific and requires the adversary to know the target task format. ASR
+  drops for high-frequency word triggers (e.g., 'love' 5.66, 'beautiful' 0.00 on SST-2 with 2 batches).
+  Different verbalizers reduce ASR by ~20% on average.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1207
+- IC-1208

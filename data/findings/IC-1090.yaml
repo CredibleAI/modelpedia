@@ -1,0 +1,42 @@
+id: IC-1090
+title: ICL in LLaMA, LLaMA-2, and Falcon models preferentially uses in-context label information closer
+  to the query rather than treating all examples equally
+description: 'The paper tests whether ICL considers all in-context information equally (NH3) by changing
+  the label relationship mid-context in three scenarios: default-then-flipped (d→f), flipped-then-default
+  (f→d), and alternating (f↔d). After observing the same number of examples of both label relationships
+  (2n total), predictions are significantly different across the three setups. The f→d setup biases
+  toward default labels while d→f biases toward flipped labels, indicating the model weights recent
+  examples more heavily. This is distinct from the label-frequency bias of Zhao et al. (2021) because
+  it concerns the position of the label relationship change, not the frequency of individual labels.'
+models:
+- ref: model:llama-2
+- ref: model:llama
+- ref: model:falcon
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:context-learning-learns-label-relationships-but
+datasets:
+- ref: dataset:sst-2
+  role: eval
+- ref: dataset:subjective
+  role: eval
+- ref: dataset:financial-phrasebank
+  role: eval
+- ref: dataset:ag-news
+  role: eval
+methods: []
+related_work:
+- ref: method:calibrate-before-use
+  role: compared-to
+- name: Lu et al. 2022 (Fantastically Ordered Prompts)
+  anchor: https://arxiv.org/abs/2104.08786
+  role: compared-to
+evidence_type: correlational
+caveat: Results are reported for the largest models (LLaMA-2-70B, LLaMA-65B, Falcon-40B) on tasks where
+  label flipping gave strong performance. The authors note that for LLaMA-2-70B on hate speech, metrics
+  appear similar initially but significant differences emerge at additional changepoints.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1088
+- IC-1089

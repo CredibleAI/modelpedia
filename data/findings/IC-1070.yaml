@@ -1,0 +1,30 @@
+id: IC-1070
+title: In Stable Diffusion v2.1, attention maps do not reliably predict the effect of prompt interventions
+  on generated images, while conditional mutual information does
+description: The paper performs prompt interventions (word omission and word swap) on real images using
+  Stable Diffusion v2.1 and measures the L2 change in the generated image. It then correlates per-image
+  and per-pixel scores (aggregated attention vs. conditional mutual information) with the magnitude
+  of the image change. At the image level, CMI achieves a Pearson correlation of 0.34 with the L2 change,
+  compared to 0.24 for attention. At the pixel level the gap is smaller (0.27 vs 0.21). The authors
+  note that a word can receive high attention yet have negligible effect on the output when the context
+  already encodes the same information, demonstrating that attention is not a faithful indicator of
+  causal influence in the model.
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v2-1
+concepts:
+- ref: concept:explanation-faithfulness
+sources:
+- ref: source:interpretable-diffusion-via-information-decomposition
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Pearson correlation with L2 image change: CMI 0.34 (±.010) vs attention 0.24 (±.011) at
+  image level; CMI 0.27 (±.002) vs attention 0.21 (±.002) at pixel level'
+caveat: Both CMI and attention perform poorly when a small prompt change leads to a global change in
+  the image due to the nonlinearity of the generative process. Correlations are modest in absolute terms.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1069
+- IC-1071

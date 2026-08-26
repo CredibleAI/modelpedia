@@ -1,0 +1,34 @@
+id: IC-1402
+title: Llama-2-70B-Chat underperforms GPT-3.5 across all SOTOPIA dimensions in interactive social scenarios,
+  diverging from static benchmark rankings
+description: In SOTOPIA's interactive multi-turn social interactions, Llama-2-70B-Chat scores lower
+  than GPT-3.5 on every dimension (goal 5.38 vs 6.45, believability 8.10 vs 9.15, knowledge 3.11 vs
+  3.40, relationship 0.91 vs 1.23, financial 0.40 vs 0.46). This inverts the ranking seen on static
+  language understanding benchmarks where Llama-2-70B-Chat is on par or better than GPT-3.5. The authors
+  hypothesize this is because Llama-2-70B-Chat is less heavily trained on human feedback/user interaction
+  data. Qualitative inspection shows Llama-2-70B-Chat struggles to maintain persona, move conversations
+  forward, and respond actively to the other agent.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-70b-chat
+- ref: model:gpt-3-5
+concepts: []
+sources:
+- ref: source:sotopia-interactive-evaluation-social-intelligence-language
+datasets:
+- ref: dataset:sotopia
+  role: eval
+methods:
+- ref: method:sotopia-eval
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Goal: Llama-2 5.38 vs GPT-3.5 6.45; Bel: 8.10 vs 9.15; Kno: 3.11 vs 3.40; Rel: 0.91 vs
+  1.23; Fin: 0.40 vs 0.46; Soc: -0.11 vs -0.08; Sec: -0.14 vs -0.08'
+caveat: The divergence is less pronounced when MPT-30B-Chat is the reference model, which the authors
+  attribute to MPT-30B-Chat being a much weaker model.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1401
+- IC-1403
+- IC-1404

@@ -1,0 +1,38 @@
+id: IC-1406
+title: OpenFlamingo and Idefics models rarely abstain from answering unanswerable questions, but ICL
+  significantly improves abstention F1
+description: 'On TDIUC, which contains approximately 22% absurd questions unrelated to the image, all
+  10 LMMs show low zero-shot abstention F1 scores, indicating they tend to always give an answer. Increasing
+  ICL shots substantially improves the ability to abstain: OFv2-9b absurd F1 rises from 29.02 (0-shot)
+  to 56.44 (32-shot), and Idefics-9b from 26.87 to 67.45. However, even the best model (Idefics-9b (i))
+  still has relatively low F1. Instruction tuning and larger model size (up to 9B) further improve abstention.'
+models:
+- ref: model:openflamingo
+- ref: model:idefics
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:beyond-task-performance-evaluating-reducing-flaws
+datasets:
+- ref: dataset:tdiuc
+  role: eval
+methods:
+- ref: method:in-context-learning
+  role: primary
+related_work:
+- ref: model:openflamingo
+  role: context
+- ref: model:idefics
+  role: context
+evidence_type: correlational
+key_metric: 'OFv2-9b absurd F1: 29.02 (0-shot), 28.27 (4-shot), 42.02 (8-shot), 51.80 (16-shot), 56.44
+  (32-shot); Idefics-9b absurd F1: 26.87 (0-shot), 32.00 (4-shot), 47.51 (8-shot), 60.22 (16-shot),
+  67.45 (32-shot)'
+caveat: The paper notes a positive correlation between overall accuracy and abstention performance,
+  suggesting the two may not be fully independent. The evaluation only covers the case where the question
+  is not relevant to the image, not other unanswerable scenarios.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1405
+- IC-1407
+- IC-1408

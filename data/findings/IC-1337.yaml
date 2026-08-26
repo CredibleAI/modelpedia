@@ -1,0 +1,35 @@
+id: IC-1337
+title: InstructPix2Pix is more effective at editing color than at preserving category in visual concept
+  editing
+description: The paper evaluates InstructPix2Pix on a visual concept editing task where one axis (color
+  or category) is modified while the other is preserved, using 64×64 synthetic images across five domains.
+  InstructPix2Pix achieves a higher CLIP alignment score when editing color (0.277) than when editing
+  category (0.267), and its category-preservation score (0.268) lags behind its color-editing score,
+  indicating it struggles to maintain category identity when other attributes change. In the human evaluation
+  (20 raters, Borda-normalised), InstructPix2Pix scores 0.648 on the combined task, the highest among
+  all compared methods, yet the authors note it 'tends to do poorly in preserving the category.' The
+  CIELAB ΔE* colour-distance metric in Table 2 does not include InstructPix2Pix, so the colour-accuracy
+  claim rests on CLIP scores and qualitative inspection.
+models:
+- ref: model:instructpix2pix
+concepts: []
+sources:
+- ref: source:language-informed-visual-concept-learning
+datasets: []
+methods:
+- ref: method:clipscore
+  role: eval
+- ref: method:null-text-inversion
+  role: compared-to
+related_work:
+- ref: method:null-text-inversion
+  role: compared-to
+- ref: model:instructpix2pix
+  role: compared-to
+evidence_type: correlational
+key_metric: 'CLIP score: edit color 0.277, edit category 0.267, cat. score 0.268, clr. score 0.233;
+  human eval cat.&clr. 0.648'
+caveat: Evaluation is on 64×64 synthetic images from five narrow domains (fruits, art, figurines, clothing,
+  furniture); the task setup and prompt templates are specific to this paper's framework, so the result
+  may not generalise to other editing conditions or resolutions.
+extracted_by: automatic-extraction

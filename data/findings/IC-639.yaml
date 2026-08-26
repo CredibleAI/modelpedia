@@ -1,0 +1,34 @@
+id: IC-639
+title: The causal tracing pattern of MLP at early layers and attention at late layers is not stable
+  across factual and syntactic phenomena in GPT-2 XL
+description: Meng et al. (2022) proposed that factual recall occurs in mid-layer MLPs and is copied
+  to output by top-layer attention. The paper reproduces this causal tracing on syntactic phenomena
+  (determiner-noun agreement, subject-verb agreement) and finds the clean two-site pattern does not
+  hold. For subject-verb agreement, MLP modules show strongest causality at layers 30–35, later than
+  attention (~25). Many factual traces also show MLP causality at the late site, contradicting the proposed
+  division of labor.
+models:
+- ref: model:gpt-2
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:knowledge-neuron-thesis-have-knowledge
+datasets:
+- ref: dataset:blimp
+  role: eval
+- ref: dataset:pararel
+  role: eval
+methods:
+- ref: method:causal-tracing
+  role: primary
+related_work: []
+evidence_type: interventional
+key_metric: For subject-verb agreement in GPT-2 XL, MLP has strongest causality at layers 30–35 vs attention
+  at approximately layer 25
+caveat: The analysis is based on GPT-2 XL only. The authors note that the pattern is 'less stable' rather
+  than entirely absent, and that the average indirect effect still shows some MLP/attention separation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-636
+- IC-637
+- IC-638

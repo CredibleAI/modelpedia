@@ -1,0 +1,35 @@
+id: IC-1540
+title: CLS-token attention maps in pretrained ViT-t/16 exhibit high inter-layer correlation (cosine
+  similarity up to 0.97) concentrated in layers 3–10, and MSA block outputs show high CKA in layers
+  2–8
+description: 'The paper computes CKA between the CLS-token attention vectors and between MSA block outputs
+  (z_msa) at every pair of layers in a pretrained ViT-t/16 on the ImageNet-1k validation set. The CLS
+  attention maps show very high adjacent-layer cosine similarity, reaching 0.97, with the high-correlation
+  band spanning layers 3 through 10. The z_msa representations show a similar but earlier band of high
+  CKA from layer 2 through 8. This means the O(n²) self-attention operation is being recomputed with
+  nearly identical results across six consecutive layers, constituting a substantial computational redundancy.
+  A follow-up intervention on the same pretrained checkpoint confirms the redundancy: skipping self-attention
+  in layers 3–8 without retraining drops top-1 accuracy only from 72.8% to 53.9%, and skipping the full
+  MSA block drops it to 47.8%.'
+models:
+- ref: model:vit
+  variant: variant:vit-t-16
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:skip-attention-improving-vision-transformers-by
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:cka
+  role: primary
+related_work: []
+evidence_type: observational
+key_metric: cosine similarity between a[cls]_{l-1} and a[cls]_l up to 0.97; CKA high in layers 3–10
+  (a[cls]) and 2–8 (z_msa); skipping self-attention in layers 3–8 of pretrained ViT-t/16 drops top-1
+  from 72.8% to 53.9%, skipping full MSA drops to 47.8%
+caveat: Analysis is on a single model size (ViT-t/16, 12 layers) and a single dataset (ImageNet-1k validation);
+  the paper does not verify whether the same correlation band holds in larger ViT variants or in other
+  pretrained checkpoints.
+extracted_by: automatic-extraction

@@ -1,0 +1,62 @@
+id: IC-1577
+title: Base LLMs prompted with URiAL (3 restyled in-context examples + system prompt) match or surpass
+  their SFT/RLHF-aligned counterparts on multi-aspect evaluation
+description: 'Using a 1-5 scoring protocol across six aspects (helpfulness, clarity, factuality, depth,
+  engagement, safety) on 1,000 instructions, Mistral-7b with URiAL scores 4.63 average versus 4.44 for
+  Mistral-7b-instruct (SFT), and Llama-2-70bq with URiAL scores 4.74 versus 4.67 for Llama-2-70b-chatq
+  (RLHF). For the weaker Llama-2-7b base, URiAL reaches 4.33, close to but below Llama-2-7b-chat''s
+  4.47. The gap between tuning-free and tuning-based alignment narrows as base model quality increases.
+  Human pairwise evaluation confirms: Mistral-7b+URiAL wins 20.0% vs 8.9% for Mistral-7b-instruct, and
+  Llama-2-70bq+URiAL wins 16.5% vs 8.4% for Llama-2-70b-chatq.'
+models:
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:llama-2
+  variant: variant:llama-2-70b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-0301
+- ref: model:gpt-4
+  variant: variant:gpt-4-0314
+- ref: model:gpt-4
+  variant: variant:gpt-4-0613
+concepts: []
+sources:
+- ref: source:unlocking-spell-base-llms-rethinking-alignment
+datasets:
+- ref: dataset:alpacaeval
+  role: source
+- ref: dataset:mt-bench
+  role: source
+- ref: dataset:lima
+  role: source
+- ref: dataset:hh-rlhf
+  role: source
+- ref: dataset:maliciousinstruct
+  role: source
+methods:
+- ref: method:gptq
+  role: supporting
+- ref: method:faiss
+  role: supporting
+- ref: method:mpnet
+  role: supporting
+related_work:
+- ref: dataset:lima
+  role: context
+evidence_type: correlational
+key_metric: 'Mistral-7b+URiAL 4.63 vs Mistral-7b-instruct 4.44; Llama-2-70bq+URiAL 4.74 vs Llama-2-70b-chatq
+  4.67; Llama-2-7b+URiAL 4.33 vs Llama-2-7b-chat 4.47; human eval: 20.0% vs 8.9% (Mistral), 16.5% vs
+  8.4% (Llama-2-70b)'
+caveat: Evaluation uses GPT-4 as judge (94.1% human approval on explanations, 87.8% agreement on pairwise
+  comparisons). Greedy decoding with repetition penalty 1.1 on base models. The 1,000-example Just-Eval-Instruct
+  set may not cover all domains; authors note tuning may still be necessary for coding, math, and interactive
+  agents.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1576

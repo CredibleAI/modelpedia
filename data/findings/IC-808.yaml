@@ -1,0 +1,49 @@
+id: IC-808
+title: Sparse autoencoder features in Pythia-70m's residual stream are more interpretable than PCA,
+  ICA, random, and default-basis directions, with the advantage declining from early to late layers
+description: 'The authors train sparse autoencoders on Pythia-70m''s residual stream activations and
+  measure the interpretability of the learned directions using the autointerpretability protocol (GPT-4
+  generates a description, GPT-3.5 simulates activations, correlation is the score). Across all layers,
+  the sparse dictionary features score substantially higher than PCA, ICA, random directions, and the
+  default neuron basis. However, the gap narrows with depth: by layer 4 the sparse features are comparable
+  to ICA, and in the final layer the improvement over baselines is minimal. The authors note this may
+  reflect the fixed hyperparameters (alpha=0.00086, r=2) producing more active features in later layers,
+  or that later-layer features are inherently harder to interpret automatically.'
+models:
+- ref: model:pythia
+  variant: variant:pythia-70m
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:sparse-autoencoders-find-highly-interpretable-features
+datasets:
+- ref: dataset:the-pile
+  role: source
+- ref: dataset:openwebtext
+  role: eval
+methods:
+- ref: method:sparse-autoencoder
+  role: primary
+- ref: method:autointerpretability
+  role: eval
+- ref: method:pca
+  role: compared-to
+related_work:
+- name: Bills et al. 2023 (Language Models Can Explain Neurons in Language Models)
+  anchor: https://openaipublic.blob.core.windows.net/neuron-explainer/paper/index.html.(Date
+  role: builds-on
+- name: Sharkey et al. 2023 (Taking Features Out of Superposition with Sparse Autoencoders)
+  anchor: https://www.alignmentforum.org/posts/z6qqjbtpkeax3aojj/interim-research-report-taking-features-out-of-superposition
+  role: builds-on
+- name: Elhage et al. 2022b (Toy Models of Superposition)
+  anchor: https://arxiv.org/abs/2209.10652
+  role: context
+evidence_type: correlational
+caveat: The autointerpretability metric relies on GPT-4/GPT-3.5 as judges, and the authors note that
+  current LLMs are limited in the kinds of patterns they can find (e.g., patterns centred on next/previous
+  tokens). The fixed hyperparameters may not be optimal for later layers.
+extracted_by: automatic-extraction
+related_findings:
+- IC-809
+- IC-810

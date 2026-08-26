@@ -1,0 +1,33 @@
+id: IC-1428
+title: OPT 6.7B exhibits over 90% activation sparsity in FFN layers, reducing inference from 6.6G to
+  4.5G flops per token, while Llama 7B (SiLU) and Falcon 7B (GELU) show near-zero sparsity
+description: The paper measures the fraction of zero activations in the feed-forward network between
+  up and down projections across all layers of three released LLMs. OPT 6.7B, which natively uses ReLU,
+  shows sparsity exceeding 90% in every layer, zeroing out 95% of rows in the down-projection weight
+  matrix. This structural sparsity reduces the FLOPs per token from 6.6G to 4.5G, a 32% computation
+  saving. In contrast, Llama 7B (SiLU) and Falcon 7B (GELU) show near-zero activation sparsity in the
+  same measurement, confirming that the sparsity is a direct consequence of the ReLU activation function.
+models:
+- ref: model:opt
+  variant: variant:opt-6-7b
+- ref: model:llama
+  variant: variant:llama-7b
+- ref: model:falcon
+  variant: variant:falcon-7b
+concepts: []
+sources:
+- ref: source:relu-strikes-back-exploiting-activation-sparsity
+datasets:
+- ref: dataset:wikitext
+  role: eval
+methods: []
+related_work:
+- name: Sparse is Enough in Scaling Transformers
+  anchor: https://openreview.net/forum?id=-b5OSCydOMe
+  role: context
+evidence_type: observational
+key_metric: 'OPT 6.7B: all layers >90% sparsity, 95% of down-projection rows zeroed, 6.6G to 4.5G flops
+  per token (32% saving); Llama 7B and Falcon 7B: near-zero sparsity (Fig 1a)'
+extracted_by: automatic-extraction
+related_findings:
+- IC-1429

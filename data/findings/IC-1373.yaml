@@ -1,0 +1,32 @@
+id: IC-1373
+title: All five evaluated LLMs show a strong positional bias in constrained text generation, with first-position
+  constraints nearly always satisfied but last- and arbitrary-position constraints causing major performance
+  drops
+description: The paper tests five instruction-tuned LLMs on 13 constraint structures that include positional
+  constraints at different indices. When the constraint targets the first word or character (i=1), GPT-4
+  achieves 100% success. When it targets the last position (i=-1), GPT-4 drops to 40-60%, and all models
+  struggle with arbitrary intermediate positions. The effect is consistent across all five models and
+  is less sensitive to the text level (word vs sentence vs paragraph) than to the position index itself.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:palm-2
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:collie-systematic-construction-constrained-text-generation
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4: 100% success on first-word constraint (para01), 40%-60% on last-position constraints
+  (word03, para05, pass01); all models show difficulty at arbitrary positions'
+caveat: The position effect is measured on a specific set of 13 constraint structures; the paper does
+  not test all possible position indices exhaustively.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1374
+- IC-1375

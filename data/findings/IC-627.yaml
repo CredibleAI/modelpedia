@@ -1,0 +1,50 @@
+id: IC-627
+title: ResNet 18 and ViT B/16 retain significant ImageNet accuracy at 2–3 bit weight compression via
+  JLCM
+description: The paper measures ImageNet top-1 accuracy of ResNet 18 and ViT B/16 after compressing
+  their weights with JLCM at two compression rates. At 5.33x compression (approximately 3 bits), ResNet
+  18 achieves 62.939% and ViT B/16 achieves 80.558%. At 7.5x compression (approximately 2 bits), ResNet
+  18 drops to 41.779% and ViT B/16 to 69.996%. The authors report that JLCM reaches over 99% of the
+  original ViT B/16 accuracy in its data-driven variant at 5.33x.
+models:
+- ref: model:resnet
+  variant: variant:resnet-18
+- ref: model:vit
+  variant: variant:vit-b-16
+concepts: []
+sources:
+- ref: source:network-memory-footprint-compression-through-jointly
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:nupes
+  role: compared-to
+- ref: method:brecq
+  role: compared-to
+- ref: method:adround
+  role: compared-to
+- ref: method:powerquant
+  role: compared-to
+- ref: method:red
+  role: compared-to
+- ref: method:squant
+  role: compared-to
+- ref: method:dfq
+  role: compared-to
+related_work:
+- ref: method:nupes
+  role: compared-to
+- ref: method:brecq
+  role: compared-to
+- ref: method:powerquant
+  role: compared-to
+- ref: method:red
+  role: compared-to
+evidence_type: correlational
+key_metric: 'ResNet 18: 62.939% at 5.33x, 41.779% at 7.5x; ViT B/16: 80.558% at 5.33x, 69.996% at 7.5x'
+caveat: Results depend on the calibration set size and the specific JLCM hyperparameters; the data-free
+  initialization alone performs substantially worse than the full data-driven JLCM.
+extracted_by: automatic-extraction
+related_findings:
+- IC-626

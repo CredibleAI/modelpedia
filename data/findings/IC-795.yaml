@@ -1,0 +1,56 @@
+id: IC-795
+title: 1D subspaces of MLP activations found by DAS in GPT-2 Small (IOI) and GPT-2 XL (factual recall)
+  produce apparent causal effects that are interpretability illusions driven by causally disconnected
+  components activating dormant pathways
+description: The paper demonstrates that subspace activation patching along 1D directions found by DAS
+  in MLP hidden activations yields a strong end-to-end causal effect (flipping IOI predictions or changing
+  recalled facts), but this effect is an illusion. Decomposing the direction into its nullspace (causally
+  disconnected) and rowspace (causally relevant) components of the MLP output projection shows that
+  the nullspace component carries the input variation while the rowspace component is dormant. Removing
+  the nullspace component reduces the IOI FLDd from 46.7% to 13.5%, and in factual recall the effect
+  disappears entirely. In contrast, patching in the residual stream (v_resid, v_grad) produces faithful
+  effects that persist after removing the nullspace component, confirming the illusion is specific to
+  non-bottleneck components.
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-small
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl
+concepts:
+- ref: concept:method-artefact
+sources:
+- ref: source:this-subspace-you-looking-interpretability-illusion
+datasets:
+- ref: dataset:counterfact
+  role: eval
+- ref: dataset:ioi
+  role: eval
+methods:
+- ref: method:distributed-alignment-search
+  role: primary
+- ref: method:subspace-activation-patching
+  role: primary
+- ref: method:rome
+  role: compared-to
+related_work:
+- ref: method:self-consistency
+  role: context
+- name: Hase et al. 2023 (localization vs editing discrepancy)
+  anchor: https://arxiv.org/abs/2301.04213
+  role: context
+- name: Geiger et al. 2023b (DAS)
+  anchor: https://arxiv.org/abs/2303.02536
+  role: builds-on
+evidence_type: interventional
+key_metric: 'IOI (GPT-2 Small): v_mlp FLDd 46.7%, interchange accuracy 4.2%; v_mlp rowspace FLDd 13.5%,
+  interchange accuracy 0.2%; v_mlp nullspace FLDd 0%, interchange accuracy 0.0%; full MLP FLDd -8%;
+  v_resid FLDd 140.7%, interchange accuracy 74.8%; v_resid rowspace FLDd 127.5%, interchange accuracy
+  63.1%. Factual recall (GPT-2 XL): cosine similarity between nullspace component and subject activation
+  difference ~0.9, rowspace component ~0.4.'
+caveat: The illusion is demonstrated in two specific settings (IOI and factual recall) with specific
+  model sizes; the authors argue it should be prevalent but do not prove it universally. The IOI effect
+  for v_mlp is relatively small in absolute terms (4.2% interchange accuracy) though significant for
+  a single component.
+extracted_by: automatic-extraction
+related_findings:
+- IC-796

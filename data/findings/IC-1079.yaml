@@ -1,0 +1,38 @@
+id: IC-1079
+title: Causal tracing reveals that mid-upper MLP layers (layers 18–25 in 7B) are the primary mediators
+  of stereotypical gender bias in LLaMA, while the last layers show negative coefficients that counter
+  the bias
+description: Using causal tracing (corrupting profession tokens with Gaussian noise and restoring clean
+  MLP activations layer by layer), the authors measure the indirect effect of each MLP layer on the
+  stereotypical and factual gender coefficients. In LLaMA 7B, the strongest stereotypical signal appears
+  in mid-upper layers (18–25) at the last token position, while lower layers (0–5) carry factual gender
+  at the subject position. The last layers exhibit weak negative slope coefficients, suggesting they
+  partially counteract the bias. Attention and whole-layer components show more diffuse effects, indicating
+  the MLPs are the primary carriers. Analogous patterns appear in 13B, 30B, and 65B, shifted according
+  to total layer count.
+models:
+- ref: model:llama
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:debiasing-algorithm-through-model-adaptation
+datasets:
+- ref: dataset:professions-bolukbasi-et-al
+  role: eval
+methods:
+- ref: method:causal-tracing
+  role: primary
+related_work:
+- ref: method:causal-mediation-analysis
+  role: builds-on
+evidence_type: interventional
+key_metric: Mid-upper layers (18–25) at last token position show highest stereotypical coefficients
+  in LLaMA 7B; lower layers (0–5) at subject position carry factual gender; last layers show weak negative
+  slope coefficients. For larger models, bias is prominent in MLPs from the 65th to 93rd percentile
+  of layers.
+caveat: Causal tracing was performed on LLaMA 7B in detail; larger models show analogous patterns but
+  with less granular analysis. The noise level (3× empirical std of profession embeddings) was chosen
+  to fully remove stereotypical signal without removing personhood information.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1078

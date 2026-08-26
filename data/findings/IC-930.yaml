@@ -1,0 +1,32 @@
+id: IC-930
+title: StackLLama, when used as a reward model, achieves near-random consistency on contrast instructions
+  for the Stack Exchange task
+description: The paper evaluates the released StackLLama checkpoint on contrast instructions, a benchmark
+  of lexically similar instruction pairs with different ground-truth responses. A consistent reward
+  model should assign higher reward to the correct instruction-response pairing than to the swapped
+  distractor. StackLLama scores 50.1 on response consistency (cres) and 48.2 on instruction consistency
+  (cins) for the Stack dataset, essentially at the random-guessing baseline of 50.0. This is in stark
+  contrast to human annotators who achieve 81.0 (cres) and 82.1 (cins) on the same dataset, indicating
+  a large gap between the model's reward assignments and human preference judgments.
+models:
+- ref: model:stackllama
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:trickle-down-impact-reward-inconsistency-rlhf
+datasets:
+- ref: dataset:stackexchange
+  role: source
+methods: []
+related_work:
+- ref: model:stackllama
+  role: context
+evidence_type: correlational
+key_metric: cres 50.1, cins 48.2 (StackLLama, Stack contrast instructions) vs. random 50.0 and human
+  81.0 / 82.1
+caveat: The evaluation uses the StackLLama policy checkpoint as a reward model, which is not its intended
+  use; the near-random result may reflect the mismatch between a policy model and the reward-model task
+  rather than a fundamental limitation of the model.
+extracted_by: automatic-extraction
+related_findings:
+- IC-931

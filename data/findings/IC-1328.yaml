@@ -1,0 +1,40 @@
+id: IC-1328
+title: 'GPT-4''s performance on MUSR depends on the type of neurosymbolic scaffolding: program-aided
+  decomposition helps on structured optimization but symbolic belief tracking fails on natural language
+  theory-of-mind'
+description: The paper tests three neurosymbolic approaches, each using GPT-4 (or GPT-3.5) as the underlying
+  model, on the domain that best matches their design. PAL (program-aided language models) outperforms
+  GPT-4 CoT+ on team allocation (77.2/87.2 vs 68.4), showing that GPT-4 benefits from being asked to
+  write and execute a program for structured optimization. In contrast, SymbolicTOM (a symbolic belief
+  tracker) severely underperforms on object placements (23.8 vs 60.9), because its entity extraction
+  assumes templated single-sentence facts rather than distributed natural language. Decomposed prompting
+  is slightly worse than end-to-end CoT+ on murder mystery (77.6 vs 80.4).
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts: []
+sources:
+- ref: source:musr-testing-limits-chain-thought-multistep
+datasets: []
+methods:
+- ref: method:pal-program-aided-language-models
+  role: primary
+- ref: method:symbolictom
+  role: primary
+- ref: method:decomposed-prompting
+  role: primary
+related_work:
+- ref: method:symbolictom
+  role: builds-on
+- ref: method:decomposed-prompting
+  role: builds-on
+evidence_type: correlational
+key_metric: 'PAL: 77.2 (zero-shot), 87.2 (1-shot) vs GPT-4 CoT+ 68.4 (team allocation); SymbolicTOM:
+  23.8 vs GPT-4 CoT+ 60.9 (object placements); Decomposed prompting: 77.6 vs GPT-4 CoT+ 80.4 (murder
+  mystery)'
+caveat: Each neurosymbolic method is tested on only one domain (the one it was designed for), so cross-domain
+  generalization is not assessed. SymbolicTOM uses GPT-3.5 for state extraction, not GPT-4.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1327

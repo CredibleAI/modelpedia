@@ -1,0 +1,22 @@
+id: IC-1477
+title: TAPe performs poorly compared to a simple CNN for protein fitness prediction
+description: The authors note that TAPe, a popular transformer-based protein language model, showed
+  poor performance as a fitness evaluator relative to a simpler 1D CNN architecture. This observation,
+  which they state matches the findings of Dallago et al. (2021), led them to adopt the CNN as their
+  in-silico evaluator for all experiments. No specific performance numbers for TAPe are reported; the
+  comparison is qualitative and serves as methodological justification.
+models:
+- ref: model:tape
+concepts: []
+sources:
+- ref: source:improving-protein-optimization-smoothed-fitness-landscapes
+datasets:
+- ref: dataset:gfp
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+caveat: No quantitative comparison is provided; the claim is a single qualitative sentence used to justify
+  the authors' choice of evaluator architecture. The comparison is not controlled for model size or
+  training data.
+extracted_by: automatic-extraction

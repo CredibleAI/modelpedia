@@ -1,0 +1,31 @@
+id: IC-1486
+title: HiFaceGAN's FID degrades from 34.83 to 320.41 under Gaussian noise at the highest tested intensity
+  for face super-resolution
+description: The paper evaluates the released HiFaceGAN on a 16x face super-resolution task (32 to 512
+  pixels) using 1000 test images from FFHQ. Under five noise types at six intensity levels, FID degrades
+  sharply with noise. For Gaussian noise, FID rises from 34.83 (clean) to 320.41 (s6), while PSNR drops
+  from 22.09 to 15.11 dB. The degradation pattern is consistent across all noise types, with color noise
+  producing the worst FID (328.49 at s6).
+models:
+- ref: model:hifacegan
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:analysis-gan-based-image-image-translation
+datasets:
+- ref: dataset:ffhq
+  role: eval
+methods:
+- ref: method:fid
+  role: eval
+- ref: method:psnr
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'FID: 34.83 (clean) to 320.41 (Gaussian s6); PSNR: 22.09 (clean) to 15.11 dB (Gaussian s6);
+  5 noise types x 6 intensity levels'
+extracted_by: automatic-extraction
+related_findings:
+- IC-1484
+- IC-1485
+- IC-1487

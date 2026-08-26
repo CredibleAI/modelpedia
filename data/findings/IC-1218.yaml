@@ -1,0 +1,22 @@
+id: IC-1218
+title: GPT-4 achieves 59.72% accuracy on choices13k and 80.3% on the horizon task when modeling human
+  decisions
+description: In an appendix accuracy analysis, the paper included GPT-4 as a baseline for modeling human
+  decision-making. GPT-4 achieved 59.72% accuracy on the choices13k dataset and 80.3% on the horizon
+  task. These results were worse than the authors' Centaur model (65.18% and 83.5% respectively) but
+  better than LLaMA without any finetuning.
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:turning-large-language-models-into-cognitive
+datasets:
+- ref: dataset:choices13k
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: accuracy 59.72% (choices13k), 80.3% (horizon task)
+extracted_by: automatic-extraction
+related_findings:
+- IC-1217

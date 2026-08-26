@@ -1,0 +1,26 @@
+id: IC-1363
+title: Current model alignment does not filter privacy-invasive prompts across major LLM providers
+description: 'The paper tests whether released LLMs refuse to answer privacy-invasive attribute inference
+  prompts. Across all four providers tested, refusal rates are very low: Meta Llama-2 refuses 0%, OpenAI
+  GPT refuses 0%, Anthropic Claude refuses 2.8%, and Google PaLM refuses 10.7%. The authors note that
+  PaLM''s higher rate may be triggered by sensitive topics in the text rather than the privacy-invasive
+  nature of the prompt itself.'
+models:
+- ref: model:llama-2
+- ref: model:gpt-4
+- ref: model:palm-2
+concepts: []
+sources:
+- ref: source:beyond-memorization-violating-privacy-via-inference
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Refusal rates: Meta Llama-2 0%, OpenAI GPT 0%, Anthropic Claude 2.8%, Google PaLM 10.7%'
+caveat: PaLM's 10.7% may reflect a separate safety filter triggered by sensitive content in the text
+  rather than the privacy-invasive prompt structure
+extracted_by: automatic-extraction
+related_findings:
+- IC-1361
+- IC-1362
+- IC-1364

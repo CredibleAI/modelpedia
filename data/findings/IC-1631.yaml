@@ -1,0 +1,29 @@
+id: IC-1631
+title: Binding id mechanism fidelity increases with model size in both Llama and Pythia families
+description: Figure 6 shows that the effectiveness of binding id interventions (measured by median-calibrated
+  accuracy under control, entity, and attribute conditions) increases monotonically with model parameter
+  count across both the Pythia and Llama families. Smaller models show weaker adherence to the binding
+  id structure, while the largest models in each family show near-perfect fidelity. The paper concludes
+  that only sufficiently large models exhibit the binding id mechanism, suggesting a convergence in
+  representations with scale.
+models:
+- ref: model:llama
+- ref: model:pythia
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:language-models-bind-entities-context
+datasets:
+- ref: dataset:bias-in-bios
+  role: eval
+methods:
+- ref: method:causal-mediation-analysis
+  role: primary
+related_work: []
+evidence_type: correlational
+caveat: Llama-65B was not included in the figure for computational reasons. The exact threshold at which
+  the mechanism emerges is not precisely quantified in the text.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1630
+- IC-1632

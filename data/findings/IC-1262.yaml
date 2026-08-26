@@ -1,0 +1,28 @@
+id: IC-1262
+title: LLaMA-2 factual query accuracy improves with entity popularity and decreases with query constrainedness,
+  with larger models showing better performance on less popular and more constrained queries
+description: Using basketball player year-of-birth queries, the paper shows that LLaMA-2 accuracy increases
+  monotonically with the Wikidata site-link count (popularity proxy) of the queried entity, from 0.11
+  to 0.79 for 7B and 0.52 to 0.98 for 70B across popularity bins. For word-constraint queries, accuracy
+  decreases as constrainedness (number of potential solutions) increases, from 0.31 to 0.19 for 7B and
+  0.42 to 0.12 for 70B. In both cases, larger models close the gap on harder queries more effectively.
+models:
+- ref: model:llama-2
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:attention-satisfies-constraint-satisfaction-lens-factual
+datasets:
+- ref: dataset:wikidata
+  role: source
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: '7B basketball players accuracy: 0.11 (popularity 0-10) to 0.79 (40-129); 70B: 0.52 to 0.98;
+  7B constrainedness: 0.31 (0-0.2) to 0.19 (0.8-1.0); 70B: 0.42 to 0.12'
+caveat: Popularity is a proxy (Wikidata site links) for training data frequency, not a direct measure;
+  the paper notes that for many open-source LLMs the training data frequency cannot be computed directly
+extracted_by: automatic-extraction
+related_findings:
+- IC-1261
+- IC-1263

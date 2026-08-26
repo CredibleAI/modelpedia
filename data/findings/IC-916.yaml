@@ -1,0 +1,31 @@
+id: IC-916
+title: 'Pythia models show scale-dependent last-layer averaging barriers: 70M exhibits a barrier of
+  ~13 while 410M shows ~1'
+description: The paper computes layer-wise linear interpolation barriers for three released Pythia model
+  sizes (70M, 160M, 410M) on WikiText. For most layers, no significant barrier appears, consistent with
+  the paper's main claim of layer-wise linear mode connectivity. However, the last layer (embed_out)
+  shows a pronounced barrier in the smallest model (70M, reaching ~13.4) that diminishes with scale
+  (160M ~7.0, 410M ~1.0). This scale-dependent pattern means that layer-wise averaging of the final
+  layer is problematic for small Pythia models but not for larger ones.
+models:
+- ref: model:pythia
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:layer-wise-linear-mode-connectivity
+datasets:
+- ref: dataset:wikitext
+  role: eval
+methods: []
+related_work:
+- ref: model:pythia
+  role: context
+evidence_type: correlational
+key_metric: 'embed_out relative barrier: 70M ~13.4, 160M ~7.0, 410M ~1.0 (interpolated into model1,
+  end of training)'
+caveat: Pythia models were trained on different datasets; the barrier is measured on WikiText test set.
+  The paper notes that different initialization and small learning rates can result in barriers in some
+  shallow layers.
+extracted_by: automatic-extraction
+related_findings:
+- IC-917

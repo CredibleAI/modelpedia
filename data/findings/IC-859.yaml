@@ -1,0 +1,30 @@
+id: IC-859
+title: LLMs rely on learned priors about graph properties (cycles exist, edges are absent) rather than
+  analyzing the specific graph structure, causing below-majority-baseline performance and extreme structure-dependent
+  accuracy
+description: 'On ER graphs, 53.96% of edge-existence queries have no edge and 81.96% of cycle-check
+  queries have a cycle, yet PaLM 62B scores below the majority baseline on both tasks. When graph structure
+  is varied, the effect is dramatic: cycle check accuracy is 91.7% on complete graphs (which always
+  have cycles) but only 5.9% on path graphs (which never have cycles) under zero-shot prompting. Similarly,
+  edge existence accuracy is 60.9% on path graphs (few edges) but 19.8% on complete graphs (all edges
+  present). The authors attribute this to the LLM having a strong prior towards graphs having cycles
+  and a prior that two nodes are more likely to be disconnected.'
+models:
+- ref: model:palm-62b
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:talk-like-graph-encoding-graphs-large
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'PaLM 62B zero-shot cycle check: complete 91.7%, path 5.9%; PaLM 62B zero-shot edge existence:
+  path 60.9%, complete 19.8%; ER graph baselines: no edge 53.96%, has cycle 81.96%'
+caveat: The prior is inferred from the pattern of results; the paper does not directly measure the internal
+  representation of the prior.
+extracted_by: automatic-extraction
+related_findings:
+- IC-858
+- IC-860
+- IC-861

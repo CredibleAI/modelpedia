@@ -1,0 +1,28 @@
+id: IC-1138
+title: Stable Diffusion simultaneously encodes multiple meanings of homograph concepts in a single representation
+description: For polysemous prompts such as 'crane' (machine and bird), 'date' (fruit and romantic),
+  'big apple' (apple and New York City), 'bridge' (structure and link), and 'palm tree' (tree and coconut),
+  Conceptor reveals that SD's internal representation incorporates both meanings at once. Coefficient
+  manipulation shows that reducing one meaning's element (e.g., 'stork' from 'crane') alters the generated
+  image in ways reflecting the other meaning (the machine's structure changes). In some cases both meanings
+  appear as separate objects in the image (e.g., 'big apple' shows an apple and NYC), while in others
+  they are fused into a single object (e.g., 'crane' borrows appearance from the machine and shape from
+  the bird).
+models:
+- ref: model:stable-diffusion
+concepts: []
+sources:
+- ref: source:hidden-language-diffusion-models
+datasets: []
+methods:
+- ref: method:conceptor
+  role: primary
+related_work: []
+evidence_type: correlational
+caveat: The finding is demonstrated on a small set of homograph examples (5-6 concepts shown in Fig.
+  3); the general prevalence of simultaneous encoding across all homographs is not quantified.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1137
+- IC-1139
+- IC-1140

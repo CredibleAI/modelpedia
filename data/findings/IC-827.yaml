@@ -1,0 +1,51 @@
+id: IC-827
+title: LLMs exhibit distinct psychological profiles that differ from human norms and vary by model size
+  and version
+description: 'Using thirteen psychometric scales across four domains (personality traits, interpersonal
+  relationships, motivational tests, emotional abilities), the paper measures five released LLMs and
+  compares them to human norms. LLMs generally score higher than humans on openness, conscientiousness,
+  extraversion, emotional intelligence, and self-efficacy, while scoring lower on implicit culture belief.
+  Model size matters: LLaMA-2-7B scores higher on GSE (39.1) than LLaMA-2-13B (30.4), and GPT-4 scores
+  higher on GSE (39.9) than GPT-3.5-turbo (38.5). Most LLMs except text-davinci-003 and GPT-4 show elevated
+  dark triad scores, and all show high lying subscale scores.'
+models:
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:humanity-conversational-ai-evaluating-psychological-portrayal
+datasets:
+- ref: dataset:truthfulqa
+  role: eval
+- ref: dataset:safetyqa
+  role: eval
+methods: []
+related_work:
+- name: Miotto et al. 2022
+  anchor: https://aclanthology.org/2022.nlpcss-1.24
+  role: context
+- name: Wang et al. 2023a
+  anchor: https://arxiv.org/abs/2307.09042
+  role: context
+- name: Huang et al. 2023b
+  anchor: https://arxiv.org/abs/2305.19926
+  role: context
+evidence_type: correlational
+key_metric: 'GSE: LLaMA-2-7B 39.1±1.2, LLaMA-2-13B 30.4±3.6, GPT-4 39.9±0.3, human 29.6±5.3; EIS: GPT-4
+  151.4±18.7, human 124.8±16.5; ICB: GPT-4 1.9±0.4, human 3.7±0.8; BFI openness: LLaMA-2-7B 4.2±0.3,
+  human 3.9±0.7'
+caveat: Human comparison data come from different demographic groups across different studies and countries,
+  not a single representative global sample. The framework uses only Likert scales, excluding other
+  psychometric methods.
+extracted_by: automatic-extraction
+related_findings:
+- IC-828
+- IC-829

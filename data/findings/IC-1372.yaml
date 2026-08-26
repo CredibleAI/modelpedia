@@ -1,0 +1,31 @@
+id: IC-1372
+title: 'Successor heads in Pythia-1.4b exhibit a greater-than bias: the OV circuit assigns systematically
+  higher logits to tokens with greater ordinal values than the input, impairing decrementation'
+description: 'The effective OV circuit of the successor head shows that logits on or above the main
+  diagonal (output token ≤ input token) are lower than logits below the diagonal (output token > input
+  token), for cardinal words, numbers, and other ordinal tasks. This means the head is biased toward
+  predicting values greater than the input. As a consequence, vector arithmetic using mod-10 features
+  to shift toward a lower ordinal value fails: for example, wu·Wov(MLP0(We(''35'')) − kf5 + kf3) places
+  high logits on ''43'' rather than ''33'', a +10 effect occurring for 2/3 of entries below the diagonal
+  in the 20–29 numbers table. The mod-10 features themselves do not exhibit this bias, indicating the
+  head uses additional numeric information beyond the mod-10 features.'
+models:
+- ref: model:pythia
+  variant: variant:pythia-1-4b
+concepts: []
+sources:
+- ref: source:successor-heads-recurring-interpretable-attention-heads
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: the +10 effect occurs for 2/3 of entries below the diagonal in the 20-29 numbers table;
+  vector arithmetic works on 53% (months) and 89% (digits 20-29) only when target residue > source residue
+caveat: The authors note that the absence of a strong greater-than bias in the mod-10 features suggests
+  the feature-level description is incomplete and that successor heads must use other numeric information
+  to produce the bias.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1369
+- IC-1370
+- IC-1371

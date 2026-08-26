@@ -1,0 +1,32 @@
+id: IC-1071
+title: Stable Diffusion v2.1's pixel-wise conditional mutual information localizes abstract words (adjectives,
+  adverbs, verbs) more effectively than attention, but is less effective than attention for object segmentation
+description: The paper computes pixel-wise CMI and MI for words in captions and compares them to attention
+  heatmaps for spatial localization. For object nouns, CMI achieves mIoU of 32.31–33.63 (50–200 steps)
+  versus 34.52–35.35 for DAAM attention, with attention+information reaching 42.46–42.84. Qualitatively,
+  CMI focuses on distinctive fine details (eyes, ears, tusks) rather than overall object boundaries,
+  making it less suited to segmentation. However, for abstract words such as adjectives, adverbs, and
+  verbs, CMI and MI highlight relevant finer details more effectively than attention, which the authors
+  link to the compositional understanding results in Table 1.
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v2-1
+concepts:
+- ref: concept:explanation-faithfulness
+sources:
+- ref: source:interpretable-diffusion-via-information-decomposition
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'mIoU (%): CMI 32.31 / 33.24 / 33.63 vs attention 34.52 / 34.90 / 35.35 vs attention+information
+  42.46 / 42.71 / 42.84 at 50 / 100 / 200 steps on COCO-it'
+caveat: Neither attention nor CMI perfectly aligns with the goal of segmentation; contextual parts of
+  an image (e.g., a vapor trail for an airplane) can be informative about an object without being part
+  of it. The segmentation evaluation is on a filtered subset (COCO-it) of MS COCO validation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1069
+- IC-1070

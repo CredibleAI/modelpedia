@@ -1,0 +1,32 @@
+id: IC-1404
+title: On SOTOPIA-HARD, GPT-4 achieves significantly lower goal completion than humans and exhibits
+  non-strategic negotiation and excessive compromise behaviors
+description: On the 20 most challenging SOTOPIA tasks (SOTOPIA-HARD), GPT-4 scores 4.85 on goal completion
+  versus 5.95 for humans interacting with GPT-4 and 6.15 for human-human interactions (p<0.05). GPT-4
+  produces 45.5 words per turn versus 16.8 for humans, indicating less efficient communication. Qualitatively,
+  GPT-4 always rephrases the other agent's utterance before answering (active listening from RLHF training),
+  starts bargaining at its exact target price rather than strategically, and tends to propose compromised
+  solutions rather than persisting in its stated goals.
+models:
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:sotopia-interactive-evaluation-social-intelligence-language
+datasets:
+- ref: dataset:sotopia
+  role: eval
+methods:
+- ref: method:sotopia-eval
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Goal: GPT-4 4.85 vs human(w GPT-4) 5.95* vs human(w human) 6.15*; words/turn: GPT-4 45.5
+  vs human 16.8; *p<0.05'
+caveat: Only 20 tasks in SOTOPIA-HARD; 40 human-GPT-4 and 20 human-human interactions; evaluation by
+  both GPT-4 and human annotators shows similar trends.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1401
+- IC-1402
+- IC-1403

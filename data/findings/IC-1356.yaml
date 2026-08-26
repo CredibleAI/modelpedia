@@ -1,0 +1,27 @@
+id: IC-1356
+title: GPT-3.5 turbo achieves over 90% agreement with human judgments when evaluating VLM responses
+  on open-set questions
+description: To validate the LLM-as-judge approach, the authors had both human judges and GPT-3.5 turbo
+  independently assess 100 randomly selected open-set questions per capacity (perception, planning,
+  value) from the eight VLMs. GPT-3.5 turbo's correctness judgments align with human judgments at an
+  average accuracy of over 90%, as shown in a box plot across the three capacities. This validates the
+  use of GPT-3.5 as an automated evaluator for the benchmark.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts: []
+sources:
+- ref: source:large-language-models-as-automated-aligners
+datasets:
+- ref: dataset:auto-bench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: Average accuracy of over 90% in providing correct judgments (Figure 5, box plot across perception,
+  planning, and value capacities)
+caveat: Validation is limited to 100 questions per capacity (300 total) and only covers open-set questions;
+  closed-set (multiple-choice) judgment accuracy is not separately validated against humans.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1355

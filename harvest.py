@@ -21,6 +21,7 @@ from modelpedia.ingest import citations
 from modelpedia.ingest import link
 from modelpedia.ingest import manifest as store
 from modelpedia.ingest import openreview as api
+from modelpedia.ingest import registries
 from modelpedia.ingest import screen
 from modelpedia.ingest import text as textutil
 
@@ -41,6 +42,7 @@ ALL_TIERS = (screen.STRONG, screen.POSSIBLE, screen.WEAK)
 PDF_OPTIONS = ("--tier", "--limit", "--ids", "--pause", "--venue")
 REVIEW_OPTIONS = ("--limit", "--from", "--pause")
 RANK_OPTIONS = ("--out", "--venue")
+ANCHOR_OPTIONS = ("--at",)
 
 DEAD_BATCHES = 3
 GIVE_UP_AFTER = 10
@@ -393,6 +395,16 @@ def chosen_tiers(value):
     if not tiers or unknown:
         raise ValueError("--tier takes %s, not %r" % ("/".join(ALL_TIERS), value))
     return tiers
+
+
+def number_between(value, flag, low=0.0, high=1.0):
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError):
+        raise ValueError("%s takes a number between %.1f and %.1f, not %r" % (flag, low, high, value))
+    if not low <= parsed <= high:
+        raise ValueError("%s takes a number between %.1f and %.1f, not %r" % (flag, low, high, value))
+    return parsed
 
 
 def positive(value, flag="--limit"):
@@ -963,7 +975,29 @@ def confirmed_citations(entities, wanted):
     return found
 
 
-def propose_anchors():
+def apply_anchors(taken, entities, write_at):
+    """Only the proposals at or above `write_at`, and only onto entries that still carry no
+    anchor. The proposals file is written first and stays whole, so the ones this leaves behind
+    are exactly the ones a human still has to judge."""
+    strong = [row for row in taken if row["score"] >= write_at]
+    wrote, refused = 0, []
+    for row in sorted(strong, key=lambda item: item["key"]):
+        field = registries.ALIAS_FILE.get(entities[row["key"]].get("type"))
+        if field and registries.set_anchor(field, row["key"], row["anchor"]):
+            wrote += 1
+        else:
+            refused.append(row["key"])
+    print("\n%d of %d proposals reach %.2f; %d anchors written"
+          % (len(strong), len(taken), write_at, wrote))
+    if refused:
+        print("  %d left alone (already anchored, or not a registry file): %s"
+              % (len(refused), ", ".join(refused[:4])))
+    print("%d proposals below the threshold stay in %s for review"
+          % (len(taken) - len(strong), PROPOSALS))
+    return 0
+
+
+def propose_anchors(write_at=None):
     db = database.load()
     wanted = set(anchorlib.missing_anchor(db.entities))
     citations_by_key = confirmed_citations(db.entities, wanted)
@@ -992,6 +1026,8 @@ def propose_anchors():
         print("  %-42s %.2f %-9s %s" % (key, score, index, url))
 
     atomic.write_text(PROPOSALS, "".join(json.dumps(row) + "\n" for row in taken))
+    if write_at is not None:
+        return apply_anchors(taken, db.entities, write_at)
     print("\n%d proposed, %d below threshold, %d with no hit, %d requests failed"
           % (len(taken), weak, silent, failed))
     print("written to %s -- these are candidates, not results: a matched title proves the URL fits"
@@ -1022,8 +1058,10 @@ USAGE = """usage: run these with .venv/bin/python -- openreview-py lives there, 
                                                      --limit N --pause S batches it the same way
                                                      reviews does, for the same quota
   .venv/bin/python harvest.py text                   pypdfium2 over downloaded pdfs
-  .venv/bin/python harvest.py anchors                DBLP lookup for entities with no anchor,
-                                                     proposals only, never writes a registry
+  .venv/bin/python harvest.py anchors [--write] [--at S]
+                                                     DBLP then Crossref for entities with no
+                                                     anchor; proposals only unless --write, which
+                                                     applies those scoring --at or above (1.00)
 
   a venue runs meta -> reviews -> rescreen -> rank. Only the first two touch the network.
   OPENREVIEW_USERNAME and OPENREVIEW_PASSWORD must be set in the environment."""
@@ -1091,7 +1129,12 @@ def main(argv):
     if command == "text":
         return harvest_text()
     if command == "anchors":
-        return propose_anchors()
+        try:
+            given = options([f for f in rest if f != "--write"], ANCHOR_OPTIONS)
+            at = number_between(given.get("--at"), "--at") if "--at" in given else 1.0
+        except ValueError as error:
+            return fail(str(error))
+        return propose_anchors(at if "--write" in rest else None)
 
     print(USAGE)
     return 2

@@ -1,0 +1,28 @@
+id: IC-904
+title: Stable Diffusion XL generates non-empty cups when prompted for 'empty cup'
+description: The authors probe Stable Diffusion XL with 1,000 generations using the prompt 'empty cup'
+  and manually inspect the outputs. They identify a set of examples where the model generates cups containing
+  water rather than empty cups, replicating a broader observation from Tong et al. (2023) about text-to-image
+  models struggling with the 'empty' concept. This failure is used as a contrast to demonstrate that
+  standard text-to-image models provide no mechanism to diagnose why the error occurs, whereas a concept
+  bottleneck model can reveal the faulty concept in its probability histogram.
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-xl
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:concept-bottleneck-generative-models
+datasets: []
+methods: []
+related_work:
+- name: Tong et al. 2023
+  anchor: https://arxiv.org/abs/2306.12105
+  role: context
+evidence_type: observational
+key_metric: 1k images of 'empty cup' probed; a set of examples identified where the model generates
+  a cup with water instead of an empty cup
+caveat: The specific failure rate is not quantified; the authors only state they 'narrow down to a set
+  of examples.' The finding is a replication of Tong et al. (2023)'s broader observation about text-to-image
+  models.
+extracted_by: automatic-extraction

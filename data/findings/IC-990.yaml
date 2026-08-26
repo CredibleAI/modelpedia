@@ -1,0 +1,57 @@
+id: IC-990
+title: ResNet-50 and DenseNet-101 exhibit a higher mean-to-variance ratio in penultimate pre-ReLU activations
+  for in-distribution samples than for out-of-distribution samples, and the activation-based scaling
+  factor is well-separated between ID and OOD
+description: The paper measures the statistical properties of penultimate-layer activations for pretrained
+  ResNet-50 (ImageNet) and DenseNet-101 (CIFAR-10/100). For both architectures, in-distribution samples
+  consistently show a larger mean/variance ratio than out-of-distribution samples across all tested
+  OOD datasets (SSB-Hard, NINCO, iNaturalist, Textures, OpenImage-O, SVHN, ISUN, Places365). The chi-square
+  test confirms the rectified-Gaussian assumption (all p-values > 0.05). The derived scaling factor
+  r(a) = q(a)/q_p(a) is well-separated between ID and OOD histograms, which is the mechanism by which
+  scaling enhances OOD detection while pruning degrades it.
+models:
+- ref: model:resnet
+  variant: variant:resnet50
+- ref: model:densenet
+concepts: []
+sources:
+- ref: source:scaling-training-time-post-hoc-out
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:cifar-10
+  role: eval
+- ref: dataset:cifar-100
+  role: eval
+- ref: dataset:ssb-hard
+  role: eval
+- ref: dataset:ninco
+  role: eval
+- ref: dataset:inaturalist
+  role: eval
+- ref: dataset:textures
+  role: eval
+- ref: dataset:openimages-o
+  role: eval
+- ref: dataset:svhn
+  role: eval
+- ref: dataset:places365
+  role: eval
+methods:
+- ref: method:ash
+  role: compared-to
+- ref: method:ebo
+  role: eval
+related_work:
+- ref: method:ash
+  role: builds-on
+- ref: method:ebo
+  role: builds-on
+evidence_type: correlational
+key_metric: 'chi-square p-values for Gaussian assumption: ImageNet 0.296, SSB-Hard 0.262, NINCO 0.181,
+  iNaturalist 0.083, Textures 0.099, OpenImage-O 0.155 (all > 0.05); ID μ/σ consistently larger than
+  OOD μ/σ across all OOD datasets (Figs. 2–3)'
+caveat: The Gaussian assumption is verified only for the specific OOD datasets tested; the μ/σ difference
+  is shown visually in figures rather than tabulated as exact values. The analysis assumes the final
+  penultimate operation is ReLU.
+extracted_by: automatic-extraction

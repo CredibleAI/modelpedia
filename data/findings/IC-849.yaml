@@ -1,0 +1,56 @@
+id: IC-849
+title: GPT-2 and T5-base exhibit vanishing expected gradients under RFT for inputs with small reward
+  standard deviation, prevalent in 3 of 7 GRUE datasets, causing RFT to underperform SFT
+description: The paper proves that the expected gradient for an input under RFT vanishes when its reward
+  standard deviation is small (Theorem 1). Empirically, on the GRUE benchmark, three of seven datasets
+  (NarrativeQA, ToTTo, CommonGen) contain a substantial fraction of inputs with near-zero pretrain reward
+  standard deviation under GPT-2 or T5-base, while their expected reward is suboptimal. RFT (PPO) has
+  limited impact on the rewards of these inputs, as quantified by a high Pearson correlation between
+  pretrain reward std and absolute reward change (0.48 for RFT vs 0.05 for SFT on NarrativeQA). In datasets
+  where small-std inputs are more prevalent, RFT achieves worse reward relative to SFT. Conventional
+  heuristics (increased learning rate, temperature, entropy regularization) do not alleviate the problem.
+models:
+- ref: model:gpt-2
+- ref: model:t5
+  variant: variant:t5-base
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:vanishing-gradients-reinforcement-finetuning-language-models
+datasets:
+- ref: dataset:grue
+  role: eval
+- ref: dataset:narrativeqa
+  role: eval
+- ref: dataset:totto
+  role: eval
+- ref: dataset:commongen
+  role: eval
+- ref: dataset:imdb
+  role: eval
+- ref: dataset:dailydialog
+  role: eval
+- ref: dataset:iwslt-2017
+  role: eval
+- ref: dataset:cnn-dailymail
+  role: eval
+methods:
+- ref: method:ppo
+  role: primary
+- ref: method:nlpo
+  role: compared-to
+related_work:
+- ref: dataset:grue
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Pearson correlation (pretrain reward std vs |reward change|): NarrativeQA RFT 0.48 / SFT
+  0.05; ToTTo RFT 0.46 / SFT 0.16; IMDb RFT 0.72 / SFT 0.72. Train reward (NarrativeQA): pretrained
+  0.110, RFT 0.102, SFT 0.493. Table 6 (NarrativeQA): RFT* 0.101, SFT+RFT 0.537, best heuristic (temp
+  1.5) 0.077.'
+caveat: The authors note that a causal relation between small reward std prevalence and RFT underperformance
+  cannot be inferred from the GRUE experiments alone due to possible confounding factors such as insufficient
+  exploration; the controlled experiments and theory are needed to establish causality. Experiments
+  use small-to-moderate models and do not incorporate reward functions learned from human feedback.
+extracted_by: automatic-extraction
+related_findings:
+- IC-850

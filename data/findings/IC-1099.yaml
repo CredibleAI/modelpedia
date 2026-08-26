@@ -1,0 +1,55 @@
+id: IC-1099
+title: AdamW-pretrained vision models (ViTs, ConvNeXt) have disproportionately large embedding-layer
+  gradients at initialization, causing SGD fine-tuning to degrade OOD accuracy by up to 15% relative
+  to AdamW
+description: The paper measures layer-wise gradient norms at pretrained initialization across 7 released
+  vision models. For modern architectures pretrained with AdamW (CLIP ViTs, supervised ViT, DINO ViT,
+  ConvNeXt), the embedding layer's gradient norm is an outlier, roughly 5x larger than other layers.
+  This causes SGD to make disproportionately large updates to the embedding layer during fine-tuning,
+  degrading out-of-distribution performance. On CLIP ViT-B/16, AdamW achieves 8.1% higher average OOD
+  accuracy than SGD across 5 distribution shift datasets; on CLIP ViT-L/14 the gap widens to 15.4%.
+  Freezing the embedding layer (less than 1% of parameters) closes the gap, with SGD (freeze-embed)
+  achieving 76.7% average OOD accuracy versus 72.0% for SGD and 76.0% for AdamW. The effect is absent
+  or minimal for BiT ResNets pretrained with SGD, confirming the role of the pretraining optimizer.
+models:
+- ref: model:clip
+  variant: variant:clip-vit-b-16
+- ref: model:clip
+  variant: variant:clip-vit-l-14
+- ref: model:vit
+  variant: variant:vit-b-16
+- ref: model:dino
+  variant: variant:dino-vit-b-16
+- ref: model:convnext
+  variant: variant:convnext-b
+- ref: model:resnet
+  variant: variant:bit-resnet-50
+- ref: model:resnet
+  variant: variant:bit-resnet-101
+concepts: []
+sources:
+- ref: source:fine-tune-vision-models-sgd
+datasets:
+- ref: dataset:waterbirds
+  role: eval
+- ref: dataset:domainnet
+  role: eval
+- ref: dataset:wilds-fmow
+  role: eval
+- ref: dataset:wilds-camelyon
+  role: eval
+methods: []
+related_work:
+- name: Tan et al. 2020 (DomainNet variant)
+  anchor: https://arxiv.org/abs/1910.10320
+  role: context
+evidence_type: correlational
+key_metric: 'CLIP ViT-B/16: AdamW 76.0% vs SGD 67.9% OOD (avg over 5 datasets); CLIP ViT-L/14: AdamW
+  82.2% vs SGD 66.8% OOD; SGD (freeze-embed) 76.7% OOD avg across all models/datasets vs 72.0% SGD and
+  76.0% AdamW; embedding layer is ~0.7% of ViT-B/16 parameters; gradients in embedding layer are about
+  5x larger than other layers'
+caveat: The gradient ratio (~5x) is stated in the context of one model/dataset ablation; the exact ratio
+  varies across models and datasets. The paper notes that on Living-17 (closest to pretraining distribution),
+  SGD often performs comparably to or better than AdamW, suggesting the effect depends on distribution
+  shift magnitude.
+extracted_by: automatic-extraction

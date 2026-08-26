@@ -1,0 +1,35 @@
+id: IC-1429
+title: OPT 6.7B exhibits aggregated sparsity where approximately 50% of neurons remain unused across
+  the first 150 tokens, with a non-random reuse pattern enabling 1.27x speculative decoding speedup
+  at gamma=16
+description: The paper measures how many distinct neurons are activated across a sequence of generated
+  tokens in OPT 6.7B. On average, about 50% of all FFN neurons are never used across the first 150 tokens
+  of WikiText prompts. This aggregated sparsity is significantly higher than what would be expected
+  from random per-token activation (the observed curve exceeds the random sparsity curve in Fig 7b),
+  indicating a structured reuse of neurons. Exploiting this temporal pattern, the paper shows that reusing
+  previously loaded weights for subsequent tokens causes only a slight perplexity increase, and when
+  integrated into speculative decoding, yields a 1.27x speedup at gamma=16 versus 1.20x for random sparsity.
+models:
+- ref: model:opt
+  variant: variant:opt-6-7b
+concepts: []
+sources:
+- ref: source:relu-strikes-back-exploiting-activation-sparsity
+datasets:
+- ref: dataset:wikitext
+  role: eval
+methods:
+- ref: method:speculative-decoding
+  role: primary
+related_work:
+- ref: method:speculative-decoding
+  role: builds-on
+evidence_type: observational
+key_metric: ~50% neurons unused across first 150 tokens (WikiText); speculative decoding speedup 1.27x
+  (aggregated) vs 1.20x (random) at gamma=16; at gamma=64, aggregated sparsity speedup ~1.14x vs negligible
+  for random
+caveat: Measured on WikiText prompts; the paper notes results hold for other ReLU models and datasets
+  but does not quantify the variation
+extracted_by: automatic-extraction
+related_findings:
+- IC-1428

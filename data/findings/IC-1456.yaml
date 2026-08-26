@@ -1,0 +1,38 @@
+id: IC-1456
+title: Pre-trained language models fail to predict both interpretations of ambiguous inputs in zero-shot
+  semantic parsing
+description: The paper tests Codegen (350M, 2B, 6B, 16B), Llama-13B, Vicuna-13B, and GPT-3.5-turbo on
+  200 examples per ambiguity type (PP attachment, scope, inverse scope, bound pronoun, conjunction)
+  in a zero-shot setting where the prompt provides the compositional ingredients for both derivations
+  but no examples of the ambiguity type. Most models score 0.00 on ZM5 (both LFs present in top-5 beam
+  search outputs) across all five types. GPT-3.5-turbo achieves high single-LF accuracy on PP and scope
+  but still scores 0.00 on ZM5. Llama-13B scores 0.00 on every type, while its instruction-tuned variant
+  Vicuna-13B reaches 4.00 on bound and 9.50 on conjunction. Token-level confidence for Codegen-16B partially
+  reflects the divergence point for scope and inverse scope but not for PP attachment or bound pronouns.
+models:
+- ref: model:codegen
+- ref: model:llama
+- ref: model:vicuna
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:zero-few-shot-semantic-parsing-ambiguous
+datasets: []
+methods:
+- ref: method:constrained-decoding
+  role: primary
+- ref: method:benchclamp
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: 'ZM5 (pp/scope/revscope/bound/conj): cg-350m 0.00/0.00/0.00/0.00/1.00, cg-2b 0.00/0.00/0.00/0.50/0.00,
+  cg-6b 0.00/0.00/0.00/0.00/3.50, cg-16b 0.00/0.00/0.00/3.50/15.00, ll-13b 0.00/0.00/0.00/0.00/0.00,
+  vi-13b 0.00/0.00/0.00/4.00/9.50, gpt-3.5 0.00/0.00/0.00/0.00/0.00'
+caveat: The paper notes that decoding strategies emphasizing diversity (temperature sampling, sequential
+  decoding) might improve ZM scores, and that the task is a compositional generalization challenge requiring
+  the model to combine structures into novel derivations.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1457

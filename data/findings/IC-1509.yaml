@@ -1,0 +1,45 @@
+id: IC-1509
+title: Kalamang-English translation performance on MTOb increases with model size within the Llama and
+  Llama 2 families, and GPT-4 outperforms Text-davinci-003
+description: Across the Llama family, best CHRF on KGV→ENG rises from 16.1 (7B) to 13.2 (13B) to 29.7
+  (30B), and within Llama 2 from 26.8 (7B) to 30.4 (13B) to 37.8 (70B). The 13B Llama is an outlier
+  that underperforms the 7B, but the overall trend is positive. Among API models, GPT-4 consistently
+  matches or outperforms Text-davinci-003 across context settings (e.g., 38.4 vs 38.4 best KGV→ENG;
+  40.0 vs 34.8 best ENG→KGV). The paper notes that details of API-based models are not known, so the
+  comparison is less controlled.
+models:
+- ref: model:llama
+  variant: variant:llama-7b
+- ref: model:llama
+  variant: variant:llama-13b
+- ref: model:llama
+  variant: variant:llama-30b
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:gpt-4
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:benchmark-learning-translate-new-language-from
+datasets: []
+methods:
+- ref: method:chrf
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'best chrf (kgv→eng): llama-7b 16.1, llama-13b 13.2, llama-30b 29.7; llama 2-7b 26.8, llama
+  2-13b 30.4, llama 2-70b 37.8; gpt-4 38.4 vs text-davinci-003 38.4 (kgv→eng), gpt-4 40.0 vs text-davinci-003
+  34.8 (eng→kgv)'
+caveat: The Llama 13B underperforms the 7B, breaking the monotonic trend. API model training details
+  are unknown, so cross-family comparisons are less controlled. Only one instruction-tuned variant per
+  Llama 2 size was tested.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1508
+- IC-1510

@@ -1,0 +1,37 @@
+id: IC-866
+title: A prefix applied to Llama-7B's first attention layer preserves the relative attention distribution
+  over content positions and only adds a constant-direction bias to the attention block output
+description: 'The paper validates its theoretical prediction on Llama-7B by applying a prefix of length
+  one to the first layer and measuring the resulting attention and activations. Figure 5 shows that
+  the attention distribution over content (non-prefix) positions is identical with and without the prefix,
+  up to a uniform scaling factor, confirming that the prefix cannot change what the head attends to.
+  Figure 6 shows that the prefix-tuned activations match the theoretical formula: the pretrained activations
+  scaled by (1 minus attention on prefix) plus a constant bias vector wv*s1. Additionally, the authors
+  note that Llama-7B produces 24,426 unique completions when prompted with each of its 32,000 tokens,
+  but 46,812 unique 10-token sequences when controlling a single virtual token, illustrating the greater
+  capacity of the embedding space.'
+models:
+- ref: model:llama
+  variant: variant:llama-7b
+concepts: []
+sources:
+- ref: source:when-prompting-prefix-tuning-work-theory
+datasets:
+- ref: dataset:dart
+  role: eval
+methods:
+- ref: method:prefix-tuning
+  role: primary
+related_work:
+- ref: method:prefix-tuning
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Llama-7B: 24,426 unique completions with 32,000 discrete tokens vs 46,812 unique 10-token
+  sequences with one virtual token (non-exhaustive); Figure 5 shows identical relative attention over
+  content with and without prefix; Figure 6 shows prefix-tuned activations equal pretrained activations
+  scaled by (1 - a_pt_i0) plus constant bias wv*s1'
+caveat: Validation is limited to the first layer, head 12, and a single test sequence from the DART
+  dataset. The paper does not test all layers or all heads of Llama-7B.
+extracted_by: automatic-extraction
+related_findings:
+- IC-867

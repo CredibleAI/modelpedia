@@ -1,0 +1,28 @@
+id: IC-791
+title: BLIP-2, BLIP, and COCA produce captions of comparable quality for zero-shot compositional image
+  retrieval
+description: In an ablation on the CIRCO validation set, swapping the captioner in the CIR-EVL pipeline
+  between BLIP-2 (map@5 13.33), BLIP (13.1), and COCA (13.64) yields only minor differences. The paper
+  concludes that most state-of-the-art public captioning models perform similarly well, and retains
+  BLIP-2 with a FLAN-T5 language model for generality.
+models:
+- ref: model:blip-2
+- ref: model:blip
+- ref: model:coca
+concepts: []
+sources:
+- ref: source:vision-by-language-training-free-compositional
+datasets:
+- ref: dataset:circo
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'CIRCO validation map@5: COCA 13.64, BLIP-2 13.33, BLIP 13.1'
+caveat: Differences are small (0.54 points range); the comparison is on a single validation set and
+  a single task.
+extracted_by: automatic-extraction
+related_findings:
+- IC-788
+- IC-789
+- IC-790

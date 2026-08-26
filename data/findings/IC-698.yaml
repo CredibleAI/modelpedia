@@ -1,0 +1,37 @@
+id: IC-698
+title: GPT-3.5-turbo's CoT reasoning errors are correlated across different demonstration sets, while
+  PoT errors are less correlated
+description: When GPT-3.5-turbo fails on a hard reasoning question under chain-of-thought prompting,
+  re-prompting it with a different set of CoT demonstrations typically yields the same incorrect answer.
+  In contrast, program-of-thought prompting tends to produce a different (or correct) answer. Among
+  cases where CoT fails, 43% are solved by PoT and 57% receive a different wrong answer from PoT. This
+  error-correlation structure is what makes mixing CoT and PoT (MOT) more effective at detecting model
+  uncertainty than either representation alone.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:large-language-model-cascades-mixture-thought
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:big-bench-hard
+  role: eval
+- ref: dataset:crepe
+  role: eval
+methods: []
+related_work:
+- name: FrugalGPT
+  anchor: https://arxiv.org/abs/2305.05176
+  role: compared-to
+evidence_type: correlational
+key_metric: 43% of CoT-failure cases solved by PoT, 57% different wrong answer from PoT (Appendix D
+  case analysis)
+caveat: The case analysis is illustrative and the 43%/57% split is reported without a formal sample
+  size or confidence interval; the pattern is demonstrated on a subset of hard questions.
+extracted_by: automatic-extraction
+related_findings:
+- IC-699
+- IC-700

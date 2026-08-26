@@ -1,0 +1,30 @@
+id: IC-1080
+title: OPUS-MT small, OPUS-MT large, and mBART-50 in their default (unfine-tuned) form achieve low context-sensitive
+  disambiguation accuracy on discourse-level phenomena
+description: 'The paper evaluates the released, unfine-tuned versions of OPUS-MT small, OPUS-MT large,
+  and mBART-50 on English-to-French context-sensitive translation tasks covering anaphora resolution
+  and lexical choice. Without context-aware fine-tuning, these models correctly disambiguate context-sensitive
+  target words in only a minority of cases: OPUS-MT small scores 0.14/0.40/0.29, OPUS-MT large 0.16/0.41/0.31,
+  and mBART-50 0.26/0.42/0.25 (ok metric on SCAT+, DisCEval-MT ana, DisCEval-MT lex respectively). This
+  indicates that the released models have limited ability to leverage inter-sentential context for discourse-level
+  disambiguation in translation.'
+models:
+- ref: model:opus-mt
+- ref: model:mbart-50
+concepts: []
+sources:
+- ref: source:quantifying-plausibility-context-reliance-neural-machine
+datasets:
+- ref: dataset:scat
+  role: eval
+- ref: dataset:disceval-mt
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'ok: OPUS-MT small 0.14/0.40/0.29, OPUS-MT large 0.16/0.41/0.31, mBART-50 0.26/0.42/0.25
+  (SCAT+/DisCEval-MT ana/DisCEval-MT lex)'
+caveat: Evaluation is limited to English-to-French and two discourse phenomena (anaphora resolution,
+  lexical choice); the ok metric measures only whether the gold context-sensitive word appears in the
+  output, not whether the model used context to arrive at it.
+extracted_by: automatic-extraction

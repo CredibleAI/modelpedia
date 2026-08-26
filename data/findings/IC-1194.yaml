@@ -1,0 +1,44 @@
+id: IC-1194
+title: GPT-3.5-turbo, GPT-4, and GPT-3.5-turbo-0613 exhibit 50-58% inconsistency between their ratings
+  and rankings feedback on the same response pairs
+description: When asked to rate individual responses on a 1-7 Likert scale and separately to rank pairs
+  of the same responses, these AI models produce contradictory preferences for a large fraction of comparisons.
+  GPT-3.5-turbo (temperature=0) disagrees with itself 58% of the time over 42k comparisons, GPT-3.5-turbo-0613
+  disagrees 54%, and GPT-4 disagrees 50% over 500 comparisons. The inconsistency is robust to temperature
+  (56% at temp=0.5) and is not an artefact of a single model. The paper attributes this to the models
+  attending to different quality dimensions (e.g., accuracy vs. density) depending on whether the task
+  is absolute scoring or relative comparison.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-0613
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:peering-through-preferences-unraveling-feedback-acquisition
+datasets:
+- ref: dataset:alpacaeval
+  role: eval
+- ref: dataset:dolly-ac
+  role: source
+- ref: dataset:self-instruct
+  role: source
+- ref: dataset:superni
+  role: source
+methods: []
+related_work:
+- name: AlpacaFarm
+  anchor: https://arxiv.org/abs/2305.14387
+  role: context
+- name: MT-Bench and Chatbot Arena
+  anchor: https://arxiv.org/abs/2306.05685
+  role: context
+evidence_type: correlational
+key_metric: 'Inconsistency rates: GPT-3.5-turbo (temp=0) 58% over 42k comparisons; GPT-3.5-turbo (temp=0.5)
+  56%; GPT-3.5-turbo-0613 54%; GPT-4 50% over 500 comparisons. Standard error 4% with 95% confidence.'
+caveat: The 500-comparison sample for GPT-4 and GPT-3.5-turbo-0613 is much smaller than the 42k for
+  the default GPT-3.5-turbo. The paper notes the standard error is 4% at 95% confidence for the smaller
+  samples.
+extracted_by: automatic-extraction

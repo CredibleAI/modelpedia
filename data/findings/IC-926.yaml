@@ -1,0 +1,33 @@
+id: IC-926
+title: Across 25 MultiBERTs seeds, UAS does not correlate with MLM test loss or BLIMP accuracy
+description: 'Using all 25 MultiBERTs seeds, the authors measure the degree to which natural random
+  variation yields a correlation between model quality and implicit parse accuracy (UAS) from SAS. They
+  find no significant correlation: UAS is uncorrelated with MLM test loss (r2 = −2821) and with grammatical
+  capabilities measured by BLIMP (r2 = −317). This null result motivates the authors'' argument that
+  correlational evidence alone is insufficient to establish SAS as essential for grammatical capabilities,
+  and that developmental (training-time) analysis is needed.'
+models:
+- ref: model:multiberts
+concepts: []
+sources:
+- ref: source:sudden-drops-loss-syntax-acquisition-phase
+datasets:
+- ref: dataset:blimp
+  role: eval
+- ref: dataset:penn-treebank
+  role: eval
+methods:
+- ref: method:sas-probe
+  role: primary
+- ref: method:mlm-scoring
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: r2 = −2821 (UAS vs MLM test loss); r2 = −317 (UAS vs mean BLIMP score), across 25 MultiBERTs
+  seeds
+caveat: The r2 values as printed are far outside the standard [0,1] range for coefficient of determination,
+  suggesting a non-standard or misreported statistic; the authors interpret these as indicating 'complete
+  lack of significant correlation.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-925

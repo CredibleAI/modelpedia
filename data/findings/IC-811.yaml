@@ -1,0 +1,50 @@
+id: IC-811
+title: Alpaca's 52k instruction-tuning data is predominantly low-quality (only 17.75% score ≥ 4.5 on
+  accuracy), yet the full 52k data still yields higher MMLU scores than the filtered 9k subset for both
+  7b and 13b variants
+description: The paper rates all 52,002 Alpaca training samples using ChatGPT as an auto-grader on the
+  accuracy dimension. Only 9,229 samples (17.75%) score at or above the 4.5 threshold, meaning the vast
+  majority of Alpaca's training data contains incorrect or irrelevant responses. Despite this, Alpaca-7b
+  trained on the full 52k data scores 40.86 on MMLU versus 38.78 for the model trained on the filtered
+  9k, and Alpaca-13b(52k) scores 47.89 versus 46.12 for 13b(9k). This shows that while the data quality
+  is poor, the additional quantity of even low-quality data still provides a marginal benefit on knowledge-intensive
+  benchmarks, even as it degrades instruction-following performance on the four human-instruction test
+  sets.
+models:
+- ref: model:alpaca
+concepts: []
+sources:
+- ref: source:alpagasus-training-better-alpaca-fewer-data
+datasets:
+- ref: dataset:alpaca-52k
+  role: source
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:drop
+  role: eval
+- ref: dataset:humaneval
+  role: eval
+- ref: dataset:vicuna-test-set
+  role: eval
+- ref: dataset:koala-test-set
+  role: eval
+- ref: dataset:wizardlm-test-set
+  role: eval
+- ref: dataset:self-instruct-test-set
+  role: eval
+methods:
+- ref: method:llm-as-a-judge
+  role: eval
+related_work:
+- ref: model:alpaca
+  role: builds-on
+- ref: model:llama
+  role: builds-on
+evidence_type: correlational
+key_metric: '9,229/52,002 samples (17.75%) score ≥ 4.5; MMLU: 7b(52k)=40.86 vs 7b(9k)=38.78, 13b(52k)=47.89
+  vs 13b(9k)=46.12; BBH: 7b(52k)=33.01 vs 7b(9k)=33.76, 13b(52k)=38.67 vs 13b(9k)=38.92'
+caveat: The quality rating is performed by a single LLM (ChatGPT) on a single dimension (accuracy);
+  the paper acknowledges in appendix A.5 that using 'helpfulness' as the dimension yields different
+  filtering results. The MMLU advantage of 52k over 9k is small (1.88 and 1.77 points) and the 9k model
+  actually outperforms 52k on BBH.
+extracted_by: automatic-extraction

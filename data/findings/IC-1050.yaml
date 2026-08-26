@@ -1,0 +1,29 @@
+id: IC-1050
+title: Released models generate patches that are less than half the length of gold solutions and rarely
+  edit more than one file
+description: Across all successfully applied patches in the oracle retrieval setting, model-generated
+  edits are substantially shorter than the corresponding gold patches. Claude 2 adds 19.6 and removes
+  4.2 lines on average versus 44.1 and 12.0 for gold; GPT-4 adds 20.9 and removes 4.4 versus 33.6 and
+  8.4. All models edit at most 1.0–1.1 files on average, compared to 1.9–2.1 for gold patches. The paper
+  also notes that models tend to write primitive Python, do not leverage existing codebase utilities,
+  and adopt a greedy approach with little regard for code style or logical constraints.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:swe-bench-language-models-resolve-real
+datasets:
+- ref: dataset:swe-bench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Claude 2: 19.6 added / 4.2 removed / 1.9 functions / 1.1 files vs gold 44.1 / 12.0 / 5.8
+  / 2.1. GPT-4: 20.9 / 4.4 / 1.5 / 1.0 vs gold 33.6 / 8.4 / 3.8 / 1.9. ChatGPT-3.5: 30.1 / 3.8 / 2.7
+  / 1.6 vs gold 39.6 / 9.5 / 6.1 / 1.9.'
+caveat: Statistics are computed only over successfully applied patches in the oracle retrieval setting,
+  which is a subset of all generations. The gold patch statistics are macro-averaged over each model's
+  respective task instances.
+extracted_by: automatic-extraction

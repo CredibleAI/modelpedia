@@ -1,0 +1,55 @@
+id: IC-1409
+title: FF blocks in BERT and GPT-2 modify token-to-token contextualization, with the effect concentrated
+  in specific layers and targeting specific linguistic compositions rather than simple word co-occurrence
+description: Using a norm-based attention map analysis extended with integrated gradients to decompose
+  the nonlinear FF activation, the paper measures how much the FF block changes the token-to-token attention
+  map relative to the attention block alone. In BERT-base the by-layer average contextualization change
+  by FF is 0.21, concentrated in the 3rd and 9th-11th layers; in GPT-2 it is 0.15, concentrated in early
+  layers. The amplified token pairs are not explained by co-occurrence (Spearman correlation with PMI
+  is only 0.06-0.14) but instead cluster into linguistic categories such as subword-to-word and compound-noun
+  constructions. Results are consistent across 11 BERT/RoBERTa variants, GPT-2, and OPT-125M on both
+  Wikipedia and SST-2.
+models:
+- ref: model:bert
+- ref: model:multiberts
+- ref: model:roberta
+- ref: model:gpt-2
+- ref: model:opt
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:analyzing-feed-forward-blocks-transformers-through
+datasets:
+- ref: dataset:sst-2
+  role: eval
+methods:
+- ref: method:norm-based-analysis
+  role: primary
+- ref: method:integrated-gradients
+  role: primary
+related_work:
+- name: Kobayashi et al. 2020 (norm-based analysis)
+  anchor: https://doi.org/10.18653/v1/2020.emnlp-main.574
+  role: builds-on
+- name: Kobayashi et al. 2021 (residual and normalization layers)
+  anchor: https://doi.org/10.18653/v1/2021.emnlp-main.373
+  role: builds-on
+- name: Geva et al. 2021 (FF as key-value memories)
+  anchor: https://doi.org/10.18653/v1/2021.emnlp-main.446
+  role: context
+- name: Meng et al. 2022 (locating factual associations in GPT)
+  anchor: https://openreview.net/forum?id=-h6was6ee4
+  role: context
+- name: Modarressi et al. 2022 (GloBEnC)
+  anchor: https://doi.org/10.18653/v1/2022.naacl-main.19
+  role: compared-to
+evidence_type: correlational
+key_metric: 'by-layer average contextualization change (1-ρ) by FF: 0.21 (BERT-base) and 0.15 (GPT-2);
+  by LN: 0.27 (BERT) and 0.38 (GPT-2); Spearman correlation between ff-amp scores and PMI: 0.06-0.14
+  across layers'
+caveat: The linguistic category labels were assigned by one of the authors manually; the analysis is
+  at the subword level and the specific layer locations differ between BERT (middle-to-late) and GPT-2
+  (early), with the cause of this gap left as future work.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1410

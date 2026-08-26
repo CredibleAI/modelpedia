@@ -1,0 +1,38 @@
+id: IC-1320
+title: GPT-2 XL (1.5B) exhibits better calibration than larger models from the LLaMA, LLaMA2, and GPT-J
+  families despite having fewer parameters
+description: Across all phrase- and sentence-level tasks in the CAT benchmark, GPT-2 XL (1.5B) achieves
+  consistently lower ECE and Brier scores than all larger models tested, including GPT-J (6B), LLaMA-7B/13B/30B,
+  LLaMA2-7B/13B, and Vicuna-13B. For example, on NQ, GPT-2 XL has ECE 0.045 versus LLaMA-30B at 0.169.
+  The authors attribute this to GPT-2 XL and GPT-J rarely exhibiting overconfidence on incorrect generations.
+  This shows that model size alone does not determine calibration quality across families.
+models:
+- ref: model:gpt-2
+- ref: model:gpt-j
+- ref: model:llama
+- ref: model:llama-2
+- ref: model:vicuna
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:litcab-lightweight-language-model-calibration-over
+datasets:
+- ref: dataset:natural-questions
+  role: eval
+- ref: dataset:truthfulqa
+  role: eval
+methods:
+- ref: method:expected-calibration-error
+  role: eval
+- ref: method:brier-score
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'NQ ECE: GPT-2 XL 0.045, GPT-J 0.059, LLaMA-30b 0.169; TruthfulQA ECE: GPT-2 XL 0.041, GPT-J
+  0.112, LLaMA-30b 0.110; NQ Brier: GPT-2 XL 0.055, LLaMA-30b 0.192'
+caveat: GPT-2 XL results for paragraph-level tasks are missing due to its context length limit; the
+  comparison is limited to phrase- and sentence-level tasks.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1319
+- IC-1321

@@ -1,0 +1,36 @@
+id: IC-1152
+title: Token reinforcement in demonstrations constrains LLaMA-65B's output to valid label spaces on
+  MMLU and enables chain-of-thought pattern following on GSM8K without requiring question content
+description: On MMLU, masking all question and option contents in demonstrations does not reduce LLaMA-65B's
+  probability of outputting a valid label (a/b/c/d), but replacing the option names and answer indicators
+  with semantically equivalent substitutes significantly reduces this probability. On GSM8K, LLaMA models
+  learn to generate the 'let's think step by step.' pattern from demonstrations; masking the '//' separator
+  almost eliminates the probability gain from additional demonstrations, while masking the question
+  content also reduces the CoT pattern probability. This shows that surface formatting tokens, not question
+  content, drive the model's format compliance.
+models:
+- ref: model:llama
+concepts: []
+sources:
+- ref: source:understanding-context-learning-from-repetitions
+datasets:
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+methods: []
+related_work:
+- ref: method:chain-of-thought-prompting
+  role: context
+evidence_type: correlational
+key_metric: 'MMLU: probability of label space remains ~0.95 with masked content but drops sharply when
+  both option names and answer indicators are replaced (Figure 6); GSM8K: probability of CoT answer
+  increases with demonstrations but gains almost vanish after masking ''//'' (Figure 7)'
+caveat: Experiments use 1140 randomly sampled MMLU test cases (20 per task) and GSM8K high school math
+  subset; results are averaged over three random seeds. The paper notes that masking [question] in GSM8K
+  still reduces CoT probability, suggesting some content-based connection exists.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1151
+- IC-1153
+- IC-1154

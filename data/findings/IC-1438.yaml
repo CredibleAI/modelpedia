@@ -1,0 +1,39 @@
+id: IC-1438
+title: LLaVA and Llama-Adapter V2 are jailbroken by compositional adversarial images targeting image-based
+  embedding triggers, with near-zero success for textual triggers
+description: The paper generates adversarial images by optimising them in CLIP's joint embedding space
+  to match one of four malicious trigger types (textual, OCR-textual, visual, combined), then pairs
+  each image with a generic benign prompt. Across 8 prohibited scenarios, 8 images per scenario, 2 prompts,
+  and 25 repetitions (6400 queries per model), image-based triggers achieve high jailbreak success rates
+  while textual triggers fail almost completely. The combined OCR+visual trigger is the most effective.
+  Llama-Adapter V2 shows lower success rates than LLaVA, which the authors attribute to its weaker image
+  understanding rather than stronger safety alignment.
+models:
+- ref: model:llava
+- ref: model:llama-adapter-v2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:jailbreak-pieces-compositional-adversarial-attacks-multi
+datasets:
+- ref: dataset:advbench
+  role: eval
+methods:
+- ref: method:perspective-api
+  role: eval
+related_work:
+- name: 'Jailbroken: How Does LLM Safety Training Fail?'
+  anchor: https://arxiv.org/abs/2307.02483
+  role: context
+evidence_type: correlational
+key_metric: 'LLaVA avg ASR: textual 0.007, OCR 0.849, visual 0.849, combined 0.870; Llama-Adapter V2
+  avg ASR: textual 0.006, OCR 0.604, visual 0.608, combined 0.633 (Table 1). Toxicity scores for Llama-Adapter
+  V2 (Table 2): combined trigger yields tox. BERT 21.49, tox. RoBERTa 43.04, Perspective 46.74, severe
+  toxicity 13.97, versus textual trigger 0.15/0.30/2.28/0.15.'
+caveat: Llama-Adapter V2's lower success rate may reflect its weaker image understanding (smaller captioning
+  dataset, no image-text alignment stage) rather than stronger safety alignment. Human evaluation relies
+  on 3 annotators (Fleiss' kappa = 0.8969). The attack requires access to the vision encoder (CLIP)
+  for optimisation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1439

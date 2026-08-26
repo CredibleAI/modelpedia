@@ -1,0 +1,31 @@
+id: IC-1487
+title: CycleGAN's FID degrades from 76.92 to 180.82 under Gaussian noise for horse-to-zebra translation
+description: In the limitations section, the paper applies noise injection to the released CycleGAN
+  for the horse-to-zebra translation task. The baseline CycleGAN's FID rises from 76.92 (clean) to 180.82
+  (Gaussian noise at sigma_e^2=0.16). The authors note that the noise-injected CycleGAN struggles with
+  clean inputs (FID 283.97) and produces visible distortions around the zebra's head and legs despite
+  better FID scores on noisy inputs, concluding that GNI is not a straightforward plug-and-play solution
+  for bidirectional i2i models.
+models:
+- ref: model:cyclegan
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:analysis-gan-based-image-image-translation
+datasets:
+- ref: dataset:imagenet-c
+  role: eval
+methods:
+- ref: method:fid
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'FID: 76.92 (clean) to 180.82 (sigma_e^2=0.16); noise-injected FID on clean: 283.97'
+caveat: The authors explicitly state that for bidirectional i2i translation models, GNI 'cannot be considered
+  a straightforward plug-and-play solution' and that 'adaptations in network architectures and/or loss
+  functions might be requisite to achieve desired results.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-1484
+- IC-1485
+- IC-1486

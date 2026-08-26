@@ -1,0 +1,31 @@
+id: IC-783
+title: Stable Diffusion v1.5's conditional probability pθ(x|c) is heavily biased by the unconditional
+  probability pθ(x), making it unreliable as a condition-alignment metric
+description: The authors measured log pθ(x|c) and log pθ(x) for 100 images generated from the prompt
+  'woman with green hair, wearing sunglasses and dresses' using Stable Diffusion v1.5. They found that
+  images with higher log pθ(x|c) tend to have markedly lower CLIP scores, and that the ranking tendency
+  of log pθ(x|c) is almost identical to that of log pθ(x). This indicates the conditional probability
+  does not properly reflect alignment with the condition, but is dominated by the unconditional image
+  probability, likely because user-specified conditions are often unseen in the training data.
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-v1-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:cas-probability-based-approach-universal-condition
+datasets: []
+methods:
+- ref: method:clipscore
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Fig. 2: average CLIP score of top n% images cherry-picked by log pθ(x|c) is lower than
+  by log pθ(x|c) − log pθ(x); the tendency of log pθ(x|c) and log pθ(x) are ''almost the same'''
+caveat: Demonstrated on a single prompt and a single model (SD v1.5); the authors hypothesize the effect
+  is general to diffusion models but do not test it on others in this preliminary experiment.
+extracted_by: automatic-extraction
+related_findings:
+- IC-784
+- IC-785
+- IC-786

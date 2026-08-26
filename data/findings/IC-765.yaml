@@ -1,0 +1,45 @@
+id: IC-765
+title: BLIP-2, BLIP, InstructBLIP, Bard, and BingChat fall short of human accuracy in answering questions
+  about Midjourney-generated images
+description: In the interrogative evaluation for vision, Midjourney generates images from text prompts,
+  and understanding models are asked questions about the content of those generated images. All tested
+  models (BLIP, BLIP-2 variants, InstructBLIP variants, Bard, BingChat) score below human accuracy across
+  COCO, PaintSkill, DrawBench, and Parti subsets. Notably, the performance gap is smaller for simpler
+  models (BLIP-2) than for advanced multimodal LLMs (Bard, BingChat), which have some visual understanding
+  abilities but still struggle with simple questions about generated images.
+models:
+- ref: model:blip-2
+- ref: model:blip
+- ref: model:instructblip
+- ref: model:bard
+- ref: model:bingchat
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:generative-ai-paradox-it-create-it
+datasets:
+- ref: dataset:mscoco
+  role: eval
+- ref: dataset:drawbench
+  role: eval
+- ref: dataset:parti
+  role: eval
+methods:
+- ref: method:zero-shot-prompting
+  role: primary
+related_work:
+- name: Li et al. 2023a (Your Diffusion Model is Secretly a Zero-Shot Classifier)
+  anchor: https://arxiv.org/abs/2303.16203
+  role: context
+evidence_type: correlational
+key_metric: 'blip2-flan-t5-xxl: 91.18% (COCO), 88.59% (PaintSkill), 85.31% (DrawBench), 90.56% (Parti)
+  vs human 95.88%, 97.72%, 96.32%, 96.83%; bard: 74.02%, 66.28%, 56.33%, 59.42%; bingchat: 80.49%, 87.20%,
+  80.68%, 87.20%'
+caveat: Bard and BingChat can occasionally refuse to answer when the image contains people; results
+  for these models are on a subset where they provide a reasonable answer. All results are zero-shot.
+  1,871 image-question pairs were used in total.
+extracted_by: automatic-extraction
+related_findings:
+- IC-762
+- IC-763
+- IC-764

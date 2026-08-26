@@ -1,0 +1,35 @@
+id: IC-982
+title: In Stable Diffusion's UNET, visual attribute knowledge is distributed across multiple components
+  with attribute-specific patterns, concentrated more in the up-block, and cross-attention layers are
+  not the primary causal states
+description: 'Using causal tracing (corrupting subject token embeddings and restoring individual UNET
+  layers), the paper identifies where knowledge about objects, style, action, and color resides in Stable
+  Diffusion''s 70-layer UNET. Unlike LLMs where knowledge localizes to a few mid-MLP layers, causal
+  states in the UNET are spread across diverse components. The distribution is attribute-specific: self-attention-0
+  is causal for style but not for objects, action, or color; mid-block cross-attention is causal for
+  action but not other attributes. Notably, cross-attention layers are not the primary causal states;
+  resnet blocks and self-attention blocks carry significant knowledge. The density of causal states
+  is higher in the up-block than in the down-block or mid-block.'
+models:
+- ref: model:stable-diffusion
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:localizing-editing-knowledge-text-image-generative
+datasets: []
+methods:
+- ref: method:causal-mediation-analysis
+  role: primary
+- ref: method:clipscore
+  role: eval
+related_work:
+- name: DAAM (Tang et al., 2023)
+  anchor: https://doi.org/10.18653/v1/2023.acl-long.310
+  role: context
+evidence_type: interventional
+caveat: The paper focuses on four attributes (objects, style, action, color) because for viewpoint and
+  count, 'the generations from the unedited model are erroneous for these attributes.' Results are specific
+  to Stable Diffusion's architecture.
+extracted_by: automatic-extraction
+related_findings:
+- IC-983

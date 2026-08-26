@@ -1,0 +1,55 @@
+id: IC-1469
+title: Progress on standard ImageNet generalization benchmarks is 2.5x faster than progress on crowdsourced
+  global data (DollarStreet, GEODE) across 98 vision models
+description: The paper measures the slope of accuracy improvement on each benchmark as a function of
+  ImageNet accuracy across 98 released vision models spanning 16 architectures. Standard OOD benchmarks
+  (ImageNet-V2, ImageNet-Sketch, ImageNet-Rendition, ObjectNet) improve by 62.75% on average, while
+  DollarStreet improves by only 18.92% and GEODE by 33.5%. The linear fits are statistically significant
+  with high R-squared values, confirming the progress gap is not noise. The gap is consistent across
+  both geographic datasets despite their different curation and class sets.
+models:
+- ref: model:clip
+- ref: model:resnet
+- ref: model:dinov2
+- ref: model:vit
+- ref: model:convnext
+- ref: model:regnet
+- ref: model:mobilenetv3
+- ref: model:vgg
+- ref: model:hrnet
+- ref: model:flava
+- ref: model:eva-clip
+- ref: model:mlp-mixer
+- ref: model:edgenext
+- ref: model:rexnet
+concepts: []
+sources:
+- ref: source:progress-object-recognition-benchmarks-improve-generalization
+datasets:
+- ref: dataset:dollarstreet
+  role: eval
+- ref: dataset:geode
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:imagenet-v2
+  role: eval
+- ref: dataset:imagenet-sketch
+  role: eval
+- ref: dataset:imagenet-r
+  role: eval
+- ref: dataset:objectnet
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'OOD average net improvement +62.75% (progress rate 1.44) vs DollarStreet +18.92% (progress
+  rate 0.53, R²=0.93) and GEODE +33.5%; progress gap 2.5x; individual benchmarks: ImageNet-V2 +37.74%
+  (2.2x), ImageNet-Sketch +63.00% (2.6x), ImageNet-Rendition +73.42% (2.8x), ObjectNet +51.84% (2.8x)'
+caveat: The progress gap relies on a linear fit of accuracy trends; the authors note the fits are well
+  supported by high R² values but this is an assumption about the shape of the relationship.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1470
+- IC-1471
+- IC-1472

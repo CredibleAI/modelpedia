@@ -1,0 +1,28 @@
+id: IC-1147
+title: GPT-4 outperforms GPT-3.5 on all KITAB metrics but the gap is modest, with all-correctness below
+  35% for both, suggesting scale alone does not resolve constraint satisfaction
+description: Across all conditions and constraint types, GPT-4 achieves higher satisfaction, completeness,
+  and all-correctness than GPT-3.5, but the differences are not dramatic. In the best condition (with-context),
+  GPT-4 achieves 0.08 all-correctness versus 0.07 for GPT-3.5. The paper explicitly states that 'the
+  difference between the two llms is not as dramatic showing that scale alone may not address the filtering
+  with constraints problem.' This holds across popularity bins and constraint types.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:kitab-evaluating-llms-constraint-satisfaction-information
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'All-correctness with-context: GPT-4 0.08, GPT-3.5 0.07; all-correctness no-context: GPT-4
+  0.08, GPT-3.5 0.07; all correctness remains notably lower than 35% across all conditions'
+caveat: Only two models from the same family (OpenAI) are compared; the claim about 'scale' is limited
+  to this specific model family and does not generalize to cross-architecture comparisons.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1144
+- IC-1145
+- IC-1146

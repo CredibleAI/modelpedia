@@ -1,0 +1,34 @@
+id: IC-1585
+title: 'LLaMA-7B and GPT-J-6B exhibit positional bias in instruction following: zero-shot performance
+  varies significantly when the instruction is moved from after to before the context'
+description: The paper tests three prompt templates that convey the same instruction but place it in
+  different positions relative to the context. For GPT-J-6B on JSON formatting, placing the instruction
+  before the context (rephrased) yields 63.3 format accuracy versus 28.83 when it follows the context
+  (original). For LLaMA-7B, the shortened prompt (instruction at end, example removed) drops accuracy
+  to 36.0 from 60.0. The authors note this sensitivity is well-known and show that PASTA mitigates it,
+  but the underlying positional dependence is a property of the models themselves.
+models:
+- ref: model:llama
+  variant: variant:llama-7b
+- ref: model:gpt-j
+  variant: variant:gpt-j-6b
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:tell-your-model-where-attend-post
+datasets:
+- ref: dataset:bias-in-bios
+  role: eval
+methods:
+- ref: method:zero-shot-prompting
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-J-6B JSON format f.acc: 28.83 (original, instruction after context) vs 63.3 (rephrased,
+  instruction before context); LLaMA-7B: 60.0 (original) vs 36.0 (shortened) vs 57.9 (rephrased)'
+caveat: The rephrased prompt also changes wording, not only position, so the effect is a combination
+  of positional and lexical variation; the authors do not isolate position alone.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1584
+- IC-1586

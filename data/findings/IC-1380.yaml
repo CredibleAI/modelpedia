@@ -1,0 +1,30 @@
+id: IC-1380
+title: Pythia and OPT small models exhibit non-trivial performance on BigBench tasks that is invisible
+  under beam search but revealed by extensive random sampling
+description: Four small released models (Pythia-410m, Pythia-1.4b, OPT-350m, OPT-1.3b) are evaluated
+  on two BigBench subtasks (emoji movie, date understanding) using beam search and random sampling with
+  1, 100, and 10,000 samples. Under beam search, all four models show near-zero pass rates. However,
+  as the number of random samples increases, the fraction of passed instances rises substantially, indicating
+  that the models possess non-trivial capability that conventional single-decode evaluation fails to
+  detect. The authors conclude that the apparent zero performance is an artefact of insufficient measurement
+  resolution rather than a true absence of capability.
+models:
+- ref: model:pythia
+- ref: model:opt
+concepts:
+- ref: concept:method-artefact
+sources:
+- ref: source:predicting-emergent-abilities-infinite-resolution-evaluation
+datasets:
+- ref: dataset:big-bench
+  role: eval
+methods: []
+related_work:
+- name: Schaeffer et al. 2023 (Are emergent abilities of large language models a mirage?)
+  anchor: https://arxiv.org/abs/2304.15004
+  role: context
+evidence_type: correlational
+caveat: The pilot experiment uses only two BigBench subtasks and four small models; the authors note
+  that the passuntil strategy is designed for tasks where a random baseline achieves p(s)=0, and multiple-choice
+  tasks with non-zero random baselines are excluded.
+extracted_by: automatic-extraction

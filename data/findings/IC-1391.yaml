@@ -1,0 +1,38 @@
+id: IC-1391
+title: SLD concept removal variants and SD with negative prompts are bypassable by Ring-a-Bell adversarial
+  prompts, increasing attack success rate from single digits to 90-100% for nudity
+description: The paper evaluates SLD-max, SLD-strong, SLD-medium, and SD with negative prompts (SD-NP)
+  against Ring-a-Bell generated prompts on the I2P dataset. For nudity, SLD-medium's ASR jumps from
+  30.53% (original prompts) to 91.58% (Ring-a-Bell) and 100% (Ring-a-Bell-union). SLD-max goes from
+  2.11% to 42.11% to 57.89%. SD-NP goes from 4.21% to 34.74% to 49.47%. Even with a safety checker deployed,
+  Ring-a-Bell-union achieves 57.89% ASR on SLD-medium nudity. The paper reports that Ring-a-Bell increases
+  the success rate for most concept removal methods by more than 30%.
+models:
+- ref: model:sld-max
+- ref: model:sld-strong
+- ref: model:sld-medium
+- ref: model:stable-diffusion
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:ring-bell-reliable-concept-removal-methods
+datasets:
+- ref: dataset:i2p
+  role: eval
+methods:
+- ref: method:qf-attack
+  role: compared-to
+- ref: method:nudenet
+  role: eval
+- ref: method:probing-classifiers
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Nudity ASR (w/o SC): SLD-medium 30.53%→91.58%→100%; SLD-max 2.11%→42.11%→57.89%; SLD-strong
+  12.63%→61.05%→86.32%; SD-NP 4.21%→34.74%→49.47%. Violence ASR (w/o SC): SLD-medium 34%→76.4%→97.2%;
+  SD-NP 28%→80%→94.8%. With SC, SLD-medium nudity: 3.16%→35.79%→57.89%'
+caveat: The paper notes that CA and FMN are incapable of effectively removing nudity and violence but
+  are included for completeness. The safety checker is more sensitive to nudity than violence. One image
+  per prompt with a fixed random seed. The SLD variants are adopted as provided by schramowski et al.
+  2023.
+extracted_by: automatic-extraction

@@ -1,0 +1,44 @@
+id: IC-1317
+title: Llama-2 and Pythia models contain linear representations of space and time that improve with
+  depth and model scale
+description: The paper trains linear ridge regression probes on the internal activations of Llama-2
+  (7B, 13B, 70B) and Pythia (160M to 6.9B) to predict latitude/longitude of places or timestamps of
+  events. Probes achieve high out-of-sample R² (e.g., 0.911 for world locations in Llama-2-70B), and
+  representation quality increases smoothly through the first half of layers before plateauing. Nonlinear
+  MLP probes yield minimal improvement over linear probes, confirming linearity. The representations
+  are robust to prompting variations and unified across entity types (cities, landmarks, historical
+  figures, etc.).
+models:
+- ref: model:llama-2
+- ref: model:pythia
+concepts:
+- ref: concept:linear-representation
+- ref: concept:depth-dependent-structure
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:language-models-represent-space-time
+datasets:
+- ref: dataset:nyc-places
+  role: eval
+methods:
+- ref: method:linear-probing
+  role: primary
+related_work:
+- ref: model:llama-2
+  role: context
+- ref: model:pythia
+  role: context
+- ref: method:probing-classifiers
+  role: builds-on
+- name: Emergent linear representations in world models of self-supervised sequence models
+  anchor: https://arxiv.org/abs/2309.00941
+  role: context
+evidence_type: correlational
+key_metric: 'Llama-2-70B linear R² at 60% depth: world 0.911, usa 0.864, nyc 0.359, historical 0.835,
+  entertainment 0.885, headlines 0.746; corresponding MLP R²: 0.926, 0.869, 0.312, 0.839, 0.884, 0.739'
+caveat: High probe accuracy does not by itself imply the model uses these representations for its own
+  predictions; the authors note this limitation explicitly and address it with neuron ablations in a
+  separate experiment.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1318

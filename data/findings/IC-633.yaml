@@ -1,0 +1,31 @@
+id: IC-633
+title: BLIP-2, LLaVA, and mPLUG-Owl show a trade-off between caption length and hallucination rate on
+  COCO
+description: The paper measures the CHAIRi hallucination metric and average caption length for three
+  released vision-language models on COCO. BLIP-2 produces very short captions (6.5 words average) with
+  minimal hallucination (CHAIRi 1.3). LLaVA produces longer captions (90.7 words) with moderate hallucination
+  (CHAIRi 18.8). mPLUG-Owl produces the longest captions (98.5 words) with the highest hallucination
+  (CHAIRi 30.2). The paper notes that longer captions tend to have higher hallucination rates, and that
+  BLIP-2's low hallucination comes at the cost of covering fewer objects.
+models:
+- ref: model:blip-2
+- ref: model:llava
+- ref: model:mplug-owl
+concepts: []
+sources:
+- ref: source:minigpt-4-enhancing-vision-language-understanding
+datasets:
+- ref: dataset:mscoco
+  role: eval
+methods:
+- ref: method:chair
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'BLIP-2: CHAIRi 1.3, avg length 6.5; mPLUG-Owl: CHAIRi 30.2, avg length 98.5; LLaVA: CHAIRi
+  18.8, avg length 90.7'
+extracted_by: automatic-extraction
+related_findings:
+- IC-632
+- IC-634
+- IC-635

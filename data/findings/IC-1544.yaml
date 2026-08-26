@@ -1,0 +1,64 @@
+id: IC-1544
+title: The latent spaces of pretrained foundational models across vision and text are not related by
+  a single class of geometric transformations; the optimal alignment depends on the specific model pair,
+  architecture, and dataset.
+description: The paper measures CKA similarity between the latent spaces of eleven pretrained foundational
+  models (five vision, six text) under four different invariance assumptions (cosine/angle-preserving,
+  Euclidean/translation-invariant, L1, L∞). No single projection consistently yields the highest similarity
+  across all model pairs and datasets. For example, on CIFAR-10, the best projection differs between
+  ViT-based models and CLIP. In zero-shot stitching, the L∞ projection is consistently worst (e.g.,
+  0.31 accuracy for ViT-B/16 on CIFAR-100) while cosine, Euclidean, and L1 are comparable (0.77–0.79),
+  and the product of all four achieves the highest score (0.81). This demonstrates that the geometric
+  structure relating these models' representations is not captured by any single transformation class.
+models:
+- ref: model:clip
+  variant: variant:clip-vit-b-32
+- ref: model:vit
+  variant: variant:vit-b-16
+- ref: model:vit
+  variant: variant:vit-s-16
+- ref: model:vit
+  variant: variant:rvit-b-16
+- ref: model:rexnet-100
+- ref: model:bert-base-cased
+- ref: model:bert
+  variant: variant:bert-base-uncased
+- ref: model:electra-base-discriminator
+- ref: model:roberta
+  variant: variant:roberta-base
+- ref: model:albert-base-v2
+- ref: model:xlm-roberta-base
+concepts: []
+sources:
+- ref: source:from-bricks-bridges-product-invariances-enhance
+datasets:
+- ref: dataset:cifar-10
+  role: eval
+- ref: dataset:cifar-100
+  role: eval
+- ref: dataset:mnist
+  role: eval
+- ref: dataset:fashion-mnist
+  role: eval
+- ref: dataset:dbpedia
+  role: eval
+- ref: dataset:trec
+  role: eval
+- ref: dataset:n24news
+  role: eval
+methods:
+- ref: method:cka
+  role: eval
+- ref: method:relative-representations
+  role: primary
+related_work:
+- ref: method:relative-representations
+  role: builds-on
+evidence_type: correlational
+key_metric: 'ViT-B/16 on CIFAR-100 zero-shot stitching accuracy: cosine 0.79±0.03, euclidean 0.79±0.03,
+  l1 0.77±0.04, l∞ 0.31±0.03, product of all four 0.81±0.04; CLIP ViT-B/32 on CIFAR-100: cosine 0.52±0.03,
+  euclidean 0.53±0.02, l1 0.53±0.04, l∞ 0.27±0.04, product 0.58±0.03'
+caveat: The analysis uses CKA as the similarity metric, which the authors note (citing Davari et al.
+  2022) is sensitive to shifts in the latent space. The finding is limited to the specific set of models
+  and datasets tested.
+extracted_by: automatic-extraction

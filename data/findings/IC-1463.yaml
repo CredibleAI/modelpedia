@@ -1,0 +1,28 @@
+id: IC-1463
+title: ChatGPT achieves 34.9% average F1 on zero-shot NER across 43 datasets spanning 9 domains
+description: The paper evaluates ChatGPT (gpt-3.5-turbo-0301) in a zero-shot setting on the UniversalNER
+  benchmark, which comprises 43 NER datasets across 9 domains (general, biomedical, clinical, STEM,
+  programming, social media, law, finance, transportation). Using strict entity-level micro-F1, ChatGPT
+  attains 34.9% average F1. Performance varies widely by domain, from 51.0% in general to 3.8% in transportation.
+  The paper uses the prompting template from Ye et al. (2023) for NER.
+models:
+- ref: model:chatgpt
+concepts: []
+sources:
+- ref: source:universalner-targeted-distillation-from-large-language
+datasets: []
+methods: []
+related_work:
+- name: Ye et al. 2023 (GPT-3/GPT-3.5 capability analysis)
+  anchor: https://arxiv.org/abs/2303.10420
+  role: builds-on
+evidence_type: correlational
+key_metric: 34.9% average F1 (zero-shot, strict entity-level micro-F1, 43 datasets, 9 domains); domain
+  range 3.8% (transport) to 51.0% (general)
+caveat: Evaluation uses up to 200,000 sampled passage-query pairs per dataset due to size constraints;
+  strict F1 requires exact entity type and boundary match, which the authors note may underestimate
+  zero-shot capability.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1464
+- IC-1465

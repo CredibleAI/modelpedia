@@ -1,0 +1,37 @@
+id: IC-1251
+title: Intervening on four attention heads in GPT-2-medium boosts colored objects accuracy from 49.6%
+  to 93.7% by making the circuit behave like the IOI circuit
+description: The authors intervene on the forward pass of GPT-2-medium by forcing three inhibition heads
+  (12.3, 13.4, 13.13) and the negative mover head (19.1) to attend from the [end] position to the incorrect
+  color options, mimicking their role in the IOI circuit. This raises accuracy from 49.6% to 93.7% (both
+  interventions), 81.5% (inhibition heads only), and 78.1% (negative mover head only). The intervention
+  introduces zero new mistakes. Downstream, mover heads show decreased attention to wrong colors (-8.7%
+  average) and increased logit attribution (~3x), with a Spearman correlation of 0.69 (p < 0.01) between
+  the change in logit attribution and original path patching importance, confirming the predicted IOI
+  circuit dynamics.
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-medium
+concepts: []
+sources:
+- ref: source:circuit-component-reuse-across-tasks-transformer
+datasets: []
+methods:
+- ref: method:path-patching
+  role: primary
+related_work:
+- name: Wang et al. (2022) IOI circuit
+  anchor: https://openreview.net/forum?id=npsvsn6o4ul
+  role: builds-on
+evidence_type: interventional
+key_metric: accuracy from 49.6% to 93.7% (both interventions), 78.1% (negative mover head only), 81.5%
+  (inhibition heads only); attention to wrong colors -8.7%; logit attribution ~3x increase; Spearman
+  correlation 0.69 (p < 0.01)
+caveat: The intervention is a proof-of-concept that forces attention patterns rather than a natural
+  training signal. The authors note the model's inhibition heads are active but receiving 'incorrect
+  biases' in the unmodified model, and speculate a bottleneck in signal formation may explain why the
+  model cannot activate them correctly on its own.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1250
+- IC-1252

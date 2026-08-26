@@ -1,0 +1,36 @@
+id: IC-1250
+title: GPT-2-medium shares 78% of its top attention heads between the IOI circuit and the colored objects
+  circuit
+description: 'Using path patching on GPT-2-medium, the authors identify the circuits for two tasks:
+  indirect object identification (IOI) and a colored objects in-context learning task. Despite the tasks
+  having no obvious linguistic overlap, the circuits are algorithmically very similar, both involving
+  duplicate detection, a signal to the mover heads, and a final copy step. Thresholding at the 2% most
+  important heads per circuit, 25 of 32 heads (78%) are shared. The main difference is that IOI uses
+  inhibition heads to tell mover heads where NOT to look, while colored objects uses content gatherer
+  heads to tell them where TO look.'
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-medium
+concepts: []
+sources:
+- ref: source:circuit-component-reuse-across-tasks-transformer
+datasets:
+- ref: dataset:ioi
+  role: eval
+methods:
+- ref: method:path-patching
+  role: primary
+related_work:
+- name: Wang et al. (2022) IOI circuit
+  anchor: https://openreview.net/forum?id=npsvsn6o4ul
+  role: builds-on
+evidence_type: correlational
+key_metric: '"25/32, or 78% of the circuit is shared" (thresholding at the 2% most important heads per
+  circuit)'
+caveat: Quantifying overlap is acknowledged as difficult; the authors note they do not have an exact
+  solution for measuring circuit similarity (Appendix I.3). The 2% threshold is described as the minimal
+  threshold for containing in-circuit components.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1251
+- IC-1252

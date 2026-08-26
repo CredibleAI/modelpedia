@@ -1,0 +1,34 @@
+id: IC-684
+title: CLIP ViT-B/32 misclassifies 99% of forest satellite images as ocean when the word 'ocean' is
+  overlaid as text
+description: The paper tests CLIP's vulnerability to typographical attacks by overlaying the word 'ocean'
+  in a white box on 100 forest-class images from UC Merced Land Use. In a zero-shot 5-class setting
+  (ocean, forest, runway, parking, residential), the unmodified CLIP correctly classifies 94% of clean
+  forest images but 99% of the attacked images are misclassified as ocean. On ImageNet (10 categories,
+  50 images each), the attack reduces accuracy from 99.80% to 54.00%. Randomly removing the same number
+  of tokens recovers only 17% of attacked images, while removing tokens that ViTE interprets as text-related
+  recovers 97%.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:invite-interpret-control-vision-language-models
+datasets:
+- ref: dataset:uc-merced-land-use
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:random-smoothing
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: '99.00% attack image predicting ocean (no intervention); 94.00% original image predicting
+  forest; 17.00% attack image predicting forest (random intervention); 98.00% attack image predicting
+  forest (ViTE intervention); ImageNet: 99.80% original, 54.00% attack (no intervention), 88.80% attack
+  (ViTE intervention)'
+extracted_by: automatic-extraction
+related_findings:
+- IC-685
+- IC-686

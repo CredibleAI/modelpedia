@@ -1,0 +1,29 @@
+id: IC-1290
+title: CLIP, DINO, and DINOv2 as zero-shot natural baselines score below the 50% chance level on Bongard-OpenWorld
+  due to adversarial query selection
+description: 'The paper evaluates a natural baseline that computes mean embedding similarity between
+  a query and the positive/negative support sets using CLIP (ViT-H/14), DINO (ViT-B/8), and DINOv2 (ViT-g/14)
+  without any training. All three score well below the 50% chance level: CLIP 10.5%, DINO 15.0%, DINOv2
+  14.8%. The authors explain that the adversarial query selection (picking the image with maximal embedding
+  distance to the mean of positives) deliberately makes queries look more like the negative set in embedding
+  space, undermining similarity-based classification.'
+models:
+- ref: model:clip
+- ref: model:dino
+- ref: model:dinov2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:bongard-openworld-few-shot-reasoning-free
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: CLIP ViT-H/14 10.5%, DINO ViT-B/8 15.0%, DINOv2 ViT-g/14 14.8%, chance 50%
+caveat: The below-chance result for CLIP is partially by construction, since the adversarial query selection
+  uses CLIP embedding distance. The authors note that DINO and DINOv2 embeddings are also affected,
+  suggesting the hard-negative design generalizes beyond CLIP's representation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1288
+- IC-1289

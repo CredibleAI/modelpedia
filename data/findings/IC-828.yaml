@@ -1,0 +1,29 @@
+id: IC-828
+title: Jailbreaking GPT-4 via cipherchat shifts its psychological profile toward human norms and reduces
+  emotional intelligence scores
+description: Applying a Caesar cipher shift-3 jailbreak (cipherchat) to GPT-4's prompts bypasses its
+  safety alignment and produces a different psychological profile (GPT-4-JB). The jailbroken model's
+  BFI openness (3.8±0.6) moves closer to the human norm (3.9±0.7) compared to default GPT-4 (4.2±0.6).
+  The jailbreak causes a substantial reduction in EIS (from 151.4±18.7 to 121.8±12.0) and empathy (from
+  6.8±0.4 to 4.6±0.2), though WLEIS subscales show no statistically significant change. The authors
+  interpret this as revealing GPT-4's 'intrinsic' psychological nature beneath safety constraints.
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:humanity-conversational-ai-evaluating-psychological-portrayal
+datasets: []
+methods:
+- ref: method:cipherchat
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'EIS: GPT-4 151.4±18.7 vs GPT-4-JB 121.8±12.0; Empathy: GPT-4 6.8±0.4 vs GPT-4-JB 4.6±0.2;
+  BFI openness: GPT-4 4.2±0.6 vs GPT-4-JB 3.8±0.6 vs human 3.9±0.7'
+caveat: The jailbreak is a prompting technique, not a modification of model weights; the observed shift
+  may reflect the model's response to an unusual input format rather than a removal of a constraint.
+  Only one cipher variant (Caesar shift 3) was tested.
+extracted_by: automatic-extraction
+related_findings:
+- IC-827
+- IC-829

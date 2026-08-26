@@ -1,0 +1,30 @@
+id: IC-682
+title: GPT-3.5 and GPT-4 achieve F1 scores of 0.5820 and 0.6180 respectively on pairwise response quality
+  evaluation against human annotations
+description: On a 1k-sample human-annotated test set where three annotators independently labeled which
+  of two LLM responses is better (with IAA > 0.85), GPT-3.5 achieves accuracy 0.6296, precision 0.6195,
+  recall 0.6359, F1 0.5820, and GPT-4 achieves accuracy 0.6647, precision 0.6620, recall 0.6815, F1
+  0.6180. Both models use a prompt-based approach with response order swapped and conflicting results
+  revised to tie. The test set covers diverse tasks sampled from the Self-Instruct human evaluation
+  dataset.
+models:
+- ref: model:gpt-3-5
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:pandalm-automatic-evaluation-benchmark-llm-instruction
+datasets: []
+methods: []
+related_work:
+- ref: dataset:self-instruct
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-3.5: accuracy 0.6296, precision 0.6195, recall 0.6359, F1 0.5820; GPT-4: accuracy 0.6647,
+  precision 0.6620, recall 0.6815, F1 0.6180 (1k samples, 3-class win/tie/lose)'
+caveat: The evaluation is on a single 1k-sample test set; the paper notes that the core training data
+  for PandaLM is derived from GPT-3.5, which may introduce distributional alignment between GPT-3.5's
+  evaluation style and the test set.
+extracted_by: automatic-extraction
+related_findings:
+- IC-681
+- IC-683

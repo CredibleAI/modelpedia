@@ -1,0 +1,44 @@
+id: IC-1134
+title: LLMs show strong confirmation bias in multi-source settings, preferring evidence consistent with
+  parametric memory, with stronger bias for popular entities
+description: When both parametric memory and counter-memory are presented as evidence, LLMs systematically
+  prefer the evidence consistent with their parametric memory. GPT-4 shows an 80% memorization ratio
+  for the most popular PopQA questions, indicating stronger confirmation bias for well-known facts.
+  The memorization ratio increases monotonically with the proportion of parametric memory evidence,
+  from near 0% at 0/2 to near 100% at 2/2, but even at 1/2 (50/50) the ratio exceeds 50% for most models,
+  confirming a genuine bias toward parametric memory.
+models:
+- ref: model:chatgpt
+- ref: model:gpt-4
+- ref: model:palm-2
+- ref: model:qwen
+  variant: variant:qwen-7b
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+- ref: model:vicuna
+  variant: variant:vicuna-33b
+concepts: []
+sources:
+- ref: source:adaptive-chameleon-stubborn-sloth-revealing-behavior
+datasets:
+- ref: dataset:popqa
+  role: eval
+- ref: dataset:strategyqa
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4 memorization ratio 80% for most popular questions; at 1/2 proportion: ChatGPT 43.0,
+  GPT-4 65.4, PaLM2 56.8, Qwen-7B 52.3, LLaMA2-7B 58.4, LLaMA2-70B 58.4, Vicuna-7B 45.9, Vicuna-33B
+  51.7'
+caveat: The counter-memory is LLM-generated and may not represent all forms of conflicting evidence;
+  experiments use zero-shot setting.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1133
+- IC-1135
+- IC-1136

@@ -1,0 +1,31 @@
+id: IC-1283
+title: CLIP's InfoNCE training objective is mathematically equivalent to performing generalized spectral
+  clustering on the bipartite image-text pair graph
+description: The paper proves (Theorem 4.2) that the contrastive loss used to train CLIP on image-text
+  pairs is exactly equivalent to running generalized spectral clustering on the bipartite graph whose
+  edges connect each image to its paired text. The proof extends the SimCLR-to-spectral-clustering equivalence
+  (Theorem 3.1) to the multi-modal setting by treating the pair graph as a directed bipartite graph
+  with normalized out-degrees. Because the pair graph Laplacian is not necessarily symmetric, the result
+  is called 'generalized' spectral clustering. The authors note that in practice CLIP uses a batch size
+  of 32,768 and uniform edge sampling, which differs slightly from the theorem's uniform object sampling,
+  but the difference is negligible when the dataset has high quality and low variance in object out-degrees.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:distance-preservation
+sources:
+- ref: source:contrastive-learning-spectral-clustering-similarity-graph
+datasets: []
+methods:
+- ref: method:spectral-clustering
+  role: primary
+related_work:
+- name: LaCLIP
+  anchor: https://arxiv.org/abs/2305.20088
+  role: context
+evidence_type: observational
+caveat: The theorem assumes all objects are sampled in the subgraph, whereas CLIP empirically uses a
+  finite batch of 32,768; the sampling scheme in the theorem (uniform over objects) differs slightly
+  from CLIP's implementation (uniform over edges), though the authors argue the difference is negligible
+  for high-quality datasets.
+extracted_by: automatic-extraction

@@ -1,0 +1,48 @@
+id: IC-1157
+title: GPT-4 and other LMs show a large gap between rule induction and rule application, with task accuracy
+  dropping to near zero on MiniScan when the LM itself applies its own proposed rules
+description: 'The paper tests whether LMs can apply the rules they themselves proposed. When a symbolic
+  interpreter applies the LM-induced rules, performance is strong (e.g., 85.0% task accuracy on MiniScan
+  for GPT-4). When the LM is instead asked to apply its own rules, performance collapses: MiniScan task
+  accuracy drops to 0.0%, ACRE from 59.0% to 47.0%, List Functions from 61.2% to 50.0%, and MiniARC
+  from 14.6% to 5.4%. The same pattern holds for GPT-3.5, Claude-2, and Llama2-70B. More advanced prompting
+  (self-consistency, zero-shot CoT) does not close the gap.'
+models:
+- ref: model:gpt-3-5
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:gpt-4
+  variant: variant:gpt-4v
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:phenomenal-yet-puzzling-testing-inductive-reasoning
+datasets:
+- ref: dataset:acre
+  role: eval
+- ref: dataset:miniscan
+  role: eval
+- ref: dataset:miniarc
+  role: eval
+methods:
+- ref: method:hypothesis-refinement
+  role: primary
+- ref: method:self-consistency
+  role: compared-to
+- ref: method:zero-shot-chain-of-thought
+  role: compared-to
+related_work:
+- name: 'Hypothesis search: inductive reasoning with language models'
+  anchor: https://arxiv.org/abs/2309.05660
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4 task accuracy: MiniScan 85.0% (symbolic) vs 0.0% (LM); ACRE 59.0% vs 47.0%; List
+  Functions 61.2% vs 50.0%; MiniARC 14.6% vs 5.4%. GPT-3.5 MiniScan 8.0% vs 0.0%. Claude-2 MiniScan
+  13.0% vs 0.0%. Llama2-70B MiniScan 0.0% vs 0.0%.'
+caveat: The authors note that prior work has shown LMs fall short on symbolic tasks, and they do not
+  claim the LM interpreter should match the symbolic interpreter. However, the gaps are described as
+  'so large' that they are 'strong indicators of LMs' puzzling behaviors.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-1158
+- IC-1159

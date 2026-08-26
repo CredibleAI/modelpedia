@@ -1,0 +1,29 @@
+id: IC-1217
+title: LLaMA 65B's token-probability readout fails to capture human decision-making, producing near-chance
+  NLL and no human-like exploration behavior
+description: 'The paper passed decision-making prompts through LLaMA 65B and read out the unnormalized
+  token probabilities for the two options. On the choices13k dataset the resulting NLL was 96248.5,
+  close to chance level, and on the horizon task it was 46211.4. In simulations, LLaMA''s regret was
+  1.85 (choices13k) versus 1.24 for humans, and 7.21 (horizon task) versus 2.33 for humans. LLaMA also
+  failed to exhibit the two key exploration effects found in human subjects: choices becoming more random
+  with longer horizon in equal-information conditions, and selecting the more informative option more
+  frequently with longer horizon in unequal-information conditions. On the hold-out experiential-symbolic
+  task, LLaMA weighed symbolic and experiential options equally rather than overvaluing symbolic options
+  as humans do.'
+models:
+- ref: model:llama
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:turning-large-language-models-into-cognitive
+datasets:
+- ref: dataset:choices13k
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: NLL = 96248.5 (choices13k), NLL = 46211.4 (horizon task); regret 1.85 (choices13k) vs human
+  1.24, regret 7.21 (horizon) vs human 2.33; hold-out NLL = 6307.9
+extracted_by: automatic-extraction
+related_findings:
+- IC-1218

@@ -1,0 +1,31 @@
+id: IC-1203
+title: Stable Diffusion 1.5 and 2.1 receive low user-preference win rates (7.91% and 6.71%) in a four-way
+  comparison against SDXL
+description: In a user study where participants chose their favourite generation among four models (SDXL
+  with refiner, SDXL base, SD 1.5, SD 2.1), SD 1.5 and SD 2.1 were the least preferred, receiving 7.91%
+  and 6.71% win rates respectively, compared to 48.44% for SDXL with refinement and 36.93% for SDXL
+  base. The paper notes that classical metrics like FID and CLIP scores do not reflect this gap, aligning
+  with findings by Kirstain et al. (2023).
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-1-5
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-2-1
+concepts: []
+sources:
+- ref: source:sdxl-improving-latent-diffusion-models-high
+datasets: []
+methods: []
+related_work:
+- name: Kirstain et al. 2023 (Pick-a-Pic)
+  anchor: https://arxiv.org/abs/2305.01569
+  role: context
+evidence_type: correlational
+key_metric: 'win rates: sdxl w/ refinement: 48.44%, sdxl base: 36.93%, stable diffusion 1.5: 7.91%,
+  stable diffusion 2.1: 6.71%'
+caveat: The paper notes that classical metrics (FID, CLIP scores) do not reflect the user-preference
+  gap, suggesting the win rates may be sensitive to specific evaluation conditions.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1202
+- IC-1204

@@ -1,0 +1,52 @@
+id: IC-1543
+title: VGG19, ResNet50, ViT-Base, and DeiT-Base (ImageNet pretrained) achieve near-zero accuracy under
+  query-based black-box attacks with 1000–10000 queries
+description: 'The paper measures the clean and attacked accuracy of four standard ImageNet-pretrained
+  models under three score-based attacks (Square, NES, SignHunt) and two decision-based attacks (Rays,
+  SignFlip). Without any defense, all four models are essentially completely broken: accuracy drops
+  to 0.0–6.4% under score-based attacks and 0.0–9.7% under decision-based attacks, compared to clean
+  accuracies of 74.21–82.00%. The vulnerability is consistent across both CNN (VGG19, ResNet50) and
+  transformer (ViT-Base, DeiT-Base) architectures, and across both score-based and decision-based attack
+  families. The effect is most severe for Square and SignHunt, which drive accuracy to 0.0% at 10000
+  queries for three of the four models.'
+models:
+- ref: model:vgg
+  variant: variant:vgg-19
+- ref: model:resnet
+  variant: variant:resnet50
+- ref: model:vit
+- ref: model:deit
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:understanding-robustness-randomized-feature-defense-against
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:square-attack
+  role: eval
+- ref: method:signhunt
+  role: eval
+- ref: method:rays
+  role: eval
+- ref: method:signflip
+  role: eval
+related_work:
+- ref: method:square-attack
+  role: context
+- ref: method:signhunt
+  role: context
+- ref: method:rays
+  role: context
+- ref: method:signflip
+  role: context
+evidence_type: correlational
+key_metric: 'ImageNet base-model accuracy (%): VGG19 square 0.1/0.0, NES 19.6/0.0, SignHunt 0.4/0.0;
+  ResNet50 square 3.5/0.2, NES 36.2/4.3, SignHunt 6.6/0.4; DeiT square 6.4/0.0, NES 46.7/0.8, SignHunt
+  22.3/0.0; ViT square 5.7/0.0, NES 45.7/7.3, SignHunt 5.1/0.0 (1000/10000 queries). Decision-based:
+  VGG19 Rays 0.1, SignFlip 1.0; ViT Rays 1.7, SignFlip 9.7.'
+caveat: Evaluation uses 1000 randomly selected images covering all classes. Attack success is defined
+  as fooling the model in the majority of 9 verification runs. The paper focuses on query-based attacks
+  only and does not evaluate transfer-based black-box attacks.
+extracted_by: automatic-extraction

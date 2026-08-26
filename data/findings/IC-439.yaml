@@ -19,7 +19,7 @@ models:
   variant: variant:xlam-7b-r
 - ref: model:xlam-r
   variant: variant:xlam-8x7b-r
-- ref: model:lemur-70b-chat-v1
+- ref: model:lemur-v1-70b
 - ref: model:llama-2
   variant: variant:llama-2-7b
 - ref: model:llama-2

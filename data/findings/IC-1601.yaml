@@ -1,0 +1,31 @@
+id: IC-1601
+title: GPT-4's self-generated feedback is significantly less effective than human programmer feedback
+  for code repair, with the gap widening on harder problems
+description: 'In a small-scale study with 16 human participants providing feedback on 40 failing GPT-4
+  programs, replacing GPT-4''s own feedback with human feedback increases the fraction of repaired programs
+  passing all unit tests from 33.3% to 52.6% (1.58x). The relative improvement is larger on harder problems:
+  introductory 42.64% to 62.21%, interview 19.33% to 45.67%, competition 3.67% to 14.67%. Qualitative
+  analysis shows GPT-4''s feedback is more often obviously inaccurate (32/80 vs 7/80), less likely to
+  suggest high-level changes, and never expresses uncertainty (0/80 vs 7/80).'
+models:
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:self-repair-silver-bullet-code-generation
+datasets:
+- ref: dataset:apps
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Overall repair success: GPT-4 feedback 33.30% vs human feedback 52.60% (1.58x). By difficulty:
+  introductory 42.64% vs 62.21%, interview 19.33% vs 45.67%, competition 3.67% vs 14.67%. GPT-4 obviously
+  inaccurate feedback: 32/80 vs 7/80 human.'
+caveat: 'Small sample: 40 programs, 16 participants (15 graduate students, 1 professional ML engineer).
+  Participants were not timed, so the cost of human feedback is not accounted for. The study was approved
+  by IRB and carried out via online survey.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-1599
+- IC-1600

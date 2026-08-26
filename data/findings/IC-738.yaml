@@ -1,0 +1,38 @@
+id: IC-738
+title: BLIP-2 ViT-G FlanT5XL achieves 0.70–0.87 zero-shot accuracy on binary concept presence queries,
+  competitive on most datasets but weaker on fine-grained CUB-200
+description: 'The paper evaluates BLIP-2 ViT-G FlanT5XL in a zero-shot setting, prompting it with ''question:
+  is [concept] present in the image (yes/no)? answer:'' to answer binary concept queries. It reaches
+  0.86 accuracy on ImageNet, 0.87 on Places365, 0.70 on CUB-200, 0.83 on CIFAR-10, and 0.87 on CIFAR-100.
+  The authors note it is competitive with their 150M-parameter Concept-QA on CIFAR and ImageNet, considerably
+  worse on CUB-200 (a fine-grained bird species dataset), and better on Places365. The alternative BLIP-2
+  variant (ViT-G OPT-2.7B) performs worse overall, at 0.53–0.86. The authors attribute the CUB-200 gap
+  to the domain-specific nature of the dataset being too specialized for a general-purpose VQA model.'
+models:
+- ref: model:blip-2
+concepts: []
+sources:
+- ref: source:bootstrapping-variational-information-pursuit-large-language
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:places365
+  role: eval
+- ref: dataset:cub-200-2011
+  role: eval
+- ref: dataset:cifar-10
+  role: eval
+- ref: dataset:cifar-100
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'BLIP-2 ViT-G FlanT5XL accuracy: 0.86 (ImageNet), 0.87 (Places365), 0.70 (CUB-200), 0.83
+  (CIFAR-10), 0.87 (CIFAR-100); BLIP-2 ViT-G OPT-2.7B: 0.55, 0.76, 0.53, 0.73, 0.86'
+caveat: Ground truth is self-annotated by the authors (2,500 image-concept pairs per dataset). The prompt
+  format is specific to this paper's setup. The authors note BLIP-2 is computationally prohibitive for
+  V-IP training on large datasets (~4,128 GPU hours per epoch on ImageNet).
+extracted_by: automatic-extraction
+related_findings:
+- IC-737
+- IC-739

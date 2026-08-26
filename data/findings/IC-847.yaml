@@ -1,0 +1,29 @@
+id: IC-847
+title: CLIP ViT-B/32 CLIPScore achieves only ρ=0.276 / τ=0.191 correlation with human 1-5 likert T2I
+  alignment ratings on TIFA160
+description: 'The paper reports the Spearman and Kendall correlation between CLIPScore (computed with
+  CLIP ViT-B/32) and human 1-5 likert text-image consistency ratings on TIFA160 prompts across five
+  T2I models. The correlation is substantially lower than the best QG/A combination (DSG+Pali: ρ=0.571,
+  τ=0.458), supporting the paper''s argument that single-summary embedding similarity is a weaker proxy
+  for fine-grained T2I alignment than question-answering-based evaluation.'
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:davidsonian-scene-graph-improving-reliability-fine
+datasets: []
+methods:
+- ref: method:clipscore
+  role: primary
+- ref: method:spearman-s
+  role: eval
+- ref: method:kendall-s
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'CLIPScore: ρ=0.276, τ=0.191; compared to DSG+Pali: ρ=0.571, τ=0.458'
+caveat: The human ratings were collected by different raters than those in the original TIFA paper,
+  so direct comparison with TIFA's reported CLIPScore τ=23.1 is not valid.
+extracted_by: automatic-extraction
+related_findings:
+- IC-848

@@ -1,0 +1,34 @@
+id: IC-1611
+title: Galactica-6.7b fails on protein secondary structure editing tasks, producing hit ratios below
+  random mutation
+description: On the two protein editing tasks (more helix, more strand), Galactica-6.7b as the ChatDrug
+  backbone achieves hit ratios of 11.75 and 5.99 respectively, both below the random mutation-3 baseline
+  of 26.90 and 21.44. The authors note that Galactica 'cannot deal with protein editing tasks' while
+  it performs adequately on small molecule and peptide editing. This suggests a domain-specific limitation
+  in the model's ability to reason about protein sequences and secondary structure.
+models:
+- ref: model:galactica-6-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:conversational-drug-editing-using-retrieval-domain
+datasets:
+- ref: dataset:tape
+  role: eval
+methods:
+- ref: method:esmfold
+  role: eval
+- ref: method:proteinclap-ebm-nce
+  role: eval
+related_work:
+- ref: method:esmfold
+  role: context
+evidence_type: correlational
+key_metric: 'task 501 (more helix): 11.75 hit ratio; task 502 (more strand): 5.99 hit ratio; random
+  mutation-3 baseline: 26.90 and 21.44 respectively'
+caveat: Only two protein editing tasks were tested. The model is not instruction-tuned, which the authors
+  note requires a different prompt template. Performance is measured within the ChatDrug framework.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1610
+- IC-1612

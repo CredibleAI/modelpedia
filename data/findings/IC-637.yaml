@@ -1,0 +1,43 @@
+id: IC-637
+title: KN edit (neuron suppression) has low reliability, overturning at most 5.2% of BLIMP categorical
+  predictions and achieving only 1.66%–47.86% reliability on factual tasks
+description: After identifying and suppressing the KNs for determiner-noun agreement in BERT, the categorical
+  prediction is overturned in at most 5.2% of cases (e.g., det n agr. 2 drops from 100% to 94.8%). The
+  paper also reports Yao et al.'s evaluation of KN edit on ZSRE and CounterFact corpora, where reliability
+  ranges from 1.66% (GPT-J on CounterFact) to 47.86% (T5-XL on CounterFact). The authors argue this
+  low reliability undermines the KN thesis claim that editing a few neurons controls factual generation.
+models:
+- ref: model:bert
+- ref: model:t5
+  variant: variant:t5-xl
+- ref: model:gpt-j
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:knowledge-neuron-thesis-have-knowledge
+datasets:
+- ref: dataset:blimp
+  role: eval
+- ref: dataset:zsre
+  role: eval
+- ref: dataset:counterfact
+  role: eval
+methods:
+- ref: method:kn-edit
+  role: primary
+related_work:
+- name: Yao et al. 2023
+  anchor: https://doi.org/10.18653/v1/2023.emnlp-main.632
+  role: compared-to
+- ref: method:knowledge-neurons
+  role: compared-to
+evidence_type: interventional
+key_metric: 'BLIMP: det n agr. 2 100%→94.8% (Δ-5.2%), dna. irr. 2 99.5%→96.9% (Δ-2.6%), dna. w. adj.
+  2 97.1%→94.4% (Δ-2.7%); ZSRE: T5-XL 22.51%, GPT-J 11.34%; CounterFact: T5-XL 47.86%, GPT-J 1.66%'
+caveat: The ZSRE and CounterFact numbers are cited from Yao et al. (2023), not directly measured in
+  this paper. The BLIMP results are on BERT only in the main text.
+extracted_by: automatic-extraction
+related_findings:
+- IC-636
+- IC-638
+- IC-639

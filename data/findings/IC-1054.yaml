@@ -1,0 +1,35 @@
+id: IC-1054
+title: Code fine-tuning degrades English natural language reasoning in Code LLaMA relative to LLaMA-2,
+  but the effect is negligible or slightly positive in French, Spanish, and German
+description: The paper evaluates LLaMA-2 and its code-fine-tuned variant Code LLaMA on the XNLI sentence
+  entailment benchmark across four languages. On English, Code LLaMA scores 8.36 percentage points lower
+  than LLaMA-2 (35.90% vs 44.26%). However, on French the difference is -1.45%, on Spanish -0.77%, and
+  on German +1.01%, meaning Code LLaMA performs comparably or slightly better in non-English languages.
+  This suggests the code fine-tuning shifts task inference toward code for English prompts specifically.
+models:
+- ref: model:llama-2
+- ref: model:code-llama
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:understanding-catastrophic-forgetting-language-models-via
+datasets:
+- ref: dataset:xnli
+  role: eval
+- ref: dataset:glue
+  role: source
+methods:
+- ref: method:lm-evaluation-harness
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'XNLI accuracy over 2490 test samples: English LLaMA-2 44.26% vs Code LLaMA 35.90% (drop
+  8.36%); French 33.53% vs 34.98% (-1.45%); Spanish 38.11% vs 38.88% (-0.77%); German 34.50% vs 33.49%
+  (+1.01%)'
+caveat: The paper notes that the slight increase in Spanish and French accuracy for Code LLaMA may be
+  due to increased reasoning capabilities associated with code training combined with better task inference,
+  rather than a pure absence of forgetting.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1053
+- IC-1055

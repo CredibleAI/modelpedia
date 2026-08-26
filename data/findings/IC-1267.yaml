@@ -1,0 +1,43 @@
+id: IC-1267
+title: LLMs' alignment with human privacy judgments drops sharply as contextual complexity increases
+  from tier 1 to tier 3
+description: The paper measures Pearson correlation between model and human privacy judgments across
+  four tiers of increasing contextual complexity. In tier 1 (simple sensitivity rating), GPT-4 achieves
+  0.86 and ChatGPT 0.92 correlation. By tier 3 (theory-of-mind scenarios with three parties), GPT-4
+  drops to 0.10 and ChatGPT to 0.05. All six evaluated models show the same downward trend, with open-source
+  models (Llama-2, Mixtral) starting lower and ending near zero. The authors attribute this to the models'
+  inability to reason about information flow in complex social contexts.
+models:
+- ref: model:gpt-4
+- ref: model:chatgpt
+- ref: model:instructgpt
+- ref: model:mixtral
+- ref: model:llama-2
+  variant: variant:llama-2-chat
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:llms-keep-secret-testing-privacy-implications
+datasets:
+- ref: dataset:martin-nissenbaum-2016-vignettes
+  role: source
+methods:
+- ref: method:pearson-correlation
+  role: eval
+related_work:
+- name: FANTOM
+  anchor: https://aclanthology.org/2023.emnlp-main.890
+  role: context
+- name: Sap et al. 2022 (Neural Theory-of-Mind)
+  anchor: https://aclanthology.org/2022.emnlp-main.248
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4 Pearson correlation: 0.86 (tier 1), 0.47 (tier 2.a), 0.76 (tier 2.b), 0.10 (tier
+  3); ChatGPT: 0.92, 0.49, 0.74, 0.05; Llama-2: 0.67, 0.16, -0.03, 0.02'
+caveat: Tier 4 has no human annotations, so the trend cannot be extended to the most complex tier. The
+  correlation metric captures judgment alignment but not actual leakage behaviour.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1268
+- IC-1269
+- IC-1270

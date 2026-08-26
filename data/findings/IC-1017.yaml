@@ -1,0 +1,57 @@
+id: IC-1017
+title: Vision and language models pre-trained on noisy data exhibit degraded OOD transfer that is partially
+  recoverable via SVD-based feature-space regularization
+description: 'The paper evaluates nine released models (EfficientNet-B3, ResNetV2-152x2, Swin-L, ViT-L,
+  ConvNeXt-L, BERT-L, RoBERTa-L, GPT-2, text-ada-002) that are known to be pre-trained on noisy or uncurated
+  data (JFT-300m, ImageNet-21k, LAION-2B, WebText, BookCorpus+Wikipedia). Under linear probing, all
+  models show a substantial gap between in-domain and out-of-domain accuracy. Applying the authors''
+  NMtune method (a 2-layer MLP with MSE, covariance, and dominant-singular-value regularization losses)
+  improves OOD accuracy over LP by 1–9 points across all models, with the largest gains on language
+  models (e.g., text-ada-002 GLUE-X: 44.06→53.48) and vision models (e.g., ConvNeXt-L DomainNet: 66.86→70.30).
+  MLP tuning without the regularization losses provides smaller or inconsistent gains, indicating the
+  improvement comes from reshaping the feature-space spectrum rather than from added capacity.'
+models:
+- ref: model:efficientnet
+  variant: variant:efficientnet-b3
+- ref: model:resnet
+  variant: variant:resnetv2-152x2
+- ref: model:swin-transformer
+  variant: variant:swin-l
+- ref: model:vit
+  variant: variant:vit-l
+- ref: model:convnext
+  variant: variant:convnext-l
+- ref: model:bert
+  variant: variant:bert-l
+- ref: model:roberta
+- ref: model:gpt-2
+- ref: model:text-ada-002
+concepts: []
+sources:
+- ref: source:understanding-mitigating-label-noise-pre-training
+datasets:
+- ref: dataset:glue
+  role: eval
+- ref: dataset:glue-x
+  role: eval
+- ref: dataset:domainnet
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:cifar-10
+  role: eval
+- ref: dataset:cifar-100
+  role: eval
+methods:
+- ref: method:linear-probing
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: 'OOD accuracy (avg): Swin-L 50.88 (LP) → 52.35 (NMtune); ConvNeXt-L 66.86 → 70.30; GPT-2
+  GLUE-X 36.68 → 39.07; text-ada-002 GLUE-X 44.06 → 53.48; BERT-L GLUE-X 50.65 → 51.63; RoBERTa-L GLUE-X
+  44.55 → 47.01'
+caveat: The paper notes that results are not comparable to white-box full fine-tuning, and that the
+  explored models are relatively small-scale in terms of pre-training. The authors also note that NMtune
+  may not be noise-tolerant on the downstream side (performance falls short of LP when downstream noise
+  exceeds 40%).
+extracted_by: automatic-extraction

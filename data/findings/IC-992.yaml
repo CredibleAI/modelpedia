@@ -1,0 +1,33 @@
+id: IC-992
+title: LLaMA-2-7B's last hidden layer encodes the prompt format with high identifiability, and the separability
+  of format embeddings in the top two principal components correlates with performance spread
+description: The paper collects last-hidden-layer embeddings from LLaMA-2-7B for 10 randomly sampled
+  prompt formats across 1000 evaluation examples on 31 tasks. An XGBoost classifier trained on the top
+  100 principal components of these 4096-dimensional embeddings achieves ≥0.98 accuracy in identifying
+  which format generated each embedding, for all 31 tasks. The classifier accuracy using only the top
+  two principal components correlates with the performance spread of the formats it separates (r=0.424,
+  p=8.04×10⁻⁶ for 1-shot; r=0.555 for 5-shot, using exact prefix matching), suggesting that the degree
+  to which the model's internal representation distinguishes formats predicts how much those formats
+  affect output.
+models:
+- ref: model:llama-2
+concepts: []
+sources:
+- ref: source:quantifying-language-models-sensitivity-spurious-features
+datasets:
+- ref: dataset:super-naturalinstructions
+  role: eval
+methods:
+- ref: method:xgboost
+  role: primary
+- ref: method:pca
+  role: supporting
+related_work: []
+evidence_type: observational
+key_metric: '≥0.98 format classification accuracy with top 100 PCs (all 31 tasks); correlation between
+  2-PC classifier accuracy and spread: r=0.424 (p=8.04×10⁻⁶, 1-shot), r=0.555 (5-shot)'
+caveat: Analysis limited to LLaMA-2-7B only; uses XGBoost (non-linear) classifier on PCA components;
+  10 formats per task; 31 tasks analyzed.
+extracted_by: automatic-extraction
+related_findings:
+- IC-991

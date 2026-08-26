@@ -1,0 +1,31 @@
+id: IC-662
+title: Translation ability in BLOOM models surges at approximately one-sixth of pre-training and then
+  plateaus, with consistent dynamics across model sizes from 560M to 7.1B
+description: The paper examines officially released intermediate checkpoints of the BLOOM family (560M,
+  1.1B, 1.7B, 3B, 7.1B) and tracks bilingual translation perplexity across training steps on multiple
+  language pairs (Chinese, Catalan, Eastern Panjabi, Igbo, Tswana). Translation ability experiences
+  a surge at approximately 1/6 of the total training process, then plateaus or gradually increases.
+  The pattern is consistent across all five model sizes, suggesting small models share the same underlying
+  translation-learning mechanisms as large ones. Additionally, translation into low-resource languages
+  is consistently worse than translation from low-resource languages into English, reflecting the importance
+  of target-language modeling.
+models:
+- ref: model:bloom
+concepts: []
+sources:
+- ref: source:reasonableness-behind-unreasonable-translation-capability-large
+datasets:
+- ref: dataset:flores-200
+  role: eval
+- ref: dataset:wmt21
+  role: eval
+methods: []
+related_work:
+- ref: model:bloom
+  role: builds-on
+evidence_type: observational
+key_metric: surge at approximately 1/6 of the whole training process; warmup phase ends at approximately
+  1/1000 of the whole training process
+caveat: The surge cannot be solely attributed to learning rate changes since warmup ends at ~1/1000
+  of training; the paper does not provide a mechanistic explanation for why 1/6 specifically.
+extracted_by: automatic-extraction

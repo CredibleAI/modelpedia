@@ -1,0 +1,34 @@
+id: IC-1208
+title: Larger LLMs (Llama-2-13B) require more data samples for successful backdoor injection via parameter
+  editing compared to smaller models (GPT-2-XL 1.5B)
+description: 'The paper compares the number of data instances needed to achieve high attack success
+  rate when injecting a backdoor into GPT-2-XL (1.5B), Llama-2-7B, and Llama-2-13B on AG News and ConvSent
+  tasks. While all three models can be backdoored with 15 samples, the ASR curve for the 1.5B model
+  rises more steeply: with 5-11 samples, GPT-2-XL achieves considerably higher ASR than Llama-2-13B,
+  indicating that larger models distribute the trigger-target association more broadly and thus require
+  more editing instances to establish the shortcut.'
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:badedit-backdooring-large-language-models-by
+datasets:
+- ref: dataset:ag-news
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: ASR of 1.5B model with 5-11 samples considerably higher than 13B model (exact curves in
+  Figure 3a); all models reach high ASR at 15 samples
+caveat: Comparison spans different model families (GPT-2 vs Llama-2), so architecture differences may
+  confound the size effect.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1206
+- IC-1207

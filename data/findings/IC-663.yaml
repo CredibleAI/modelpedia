@@ -1,0 +1,39 @@
+id: IC-663
+title: OPT-1.3B, LLaMA-7B, and Aquila-7B encode sparse Harsanyi interactions, with only 29-51 salient
+  interactions out of 1024 possible on SQuAD sentences
+description: 'The paper measures the Harsanyi interaction effects of three released LLMs on 1000 SQuAD
+  sentences, using 10 selected meaningful words as input variables (n=10, so 2^10=1024 possible interactions).
+  The results show that only a small fraction of interactions have non-negligible effects: the real
+  number of valid (salient) interactions is 28.73±52.37 for OPT-1.3B, 50.53±40.37 for LLaMA-7B, and
+  30.13±26.20 for Aquila-7B, far below the theoretical upper bound of 184-293. High-order interactions
+  (order > m) are close to zero across all three models. The monotonicity condition (average output
+  increases with less occlusion) holds for 84-90% of samples, and the polynomial decay constant p is
+  around 0.9-1.5.'
+models:
+- ref: model:opt
+  variant: variant:opt-1-3b
+- ref: model:llama
+  variant: variant:llama-7b
+- ref: model:aquila-7b
+concepts:
+- ref: concept:feature-interaction
+sources:
+- ref: source:where-we-have-arrived-proving-emergence
+datasets:
+- ref: dataset:squad
+  role: eval
+methods: []
+related_work:
+- name: Shen et al. (2023) - Can the Inference Logic of Large Language Models Be Disentangled into Symbolic
+    Concepts?
+  anchor: https://arxiv.org/abs/2304.01083
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Real # of valid interactions: 28.73±52.37 (OPT-1.3B), 50.53±40.37 (LLaMA-7B), 30.13±26.20
+  (Aquila-7B); Upper bound: 197.84±188.87, 293.20±287.28, 184.23±124.71; Monotonicity: 89.87%, 84.52%,
+  87.46%; p: 1.18±0.22, 1.18±0.42, 1.11±0.39'
+caveat: The theory only covers samples satisfying the monotonicity assumption (84-90%); the remaining
+  10-15% of samples without monotonicity also showed sparse interactions but are not covered by the
+  proof. Only 10 words per sentence were used as input variables to reduce computational cost, and only
+  the first 1000 SQuAD sentences were tested.
+extracted_by: automatic-extraction

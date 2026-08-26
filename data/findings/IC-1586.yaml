@@ -1,0 +1,36 @@
+id: IC-1586
+title: In LLaMA-7B, steering all attention heads degrades JSON format accuracy below zero-shot, while
+  steering a subset of 50-100 heads selected via multi-task profiling raises it to 96.64; performance
+  varies dramatically across the 32 layers and individual heads
+description: The paper applies attention reweighting to different subsets of LLaMA-7B's heads and measures
+  the effect on JSON format accuracy. Steering all heads simultaneously drops performance below the
+  zero-shot baseline, indicating that the heads serve distinct and non-redundant functions. Steering
+  an entire layer shows large variation across layers 1-32, and steering individual heads within a layer
+  shows a wide spread (violin plot). Only the heads selected by the multi-task profiling algorithm (intersection
+  of top-k across 4 tasks) yield consistent improvement. The same pattern holds on the pronouns changing,
+  Bias in Bios, and Counterfact tasks.
+models:
+- ref: model:llama
+  variant: variant:llama-7b
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:tell-your-model-where-attend-post
+datasets:
+- ref: dataset:bias-in-bios
+  role: eval
+- ref: dataset:counterfact
+  role: eval
+methods: []
+related_work: []
+evidence_type: interventional
+key_metric: 'LLaMA-7B JSON format f.acc: zero-shot 60.00, steer all heads below baseline, steer selected
+  heads (k=400-500, |H|=53-86) 96.64; layer-by-layer and head-by-head variation shown in Figure 2'
+caveat: The head selection is task-dependent (multi-task setting uses the evaluation task in profiling);
+  the task-agnostic setting (excluding the eval task) achieves 88.16 f.acc, lower than multi-task. The
+  finding is specific to the JSON formatting task in the main figure, though the pattern generalizes
+  to other tasks in the appendix.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1584
+- IC-1585

@@ -1,0 +1,23 @@
+id: IC-1490
+title: Zero-shot CLIP is overconfident on STEM questions, with softmax confidence loosely related to
+  actual accuracy
+description: 'The paper plots the relationship between CLIP''s softmax confidence and its actual accuracy
+  on the STEM test set. The zero-shot model is overconfident: its predicted confidence is systematically
+  higher than its realized accuracy, and the two are only loosely correlated. After fine-tuning on the
+  STEM training split, the model becomes more calibrated, suggesting the miscalibration is partly due
+  to the zero-shot transfer setting rather than an inherent architectural property.'
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:measuring-vision-language-stem-skills-neural
+datasets: []
+methods: []
+related_work: []
+evidence_type: observational
+caveat: No numerical calibration metric (e.g., ECE) is reported; the finding is based on visual inspection
+  of the confidence-accuracy curve in Figure 7.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1489
+- IC-1491

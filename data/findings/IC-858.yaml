@@ -1,0 +1,41 @@
+id: IC-858
+title: The choice of graph encoding method significantly changes LLM accuracy on graph reasoning tasks,
+  with incident encoding outperforming adjacency by up to 34 percentage points on connected nodes
+description: The paper measures how nine different textual encodings of the same graph (adjacency, incident,
+  friendship, co-authorship, South Park, Game of Thrones, social network, politician, expert) affect
+  LLM performance on six basic graph tasks. On PaLM 62B with zero-shot prompting, connected nodes accuracy
+  ranges from 4.0% (friendship) to 53.8% (incident), while node degree ranges from 9.0% (SP) to 25.0%
+  (incident). The application-style question encoder also outperforms the graph-style encoder (e.g.,
+  60.8% vs 42.8% on zero-shot edge existence for PaLM 2-xxs). The overall improvement from choosing
+  the best over worst encoding spans 4.8% to 61.8% depending on the task.
+models:
+- ref: model:palm-62b
+- ref: model:palm-2
+  variant: variant:flan-palm-2
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts: []
+sources:
+- ref: source:talk-like-graph-encoding-graphs-large
+datasets: []
+methods:
+- ref: method:zero-shot-prompting
+  role: primary
+- ref: method:few-shot-prompting
+  role: primary
+- ref: method:chain-of-thought-prompting
+  role: primary
+related_work:
+- ref: method:self-consistency
+  role: compared-to
+evidence_type: correlational
+key_metric: 'PaLM 62B zero-shot connected nodes: adjacency 19.8%, incident 53.8%; PaLM 2-xxs zero-shot
+  edge existence: graph encoder 42.8%, application encoder 60.8%; GPT-3.5-turbo zero-shot node degree:
+  adjacency 5.4%, incident 66.4%; overall range 4.8% to 61.8%'
+caveat: Results are on synthetic graphs with 5-20 nodes; the paper does not test on real-world graphs
+  of larger scale.
+extracted_by: automatic-extraction
+related_findings:
+- IC-859
+- IC-860
+- IC-861

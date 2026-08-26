@@ -1,0 +1,35 @@
+id: IC-925
+title: MultiBERTs exhibits the same phase transition pattern (UAS spike, loss drop, BLIMP improvement)
+  as the authors' own BERT-base training
+description: 'The authors examine the 5 MultiBERTs runs that have intermediate checkpoints available
+  and observe the same qualitative pattern they found in their own BERT-base runs: UAS shows a sharp
+  initial spike followed by a plateau within 20k timesteps, the BLIMP increase also occurs within the
+  first 20k steps, and the loss drops precipitously initially before declining more slowly. The timing
+  of the UAS plateau implies a slightly faster timeline for linguistic structure acquisition compared
+  to the authors'' reproduction, and the loss is slightly lower with a slightly higher BLIMP average.
+  The authors conclude that MultiBERTs is compatible with the same phase transition.'
+models:
+- ref: model:multiberts
+concepts: []
+sources:
+- ref: source:sudden-drops-loss-syntax-acquisition-phase
+datasets:
+- ref: dataset:blimp
+  role: eval
+- ref: dataset:penn-treebank
+  role: eval
+methods:
+- ref: method:sas-probe
+  role: primary
+- ref: method:mlm-scoring
+  role: eval
+related_work: []
+evidence_type: observational
+key_metric: uas clearly shows a sharp initial spike followed by a plateau within 20k timesteps; the
+  blimp increase also occurs within the first 20k steps; the loss drops precipitously initially and
+  more slowly after the 20k step checkpoint
+caveat: The intermediate checkpoints are not granular enough to show the exact timing of the UAS spike
+  or a clear break in the BLIMP accuracy curve; the confirmation is qualitative rather than quantitative.
+extracted_by: automatic-extraction
+related_findings:
+- IC-926

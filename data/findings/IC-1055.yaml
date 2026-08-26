@@ -1,0 +1,31 @@
+id: IC-1055
+title: Safety fine-tuning suppresses harmful content generation in ChatGPT relative to GPT-3.5, but
+  the suppression is substantially weaker for non-English prompts
+description: 'The paper samples 100 harmful instructions from AdvBench and measures whether GPT-3.5
+  (text-davinci-003, pre-safety-tuning) and ChatGPT (gpt-3.5-turbo, post-safety-tuning) attempt to answer
+  or refuse. In English, the answer rate drops from 92% to 3%. In non-English languages the drop is
+  much smaller: Japanese 56% to 9%, Hungarian 87% to 12%, Swahili 63% to 16%, Malayalam 71% to 65%.
+  This demonstrates that the safety fine-tuning''s refusal behavior is strongly language-dependent and
+  can be partially circumvented by translating the prompt.'
+models:
+- ref: model:gpt-3-5
+- ref: model:chatgpt
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:understanding-catastrophic-forgetting-language-models-via
+datasets:
+- ref: dataset:advbench
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Answer frequency over 100 harmful instructions: English 92% (GPT-3.5) to 3% (ChatGPT);
+  Japanese 56% to 9%; Hungarian 87% to 12%; Swahili 63% to 16%; Malayalam 71% to 65%'
+caveat: The paper notes that the brittleness of safety training and transformation functions have been
+  concurrently documented by Wei et al. (2023a). Translation is via Google Translate and may introduce
+  errors. One author manually labelled outputs as answer, refuse, or ambiguous.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1053
+- IC-1054

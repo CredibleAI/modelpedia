@@ -1,0 +1,37 @@
+id: IC-1369
+title: Successor heads that increment ordinal-sequence tokens exist in Pythia, GPT-2, and Llama-2 models
+  from 31M to 12B parameters
+description: 'The authors define successor heads as attention heads whose effective OV circuit assigns
+  higher logit to the successor token than to any other token in the same ordinal sequence for more
+  than half of the succession dataset tokens. They measure the best successor score (proportion of tokens
+  incremented) across models of three architectures and nearly three orders of magnitude in parameter
+  count. Successor heads are found in all tested models, with the best score generally increasing with
+  model size. The phenomenon is observed across eight token tasks: numbers, number words, cardinal words,
+  days, day prefixes, months, month prefixes, and letters.'
+models:
+- ref: model:pythia
+  variant: variant:pythia-1-4b
+- ref: model:pythia
+  variant: variant:pythia-2-8b
+- ref: model:gpt-2
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+concepts: []
+sources:
+- ref: source:successor-heads-recurring-interpretable-attention-heads
+datasets: []
+methods: []
+related_work:
+- name: Olsson et al. 2022 (induction heads)
+  anchor: https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html
+  role: context
+evidence_type: correlational
+key_metric: successor heads form in llms with as few as 31 million parameters, and at least as many
+  as 12 billion parameters, such as gpt-2, pythia, and llama-2
+caveat: The original llama-7b does not generalize well to the held-out roman numeral task, suggesting
+  the successor head mechanism may be less robust in that model for out-of-distribution ordinal sequences.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1370
+- IC-1371
+- IC-1372

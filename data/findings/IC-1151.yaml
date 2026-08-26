@@ -1,0 +1,40 @@
+id: IC-1151
+title: LLaMA, OPT, LLaMA-2, Mistral, and GPT-J all exhibit token co-occurrence reinforcement, where
+  the probability of generating a token increases monotonically with the number of its contextual co-occurrences
+description: The paper constructs sentences with 1-4 tokens kept unchanged across repeated demonstrations
+  and measures the average probability of those kept tokens as the number of repetitions increases from
+  0 to 20. Across all tested LLMs (LLaMA 7B-65B, OPT 125M-30B, LLaMA-2 7B-70B, Mistral-7B, GPT-J-6B),
+  the probability rises monotonically. Successive tokens (distance=0) show the strongest reinforcement,
+  reaching probability 0.4, while distant tokens (distance>=1) reach about 0.2. The effect scales with
+  model size, being stronger in larger models. The paper further shows this pattern is embedded in the
+  pretraining corpus (Wikipedia-English-2022) and that attending to the preceding token is the internal
+  mechanism responsible.
+models:
+- ref: model:llama
+- ref: model:opt
+- ref: model:llama-2
+- ref: model:mistral-7b
+- ref: model:gpt-j
+concepts: []
+sources:
+- ref: source:understanding-context-learning-from-repetitions
+datasets:
+- ref: dataset:wikitext-103
+  role: eval
+- ref: dataset:bookcorpus
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'successive reinforcement (distance=0): probability 0 to 0.4; distant reinforcement (distance>=1):
+  probability 0 to 0.2; sentence-level: probability of ''a'' after ''answer is'' boosted from 0.03 to
+  almost 1.0 with 20 repeats (LLaMA-7B); improved ratio reaches almost 1.0 with only several repetitions
+  across random, WikiText-103, and BookCorpus'
+caveat: Experiments use randomly generated sentences, WikiText-103, and BookCorpus; the paper notes
+  that tokens in real corpora are more likely to co-occur in pretraining, which affects baseline probabilities.
+  The 267M pretraining experiment in Appendix C uses a smaller architecture than the tested LLMs.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1152
+- IC-1153
+- IC-1154

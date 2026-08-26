@@ -1,0 +1,26 @@
+id: IC-732
+title: Off-the-shelf PyTorch ResNet classifiers are better calibrated than fine-tuned U-Net classifiers
+  at high noise levels in the diffusion reverse process
+description: The paper measures the expected calibration error (ECE) of two types of classifiers throughout
+  the 250-step DDPM reverse process. At low noise (steps 0–50), the fine-tuned U-Net classifier shows
+  lower ECE, reflecting its robustness to mild Gaussian noise. However, as noise magnitude increases
+  beyond step 50, the off-the-shelf ResNet achieves consistently lower ECE than the fine-tuned classifier.
+  This indicates that training a classifier on highly noisy, low signal-to-noise samples does not improve
+  its calibration, and that the off-the-shelf ResNet's calibration degrades more gracefully under increasing
+  noise.
+models:
+- ref: model:resnet
+concepts: []
+sources:
+- ref: source:elucidating-design-space-classifier-guided-diffusion
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:expected-calibration-error
+  role: primary
+related_work: []
+evidence_type: correlational
+caveat: The specific ECE values for the fine-tuned vs. off-the-shelf comparison are shown only in Figure
+  1 (curves over 250 steps); no tabulated numbers are printed in the text for this particular comparison.
+extracted_by: automatic-extraction

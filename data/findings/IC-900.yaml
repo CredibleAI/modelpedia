@@ -1,0 +1,41 @@
+id: IC-900
+title: BLIP-2, MiniGPT-4, and LLaVA-1.5 show degraded zero-shot VQA accuracy on underspecified questions,
+  with absolute improvements of 1.14–7.94% when questions are augmented with visually-grounded details
+description: The paper measures zero-shot VQA accuracy of three released LVLMs on VQAv2, A-OKVQA, and
+  VizWiz, comparing original questions against questions augmented with image-derived visual details,
+  rationale information, and disambiguated references. All three models improve when the question is
+  made more specific, with the largest gains on VizWiz (7.94% for MiniGPT-4) and A-OKVQA (6.41% for
+  MiniGPT-4, 5.47% for BLIP-2). The effect is consistent across encoder-decoder (FLAN-T5) and decoder-only
+  (Vicuna) LLM backbones, indicating a general sensitivity to question underspecification rather than
+  an architecture-specific artefact.
+models:
+- ref: model:blip-2
+- ref: model:minigpt-4
+- ref: model:llava-1-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:rephrase-augment-reason-visual-grounding-questions
+datasets:
+- ref: dataset:vqav2
+  role: eval
+- ref: dataset:a-okvqa
+  role: eval
+- ref: dataset:vizwiz
+  role: eval
+methods:
+- ref: method:pegasus
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: 'VQAv2 overall: BLIP-2 62.58→66.43 (+3.85), MiniGPT-4 7B 51.47→54.49 (+3.02), LLaVA-1.5
+  76.21→77.35 (+1.14); A-OKVQA direct: BLIP-2 41.86→47.33 (+5.47), MiniGPT-4 13B 41.53→47.94 (+6.41),
+  LLaVA-1.5 62.56→66.19 (+3.63); VizWiz: MiniGPT-4 7B 29.87→37.81 (+7.94), BLIP-2 XXl 62.81→66.27 (+3.46),
+  LLaVA-1.5 57.07→59.46 (+2.39)'
+caveat: All improvements are measured on validation sets; test sets are not publicly available. The
+  paper notes that 7% of REPARe questions on A-OKVQA contain the gold answer, meaning part of the gain
+  may come from answer leakage into the question.
+extracted_by: automatic-extraction
+related_findings:
+- IC-901
+- IC-902

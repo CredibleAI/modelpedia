@@ -1,0 +1,44 @@
+id: IC-1239
+title: Llama-2-7b and Llama-2-13b achieve top zero-shot cross-lingual performance among 7B models on
+  XNLI, XStoryCloze, and XWinograd
+description: 'The paper evaluates zero-shot cross-lingual capabilities of XLM-R Large, XGLM-7.5b, BLOOM-7b,
+  MPT-7b, Llama-2-7b, and Llama-2-13b on three benchmarks: XNLI (de, en, ru, zh), XStoryCloze (en, ru,
+  zh), and XWinograd (en, ru, zh). Llama-2-13b achieves the highest averages on XStoryCloze (78.41)
+  and XWinograd (79.05), while MPT-7b slightly leads on XNLI (46.58 vs 45.79). The paper states that
+  Llama-2 demonstrates top performance for the tested languages overall.'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:xlm-r
+  variant: variant:xlm-r-large
+- ref: model:xglm
+  variant: variant:xglm-7-5b
+- ref: model:bloom
+  variant: variant:bloom-7b
+- ref: model:mpt
+  variant: variant:mpt-7b
+concepts: []
+sources:
+- ref: source:paradigm-shift-machine-translation-boosting-translation
+datasets:
+- ref: dataset:xnli
+  role: eval
+- ref: dataset:xwinograd
+  role: eval
+methods:
+- ref: method:lm-evaluation-harness
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Llama-2-13b: XNLI avg 45.79, XStoryCloze avg 78.41, XWinograd avg 79.05; MPT-7b: XNLI avg
+  46.58, XStoryCloze avg 76.23, XWinograd avg 76.23; XLM-R Large: XNLI avg 31.10, XStoryCloze avg 48.18,
+  XWinograd avg 46.75'
+caveat: Evaluations restricted to languages overlapping with fine-tuned languages (de, en, ru, zh);
+  no dataset covers Icelandic; MPT-7b slightly outperforms Llama-2 on XNLI.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1236
+- IC-1237
+- IC-1238

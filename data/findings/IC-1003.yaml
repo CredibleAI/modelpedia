@@ -1,0 +1,52 @@
+id: IC-1003
+title: Pretrained ResNet-50 and ViT-B/16 exhibit neuron activation patterns that are separable between
+  in-distribution and out-of-distribution inputs, enabling post-hoc OOD detection without model modification
+description: The paper formulates neuron activation states as the product of raw neuron outputs and
+  KL-divergence gradients, then measures the coverage of these states under in-distribution training
+  data. On pretrained ResNet-50 and ViT-B/16 (both trained on ImageNet-1k), out-of-distribution inputs
+  trigger neuron states that fall outside the expected coverage area, producing lower coverage scores
+  than in-distribution inputs. This separability in the models' internal neuron behavior allows a post-hoc
+  uncertainty score (NAC-UE) to distinguish IN from OOD samples without modifying the model weights,
+  achieving state-of-the-art AUROC across three OOD datasets.
+models:
+- ref: model:resnet
+  variant: variant:resnet50
+- ref: model:vit
+  variant: variant:vit-b-16
+concepts: []
+sources:
+- ref: source:neuron-activation-coverage-rethinking-out-distribution
+datasets:
+- ref: dataset:imagenet1k
+  role: source
+- ref: dataset:inaturalist
+  role: eval
+- ref: dataset:openimages-o
+  role: eval
+- ref: dataset:textures
+  role: eval
+methods:
+- ref: method:vim
+  role: compared-to
+- ref: method:knn
+  role: compared-to
+- ref: method:react
+  role: compared-to
+- ref: method:ash
+  role: compared-to
+related_work:
+- ref: method:vim
+  role: compared-to
+- ref: method:knn
+  role: compared-to
+- ref: method:react
+  role: compared-to
+- ref: method:ash
+  role: compared-to
+evidence_type: correlational
+key_metric: 'AUROC: ResNet-50 96.52 (iNaturalist), 91.45 (OpenImage-O), 97.9 (Textures); ViT-B/16 93.72
+  (iNaturalist), 91.58 (OpenImage-O), 94.17 (Textures)'
+caveat: The separability is measured using the paper's specific neuron state formulation (z ⊙ ∂dkl/∂z);
+  raw neuron outputs alone show less separation (FPR95 35.72% vs 16.58% on layer4 of ResNet-50). The
+  method requires a small subset of training data (1,000–50,000 images) to build the coverage model.
+extracted_by: automatic-extraction

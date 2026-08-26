@@ -1,0 +1,35 @@
+id: IC-1153
+title: Intentionally constructed spurious token connections in MMLU demonstrations misdirect LLaMA-65B's
+  in-context learning toward specific answer choices
+description: Two experiments on MMLU with LLaMA-65B show that non-informative phrases appended before
+  'answer:' when the golden answer is 'd' significantly elevate the model's accuracy on 'd' (from 49.47%
+  zero-shot to 63.63% with 1 demo) at the cost of a/b/c accuracy. Similarly, replacing 100% of demonstrated
+  answers with 'd' (while swapping option contents to keep demonstrations valid) raises 'd' accuracy
+  from 52.28% to 77.19% with 5 demonstrations, while average a/b/c accuracy drops from 63.39% to 58.05%.
+  These results demonstrate that the model relies on surface token co-occurrence patterns rather than
+  semantic content, making ICL vulnerable to spurious connections.
+models:
+- ref: model:llama
+concepts:
+- ref: concept:shortcut
+- ref: concept:failure-mode
+sources:
+- ref: source:understanding-context-learning-from-repetitions
+datasets:
+- ref: dataset:mmlu
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Non-informative connections: d accuracy 49.47 (0 demos) to 63.63 (1 demo), 64.09 (2 demos),
+  63.51 (3 demos), 62.57 (4 demos), 61.64 (5 demos); avg [a,b,c] w/ nc: 63.04 to 61.21, 62.57, 63.27,
+  63.00, 63.47. Reordered answers 100%: d accuracy 52.28 to 58.71, 66.20, 71.35, 75.67, 77.19; avg [a,b,c]
+  63.39 to 64.80, 62.03, 61.17, 59.10, 58.05. All marked significant (p<0.05) vs ICL baseline.'
+caveat: Experiments use 1140 randomly sampled MMLU test cases balanced across answer choices; the paper
+  acknowledges a pre-existing selection bias in LLaMA-65B (see Table 4) which they attempt to control
+  by balancing the test set. Results are over three random seeds.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1151
+- IC-1152
+- IC-1154

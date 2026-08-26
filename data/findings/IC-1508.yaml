@@ -1,0 +1,60 @@
+id: IC-1508
+title: LLMs with in-context learning translate Kalamang-English at 44.7/45.8 CHRF, falling short of
+  the human baseline of 51.6/57.0 CHRF
+description: 'The paper evaluates 10 released LLMs on the MTOb benchmark, which requires translating
+  between English and Kalamang using a 573-page grammar book and a bilingual word list as in-context
+  reference materials. The best-performing model, Claude 2 with word list, parallel sentences, and a
+  ~100k-token grammar book chunk in context, achieves 44.7 CHRF on KGV→ENG and 45.8 CHRF on ENG→KGV.
+  A human who learned Kalamang from the same reference materials scores 51.6 and 57.0 CHRF respectively,
+  a gap of +6.9 and +11.2 CHRF. Model outputs are described as erratic: some are near-perfect while
+  others make nonsensical errors, in contrast to the human''s consistently grammatical translations.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama
+  variant: variant:llama-30b
+- ref: model:llama
+  variant: variant:llama-13b
+- ref: model:llama
+  variant: variant:llama-7b
+concepts: []
+sources:
+- ref: source:benchmark-learning-translate-new-language-from
+datasets:
+- ref: dataset:a-grammar-of-kalamang
+  role: source
+methods:
+- ref: method:chrf
+  role: eval
+- ref: method:bleu
+  role: eval
+related_work:
+- name: BABYLM
+  anchor: https://arxiv.org/abs/2301.11796
+  role: context
+- name: FLORES-101
+  anchor: https://arxiv.org/abs/2106.03193
+  role: context
+- name: XTREME-UP
+  anchor: https://arxiv.org/abs/2305.11938
+  role: context
+evidence_type: correlational
+key_metric: 44.7 chrf (kgv→eng) and 45.8 chrf (eng→kgv) for claude 2 (w+s+gl), vs. 51.6 and 57.0 chrf
+  human baseline
+caveat: The test set is drawn from the same field documentation as the training materials, so it may
+  share vocabulary and structures with the reference book. Kalamang is a single language; generalisation
+  to other typologically diverse languages is untested. The human baseline is a single individual with
+  linguistics training.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1509
+- IC-1510

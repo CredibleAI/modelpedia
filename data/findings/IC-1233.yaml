@@ -1,0 +1,43 @@
+id: IC-1233
+title: GPT-2 XL and GPT-J exhibit irreversible knowledge distortion after round-editing, with the effect
+  being more severe when the edit target is semantically distant from the true labels
+description: 'The paper applies round-edits (edit a fact to an intermediate value, then edit it back)
+  to GPT-2 XL and GPT-J and measures how the probability distribution over all correct labels changes.
+  All editing methods cause significant distortion: FT and MEND show the highest ignore rates (IR up
+  to 96.43 for FT on GPT-J easy split), while ROME and MEMIT show lower but still substantial distortion
+  (IR 67.41 and 56.91 respectively on GPT-2 XL easy). The distortion is worse in the ''hard'' setting
+  where the edit target is semantically distant from the true labels. The authors'' proposed multi-label
+  edit (MLE) reduces IR to 4.66 (GPT-2 XL easy) and 2.48 (GPT-J easy), confirming the distortion is
+  a property of the editing process applied to the model''s knowledge structure.'
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl
+- ref: model:gpt-j
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:unveiling-pitfalls-knowledge-editing-large-language
+datasets:
+- ref: dataset:wikidata
+  role: source
+methods:
+- ref: method:mend
+  role: primary
+- ref: method:rome
+  role: primary
+- ref: method:memit
+  role: primary
+related_work:
+- ref: method:rome
+  role: builds-on
+- ref: method:memit
+  role: builds-on
+evidence_type: interventional
+key_metric: 'GPT-2 XL easy: FT IR 74.47, FR 72.24; MEND IR 87.86, FR 86.88; ROME IR 67.41, FR 64.60;
+  MEMIT IR 49.98, FR 45.36; MEMIT+MLE IR 4.66, FR 1.72. GPT-J easy: FT IR 96.43, FR 96.56; ROME IR 67.35,
+  FR 65.56; MEMIT IR 56.91, FR 53.52; MEMIT+MLE IR 2.48, FR 0.80.'
+caveat: The paper notes that even ROME and MEMIT affect over 50% of the true labels in the easy scenario,
+  and the distortion is measured only on a subset of multi-label relations with fewer than 10 objects.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1232

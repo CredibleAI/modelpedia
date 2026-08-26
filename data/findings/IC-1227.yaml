@@ -1,0 +1,25 @@
+id: IC-1227
+title: SAM's segmentation pretraining shifts attention heads toward local focus in deeper layers, unlike
+  its MAE initialization which retains global attention throughout
+description: The authors measure the mean attention distance (average distance between query patch position
+  and attended locations, weighted by attention weights) for each of the 16 attention heads at each
+  of the 25 layer depths, averaged over 500 randomly sampled images. In SAM, numerous heads in the deep
+  blocks exhibit short mean attention distances, indicating a strong local attention pattern in later
+  stages. In contrast, the MAE-pretrained ViT (SAM's initialization) displays consistently long mean
+  attention distances across all layers. This demonstrates that SAM's large-scale segmentation pretraining
+  transforms the ViT's attention from global-oriented to local-oriented, with the effect concentrated
+  in deeper layers.
+models:
+- ref: model:sam
+- ref: model:mae
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:convolution-meets-lora-parameter-efficient-finetuning
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+extracted_by: automatic-extraction
+related_findings:
+- IC-1226

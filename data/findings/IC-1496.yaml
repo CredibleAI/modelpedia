@@ -1,0 +1,56 @@
+id: IC-1496
+title: A single frozen transformer block from LLaMA-7B consistently improves performance across diverse
+  visual tasks when appended to existing visual encoders
+description: The paper appends one frozen transformer block from LLaMA-7B (the last block by default)
+  to various visual encoders and trains the rest of the network. Across image classification (ViT),
+  point cloud classification (Point-BERT), action recognition (ViT on SSV2), motion forecasting (VectorNet,
+  MMTransformer), and vision-language tasks (METER, SQA3D), the LLaMA block yields consistent gains.
+  Ablations with a matched-capacity MLP and with randomly initialized LLaMA blocks confirm the improvement
+  comes from the pre-trained LLaMA weights rather than added parameters. Fine-tuning the LLaMA block
+  instead of freezing it degrades performance due to overfitting.
+models:
+- ref: model:llama
+concepts: []
+sources:
+- ref: source:frozen-transformers-language-models-effective-visual
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:imagenet-c
+  role: eval
+- ref: dataset:imagenet-a
+  role: eval
+- ref: dataset:imagenet-sk
+  role: eval
+- ref: dataset:imagenet-r
+  role: eval
+- ref: dataset:scanobjectnn
+  role: eval
+- ref: dataset:modelnet40
+  role: eval
+- ref: dataset:argoverse
+  role: eval
+- ref: dataset:vqav2
+  role: eval
+- ref: dataset:flickr30k
+  role: eval
+- ref: dataset:sqa3d
+  role: eval
+methods:
+- ref: method:deit
+  role: supporting
+related_work:
+- ref: model:videomae
+  role: compared-to
+evidence_type: correlational
+key_metric: 'ImageNet: ViT-t 72.1→73.2, ViT-s 80.1→80.7, ViT-b 80.6→81.7; ScanObjectNN: 87.4→88.0 (bg),
+  88.1→88.5 (obj), 83.1→83.8 (t50); SSV2: ViT-s 64.71→65.89, ViT-b 64.97→66.03; Argoverse ADE: VectorNet
+  0.77→0.76, MMTransformer 0.72→0.71; VQAv2 overall: 69.60→70.23; Flickr30k IR@1: 49.66→50.22; SQA3D
+  EM@1: 47.20→48.09; Capacity ablation: ViT-s-MLP 80.4 vs ViT-s-LLaMA 80.7 vs ViT-s 80.1'
+caveat: Experiments are designed for diversity of tasks under fair comparisons rather than state-of-the-art
+  performance; computational resources limited batch sizes (e.g., 24 clips vs 384 in VideoMAE), so absolute
+  numbers are lower than original papers.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1497
+- IC-1498

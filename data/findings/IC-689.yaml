@@ -1,0 +1,56 @@
+id: IC-689
+title: Subjective randomness generation and sharp ICL transitions emerge only in larger or reward-fine-tuned
+  models, absent in earlier GPT-3 variants and smaller open-source models
+description: 'Earlier OpenAI models (text-davinci-002, text-davinci-001, text-curie-001) do not show
+  subjective randomness behavior: text-davinci-002 and -001 are heavily biased and uncontrollable, and
+  text-curie-001 generates sequences with mean 0.50 regardless of the specified p(tails). Among open-source
+  models, smaller variants (7B, 13B) and larger non-DPO models (Llama-2-70B, Tulu-2-70B, Mixtral-8x7B)
+  show flat in-context learning curves in randomness judgment, while tulu-2-dpo-70b shows sharp s-shaped
+  transitions similar to GPT-3.5+. This indicates the capability requires both sufficient scale (50+
+  billion parameters) and reward-based fine-tuning (RLHF or DPO).'
+models:
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4
+- ref: model:gpt-3
+  variant: variant:text-davinci-002
+- ref: model:gpt-3
+  variant: variant:text-davinci-001
+- ref: model:gpt-3
+  variant: variant:text-babbage-001
+- ref: model:text-ada-001
+- ref: model:llama-2
+  variant: variant:llama-2-7b-hf
+- ref: model:tulu-2
+  variant: variant:tulu-2-7b
+- ref: model:tulu-2
+  variant: variant:tulu-2-13b
+- ref: model:tulu-2
+  variant: variant:tulu-2-70b
+- ref: model:tulu-2
+  variant: variant:tulu-2-dpo-70b
+- ref: model:mixtral-8x7b
+  variant: variant:mixtral-8x7b-v0-1
+- ref: model:mixtral-8x7b
+  variant: variant:mixtral-8x7b-instruct-v0-1
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:context-learning-dynamics-random-binary-sequences
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: text-curie-001 generates sequences with y = .50 regardless of p(tails); tulu-2-dpo-70b shows
+  sharp s-shaped ICL curves while llama-2-7b-hf, llama-2-13b-hf, tulu-2-7b, tulu-2-13b, tulu-2-70b,
+  and mixtral-8x7b models show flat curves; results replicated on 2x NVIDIA A100 80GB GPUs
+caveat: The paper notes that as of January 2024, text-davinci-003 is no longer publicly accessible,
+  limiting replicability. The authors hypothesize but do not confirm that fine-tuning methods (instruction
+  fine-tuning, SFT, RLHF) are the cause of the emergent capability. Open-source model results are limited
+  to a subset of the full experimental suite.
+extracted_by: automatic-extraction
+related_findings:
+- IC-687
+- IC-688

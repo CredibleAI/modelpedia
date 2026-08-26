@@ -1,0 +1,32 @@
+id: IC-1016
+title: ImageNet-pretrained ResNet-50 backbone exhibits shortcut bias toward background features when
+  adapted to bird classification via a new readout layer
+description: 'The authors freeze the ImageNet-pretrained ResNet-50 backbone and train a randomly initialized
+  readout layer for 15 epochs on the Waterbirds dataset. They then measure bird classification accuracy
+  on incongruent probes (where bird and background labels disagree) under six background availability
+  manipulations: bird size scaling, background patch removal, color-to-grayscale conversion, low-pass
+  filtering, uniform noise, and Perlin noise. The pretrained backbone shows the same pattern as from-scratch
+  models: reducing background availability (larger bird, noisier or filtered background) shifts the
+  model toward using the bird, while a clear informative background pulls the model toward the background.
+  The authors note that pretraining modulates feature availability, attributing this to learned invariances.'
+models:
+- ref: model:resnet
+  variant: variant:resnet50
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:foundations-shortcut-learning
+datasets:
+- ref: dataset:waterbirds
+  role: eval
+methods: []
+related_work:
+- name: Wolff & Wolff (2022)
+  anchor: https://arxiv.org/abs/2201.08893
+  role: context
+evidence_type: correlational
+caveat: The readout layer is randomly initialized and trained for only 15 epochs; the authors note the
+  pretraining effect 'may be attributed to the learned invariances during the pretraining process' without
+  isolating the mechanism. Results are shown in a supplementary figure (B.9) without specific accuracy
+  values printed in the text.
+extracted_by: automatic-extraction

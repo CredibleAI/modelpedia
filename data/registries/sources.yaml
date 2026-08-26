@@ -3763,3 +3763,3187 @@ source:your-weak-llm-secretly-strong-teacher:
   anchor: https://openreview.net/forum?id=sGqd1tF8P8
   artifact: null
   note: null
+
+source:adaptive-chameleon-stubborn-sloth-revealing-behavior:
+  authors:
+  - Jian Xie
+  - Kai Zhang
+  - Jiangjie Chen
+  - Renze Lou
+  - Yu Su
+  title: 'Adaptive Chameleon  or Stubborn Sloth: Revealing the Behavior of Large Language Models in
+    Knowledge Conflicts'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=auKAUJZMO6
+  artifact: null
+  note: null
+
+source:alignment-problem-from-deep-learning-perspective:
+  authors:
+  - Richard Ngo
+  - Lawrence Chan
+  - Sören Mindermann
+  title: The Alignment Problem from a Deep Learning Perspective
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=fh8EYKFKns
+  artifact: null
+  note: null
+
+source:alpagasus-training-better-alpaca-fewer-data:
+  authors:
+  - Lichang Chen
+  - Shiyang Li
+  - Jun Yan
+  - Hai Wang
+  - Kalpa Gunaratna
+  - Vikas Yadav
+  - Zheng Tang
+  - Vijay Srinivasan
+  - Tianyi Zhou
+  - Heng Huang
+  - Hongxia Jin
+  title: 'AlpaGasus: Training a Better Alpaca with Fewer Data'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=FdVXgSJhvz
+  artifact: null
+  note: null
+
+source:alt-text-context-improving-accessibility-images:
+  authors:
+  - Nikita Srivatsan
+  - Sofia Samaniego
+  - Omar Florez
+  - Taylor Berg-Kirkpatrick
+  title: 'Alt-Text with Context: Improving Accessibility for Images on Twitter'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=97Dl82avFs
+  artifact: null
+  note: null
+
+source:analysis-gan-based-image-image-translation:
+  authors:
+  - Chaohua Shi
+  - Kexin Huang
+  - Lu GAN
+  - Hongqing Liu
+  - Mingrui Zhu
+  - Nannan Wang
+  - Xinbo Gao
+  title: On the Analysis of GAN-based Image-to-Image Translation with Gaussian Noise Injection
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=sLregLuXpn
+  artifact: null
+  note: null
+
+source:analyzing-feed-forward-blocks-transformers-through:
+  authors:
+  - Goro Kobayashi
+  - Tatsuki Kuribayashi
+  - Sho Yokoi
+  - Kentaro Inui
+  title: Analyzing Feed-Forward Blocks in Transformers through the Lens of Attention Maps
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=mYWsyTuiRp
+  artifact: null
+  note: null
+
+source:at-which-training-stage-code-data:
+  authors:
+  - YINGWEI MA
+  - Yue Liu
+  - Yue Yu
+  - Yuanliang Zhang
+  - Yu Jiang
+  - Changjian Wang
+  - Shanshan Li
+  title: At Which Training Stage Does Code Data Help LLMs Reasoning?
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=KIPJKST4gw
+  artifact: null
+  note: null
+
+source:attention-required-icl-exploring-relationship-between:
+  authors:
+  - Ivan Lee
+  - Nan Jiang
+  - Taylor Berg-Kirkpatrick
+  title: Is attention required for ICL? Exploring the Relationship Between Model Architecture and In-Context
+    Learning Ability
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=Qwq4cpLtoX
+  artifact: null
+  note: null
+
+source:attention-satisfies-constraint-satisfaction-lens-factual:
+  authors:
+  - Mert Yuksekgonul
+  - Varun Chandrasekaran
+  - Erik Jones
+  - Suriya Gunasekar
+  - Ranjita Naik
+  - Hamid Palangi
+  - Ece Kamar
+  - Besmira Nushi
+  title: 'Attention Satisfies: A Constraint-Satisfaction Lens on Factual Errors of Language Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=gfFVATffPd
+  artifact: null
+  note: null
+
+source:badchain-backdoor-chain-thought-prompting-large:
+  authors:
+  - Zhen Xiang
+  - Fengqing Jiang
+  - Zidi Xiong
+  - Bhaskar Ramasubramanian
+  - Radha Poovendran
+  - Bo Li
+  title: 'BadChain: Backdoor Chain-of-Thought Prompting for Large Language Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=c93SBwz1Ma
+  artifact: null
+  note: null
+
+source:badedit-backdooring-large-language-models-by:
+  authors:
+  - Yanzhou Li
+  - Tianlin Li
+  - Kangjie Chen
+  - Jian Zhang
+  - Shangqing Liu
+  - Wenhan Wang
+  - Tianwei Zhang
+  - Yang Liu
+  title: 'BadEdit: Backdooring Large Language Models by Model Editing'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=duZANm2ABX
+  artifact: null
+  note: null
+
+source:benchmark-learning-translate-new-language-from:
+  authors:
+  - Garrett Tanzer
+  - Mirac Suzgun
+  - Eline Visser
+  - Dan Jurafsky
+  - Luke Melas-Kyriazi
+  title: A Benchmark for Learning to Translate a New Language from One Grammar Book
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=tbVWug9f2h
+  artifact: null
+  note: null
+
+source:bert-family-good-instruction-followers-study:
+  authors:
+  - yisheng xiao
+  - Juntao Li
+  - Zechen Sun
+  - Zechang Li
+  - Qingrong Xia
+  - Xinyu Duan
+  - Zhefeng Wang
+  - Min Zhang
+  title: Are Bert Family Good Instruction Followers?  A Study on Their Potential And Limitations
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=x8VNtpCu1I
+  artifact: null
+  note: null
+
+source:best-practices-activation-patching-language-models:
+  authors:
+  - Fred Zhang
+  - Neel Nanda
+  title: 'Towards Best Practices of Activation Patching in Language Models: Metrics and Methods'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=Hf17y6u9BC
+  artifact: null
+  note: null
+
+source:beyond-memorization-violating-privacy-via-inference:
+  authors:
+  - Robin Staab
+  - Mark Vero
+  - Mislav Balunovic
+  - Martin Vechev
+  title: 'Beyond Memorization: Violating Privacy via Inference with Large Language Models'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=kmn0BhQk7p
+  artifact: null
+  note: null
+
+source:beyond-task-performance-evaluating-reducing-flaws:
+  authors:
+  - Mustafa Shukor
+  - Alexandre Rame
+  - Corentin Dancette
+  - Matthieu Cord
+  title: 'Beyond task performance: evaluating and reducing the flaws of large multimodal models with
+    in-context-learning'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=mMaQvkMzDi
+  artifact: null
+  note: null
+
+source:bias-runs-deep-implicit-reasoning-biases:
+  authors:
+  - Shashank Gupta
+  - Vaishnavi Shrivastava
+  - Ameet Deshpande
+  - Ashwin Kalyan
+  - Peter Clark
+  - Ashish Sabharwal
+  - Tushar Khot
+  title: 'Bias Runs Deep: Implicit Reasoning Biases in Persona-Assigned LLMs'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=kGteeZ18Ir
+  artifact: null
+  note: null
+
+source:bongard-openworld-few-shot-reasoning-free:
+  authors:
+  - Rujie Wu
+  - Xiaojian Ma
+  - Zhenliang Zhang
+  - Wei Wang
+  - Qing Li
+  - Song-Chun Zhu
+  - Yizhou Wang
+  title: 'Bongard-OpenWorld: Few-Shot Reasoning for Free-form Visual Concepts in the Real World'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=hWS4MueyzC
+  artifact: null
+  note: null
+
+source:booookscore-systematic-exploration-book-length-summarization:
+  authors:
+  - Yapei Chang
+  - Kyle Lo
+  - Tanya Goyal
+  - Mohit Iyyer
+  title: 'BooookScore: A systematic exploration of book-length summarization in the era of LLMs'
+  venue: ICLR 2024 oral
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=7Ttk3RzDeu
+  artifact: null
+  note: null
+
+source:bootstrapping-variational-information-pursuit-large-language:
+  authors:
+  - Aditya Chattopadhyay
+  - Kwan Ho Ryan Chan
+  - Rene Vidal
+  title: Bootstrapping Variational Information Pursuit with Large Language and Vision Models for Interpretable
+    Image Classification
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=9bmTbVaA2A
+  artifact: null
+  note: null
+
+source:brain-decoding-toward-real-time-reconstruction:
+  authors:
+  - Yohann Benchetrit
+  - Hubert Banville
+  - Jean-Remi King
+  title: 'Brain decoding: toward real-time reconstruction of visual perception'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=3y1K6buO8c
+  artifact: null
+  note: null
+
+source:cas-probability-based-approach-universal-condition:
+  authors:
+  - Chunsan Hong
+  - ByungHee Cha
+  - Tae-Hyun Oh
+  title: 'CAS: A Probability-Based Approach for Universal Condition Alignment Score'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=E78OaH2s3f
+  artifact: null
+  note: null
+
+source:catastrophic-jailbreak-open-source-llms-via:
+  authors:
+  - Yangsibo Huang
+  - Samyak Gupta
+  - Mengzhou Xia
+  - Kai Li
+  - Danqi Chen
+  title: Catastrophic Jailbreak of Open-source LLMs via Exploiting Generation
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=r42tSSCHPh
+  artifact: null
+  note: null
+
+source:circuit-component-reuse-across-tasks-transformer:
+  authors:
+  - Jack Merullo
+  - Carsten Eickhoff
+  - Ellie Pavlick
+  title: Circuit Component Reuse Across Tasks in Transformer Language Models
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=fpoAYV6Wsk
+  artifact: null
+  note: null
+
+source:circumventing-concept-erasure-methods-text-image:
+  authors:
+  - Minh Pham
+  - Kelly O. Marshall
+  - Niv Cohen
+  - Govind Mittal
+  - Chinmay Hegde
+  title: Circumventing Concept Erasure Methods For Text-To-Image Generative Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=ag3o2T51Ht
+  artifact: null
+  note: null
+
+source:clip-s-generalization-performance-mainly-stem:
+  authors:
+  - Prasanna Mayilvahanan
+  - Thaddäus Wiedemer
+  - Evgenia Rusak
+  - Matthias Bethge
+  - Wieland Brendel
+  title: Does CLIP’s generalization performance mainly stem from high train-test similarity?
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=tnBaiidobu
+  artifact: null
+  note: null
+
+source:closing-curious-case-neural-text-degeneration:
+  authors:
+  - Matthew Finlayson
+  - John Hewitt
+  - Alexander Koller
+  - Swabha Swayamdipta
+  - Ashish Sabharwal
+  title: Closing the Curious Case of Neural Text Degeneration
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=dONpC9GL1o
+  artifact: null
+  note: null
+
+source:coco-periph-bridging-gap-between-human:
+  authors:
+  - Anne Harrington
+  - Vasha DuTell
+  - Mark Hamilton
+  - Ayush Tewari
+  - Simon Stent
+  - William T. Freeman
+  - Ruth Rosenholtz
+  title: 'COCO-Periph: Bridging the Gap Between Human and Machine Perception in the Periphery'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=MiRPBbQNHv
+  artifact: null
+  note: null
+
+source:collie-systematic-construction-constrained-text-generation:
+  authors:
+  - Shunyu Yao
+  - Howard Chen
+  - Austin W. Hanjie
+  - Runzhe Yang
+  - Karthik R Narasimhan
+  title: 'COLLIE: Systematic Construction of Constrained Text Generation Tasks'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=kxgSlyirUZ
+  artifact: null
+  note: null
+
+source:compressing-llms-truth-rarely-pure-never:
+  authors:
+  - AJAY KUMAR JAISWAL
+  - Zhe Gan
+  - Xianzhi Du
+  - Bowen Zhang
+  - Zhangyang Wang
+  - Yinfei Yang
+  title: 'Compressing LLMs: The Truth is Rarely Pure and Never Simple'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=B9klVS7Ddk
+  artifact: null
+  note: null
+
+source:concept-bottleneck-generative-models:
+  authors:
+  - Aya Abdelsalam Ismail
+  - Julius Adebayo
+  - Hector Corrada Bravo
+  - Stephen Ra
+  - Kyunghyun Cho
+  title: Concept Bottleneck Generative Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=L9U5MJJleF
+  artifact: null
+  note: null
+
+source:context-learning-dynamics-random-binary-sequences:
+  authors:
+  - Eric J Bigelow
+  - Ekdeep Singh Lubana
+  - Robert P. Dick
+  - Hidenori Tanaka
+  - Tomer Ullman
+  title: In-Context Learning Dynamics with Random Binary Sequences
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=62K7mALO2q
+  artifact: null
+  note: null
+
+source:context-learning-learns-label-relationships-but:
+  authors:
+  - Jannik Kossen
+  - Yarin Gal
+  - Tom Rainforth
+  title: In-Context Learning Learns Label Relationships but Is Not Conventional Learning
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=YPIA7bgd5y
+  artifact: null
+  note: null
+
+source:contrastive-learning-spectral-clustering-similarity-graph:
+  authors:
+  - Zhiquan Tan
+  - Yifan Zhang
+  - Jingqin Yang
+  - Yang Yuan
+  title: Contrastive Learning is Spectral Clustering on Similarity Graph
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=hLZQTFGToA
+  artifact: null
+  note: null
+
+source:conversational-drug-editing-using-retrieval-domain:
+  authors:
+  - Shengchao Liu
+  - Jiongxiao Wang
+  - Yijin Yang
+  - Chengpeng Wang
+  - Ling Liu
+  - Hongyu Guo
+  - Chaowei Xiao
+  title: Conversational Drug Editing Using Retrieval and Domain Feedback
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=yRrPfKyJQ2
+  artifact: null
+  note: null
+
+source:convolution-meets-lora-parameter-efficient-finetuning:
+  authors:
+  - Zihan Zhong
+  - Zhiqiang Tang
+  - Tong He
+  - Haoyang Fang
+  - Chun Yuan
+  title: 'Convolution Meets LoRA: Parameter Efficient Finetuning for Segment Anything Model'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=ezscMer8L0
+  artifact: null
+  note: null
+
+source:cost-scaling-down-large-language-models:
+  authors:
+  - Tian Jin
+  - Nolan Clement
+  - Xin Dong
+  - Vaishnavh Nagarajan
+  - Michael Carbin
+  - Jonathan Ragan-Kelley
+  - Gintare Karolina Dziugaite
+  title: 'The Cost of Scaling Down Large Language Models: Reducing Model Size Affects Memory before
+    In-context Learning'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=ldJXXxPE0L
+  artifact: null
+  note: null
+
+source:critic-large-language-models-self-correct:
+  authors:
+  - Zhibin Gou
+  - Zhihong Shao
+  - Yeyun Gong
+  - yelong shen
+  - Yujiu Yang
+  - Nan Duan
+  - Weizhu Chen
+  title: 'CRITIC: Large Language Models Can Self-Correct with Tool-Interactive Critiquing'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=Sx038qxjek
+  artifact: null
+  note: null
+
+source:cutoff-beyond-longitudinal-perspective-llm-data:
+  authors:
+  - Manley Roberts
+  - Himanshu Thakur
+  - Christine Herlihy
+  - Colin White
+  - Samuel Dooley
+  title: To the Cutoff... and Beyond? A Longitudinal Perspective on LLM Data Contamination
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=m2NVG4Htxs
+  artifact: null
+  note: null
+
+source:data-independent-module-aware-pruning-hierarchical:
+  authors:
+  - Yang He
+  - Joey Tianyi Zhou
+  title: Data-independent Module-aware Pruning for Hierarchical Vision Transformers
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=7Ol6foUi1G
+  artifact: null
+  note: null
+
+source:davidsonian-scene-graph-improving-reliability-fine:
+  authors:
+  - Jaemin Cho
+  - Yushi Hu
+  - Jason Michael Baldridge
+  - Roopal Garg
+  - Peter Anderson
+  - Ranjay Krishna
+  - Mohit Bansal
+  - Jordi Pont-Tuset
+  - Su Wang
+  title: 'Davidsonian Scene Graph: Improving Reliability in Fine-grained Evaluation for Text-to-Image
+    Generation'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=ITq4ZRUT4a
+  artifact: null
+  note: null
+
+source:debiasing-algorithm-through-model-adaptation:
+  authors:
+  - Tomasz Limisiewicz
+  - David Mareček
+  - Tomáš Musil
+  title: Debiasing Algorithm through Model Adaptation
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=XIZEFyVGC9
+  artifact: null
+  note: null
+
+source:decoding-natural-images-from-eeg-object:
+  authors:
+  - Yonghao Song
+  - Bingchuan Liu
+  - Xiang Li
+  - Nanlin Shi
+  - Yijun Wang
+  - Xiaorong Gao
+  title: Decoding Natural Images from EEG for Object Recognition
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=dhLIno8FmH
+  artifact: null
+  note: null
+
+source:defining-extracting-generalizable-interaction-primitives-from:
+  authors:
+  - Lu Chen
+  - Siyu Lou
+  - Benhao Huang
+  - Quanshi Zhang
+  title: Defining and extracting generalizable interaction primitives from DNNs
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=OCqyFVFNeF
+  artifact: null
+  note: null
+
+source:demystifying-embedding-spaces-using-large-language:
+  authors:
+  - Guy Tennenholtz
+  - Yinlam Chow
+  - ChihWei Hsu
+  - Jihwan Jeong
+  - Lior Shani
+  - Azamat Tulepbergenov
+  - Deepak Ramachandran
+  - Martin Mladenov
+  - Craig Boutilier
+  title: Demystifying Embedding Spaces using Large Language Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=qoYogklIPz
+  artifact: null
+  note: null
+
+source:denevil-deciphering-navigating-ethical-values-large:
+  authors:
+  - Shitong Duan
+  - Xiaoyuan Yi
+  - Peng Zhang
+  - Tun Lu
+  - Xing Xie
+  - Ning Gu
+  title: 'DENEVIL: TOWARDS DECIPHERING AND NAVIGATING THE ETHICAL VALUES OF LARGE LANGUAGE MODELS VIA
+    INSTRUCTION LEARNING'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=m3RRWWFaVe
+  artifact: null
+  note: null
+
+source:devil-neurons-interpreting-mitigating-social-biases:
+  authors:
+  - Yan Liu
+  - Yu Liu
+  - Xiaokang Chen
+  - Pin-Yu Chen
+  - Daoguang Zan
+  - Min-Yen Kan
+  - Tsung-Yi Ho
+  title: 'The Devil is in the Neurons: Interpreting and Mitigating Social Biases in Language Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=SQGUDc9tC8
+  artifact: null
+  note: null
+
+source:devil-object-boundary-annotation-free-instance:
+  authors:
+  - Cheng Shi
+  - Sibei Yang
+  title: 'The Devil is in the Object Boundary: Towards Annotation-free Instance Segmentation using Foundation
+    Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=4JbrdrHxYy
+  artifact: null
+  note: null
+
+source:dice-end-end-deformation-capture-hand:
+  authors:
+  - Qingxuan Wu
+  - Zhiyang Dou
+  - Sirui Xu
+  - Soshi Shimada
+  - Chen Wang
+  - Zhengming Yu
+  - Yuan Liu
+  - Cheng Lin
+  - Zeyu Cao
+  - Taku Komura
+  - Vladislav Golyanik
+  - Christian Theobalt
+  - Wenping Wang
+  - Lingjie Liu
+  title: 'DICE: End-to-end Deformation Capture of Hand-Face Interactions from a Single Image'
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=rfrtFwnF62
+  artifact: null
+  note: null
+
+source:discovering-failure-modes-text-guided-diffusion:
+  authors:
+  - Qihao Liu
+  - Adam Kortylewski
+  - Yutong Bai
+  - Song Bai
+  - Alan Yuille
+  title: Discovering Failure Modes of Text-guided Diffusion Models via Adversarial Search
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=TOWdQQgMJY
+  artifact: null
+  note: null
+
+source:dissecting-learning-forgetting-language-model-finetuning:
+  authors:
+  - Xiao Zhang
+  - Ji Wu
+  title: Dissecting learning and forgetting in language model finetuning
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=tmsqb6WpLz
+  artifact: null
+  note: null
+
+source:efficient-dynamics-modeling-interactive-environments-koopman:
+  authors:
+  - Arnab Kumar Mondal
+  - Siba Smarak Panigrahi
+  - Sai Rajeswar
+  - Kaleem Siddiqi
+  - Siamak Ravanbakhsh
+  title: Efficient Dynamics Modeling in Interactive Environments with Koopman Theory
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=fkrYDQaHOJ
+  artifact: null
+  note: null
+
+source:efficient-streaming-language-models-attention-sinks:
+  authors:
+  - Guangxuan Xiao
+  - Yuandong Tian
+  - Beidi Chen
+  - Song Han
+  - Mike Lewis
+  title: Efficient Streaming Language Models with Attention Sinks
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=NG7sS51zVF
+  artifact: null
+  note: null
+
+source:elucidating-design-space-classifier-guided-diffusion:
+  authors:
+  - Jiajun Ma
+  - Tianyang Hu
+  - Wenjia Wang
+  - Jiacheng Sun
+  title: Elucidating the design space of classifier-guided diffusion generation
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=9DXXMXnIGm
+  artifact: null
+  note: null
+
+source:elucidating-exposure-bias-diffusion-models:
+  authors:
+  - Mang Ning
+  - Mingxiao Li
+  - Jianlin Su
+  - Albert Ali Salah
+  - Itir Onal Ertugrul
+  title: Elucidating the Exposure Bias in Diffusion Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=xEJMoj1SpX
+  artifact: null
+  note: null
+
+source:enhancing-transferable-adversarial-attacks-vision-transformers:
+  authors:
+  - Zhiyu Zhu
+  - Xinyi Wang
+  - Zhibo Jin
+  - Jiayu Zhang
+  - Huaming Chen
+  title: Enhancing Transferable Adversarial Attacks on Vision Transformers through Gradient Normalization
+    Scaling and High-Frequency Adaptation
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=1BuWv9poWz
+  artifact: null
+  note: null
+
+source:entropy-not-enough-test-time-adaptation:
+  authors:
+  - Jonghyun Lee
+  - Dahuin Jung
+  - Saehyung Lee
+  - Junsung Park
+  - Juhyeon Shin
+  - Uiwon Hwang
+  - Sungroh Yoon
+  title: 'Entropy is not Enough for Test-Time Adaptation: From the Perspective of Disentangled Factors'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=9w3iw8wDuE
+  artifact: null
+  note: null
+
+source:facing-elephant-room-visual-prompt-tuning:
+  authors:
+  - Cheng Han
+  - Qifan Wang
+  - Yiming Cui
+  - Wenguan Wang
+  - Lifu Huang
+  - Siyuan Qi
+  - Dongfang Liu
+  title: 'Facing the Elephant in the Room: Visual Prompt Tuning or Full finetuning?'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=bJx4iOIOxn
+  artifact: null
+  note: null
+
+source:fairerclip-debiasing-clip-s-zero-shot:
+  authors:
+  - Sepehr Dehdashtian
+  - Lan Wang
+  - Vishnu Boddeti
+  title: 'FairerCLIP: Debiasing CLIP''s Zero-Shot Predictions using Functions in RKHSs'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=HXoq9EqR9e
+  artifact: null
+  note: null
+
+source:faithful-efficient-explanations-neural-networks-via:
+  authors:
+  - Andrew William Engel
+  - Zhichao Wang
+  - Natalie Frank
+  - Ioana Dumitriu
+  - Sutanay Choudhury
+  - Anand Sarwate
+  - Tony Chiang
+  title: Faithful and Efficient Explanations for Neural Networks via Neural Tangent Kernel Surrogate
+    Models
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=yKksu38BpM
+  artifact: null
+  note: null
+
+source:faithful-rule-extraction-differentiable-rule-learning:
+  authors:
+  - Xiaxia Wang
+  - David Jaime Tena Cucala
+  - Bernardo Cuenca Grau
+  - Ian Horrocks
+  title: Faithful Rule Extraction for Differentiable Rule Learning Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=kBTzlxM2J1
+  artifact: null
+  note: null
+
+source:false-promise-imitating-proprietary-language-models:
+  authors:
+  - Arnav Gudibande
+  - Eric Wallace
+  - Charlie Victor Snell
+  - Xinyang Geng
+  - Hao Liu
+  - Pieter Abbeel
+  - Sergey Levine
+  - Dawn Song
+  title: The False Promise of Imitating Proprietary Language Models
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=Kz3yckpCN5
+  artifact: null
+  note: null
+
+source:fine-tune-vision-models-sgd:
+  authors:
+  - Ananya Kumar
+  - Ruoqi Shen
+  - Sebastien Bubeck
+  - Suriya Gunasekar
+  title: How to Fine-Tune Vision Models with SGD
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=ZTssMmhC2X
+  artifact: null
+  note: null
+
+source:fine-tuning-aligned-language-models-compromises:
+  authors:
+  - Xiangyu Qi
+  - Yi Zeng
+  - Tinghao Xie
+  - Pin-Yu Chen
+  - Ruoxi Jia
+  - Prateek Mittal
+  - Peter Henderson
+  title: Fine-tuning Aligned Language Models Compromises Safety, Even When Users Do Not Intend To!
+  venue: ICLR 2024 oral
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=hTEGyKf0dZ
+  artifact: null
+  note: null
+
+source:fine-tuning-enhances-existing-mechanisms-case:
+  authors:
+  - Nikhil Prakash
+  - Tamar Rott Shaham
+  - Tal Haklay
+  - Yonatan Belinkov
+  - David Bau
+  title: 'Fine-Tuning Enhances Existing Mechanisms: A Case Study on Entity Tracking'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=8sKcAWOf2D
+  artifact: null
+  note: null
+
+source:foundations-shortcut-learning:
+  authors:
+  - Katherine Hermann
+  - Hossein Mobahi
+  - Thomas FEL
+  - Michael Curtis Mozer
+  title: On the Foundations of Shortcut Learning
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=Tj3xLVuE9f
+  artifact: null
+  note: null
+
+source:from-bricks-bridges-product-invariances-enhance:
+  authors:
+  - Irene Cannistraci
+  - Luca Moschella
+  - Marco Fumero
+  - Valentino Maiorca
+  - Emanuele Rodolà
+  title: 'From Bricks to Bridges: Product of Invariances to Enhance Latent Space Communication'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=vngVydDWft
+  artifact: null
+  note: null
+
+source:frozen-transformers-language-models-effective-visual:
+  authors:
+  - Ziqi Pang
+  - Ziyang Xie
+  - Yunze Man
+  - Yu-Xiong Wang
+  title: Frozen Transformers in Language Models Are Effective Visual Encoder Layers
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=t0FI3Q66K5
+  artifact: null
+  note: null
+
+source:function-vectors-large-language-models:
+  authors:
+  - Eric Todd
+  - Millicent Li
+  - Arnab Sen Sharma
+  - Aaron Mueller
+  - Byron C Wallace
+  - David Bau
+  title: Function Vectors in Large Language Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=AwyxtyMwaG
+  artifact: null
+  note: null
+
+source:gaia-benchmark-general-ai-assistants:
+  authors:
+  - Grégoire Mialon
+  - Clémentine Fourrier
+  - Thomas Wolf
+  - Yann LeCun
+  - Thomas Scialom
+  title: 'GAIA: a benchmark for General AI Assistants'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=fibxvahvs3
+  artifact: null
+  note: null
+
+source:generative-ai-paradox-it-create-it:
+  authors:
+  - Peter West
+  - Ximing Lu
+  - Nouha Dziri
+  - Faeze Brahman
+  - Linjie Li
+  - Jena D. Hwang
+  - Liwei Jiang
+  - Jillian Fisher
+  - Abhilasha Ravichander
+  - Khyathi Chandu
+  - Benjamin Newman
+  - Pang Wei Koh
+  - Allyson Ettinger
+  - Yejin Choi
+  title: 'The Generative AI Paradox: “What It Can Create, It May Not Understand”'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=CF8H8MS5P8
+  artifact: null
+  note: null
+
+source:gnnx-bench-unravelling-utility-perturbation-based:
+  authors:
+  - Mert Kosan
+  - Samidha Verma
+  - Burouj Armgaan
+  - Khushbu Pahwa
+  - Ambuj Singh
+  - Sourav Medya
+  - Sayan Ranu
+  title: 'GNNX-BENCH: Unravelling the Utility of Perturbation-based GNN Explainers through In-depth
+    Benchmarking'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=VJvbOSXRUq
+  artifact: null
+  note: null
+
+source:gpt-4-too-smart-be-safe:
+  authors:
+  - Youliang Yuan
+  - Wenxiang Jiao
+  - Wenxuan Wang
+  - Jen-tse Huang
+  - Pinjia He
+  - Shuming Shi
+  - Zhaopeng Tu
+  title: 'GPT-4 Is Too Smart To Be Safe: Stealthy Chat with LLMs via Cipher'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=MbfAK4s61A
+  artifact: null
+  note: null
+
+source:harnessing-explanations-llm-lm-interpreter-enhanced:
+  authors:
+  - Xiaoxin He
+  - Xavier Bresson
+  - Thomas Laurent
+  - Adam Perold
+  - Yann LeCun
+  - Bryan Hooi
+  title: 'Harnessing Explanations: LLM-to-LM Interpreter for Enhanced Text-Attributed Graph Representation
+    Learning'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=RXFVcynVe1
+  artifact: null
+  note: null
+
+source:hidden-language-diffusion-models:
+  authors:
+  - Hila Chefer
+  - Oran Lang
+  - Mor Geva
+  - Volodymyr Polosukhin
+  - Assaf Shocher
+  - michal Irani
+  - Inbar Mosseri
+  - Lior Wolf
+  title: The Hidden Language of Diffusion Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=awWpHnEJDw
+  artifact: null
+  note: null
+
+source:humanity-conversational-ai-evaluating-psychological-portrayal:
+  authors:
+  - Jen-tse Huang
+  - Wenxuan Wang
+  - Eric John Li
+  - Man Ho LAM
+  - Shujie Ren
+  - Youliang Yuan
+  - Wenxiang Jiao
+  - Zhaopeng Tu
+  - Michael Lyu
+  title: 'On the Humanity of Conversational AI: Evaluating the Psychological Portrayal of LLMs'
+  venue: ICLR 2024 oral
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=H3UayAQWoE
+  artifact: null
+  note: null
+
+source:improving-long-text-alignment-text-image:
+  authors:
+  - Luping Liu
+  - Chao Du
+  - Tianyu Pang
+  - Zehan Wang
+  - Chongxuan Li
+  - Dong Xu
+  title: Improving Long-Text Alignment for Text-to-Image Diffusion Models
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=2ZK8zyIt7o
+  artifact: null
+  note: null
+
+source:improving-protein-optimization-smoothed-fitness-landscapes:
+  authors:
+  - Andrew Kirjner
+  - Jason Yim
+  - Raman Samusevich
+  - Shahar Bracha
+  - Tommi S. Jaakkola
+  - Regina Barzilay
+  - Ila R Fiete
+  title: Improving protein optimization with smoothed fitness landscapes
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=rxlF2Zv8x0
+  artifact: null
+  note: null
+
+source:interpgnn-understand-improve-generalization-ability-transdutive:
+  authors:
+  - Jiawei Sun
+  - Kailai Li
+  - Ruoxin Chen
+  - Jie LI
+  - Chentao Wu
+  - Yue Ding
+  - Junchi Yan
+  title: 'InterpGNN: Understand and Improve Generalization Ability of Transdutive GNNs through the Lens
+    of Interplay between Train and Test Nodes'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=pwW807WJ9G
+  artifact: null
+  note: null
+
+source:interpretable-diffusion-via-information-decomposition:
+  authors:
+  - Xianghao Kong
+  - Ollie Liu
+  - Han Li
+  - Dani Yogatama
+  - Greg Ver Steeg
+  title: Interpretable Diffusion via Information Decomposition
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=X6tNkN6ate
+  artifact: null
+  note: null
+
+source:interpreting-clip-s-image-representation-via:
+  authors:
+  - Yossi Gandelsman
+  - Alexei A Efros
+  - Jacob Steinhardt
+  title: Interpreting CLIP's Image Representation via Text-Based Decomposition
+  venue: ICLR 2024 oral
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=5Ca9sSzuDp
+  artifact: null
+  note: null
+
+source:invite-interpret-control-vision-language-models:
+  authors:
+  - Haozhe Chen
+  - Junfeng Yang
+  - Carl Vondrick
+  - Chengzhi Mao
+  title: 'INViTE: INterpret and Control Vision-Language Models with Text Explanations'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=5iENGLEJKG
+  artifact: null
+  note: null
+
+source:jailbreak-pieces-compositional-adversarial-attacks-multi:
+  authors:
+  - Erfan Shayegani
+  - Yue Dong
+  - Nael Abu-Ghazaleh
+  title: 'Jailbreak in pieces: Compositional Adversarial Attacks on Multi-Modal Language Models'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=plmBsXHxgR
+  artifact: null
+  note: null
+
+source:joma-demystifying-multilayer-transformers-via-joint:
+  authors:
+  - Yuandong Tian
+  - Yiping Wang
+  - Zhenyu Zhang
+  - Beidi Chen
+  - Simon Shaolei Du
+  title: 'JoMA: Demystifying Multilayer Transformers via Joint Dynamics of MLP and Attention'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=LbJqRGNYCf
+  artifact: null
+  note: null
+
+source:kitab-evaluating-llms-constraint-satisfaction-information:
+  authors:
+  - Marah I Abdin
+  - Suriya Gunasekar
+  - Varun Chandrasekaran
+  - Jerry Li
+  - Mert Yuksekgonul
+  - Rahee Ghosh Peshawaria
+  - Ranjita Naik
+  - Besmira Nushi
+  title: 'KITAB: Evaluating LLMs on Constraint Satisfaction for Information Retrieval'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=b3kDP3IytM
+  artifact: null
+  note: null
+
+source:knowledge-neuron-thesis-have-knowledge:
+  authors:
+  - Jingcheng Niu
+  - Andrew Liu
+  - Zining Zhu
+  - Gerald Penn
+  title: What does the Knowledge Neuron Thesis Have to do with Knowledge?
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=2HJRwwbV3G
+  artifact: null
+  note: null
+
+source:label-focused-inductive-bias-over-latent:
+  authors:
+  - Ilmin Kang
+  - HyounYoung Bae
+  - Kangil Kim
+  title: Label-Focused Inductive Bias over Latent Object Features in Visual Classification
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=cH3oufN8Pl
+  artifact: null
+  note: null
+
+source:language-informed-visual-concept-learning:
+  authors:
+  - Sharon Lee
+  - Yunzhi Zhang
+  - Shangzhe Wu
+  - Jiajun Wu
+  title: Language-Informed Visual Concept Learning
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=juuyW8B8ig
+  artifact: null
+  note: null
+
+source:language-model-cascades-token-level-uncertainty:
+  authors:
+  - Neha Gupta
+  - Harikrishna Narasimhan
+  - Wittawat Jitkrittum
+  - Ankit Singh Rawat
+  - Aditya Krishna Menon
+  - Sanjiv Kumar
+  title: 'Language Model Cascades: Token-Level Uncertainty And Beyond'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=KgaBScZ4VI
+  artifact: null
+  note: null
+
+source:language-modeling-compression:
+  authors:
+  - Gregoire Deletang
+  - Anian Ruoss
+  - Paul-Ambroise Duquenne
+  - Elliot Catt
+  - Tim Genewein
+  - Christopher Mattern
+  - Jordi Grau-Moya
+  - Li Kevin Wenliang
+  - Matthew Aitchison
+  - Laurent Orseau
+  - Marcus Hutter
+  - Joel Veness
+  title: Language Modeling Is Compression
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=jznbgiynus
+  artifact: null
+  note: null
+
+source:language-models-bind-entities-context:
+  authors:
+  - Jiahai Feng
+  - Jacob Steinhardt
+  title: How do Language Models Bind Entities in Context?
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=zb3b6oKO77
+  artifact: null
+  note: null
+
+source:language-models-represent-space-time:
+  authors:
+  - Wes Gurnee
+  - Max Tegmark
+  title: Language Models Represent Space and Time
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=jE8xbmvFin
+  artifact: null
+  note: null
+
+source:languagebind-extending-video-language-pretraining-n:
+  authors:
+  - Bin Zhu
+  - Bin Lin
+  - Munan Ning
+  - Yang Yan
+  - Jiaxi Cui
+  - WANG HongFa
+  - Yatian Pang
+  - Wenhao Jiang
+  - Junwu Zhang
+  - Zongwei Li
+  - Cai Wan Zhang
+  - Zhifeng Li
+  - Wei Liu
+  - Li Yuan
+  title: 'LanguageBind: Extending Video-Language Pretraining to N-modality by Language-based Semantic
+    Alignment'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=QmZKc7UZCy
+  artifact: null
+  note: null
+
+source:large-language-model-cascades-mixture-thought:
+  authors:
+  - Murong Yue
+  - Jie Zhao
+  - Min Zhang
+  - Liang Du
+  - Ziyu Yao
+  title: Large Language Model Cascades with Mixture of Thought Representations for Cost-Efficient Reasoning
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=6okaSfANzh
+  artifact: null
+  note: null
+
+source:large-language-models-as-automated-aligners:
+  authors:
+  - Yuanfeng Ji
+  - Chongjian GE
+  - Weikai Kong
+  - Enze Xie
+  - Zhengying Liu
+  - Zhenguo Li
+  - Ping Luo
+  title: Large Language Models as Automated Aligners for  benchmarking  Vision-Language Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=kZEXgtMNNo
+  artifact: null
+  note: null
+
+source:large-language-models-cannot-self-correct:
+  authors:
+  - Jie Huang
+  - Xinyun Chen
+  - Swaroop Mishra
+  - Huaixiu Steven Zheng
+  - Adams Wei Yu
+  - Xinying Song
+  - Denny Zhou
+  title: Large Language Models Cannot Self-Correct Reasoning Yet
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=IkmD3fKBPQ
+  artifact: null
+  note: null
+
+source:layer-wise-linear-mode-connectivity:
+  authors:
+  - Linara Adilova
+  - Maksym Andriushchenko
+  - Michael Kamp
+  - Asja Fischer
+  - Martin Jaggi
+  title: Layer-wise linear mode connectivity
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=LfmZh91tDI
+  artifact: null
+  note: null
+
+source:leanagent-lifelong-learning-formal-theorem-proving:
+  authors:
+  - Adarsh Kumarappan
+  - Mo Tiwari
+  - Peiyang Song
+  - Robert Joseph George
+  - Chaowei Xiao
+  - Anima Anandkumar
+  title: 'LeanAgent: Lifelong Learning for Formal Theorem Proving'
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=Uo4EHT4ZZ8
+  artifact: null
+  note: null
+
+source:learning-performance-improving-code-edits:
+  authors:
+  - Alexander G Shypula
+  - Aman Madaan
+  - Yimeng Zeng
+  - Uri Alon
+  - Jacob R. Gardner
+  - Yiming Yang
+  - Milad Hashemi
+  - Graham Neubig
+  - Parthasarathy Ranganathan
+  - Osbert Bastani
+  - Amir Yazdanbakhsh
+  title: Learning Performance-Improving Code Edits
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=ix7rLVHXyY
+  artifact: null
+  note: null
+
+source:linearity-relation-decoding-transformer-language-models:
+  authors:
+  - Evan Hernandez
+  - Arnab Sen Sharma
+  - Tal Haklay
+  - Kevin Meng
+  - Martin Wattenberg
+  - Jacob Andreas
+  - Yonatan Belinkov
+  - David Bau
+  title: Linearity of Relation Decoding in Transformer Language Models
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=w7LU2s14kE
+  artifact: null
+  note: null
+
+source:litcab-lightweight-language-model-calibration-over:
+  authors:
+  - Xin Liu
+  - Muhammad Khalifa
+  - Lu Wang
+  title: 'LitCab: Lightweight Language Model Calibration over Short- and Long-form Responses'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=jH67LHVOIO
+  artifact: null
+  note: null
+
+source:llm-generated-misinformation-be-detected:
+  authors:
+  - Canyu Chen
+  - Kai Shu
+  title: Can LLM-Generated Misinformation Be Detected?
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=ccxD4mtkTU
+  artifact: null
+  note: null
+
+source:llm-grounded-video-diffusion-models:
+  authors:
+  - Long Lian
+  - Baifeng Shi
+  - Adam Yala
+  - Trevor Darrell
+  - Boyi Li
+  title: LLM-grounded Video Diffusion Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=exKHibougU
+  artifact: null
+  note: null
+
+source:llms-express-their-uncertainty-empirical-evaluation:
+  authors:
+  - Miao Xiong
+  - Zhiyuan Hu
+  - Xinyang Lu
+  - YIFEI LI
+  - Jie Fu
+  - Junxian He
+  - Bryan Hooi
+  title: Can LLMs Express Their Uncertainty? An Empirical Evaluation of Confidence Elicitation in LLMs
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=gjeQKFxFpZ
+  artifact: null
+  note: null
+
+source:llms-keep-secret-testing-privacy-implications:
+  authors:
+  - Niloofar Mireshghallah
+  - Hyunwoo Kim
+  - Xuhui Zhou
+  - Yulia Tsvetkov
+  - Maarten Sap
+  - Reza Shokri
+  - Yejin Choi
+  title: Can LLMs Keep a Secret? Testing  Privacy  Implications of Language Models  via Contextual Integrity
+    Theory
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=gmg7t8b4s0
+  artifact: null
+  note: null
+
+source:lmsys-chat-1m-large-scale-real:
+  authors:
+  - Lianmin Zheng
+  - Wei-Lin Chiang
+  - Ying Sheng
+  - Tianle Li
+  - Siyuan Zhuang
+  - Zhanghao Wu
+  - Yonghao Zhuang
+  - Zhuohan Li
+  - Zi Lin
+  - Eric Xing
+  - Joseph E. Gonzalez
+  - Ion Stoica
+  - Hao Zhang
+  title: 'LMSYS-Chat-1M: A Large-Scale Real-World LLM Conversation Dataset'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=BOfDKxfwt0
+  artifact: null
+  note: null
+
+source:localizing-editing-knowledge-text-image-generative:
+  authors:
+  - Samyadeep Basu
+  - Nanxuan Zhao
+  - Vlad I Morariu
+  - Soheil Feizi
+  - Varun Manjunatha
+  title: Localizing and Editing Knowledge In Text-to-Image Generative Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=Qmw9ne6SOQ
+  artifact: null
+  note: null
+
+source:logicbreaks-framework-understanding-subversion-rule-based:
+  authors:
+  - Anton Xue
+  - Avishree Khare
+  - Rajeev Alur
+  - Surbhi Goel
+  - Eric Wong
+  title: 'Logicbreaks: A Framework for Understanding Subversion of Rule-based Inference'
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=pljYMCYDWJ
+  artifact: null
+  note: null
+
+source:makes-good-prune-maximal-unstructured-pruning:
+  authors:
+  - Gabryel Mason-Williams
+  - Fredrik Dahlqvist
+  title: What Makes a Good Prune? Maximal Unstructured Pruning for Maximal Cosine Similarity
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=jsvvPVVzwf
+  artifact: null
+  note: null
+
+source:massive-editing-large-language-models-via:
+  authors:
+  - Chenmien Tan
+  - Ge Zhang
+  - Jie Fu
+  title: Massive Editing for Large Language Models via Meta Learning
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=L6L1CJQ2PE
+  artifact: null
+  note: null
+
+source:matcher-segment-anything-one-shot-using:
+  authors:
+  - Yang Liu
+  - Muzhi Zhu
+  - Hengtao Li
+  - Hao Chen
+  - Xinlong Wang
+  - Chunhua Shen
+  title: 'Matcher: Segment Anything with One Shot Using All-Purpose Feature Matching'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=yzRXdhk2he
+  artifact: null
+  note: null
+
+source:mathcal-b-coder-value-based-deep:
+  authors:
+  - Zishun Yu
+  - Yunzhe Tao
+  - Liyu Chen
+  - Tao Sun
+  - Hongxia Yang
+  title: '$\mathcal{B}$-Coder: Value-Based Deep Reinforcement Learning for Program Synthesis'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=fLf589bx1f
+  artifact: null
+  note: null
+
+source:measuring-vision-language-stem-skills-neural:
+  authors:
+  - Jianhao Shen
+  - Ye Yuan
+  - Srbuhi Mirzoyan
+  - Ming Zhang
+  - Chenguang Wang
+  title: Measuring Vision-Language STEM Skills of Neural Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=spvaV5LELF
+  artifact: null
+  note: null
+
+source:memorization-capacity-multi-head-attention-transformers:
+  authors:
+  - Sadegh Mahdavi
+  - Renjie Liao
+  - Christos Thrampoulidis
+  title: Memorization Capacity of Multi-Head Attention in Transformers
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=MrR3rMxqqv
+  artifact: null
+  note: null
+
+source:metatool-benchmark-large-language-models-deciding:
+  authors:
+  - Yue Huang
+  - Jiawen Shi
+  - Yuan Li
+  - Chenrui Fan
+  - Siyuan Wu
+  - Qihui Zhang
+  - Yixin Liu
+  - Pan Zhou
+  - Yao Wan
+  - Neil Zhenqiang Gong
+  - Lichao Sun
+  title: 'MetaTool Benchmark for Large Language Models: Deciding Whether to Use Tools and Which to Use'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=R0c2qtalgG
+  artifact: null
+  note: null
+
+source:minigpt-4-enhancing-vision-language-understanding:
+  authors:
+  - Deyao Zhu
+  - Jun Chen
+  - Xiaoqian Shen
+  - Xiang Li
+  - Mohamed Elhoseiny
+  title: 'MiniGPT-4: Enhancing Vision-Language Understanding with Advanced Large Language Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=1tZbq88f27
+  artifact: null
+  note: null
+
+source:mint-evaluating-llms-multi-turn-interaction:
+  authors:
+  - Xingyao Wang
+  - Zihan Wang
+  - Jiateng Liu
+  - Yangyi Chen
+  - Lifan Yuan
+  - Hao Peng
+  - Heng Ji
+  title: 'MINT: Evaluating LLMs in Multi-turn Interaction with Tools and Language Feedback'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=jp3gWrMuIZ
+  artifact: null
+  note: null
+
+source:mintrec2-0-large-scale-benchmark-dataset:
+  authors:
+  - Hanlei Zhang
+  - Xin Wang
+  - Hua Xu
+  - Qianrui Zhou
+  - Kai Gao
+  - Jianhua Su
+  - jinyue Zhao
+  - Wenrui Li
+  - Yanting Chen
+  title: 'MIntRec2.0: A Large-scale Benchmark Dataset for Multimodal Intent Recognition and Out-of-scope
+    Detection in Conversations'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=nY9nITZQjc
+  artifact: null
+  note: null
+
+source:models-biased-text-without-gender-related:
+  authors:
+  - Catarina G Belém
+  - Preethi Seshadri
+  - Yasaman Razeghi
+  - Sameer Singh
+  title: Are Models Biased on Text without Gender-related Language?
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=w1JanwReU6
+  artifact: null
+  note: null
+
+source:molecule-text-interpretation-language-models-3d:
+  authors:
+  - Sihang Li
+  - Zhiyuan Liu
+  - Yanchen Luo
+  - Xiang Wang
+  - Xiangnan He
+  - Kenji Kawaguchi
+  - Tat-Seng Chua
+  - Qi Tian
+  title: Towards 3D Molecule-Text Interpretation in Language Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=xI4yNlkaqh
+  artifact: null
+  note: null
+
+source:more-rlhf-more-trust-impact-preference:
+  authors:
+  - Aaron Jiaxun Li
+  - Satyapriya Krishna
+  - Himabindu Lakkaraju
+  title: More RLHF, More Trust? On The Impact of Preference Alignment On Trustworthiness
+  venue: ICLR 2025 Oral
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=FpiCLJrSW8
+  artifact: null
+  note: null
+
+source:multi-granularity-correspondence-learning-from-long:
+  authors:
+  - Yijie Lin
+  - Jie Zhang
+  - Zhenyu Huang
+  - Jia Liu
+  - zujie wen
+  - Xi Peng
+  title: Multi-granularity Correspondence Learning from Long-term Noisy Videos
+  venue: ICLR 2024 oral
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=9Cu8MRmhq2
+  artifact: null
+  note: null
+
+source:musr-testing-limits-chain-thought-multistep:
+  authors:
+  - Zayne Rea Sprague
+  - Xi Ye
+  - Kaj Bostrom
+  - Swarat Chaudhuri
+  - Greg Durrett
+  title: 'MuSR: Testing the Limits of Chain-of-thought with Multistep Soft Reasoning'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=jenyYQzue1
+  artifact: null
+  note: null
+
+source:netinfof-framework-measuring-exploiting-network-usable:
+  authors:
+  - Meng-Chieh Lee
+  - Haiyang Yu
+  - Jian Zhang
+  - Vassilis N. Ioannidis
+  - Xiang song
+  - Soji Adeshina
+  - Da Zheng
+  - Christos Faloutsos
+  title: 'NetInfoF Framework: Measuring and Exploiting Network Usable Information'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=KY8ZNcljVU
+  artifact: null
+  note: null
+
+source:network-memory-footprint-compression-through-jointly:
+  authors:
+  - Edouard YVINEC
+  - Arnaud Dapogny
+  - Kevin Bailly
+  title: Network Memory Footprint Compression Through Jointly Learnable Codebooks and Mappings
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=1RrOtCmuKr
+  artifact: null
+  note: null
+
+source:neuron-activation-coverage-rethinking-out-distribution:
+  authors:
+  - Yibing Liu
+  - Chris XING TIAN
+  - Haoliang Li
+  - Lei Ma
+  - Shiqi Wang
+  title: 'Neuron Activation Coverage: Rethinking Out-of-distribution Detection and Generalization'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=SNGXbZtK6Q
+  artifact: null
+  note: null
+
+source:octopack-instruction-tuning-code-large-language:
+  authors:
+  - Niklas Muennighoff
+  - Qian Liu
+  - Armel Randy Zebaze
+  - Qinkai Zheng
+  - Binyuan Hui
+  - Terry Yue Zhuo
+  - Swayam Singh
+  - Xiangru Tang
+  - Leandro Von Werra
+  - Shayne Longpre
+  title: 'OctoPack: Instruction Tuning Code Large Language Models'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=mw1PWNSWZP
+  artifact: null
+  note: null
+
+source:overthinking-truth-understanding-language-models-process:
+  authors:
+  - Danny Halawi
+  - Jean-Stanislas Denain
+  - Jacob Steinhardt
+  title: 'Overthinking the Truth: Understanding how Language Models Process False Demonstrations'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=Tigr1kMDZy
+  artifact: null
+  note: null
+
+source:pandalm-automatic-evaluation-benchmark-llm-instruction:
+  authors:
+  - Yidong Wang
+  - Zhuohao Yu
+  - Wenjin Yao
+  - Zhengran Zeng
+  - Linyi Yang
+  - Cunxiang Wang
+  - Hao Chen
+  - Chaoya Jiang
+  - Rui Xie
+  - Jindong Wang
+  - Xing Xie
+  - Wei Ye
+  - Shikun Zhang
+  - Yue Zhang
+  title: 'PandaLM: An Automatic Evaluation Benchmark for LLM Instruction Tuning Optimization'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=5Nn2BLV7SB
+  artifact: null
+  note: null
+
+source:paradigm-shift-machine-translation-boosting-translation:
+  authors:
+  - Haoran Xu
+  - Young Jin Kim
+  - Amr Sharaf
+  - Hany Hassan Awadalla
+  title: 'A Paradigm Shift in Machine Translation: Boosting Translation Performance of Large Language
+    Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=farT6XXntP
+  artifact: null
+  note: null
+
+source:parsing-neural-dynamics-infinite-recurrent-switching:
+  authors:
+  - Victor Geadah
+  - International Brain Laboratory
+  - Jonathan W. Pillow
+  title: Parsing neural dynamics with infinite recurrent switching linear dynamical systems
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=YIls9HEa52
+  artifact: null
+  note: null
+
+source:path-norm-toolkit-modern-networks-consequences:
+  authors:
+  - Antoine Gonon
+  - Nicolas Brisebarre
+  - Elisa Riccietti
+  - Rémi Gribonval
+  title: 'A path-norm toolkit for modern networks: consequences, promises and challenges'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=hiHZVUIYik
+  artifact: null
+  note: null
+
+source:peering-through-preferences-unraveling-feedback-acquisition:
+  authors:
+  - Hritik Bansal
+  - John Dang
+  - Aditya Grover
+  title: 'Peering Through Preferences: Unraveling Feedback Acquisition for Aligning Large Language Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=dKl6lMwbCy
+  artifact: null
+  note: null
+
+source:perceptionclip-visual-classification-by-inferring-conditioning:
+  authors:
+  - Bang An
+  - Sicheng Zhu
+  - Michael-Andrei Panaitescu-Liess
+  - Chaithanya Kumar Mummadi
+  - Furong Huang
+  title: 'PerceptionCLIP: Visual Classification by Inferring and Conditioning on Contexts'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=2Oiee202rd
+  artifact: null
+  note: null
+
+source:phenomenal-yet-puzzling-testing-inductive-reasoning:
+  authors:
+  - Linlu Qiu
+  - Liwei Jiang
+  - Ximing Lu
+  - Melanie Sclar
+  - Valentina Pyatkin
+  - Chandra Bhagavatula
+  - Bailin Wang
+  - Yoon Kim
+  - Yejin Choi
+  - Nouha Dziri
+  - Xiang Ren
+  title: 'Phenomenal Yet Puzzling: Testing Inductive Reasoning Capabilities of Language Models with
+    Hypothesis Refinement'
+  venue: ICLR 2024 oral
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=bNt7oajl2a
+  artifact: null
+  note: null
+
+source:plasma-procedural-knowledge-models-language-based:
+  authors:
+  - Faeze Brahman
+  - Chandra Bhagavatula
+  - Valentina Pyatkin
+  - Jena D. Hwang
+  - Xiang Lorraine Li
+  - Hirona Jacqueline Arai
+  - Soumya Sanyal
+  - Keisuke Sakaguchi
+  - Xiang Ren
+  - Yejin Choi
+  title: 'PlaSma: Procedural Knowledge Models for Language-based Planning and Re-Planning'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=dFcXJgnrGB
+  artifact: null
+  note: null
+
+source:predicting-emergent-abilities-infinite-resolution-evaluation:
+  authors:
+  - Shengding Hu
+  - Xin Liu
+  - Xu Han
+  - Xinrong Zhang
+  - Chaoqun He
+  - Weilin Zhao
+  - Yankai Lin
+  - Ning Ding
+  - Zebin Ou
+  - Guoyang Zeng
+  - Zhiyuan Liu
+  - Maosong Sun
+  title: Predicting Emergent Abilities with Infinite Resolution Evaluation
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=lDbjooxLkD
+  artifact: null
+  note: null
+
+source:predictive-scalable-interpretable-knowledge-tracing-structured:
+  authors:
+  - Hanqi Zhou
+  - Robert Bamler
+  - Charley M Wu
+  - Álvaro Tejero-Cantero
+  title: Predictive, scalable and interpretable knowledge tracing on structured domains
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=NgaLU2fP5D
+  artifact: null
+  note: null
+
+source:prime-prioritizing-interpretability-failure-mode-extraction:
+  authors:
+  - Keivan Rezaei
+  - Mehrdad Saberi
+  - Mazda Moayeri
+  - Soheil Feizi
+  title: 'PRIME: Prioritizing Interpretability in Failure Mode Extraction'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=QrEHs9w5UF
+  artifact: null
+  note: null
+
+source:probabilistic-adaptation-black-box-text-video:
+  authors:
+  - Sherry Yang
+  - Yilun Du
+  - Bo Dai
+  - Dale Schuurmans
+  - Joshua B. Tenenbaum
+  - Pieter Abbeel
+  title: Probabilistic Adaptation of Black-Box Text-to-Video Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=pjtIEgscE3
+  artifact: null
+  note: null
+
+source:progress-object-recognition-benchmarks-improve-generalization:
+  authors:
+  - Megan Richards
+  - Polina Kirichenko
+  - Diane Bouchacourt
+  - Mark Ibrahim
+  title: Does Progress On Object Recognition Benchmarks Improve Generalization on Crowdsourced, Global
+    Data?
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=rhaQbS3K3R
+  artifact: null
+  note: null
+
+source:prometheus-inducing-fine-grained-evaluation-capability:
+  authors:
+  - Seungone Kim
+  - Jamin Shin
+  - Yejin Cho
+  - Joel Jang
+  - Shayne Longpre
+  - Hwaran Lee
+  - Sangdoo Yun
+  - Seongjin Shin
+  - Sungdong Kim
+  - James Thorne
+  - Minjoon Seo
+  title: 'Prometheus: Inducing Fine-Grained Evaluation Capability in Language Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=8euJaTveKw
+  artifact: null
+  note: null
+
+source:quantifying-language-models-sensitivity-spurious-features:
+  authors:
+  - Melanie Sclar
+  - Yejin Choi
+  - Yulia Tsvetkov
+  - Alane Suhr
+  title: 'Quantifying Language Models'' Sensitivity to Spurious Features in Prompt Design or: How I
+    learned to start worrying about prompt formatting'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=RIu5lyNXjT
+  artifact: null
+  note: null
+
+source:quantifying-plausibility-context-reliance-neural-machine:
+  authors:
+  - Gabriele Sarti
+  - Grzegorz Chrupała
+  - Malvina Nissim
+  - Arianna Bisazza
+  title: Quantifying the Plausibility of Context Reliance in Neural Machine Translation
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=XTHfNGI3zT
+  artifact: null
+  note: null
+
+source:rapper-reinforced-rationale-prompted-paradigm-natural:
+  authors:
+  - Kai-Po Chang
+  - Chi-Pin Huang
+  - Wei-Yuan Cheng
+  - Fu-En Yang
+  - Chien-Yi Wang
+  - Yung-Hsuan Lai
+  - Yu-Chiang Frank Wang
+  title: 'RAPPER: Reinforced Rationale-Prompted Paradigm for Natural Language Explanation in Visual
+    Question Answering'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=bshfchPM9H
+  artifact: null
+  note: null
+
+source:reasonableness-behind-unreasonable-translation-capability-large:
+  authors:
+  - Tingchen Fu
+  - Lemao Liu
+  - Deng Cai
+  - Guoping Huang
+  - Shuming Shi
+  - Rui Yan
+  title: The Reasonableness Behind Unreasonable Translation Capability of Large Language Model
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=3KDbIWT26J
+  artifact: null
+  note: null
+
+source:reclaiming-source-programmatic-policies-programmatic-versus:
+  authors:
+  - Tales Henrique Carvalho
+  - Kenneth Tjhia
+  - Levi Lelis
+  title: 'Reclaiming the Source of Programmatic Policies: Programmatic versus Latent Spaces'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=NGVljI6HkR
+  artifact: null
+  note: null
+
+source:relu-strikes-back-exploiting-activation-sparsity:
+  authors:
+  - Seyed Iman Mirzadeh
+  - Keivan Alizadeh-Vahid
+  - Sachin Mehta
+  - Carlo C del Mundo
+  - Oncel Tuzel
+  - Golnoosh Samei
+  - Mohammad Rastegari
+  - Mehrdad Farajtabar
+  title: 'ReLU Strikes Back: Exploiting Activation Sparsity in Large Language Models'
+  venue: ICLR 2024 oral
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=osoWxY8q2E
+  artifact: null
+  note: null
+
+source:rephrase-augment-reason-visual-grounding-questions:
+  authors:
+  - Archiki Prasad
+  - Elias Stengel-Eskin
+  - Mohit Bansal
+  title: 'Rephrase, Augment, Reason: Visual Grounding of Questions for Vision-Language Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=L4nOxziGf9
+  artifact: null
+  note: null
+
+source:respect-model-fine-grained-robust-explanation:
+  authors:
+  - Sangyu Han
+  - Yearim Kim
+  - Nojun Kwak
+  title: 'Respect the model: Fine-grained and Robust Explanation with Sharing Ratio Decomposition'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=U7VW3KBm34
+  artifact: null
+  note: null
+
+source:rethinking-benefits-steerable-features-3d-equivariant:
+  authors:
+  - Shih-Hsin Wang
+  - Yung-Chang Hsu
+  - Justin Baker
+  - Andrea L. Bertozzi
+  - Jack Xin
+  - Bao Wang
+  title: Rethinking the Benefits of Steerable Features in 3D Equivariant Graph Neural Networks
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=mGHJAyR8w0
+  artifact: null
+  note: null
+
+source:retrieval-meets-long-context-large-language:
+  authors:
+  - Peng Xu
+  - Wei Ping
+  - Xianchao Wu
+  - Lawrence McAfee
+  - Chen Zhu
+  - Zihan Liu
+  - Sandeep Subramanian
+  - Evelina Bakhturina
+  - Mohammad Shoeybi
+  - Bryan Catanzaro
+  title: Retrieval meets Long Context Large Language Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=xw5nxFWMlo
+  artifact: null
+  note: null
+
+source:reversal-curse-llms-trained-b-fail:
+  authors:
+  - Lukas Berglund
+  - Meg Tong
+  - Maximilian Kaufmann
+  - Mikita Balesni
+  - Asa Cooper Stickland
+  - Tomasz Korbak
+  - Owain Evans
+  title: 'The Reversal Curse: LLMs trained on “A is B” fail to learn “B is A”'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=GPKTIktA0k
+  artifact: null
+  note: null
+
+source:ring-bell-reliable-concept-removal-methods:
+  authors:
+  - Yu-Lin Tsai
+  - Chia-Yi Hsu
+  - Chulin Xie
+  - Chih-Hsun Lin
+  - Jia You Chen
+  - Bo Li
+  - Pin-Yu Chen
+  - Chia-Mu Yu
+  - Chun-Ying Huang
+  title: Ring-A-Bell! How Reliable are Concept Removal Methods For Diffusion Models?
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=lm7MRcsFiS
+  artifact: null
+  note: null
+
+source:robust-multi-modal-reasoning-via-model:
+  authors:
+  - Xiangyan Liu
+  - Rongxue LI
+  - Wei Ji
+  - Tao Lin
+  title: Towards Robust Multi-Modal Reasoning via Model Selection
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=KTf4DGAzus
+  artifact: null
+  note: null
+
+source:robustness-ai-image-detectors-fundamental-limits:
+  authors:
+  - Mehrdad Saberi
+  - Vinu Sankar Sadasivan
+  - Keivan Rezaei
+  - Aounon Kumar
+  - Atoosa Chegini
+  - Wenxiao Wang
+  - Soheil Feizi
+  title: 'Robustness of AI-Image Detectors: Fundamental Limits and Practical Attacks'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=dLoAdIKENc
+  artifact: null
+  note: null
+
+source:rt-trajectory-robotic-task-generalization-via:
+  authors:
+  - Jiayuan Gu
+  - Sean Kirmani
+  - Paul Wohlhart
+  - Yao Lu
+  - Montserrat Gonzalez Arenas
+  - Kanishka Rao
+  - Wenhao Yu
+  - Chuyuan Fu
+  - Keerthana Gopalakrishnan
+  - Zhuo Xu
+  - Priya Sundaresan
+  - Peng Xu
+  - Hao Su
+  - Karol Hausman
+  - Chelsea Finn
+  - Quan Vuong
+  - Ted Xiao
+  title: 'RT-Trajectory: Robotic Task Generalization via Hindsight Trajectory Sketches'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=F1TKzG8LJO
+  artifact: null
+  note: null
+
+source:safety-tuned-llamas-lessons-from-improving:
+  authors:
+  - Federico Bianchi
+  - Mirac Suzgun
+  - Giuseppe Attanasio
+  - Paul Rottger
+  - Dan Jurafsky
+  - Tatsunori Hashimoto
+  - James Zou
+  title: 'Safety-Tuned LLaMAs: Lessons From Improving the Safety of Large Language Models that Follow
+    Instructions'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=gT5hALch9z
+  artifact: null
+  note: null
+
+source:scaling-training-time-post-hoc-out:
+  authors:
+  - Kai Xu
+  - Rongyu Chen
+  - Gianni Franchi
+  - Angela Yao
+  title: Scaling for Training Time and Post-hoc Out-of-distribution Detection Enhancement
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=RDSTjtnqCg
+  artifact: null
+  note: null
+
+source:sdxl-improving-latent-diffusion-models-high:
+  authors:
+  - Dustin Podell
+  - Zion English
+  - Kyle Lacey
+  - Andreas Blattmann
+  - Tim Dockhorn
+  - Jonas Müller
+  - Joe Penna
+  - Robin Rombach
+  title: 'SDXL: Improving Latent Diffusion Models for High-Resolution Image Synthesis'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=di52zR8xgf
+  artifact: null
+  note: null
+
+source:seal-framework-systematic-evaluation-real-world:
+  authors:
+  - Wenlong Zhang
+  - Xiaohui Li
+  - Xiangyu Chen
+  - Xiaoyun Zhang
+  - Yu Qiao
+  - Xiao-Ming Wu
+  - Chao Dong
+  title: 'SEAL: A Framework for Systematic Evaluation of Real-World Super-Resolution'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=CGlczSBBSj
+  artifact: null
+  note: null
+
+source:self-repair-silver-bullet-code-generation:
+  authors:
+  - Theo X. Olausson
+  - Jeevana Priya Inala
+  - Chenglong Wang
+  - Jianfeng Gao
+  - Armando Solar-Lezama
+  title: Is Self-Repair a Silver Bullet for Code Generation?
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=y0GJXRungR
+  artifact: null
+  note: null
+
+source:sensitive-information-be-deleted-from-llms:
+  authors:
+  - Vaidehi Patil
+  - Peter Hase
+  - Mohit Bansal
+  title: Can Sensitive Information Be Deleted From LLMs? Objectives for Defending Against Extraction
+    Attacks
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=7erlRDoaV8
+  artifact: null
+  note: null
+
+source:simple-interpretable-transformer-fine-grained-image:
+  authors:
+  - DIPANJYOTI PAUL
+  - Arpita Chowdhury
+  - Xinqi Xiong
+  - Feng-Ju Chang
+  - David Edward Carlyn
+  - Samuel Stevens
+  - Kaiya L Provost
+  - Anuj Karpatne
+  - Bryan Carstens
+  - Daniel Rubenstein
+  - Charles Stewart
+  - Tanya Berger-Wolf
+  - Yu Su
+  - Wei-Lun Chao
+  title: A Simple Interpretable Transformer for Fine-Grained Image Classification and Analysis
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=bkdWThqE6q
+  artifact: null
+  note: null
+
+source:skill-mix-flexible-expandable-family-evaluations:
+  authors:
+  - Dingli Yu
+  - Simran Kaur
+  - Arushi Gupta
+  - Jonah Brown-Cohen
+  - Anirudh Goyal
+  - Sanjeev Arora
+  title: 'SKILL-MIX: a Flexible and Expandable Family of Evaluations for AI Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=Jf5gplvglq
+  artifact: null
+  note: null
+
+source:skip-attention-improving-vision-transformers-by:
+  authors:
+  - Shashanka Venkataramanan
+  - Amir Ghodrati
+  - Yuki M Asano
+  - Fatih Porikli
+  - Amir Habibian
+  title: 'Skip-Attention: Improving Vision Transformers by Paying Less Attention'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=vI95kcLAoU
+  artifact: null
+  note: null
+
+source:solving-challenging-math-word-problems-using:
+  authors:
+  - Aojun Zhou
+  - Ke Wang
+  - Zimu Lu
+  - Weikang Shi
+  - Sichun Luo
+  - Zipeng Qin
+  - Shaoqing Lu
+  - Anya Jia
+  - Linqi Song
+  - Mingjie Zhan
+  - Hongsheng Li
+  title: Solving Challenging Math Word Problems Using GPT-4 Code Interpreter with Code-based Self-Verification
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=c8McWs4Av0
+  artifact: null
+  note: null
+
+source:sotopia-interactive-evaluation-social-intelligence-language:
+  authors:
+  - Xuhui Zhou
+  - Hao Zhu
+  - Leena Mathur
+  - Ruohong Zhang
+  - Haofei Yu
+  - Zhengyang Qi
+  - Louis-Philippe Morency
+  - Yonatan Bisk
+  - Daniel Fried
+  - Graham Neubig
+  - Maarten Sap
+  title: 'SOTOPIA: Interactive Evaluation for Social Intelligence in Language Agents'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=mM7VurbA4r
+  artifact: null
+  note: null
+
+source:sparse-autoencoders-find-highly-interpretable-features:
+  authors:
+  - Robert Huben
+  - Hoagy Cunningham
+  - Logan Riggs Smith
+  - Aidan Ewart
+  - Lee Sharkey
+  title: Sparse Autoencoders Find Highly Interpretable Features in Language Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=F76bwRSLeK
+  artifact: null
+  note: null
+
+source:successor-heads-recurring-interpretable-attention-heads:
+  authors:
+  - Rhys Gould
+  - Euan Ong
+  - George Ogden
+  - Arthur Conmy
+  title: 'Successor Heads: Recurring, Interpretable Attention Heads In The Wild'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=kvcbV8KQsi
+  artifact: null
+  note: null
+
+source:sudden-drops-loss-syntax-acquisition-phase:
+  authors:
+  - Angelica Chen
+  - Ravid Shwartz-Ziv
+  - Kyunghyun Cho
+  - Matthew L Leavitt
+  - Naomi Saphra
+  title: 'Sudden Drops in the Loss: Syntax Acquisition, Phase Transitions, and Simplicity Bias in MLMs'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=MO5PiKHELW
+  artifact: null
+  note: null
+
+source:supervised-knowledge-makes-large-language-models:
+  authors:
+  - Linyi Yang
+  - Shuibai Zhang
+  - Zhuohao Yu
+  - Guangsheng Bao
+  - Yidong Wang
+  - Jindong Wang
+  - Ruochen Xu
+  - Wei Ye
+  - Xing Xie
+  - Weizhu Chen
+  - Yue Zhang
+  title: Supervised Knowledge Makes Large Language Models Better In-context Learners
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=bAMPOUF227
+  artifact: null
+  note: null
+
+source:swe-bench-language-models-resolve-real:
+  authors:
+  - Carlos E Jimenez
+  - John Yang
+  - Alexander Wettig
+  - Shunyu Yao
+  - Kexin Pei
+  - Ofir Press
+  - Karthik R Narasimhan
+  title: 'SWE-bench: Can Language Models Resolve Real-world Github Issues?'
+  venue: ICLR 2024 oral
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=VTF8yNQM66
+  artifact: null
+  note: null
+
+source:tailoring-self-rationalizers-multi-reward-distillation:
+  authors:
+  - Sahana Ramnath
+  - Brihi Joshi
+  - Skyler Hallinan
+  - Ximing Lu
+  - Liunian Harold Li
+  - Aaron Chan
+  - Jack Hessel
+  - Yejin Choi
+  - Xiang Ren
+  title: Tailoring Self-Rationalizers with Multi-Reward Distillation
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=t8eO0CiZJV
+  artifact: null
+  note: null
+
+source:talk-like-graph-encoding-graphs-large:
+  authors:
+  - Bahare Fatemi
+  - Jonathan Halcrow
+  - Bryan Perozzi
+  title: 'Talk like a Graph: Encoding Graphs for Large Language Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=IuXR1CCrSi
+  artifact: null
+  note: null
+
+source:teaching-arithmetic-small-transformers:
+  authors:
+  - Nayoung Lee
+  - Kartik Sreenivasan
+  - Jason D. Lee
+  - Kangwook Lee
+  - Dimitris Papailiopoulos
+  title: Teaching Arithmetic to Small Transformers
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=dsUB4bst9S
+  artifact: null
+  note: null
+
+source:teaching-large-language-models-self-debug:
+  authors:
+  - Xinyun Chen
+  - Maxwell Lin
+  - Nathanael Schärli
+  - Denny Zhou
+  title: Teaching Large Language Models to Self-Debug
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=KuPixIqPiq
+  artifact: null
+  note: null
+
+source:tell-your-model-where-attend-post:
+  authors:
+  - Qingru Zhang
+  - Chandan Singh
+  - Liyuan Liu
+  - Xiaodong Liu
+  - Bin Yu
+  - Jianfeng Gao
+  - Tuo Zhao
+  title: 'Tell Your Model Where to Attend: Post-hoc Attention Steering for LLMs'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=xZDWO0oejD
+  artifact: null
+  note: null
+
+source:this-subspace-you-looking-interpretability-illusion:
+  authors:
+  - Aleksandar Makelov
+  - Georg Lange
+  - Atticus Geiger
+  - Neel Nanda
+  title: Is This the Subspace You Are Looking for? An Interpretability Illusion for Subspace Activation
+    Patching
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=Ebt7JgMHv1
+  artifact: null
+  note: null
+
+source:tic-clip-continual-training-clip-models:
+  authors:
+  - Saurabh Garg
+  - Mehrdad Farajtabar
+  - Hadi Pouransari
+  - Raviteja Vemulapalli
+  - Sachin Mehta
+  - Oncel Tuzel
+  - Vaishaal Shankar
+  - Fartash Faghri
+  title: 'TiC-CLIP: Continual Training of CLIP Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=TLADT8Wrhn
+  artifact: null
+  note: null
+
+source:toolllm-facilitating-large-language-models-master:
+  authors:
+  - Yujia Qin
+  - Shihao Liang
+  - Yining Ye
+  - Kunlun Zhu
+  - Lan Yan
+  - Yaxi Lu
+  - Yankai Lin
+  - Xin Cong
+  - Xiangru Tang
+  - Bill Qian
+  - Sihan Zhao
+  - Lauren Hong
+  - Runchu Tian
+  - Ruobing Xie
+  - Jie Zhou
+  - Mark Gerstein
+  - dahai li
+  - Zhiyuan Liu
+  - Maosong Sun
+  title: 'ToolLLM: Facilitating Large Language Models to Master 16000+ Real-world APIs'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=dHng2O0Jjr
+  artifact: null
+  note: null
+
+source:tora-tool-integrated-reasoning-agent-mathematical:
+  authors:
+  - Zhibin Gou
+  - Zhihong Shao
+  - Yeyun Gong
+  - yelong shen
+  - Yujiu Yang
+  - Minlie Huang
+  - Nan Duan
+  - Weizhu Chen
+  title: 'ToRA: A Tool-Integrated Reasoning Agent for Mathematical Problem Solving'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=Ep0TtjVoap
+  artifact: null
+  note: null
+
+source:trickle-down-impact-reward-inconsistency-rlhf:
+  authors:
+  - Lingfeng Shen
+  - Sihao Chen
+  - Linfeng Song
+  - Lifeng Jin
+  - Baolin Peng
+  - Haitao Mi
+  - Daniel Khashabi
+  - Dong Yu
+  title: The Trickle-down Impact of Reward Inconsistency on RLHF
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=MeHmwCDifc
+  artifact: null
+  note: null
+
+source:turning-large-language-models-into-cognitive:
+  authors:
+  - Marcel Binz
+  - Eric Schulz
+  title: Turning large language models into cognitive models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=eiC4BKypf1
+  artifact: null
+  note: null
+
+source:understanding-augmentation-based-self-supervised-representation:
+  authors:
+  - Runtian Zhai
+  - Bingbin Liu
+  - Andrej Risteski
+  - J Zico Kolter
+  - Pradeep Kumar Ravikumar
+  title: Understanding Augmentation-based Self-Supervised Representation Learning via RKHS Approximation
+    and Regression
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=Ax2yRhCQr1
+  artifact: null
+  note: null
+
+source:understanding-catastrophic-forgetting-language-models-via:
+  authors:
+  - Suhas Kotha
+  - Jacob Mitchell Springer
+  - Aditi Raghunathan
+  title: Understanding Catastrophic Forgetting in Language Models via Implicit Inference
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=VrHiF2hsrm
+  artifact: null
+  note: null
+
+source:understanding-context-learning-from-repetitions:
+  authors:
+  - Jianhao Yan
+  - Jin Xu
+  - Chiyu Song
+  - Chenming Wu
+  - Yafu Li
+  - Yue Zhang
+  title: Understanding In-Context Learning from Repetitions
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=bGGYcvw8mp
+  artifact: null
+  note: null
+
+source:understanding-context-learning-transformers-llms-by:
+  authors:
+  - Satwik Bhattamishra
+  - Arkil Patel
+  - Phil Blunsom
+  - Varun Kanade
+  title: Understanding In-Context Learning in Transformers and LLMs by Learning to Learn Discrete Functions
+  venue: ICLR 2024 oral
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=ekeyCgeRfC
+  artifact: null
+  note: null
+
+source:understanding-factual-knowledge-large-language-models:
+  authors:
+  - Xuming Hu
+  - Junzhe Chen
+  - Xiaochuan Li
+  - Yufei Guo
+  - Lijie Wen
+  - Philip S. Yu
+  - Zhijiang Guo
+  title: Towards Understanding Factual Knowledge of Large Language Models
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=9OevMUdods
+  artifact: null
+  note: null
+
+source:understanding-mitigating-label-noise-pre-training:
+  authors:
+  - Hao Chen
+  - Jindong Wang
+  - Ankit Shah
+  - Ran Tao
+  - Hongxin Wei
+  - Xing Xie
+  - Masashi Sugiyama
+  - Bhiksha Raj
+  title: Understanding and Mitigating the Label Noise in Pre-training on Downstream Tasks
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=TjhUtloBZU
+  artifact: null
+  note: null
+
+source:understanding-prompt-engineering-may-not-require:
+  authors:
+  - Victor Akinwande
+  - Yiding Jiang
+  - Dylan Sam
+  - J Zico Kolter
+  title: Understanding prompt engineering may not require rethinking generalization
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=a745RnSFLT
+  artifact: null
+  note: null
+
+source:understanding-robustness-randomized-feature-defense-against:
+  authors:
+  - Nguyen Hung-Quang
+  - Yingjie Lao
+  - Tung Pham
+  - Kok-Seng Wong
+  - Khoa D Doan
+  title: Understanding the Robustness of Randomized Feature Defense Against Query-Based Adversarial
+    Attacks
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=vZ6r9GMT1n
+  artifact: null
+  note: null
+
+source:understanding-sycophancy-language-models:
+  authors:
+  - Mrinank Sharma
+  - Meg Tong
+  - Tomasz Korbak
+  - David Duvenaud
+  - Amanda Askell
+  - Samuel R. Bowman
+  - Esin DURMUS
+  - Zac Hatfield-Dodds
+  - Scott R Johnston
+  - Shauna M Kravec
+  - Timothy Maxwell
+  - Sam McCandlish
+  - Kamal Ndousse
+  - Oliver Rausch
+  - Nicholas Schiefer
+  - Da Yan
+  - Miranda Zhang
+  - Ethan Perez
+  title: Towards Understanding Sycophancy in Language Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=tvhaxkMKAn
+  artifact: null
+  note: null
+
+source:understanding-text-hallucination-diffusion-models-via:
+  authors:
+  - Rui Lu
+  - Runzhe Wang
+  - Kaifeng Lyu
+  - Xitai Jiang
+  - Gao Huang
+  - Mengdi Wang
+  title: Towards Understanding Text Hallucination of Diffusion Models via Local Generation Bias
+  venue: ICLR 2025 Poster
+  date: '2025-01-22'
+  anchor: https://openreview.net/forum?id=SKW10XJlAI
+  artifact: null
+  note: null
+
+source:universalner-targeted-distillation-from-large-language:
+  authors:
+  - Wenxuan Zhou
+  - Sheng Zhang
+  - Yu Gu
+  - Muhao Chen
+  - Hoifung Poon
+  title: 'UniversalNER: Targeted Distillation from Large Language Models for Open Named Entity Recognition'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=r65xfUb76p
+  artifact: null
+  note: null
+
+source:unlocking-spell-base-llms-rethinking-alignment:
+  authors:
+  - Bill Yuchen Lin
+  - Abhilasha Ravichander
+  - Ximing Lu
+  - Nouha Dziri
+  - Melanie Sclar
+  - Khyathi Chandu
+  - Chandra Bhagavatula
+  - Yejin Choi
+  title: 'The Unlocking Spell on Base LLMs:  Rethinking Alignment via In-Context Learning'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=wxJ0eXwwda
+  artifact: null
+  note: null
+
+source:unveiling-manipulating-prompt-influence-large-language:
+  authors:
+  - Zijian Feng
+  - Hanzhang Zhou
+  - ZIXIAO ZHU
+  - Junlang Qian
+  - Kezhi Mao
+  title: Unveiling and Manipulating Prompt Influence in Large Language Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=ap1ByuwQrX
+  artifact: null
+  note: null
+
+source:unveiling-pitfalls-knowledge-editing-large-language:
+  authors:
+  - Zhoubo Li
+  - Ningyu Zhang
+  - Yunzhi Yao
+  - Mengru Wang
+  - Xi Chen
+  - Huajun Chen
+  title: Unveiling the Pitfalls of Knowledge Editing for Large Language Models
+  venue: ICLR 2024 poster
+  date: '2024-02-02'
+  anchor: https://openreview.net/forum?id=fNktD3ib16
+  artifact: null
+  note: null
+
+source:unveiling-unseen-identifiable-clusters-trained-depthwise:
+  authors:
+  - Zahra Babaiee
+  - Peyman Kiasari
+  - Daniela Rus
+  - Radu Grosu
+  title: 'Unveiling the Unseen: Identifiable Clusters in Trained Depthwise Convolutional Kernels'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=4VgBjsOC8k
+  artifact: null
+  note: null
+
+source:vanishing-gradients-reinforcement-finetuning-language-models:
+  authors:
+  - Noam Razin
+  - Hattie Zhou
+  - Omid Saremi
+  - Vimal Thilak
+  - Arwen Bradley
+  - Preetum Nakkiran
+  - Joshua M. Susskind
+  - Etai Littwin
+  title: Vanishing Gradients in Reinforcement Finetuning of Language Models
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=IcVNBR7qZi
+  artifact: null
+  note: null
+
+source:variance-neural-network-training-respect-test:
+  authors:
+  - Keller Jordan
+  title: On the Variance of Neural Network Training with respect to Test Sets and Distributions
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=pEGSdJu52I
+  artifact: null
+  note: null
+
+source:vilma-zero-shot-benchmark-linguistic-temporal:
+  authors:
+  - Ilker Kesen
+  - Andrea Pedrotti
+  - Mustafa Dogan
+  - Michele Cafagna
+  - Emre Can Acikgoz
+  - Letitia Parcalabescu
+  - Iacer Calixto
+  - Anette Frank
+  - Albert Gatt
+  - Aykut Erdem
+  - Erkut Erdem
+  title: 'ViLMA: A Zero-Shot Benchmark for Linguistic and Temporal Grounding in Video-Language Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=liuqDwmbQJ
+  artifact: null
+  note: null
+
+source:vision-by-language-training-free-compositional:
+  authors:
+  - Shyamgopal Karthik
+  - Karsten Roth
+  - Massimiliano Mancini
+  - Zeynep Akata
+  title: Vision-by-Language for Training-Free Compositional Image Retrieval
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=EDPxCjXzSb
+  artifact: null
+  note: null
+
+source:vision-language-models-zero-shot-reward:
+  authors:
+  - Juan Rocamonde
+  - Victoriano Montesinos
+  - Elvis Nava
+  - Ethan Perez
+  - David Lindner
+  title: Vision-Language Models are Zero-Shot Reward Models for Reinforcement Learning
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=N0I2RtD8je
+  artifact: null
+  note: null
+
+source:vision-transformers-need-registers:
+  authors:
+  - Timothée Darcet
+  - Maxime Oquab
+  - Julien Mairal
+  - Piotr Bojanowski
+  title: Vision Transformers Need Registers
+  venue: ICLR 2024 oral
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=2dnO3LLiJ1
+  artifact: null
+  note: null
+
+source:when-prompting-prefix-tuning-work-theory:
+  authors:
+  - Aleksandar Petrov
+  - Philip Torr
+  - Adel Bibi
+  title: When Do Prompting and Prefix-Tuning Work? A Theory of Capabilities and Limitations
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=JewzobRhay
+  artifact: null
+  note: null
+
+source:where-we-have-arrived-proving-emergence:
+  authors:
+  - Qihan Ren
+  - Jiayang Gao
+  - Wen Shen
+  - Quanshi Zhang
+  title: Where We Have Arrived in Proving the Emergence of Sparse Interaction Primitives in DNNs
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=3pWSL8My6B
+  artifact: null
+  note: null
+
+source:wildchat-1m-chatgpt-interaction-logs-wild:
+  authors:
+  - Wenting Zhao
+  - Xiang Ren
+  - Jack Hessel
+  - Claire Cardie
+  - Yejin Choi
+  - Yuntian Deng
+  title: 'WildChat: 1M ChatGPT Interaction Logs in the Wild'
+  venue: ICLR 2024 spotlight
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=Bl8u7ZRlbM
+  artifact: null
+  note: null
+
+source:writing-language-models-reduce-content-diversity:
+  authors:
+  - Vishakh Padmakumar
+  - He He
+  title: Does Writing with Language Models Reduce Content Diversity?
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=Feiz5HtCD0
+  artifact: null
+  note: null
+
+source:yarn-efficient-context-window-extension-large:
+  authors:
+  - Bowen Peng
+  - Jeffrey Quesnelle
+  - Honglu Fan
+  - Enrico Shippole
+  title: 'YaRN: Efficient Context Window Extension of Large Language Models'
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=wHBfxhZu1u
+  artifact: null
+  note: null
+
+source:zero-few-shot-semantic-parsing-ambiguous:
+  authors:
+  - Elias Stengel-Eskin
+  - Kyle Rawlins
+  - Benjamin Van Durme
+  title: Zero and Few-shot Semantic Parsing with Ambiguous Inputs
+  venue: ICLR 2024 poster
+  date: '2024-01-16'
+  anchor: https://openreview.net/forum?id=qL9gogRepu
+  artifact: null
+  note: null

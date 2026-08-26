@@ -1,0 +1,28 @@
+id: IC-998
+title: 'GPT-3.5''s zero-shot accuracy on OGBN-ARXIV depends on the position of the title relative to
+  the abstract in the prompt: 0.720 when abstract precedes title, 0.695 when title precedes abstract'
+description: The paper tests four prompt variants on OGBN-ARXIV. The default prompt places the abstract
+  before the title and yields 0.720 zero-shot accuracy. When the title is moved before the abstract
+  (same content, different order), accuracy drops to 0.695. Two other variants that add instructional
+  text (focus on text content, chain of thought) also yield 0.695 and 0.705 respectively. The authors
+  note this aligns with the principle that placing more critical information later in the prompt can
+  be beneficial.
+models:
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:harnessing-explanations-llm-lm-interpreter-enhanced
+datasets:
+- ref: dataset:ogbn-arxiv
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 0.720 (abstract before title) vs 0.695 (title before abstract), zero-shot on OGBN-ARXIV
+caveat: The difference is 0.025 in absolute accuracy; the paper does not report statistical significance
+  or multiple seeds for the prompt comparison.
+extracted_by: automatic-extraction
+related_findings:
+- IC-996
+- IC-997

@@ -1,0 +1,32 @@
+id: IC-1008
+title: The magnitude of CRITIC's improvement on mathematical program synthesis scales with Llama-2 model
+  size
+description: 'The paper measures how much CRITIC (with code interpreter feedback) improves over Program-of-Thought
+  on TabMWP across three Llama-2 variants. The absolute improvement grows monotonically with model size:
+  +4.7 for 7B, +9.4 for 13B, and +16.0 for 70B. The authors state that ''the benefits derived from critic
+  are more pronounced when paired with larger language models,'' indicating that larger models can better
+  leverage external execution feedback to correct their programs.'
+models:
+- ref: model:llama-2
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:critic-large-language-models-self-correct
+datasets:
+- ref: dataset:tabmwp
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:svamp
+  role: eval
+methods:
+- ref: method:critic
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'TabMWP improvement over PoT: +4.7 (Llama-2-7B), +9.4 (Llama-2-13B), +16.0 (Llama-2-70B)'
+caveat: Measured on a single dataset (TabMWP) with a specific tool (Python interpreter); the scaling
+  trend is reported for one task family (mathematical program synthesis) and one model family (Llama-2).
+extracted_by: automatic-extraction
+related_findings:
+- IC-1007

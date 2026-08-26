@@ -1,0 +1,35 @@
+id: IC-1332
+title: Vicuna-v1.5 and CodeLlama-34b-instruct produce format-breaking artifacts (escaped underscores,
+  [python] tags) in 30-100% of code instances due to training data contamination
+description: 'Vicuna-v1.5 models generate escaped underscores (\_) in function names across all tasks,
+  causing Python syntax errors: 30.38% of reasoning instances for 7b and 38.61% for 13b, rising to 86.57%
+  (decision-making) and 90.44% (code) for 13b. The authors trace this to ~15% of ShareGPT training examples
+  containing the backslash-underscore pattern. Separately, CodeLlama-34b-instruct wraps code in [python]
+  tags on 100% of code generation tasks, ignoring the instructed <execute> format, which the authors
+  attribute to overfitting on [python] tags used during its self-instruct fine-tuning phase.'
+models:
+- ref: model:vicuna
+  variant: variant:vicuna-v1-5-7b
+- ref: model:vicuna
+  variant: variant:vicuna-v1-5-13b
+- ref: model:codellama-34b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:mint-evaluating-llms-multi-turn-interaction
+datasets:
+- ref: dataset:sharegpt
+  role: source
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Vicuna-v1.5-13b: 38.61% (reasoning), 86.57% (decision-making), 90.44% (code) instances
+  contain escaped underscore; CodeLlama-34b-instruct: 100.00% of code generation instances use [python]
+  tag; ~15% of ShareGPT examples contain backslash-underscore artifact'
+caveat: The authors suspect but do not definitively prove the causal link between training data artifacts
+  and the observed output patterns. The [python] tag issue is specific to code generation tasks (0%
+  on other task types).
+extracted_by: automatic-extraction
+related_findings:
+- IC-1330
+- IC-1331

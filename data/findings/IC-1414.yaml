@@ -1,0 +1,27 @@
+id: IC-1414
+title: Pretrained code models Starcoder and CodeGeex2 score 0.0% on code explanation across all six
+  languages because they generate code instead of natural language
+description: When evaluated on the HumanEvalExplain task, which requires generating a natural language
+  description of a code function, both Starcoder and CodeGeex2 produce code output rather than natural
+  language explanations. The authors manually inspect the first ten Python samples and disqualify a
+  model if none of the outputs are explanations; both models are disqualified. The authors attribute
+  this to these models being only conditioned to write code during pretraining, without exposure to
+  natural language targets during instruction tuning.
+models:
+- ref: model:starcoder
+- ref: model:codegeex2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:octopack-instruction-tuning-code-large-language
+datasets: []
+methods:
+- ref: method:pass-k
+  role: eval
+related_work: []
+evidence_type: observational
+key_metric: 0.0% pass@1 on HumanEvalExplain across all 6 languages for both Starcoder and CodeGeex2
+extracted_by: automatic-extraction
+related_findings:
+- IC-1413
+- IC-1415

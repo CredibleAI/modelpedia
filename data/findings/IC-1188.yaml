@@ -1,0 +1,28 @@
+id: IC-1188
+title: GPT-3 procedural planning performance is scale-dependent, with Curie (6.7B) scoring 3.75 and
+  Davinci (175B) scoring 4.90 overall quality in few-shot settings, while GPT-4 achieves 4.81 overall
+  and 5.00 order
+description: The paper evaluates GPT-3 variants and GPT-4 on language-based procedural planning (decomposing
+  goals into temporally ordered steps) using human evaluation on 250 goals. In a 5-shot setting, GPT-3
+  Curie achieves 3.75 overall quality while GPT-3 Davinci (175B) achieves 4.90, a 31% relative gap attributable
+  to scale. GPT-4 in a few-shot setting on 50 instances achieves 4.81 overall and 5.00 order, comparable
+  to Davinci. On constrained and counterfactual replanning (300 examples), Davinci zero-shot achieves
+  93.33% and 90% good plans respectively, while Curie zero-shot achieves only 68% and 44.33%.
+models:
+- ref: model:gpt-3
+- ref: model:gpt-4
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:plasma-procedural-knowledge-models-language-based
+datasets:
+- ref: dataset:proscript
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-3 Curie few-shot(5): 3.75 overall; GPT-3 Davinci zero-shot: 4.84, few-shot(5): 4.90
+  overall; GPT-4 few-shot: 4.81 overall, 5.00 order; CoCoGen few-shot(16): 4.55 overall; Constrained:
+  Davinci zero-shot 93.33%, Curie zero-shot 68%; Counterfactual: Davinci zero-shot 90%, Curie zero-shot
+  44.33%'
+extracted_by: automatic-extraction

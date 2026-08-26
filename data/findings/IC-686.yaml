@@ -1,0 +1,27 @@
+id: IC-686
+title: Adversarial perturbations alter CLIP ViT-B/32's token representations most strongly starting
+  around layer 10
+description: In an appendix experiment, the paper applies an adversarial perturbation to a forest image
+  that causes CLIP to misclassify it as beach. By interpreting each token at every layer with ViTE before
+  and after the attack, they measure the percentage of tokens that shift from interpreting as 'forest'
+  to 'beach.' The percentage of affected tokens increases sharply starting around layer 10, indicating
+  the adversarial effect is concentrated in the later layers of the 13-layer transformer.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:invite-interpret-control-vision-language-models
+datasets:
+- ref: dataset:uc-merced-land-use
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: adversarial attack impacts model most starting around layer 10
+caveat: Single-image qualitative analysis in appendix; no aggregate statistics or multiple examples
+  reported.
+extracted_by: automatic-extraction
+related_findings:
+- IC-684
+- IC-685

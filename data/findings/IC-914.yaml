@@ -1,0 +1,30 @@
+id: IC-914
+title: In Pythia models (70M through 2.8B), BERT-base, OPT-6.7B, LLaMA-2-7B, and ViT-Huge, the MLP out-projection
+  vectors are almost orthogonal throughout training
+description: The paper verifies its theoretical assumption of orthonormal embedding vectors by measuring
+  the absolute cosine similarity between all pairs of column vectors in the MLP out-projection (upper)
+  matrix across layers. In Pythia models of various sizes (70M, 160M, 410M, 1B, 1.4B, 2.8B), the average
+  cosine similarity remains well below 1 throughout the entire training process, including early stages.
+  The same near-orthogonality is confirmed at the final checkpoint for BERT-base, OPT-6.7B, LLaMA-2-7B,
+  and ViT-Huge.
+models:
+- ref: model:pythia
+- ref: model:bert
+- ref: model:opt
+- ref: model:llama-2
+- ref: model:vit
+concepts: []
+sources:
+- ref: source:joma-demystifying-multilayer-transformers-via-joint
+datasets: []
+methods:
+- ref: method:cosine-similarity
+  role: eval
+related_work: []
+evidence_type: observational
+caveat: The paper notes that 4d d-dimensional vectors must be linearly dependent, so perfect orthogonality
+  is impossible; the claim is that they are 'almost orthogonal' (cossim << 1).
+extracted_by: automatic-extraction
+related_findings:
+- IC-913
+- IC-915

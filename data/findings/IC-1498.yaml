@@ -1,0 +1,31 @@
+id: IC-1498
+title: 'The benefit of frozen LLM transformer blocks for visual encoding is scale-dependent: OPT blocks
+  below 1.3B parameters degrade ViT-s performance while blocks at 1.3B and above improve it'
+description: The paper tests the last transformer block from OPT at five scales (125M, 350M, 1.3B, 2.7B,
+  6.7B) appended to ViT-s, trained for 100 epochs following DeiT. The two smallest OPT blocks (125M,
+  350M) actually reduce accuracy below the ViT-s baseline, while the three larger blocks (1.3B, 2.7B,
+  6.7B) all improve it. The authors note that the small OPT blocks even produce NaN loss values at the
+  original DeiT learning rate, requiring a 5x reduction for stable training, further indicating that
+  sufficient scale is a prerequisite for the phenomenon.
+models:
+- ref: model:opt
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:frozen-transformers-language-models-effective-visual
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:deit
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: ViT-s baseline 75.25; +OPT-125M 71.63; +OPT-350M 71.56; +OPT-1.3B 75.62; +OPT-2.7B 75.74;
+  +OPT-6.7B 76.29
+caveat: Experiments use 100-epoch training (ablation setting) rather than the full 300-epoch protocol;
+  small OPT models required a 1/5 learning rate reduction to avoid NaN loss.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1496
+- IC-1497

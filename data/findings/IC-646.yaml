@@ -1,0 +1,51 @@
+id: IC-646
+title: DINOv2, DeiT-III, and OpenCLIP repurpose approximately 2% of patch tokens in low-informative
+  background areas as internal registers, discarding local patch information while aggregating global
+  image information; DINO does not exhibit this behaviour
+description: 'The paper identifies high-norm outlier tokens (norm > 150) in the output feature maps
+  of DINOv2, DeiT-III, and OpenCLIP. These tokens correspond to patches that are highly similar to their
+  four neighbours (cosine similarity 22.8 vs 41.7 for normal patches), indicating redundant background
+  content. Linear probing shows these outlier tokens retain far less local information: position prediction
+  accuracy drops from 41.7% to 22.8% and pixel reconstruction L2 error rises from 18.38 to 25.23. Conversely,
+  using a single outlier token as the image representation for classification yields dramatically higher
+  accuracy than a normal patch (e.g. 79.1% vs 17.1% on Aircrafts), indicating they store global image
+  information. The artifacts emerge around layer 15 of a 40-layer ViT, appear only after roughly one-third
+  of training, and are present exclusively in models of ViT-Large size or larger. DINO ViT-B/16 shows
+  no such outliers, and MAE ViT-Large also lacks them.'
+models:
+- ref: model:dinov2
+- ref: model:dino
+- ref: model:deit-iii
+- ref: model:openclip
+- ref: model:mae
+concepts:
+- ref: concept:register-tokens
+- ref: concept:depth-dependent-structure
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:vision-transformers-need-registers
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:imagenet-21k
+  role: eval
+methods:
+- ref: method:linear-probing
+  role: primary
+- ref: method:cosine-similarity
+  role: primary
+related_work:
+- name: Memory Transformer
+  anchor: https://arxiv.org/abs/2006.11527
+  role: context
+evidence_type: correlational
+key_metric: '2.37% of DINOv2 ViT-G/14 tokens have norm > 150; position prediction top-1 acc: normal
+  41.7% vs outlier 22.8%; reconstruction L2 error: normal 18.38 vs outlier 25.23; cosine similarity
+  to 4 neighbours: normal 41.7 vs outlier 22.8; Aircrafts linear probing top-1: normal 17.1% vs outlier
+  79.1% vs [cls] 87.3%; artifacts appear around layer 15 of 40; only in ViT-Large, ViT-Huge, ViT-Giant'
+caveat: The norm cutoff of 150 is hand-picked and can vary across models. The authors note they have
+  not fully determined which aspects of training (pretraining paradigm, model size, training length)
+  cause the artifacts to appear.
+extracted_by: automatic-extraction
+related_findings:
+- IC-647

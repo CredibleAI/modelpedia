@@ -1,0 +1,37 @@
+id: IC-1053
+title: Instruction tuning suppresses in-context learning in LLaMA, Vicuna, and OPT-IML, with the suppression
+  being largest for English prompts and partially recoverable via translation to other languages
+description: The paper constructs a controlled prompt where in-context exemplars define a latent task
+  (repeat or capitalize) but the final query is phrased as an instruction (math or fill-in-the-blank).
+  Pretrained models (LLaMA-7B, OPT-1.3B) perform the ICL task, while their instruction-tuned counterparts
+  (Alpaca, Vicuna-7B, OPT-IML-1.3B) follow the instruction instead. The drop in ICL accuracy is largest
+  in English (56.75% for Alpaca, 40.00% for Vicuna, 21.00% for OPT-IML) and much smaller in French,
+  Spanish, Dutch, Hungarian, leetspeak, or Pig Latin. For example, Alpaca's ICL drop under leetspeak
+  is only 1.0% versus 56.75% in English.
+models:
+- ref: model:llama
+- ref: model:alpaca
+- ref: model:vicuna
+- ref: model:opt
+  variant: variant:opt-iml
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:understanding-catastrophic-forgetting-language-models-via
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Alpaca ICL drop: 56.75% (English), 29.00% (French), 47.75% (Spanish), 51.00% (Dutch), 45.75%
+  (Hungarian), 1.50% (leetspeak), 13.50% (Pig Latin); Vicuna ICL drop: 33.00% (English), 19.50% (French),
+  11.00% (Spanish), 39.00% (Dutch), 36.50% (Hungarian), 1.00% (leetspeak), 25.00% (Pig Latin); OPT-IML
+  ICL drop: 21.00% (English), 9.25% (French), 5.25% (Spanish), 5.75% (Dutch), 4.25% (Hungarian), 4.00%
+  (leetspeak), 10.00% (Pig Latin)'
+caveat: Translation is implemented via Google Translate and may introduce errors; the paper notes that
+  translation can violate invertibility for tasks requiring contextual knowledge that varies across
+  languages. Evaluation is limited to first-word completion accuracy over 400 samples and 4 ICL vs IF
+  task combinations.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1054
+- IC-1055

@@ -1,0 +1,37 @@
+id: IC-1457
+title: Pre-trained language models track the distribution of logical forms in mixed few-shot prompts
+  with conflicting examples
+description: When given prompts containing 10 input-LF pairs with varying ratios of LF0 to LF1 (0% to
+  100% in increments of 1), models' accuracy on LF0 tracks the prompt ratio. For scope and inverse scope,
+  Codegen-2B's accuracy tracks almost perfectly. FDM scores (lower is better, measuring dataset-level
+  alignment) show Codegen-16B achieving 0.20-0.38 and Vicuna-13B achieving 0.17-0.35 across ambiguity
+  types, while Llama-13B scores 1.00 on all types (never predicts correctly). FIM scores (probability
+  alignment via forced decode) are low across all models (0.03-0.16), indicating that even Llama-13B,
+  which never generates a correct LF, assigns probabilities aligned with the prompt distribution when
+  forced to decode the gold LFs. The paper notes that low FIM does not imply low FDM since FDM requires
+  actual accuracy.
+models:
+- ref: model:codegen
+- ref: model:llama
+- ref: model:vicuna
+concepts: []
+sources:
+- ref: source:zero-few-shot-semantic-parsing-ambiguous
+datasets: []
+methods:
+- ref: method:constrained-decoding
+  role: primary
+- ref: method:benchclamp
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: 'FDM (pp/scope/revscope/bound/conj): cg-16b 0.35/0.20/0.21/0.38/0.27, vi-13b 0.50/0.17/0.20/0.26/0.35,
+  ll-13b 1.00/1.00/1.00/1.00/1.00. FIM: cg-16b 0.08/0.03/0.03/0.10/0.06, ll-13b 0.06/0.04/0.04/0.06/0.05,
+  vi-13b 0.08/0.05/0.06/0.07/0.09'
+caveat: 'FIM uses forced decoding of gold LFs, so low FIM does not imply the model would generate the
+  correct LF under free decoding. The paper explicitly states: ''low f_im does not imply low f_dm, since
+  low f_dm requires the model to be accurate.'' GPT-3.5-turbo is excluded from few-shot experiments
+  because the API does not provide logit scores.'
+extracted_by: automatic-extraction
+related_findings:
+- IC-1456

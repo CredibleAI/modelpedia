@@ -1,0 +1,25 @@
+id: IC-985
+title: LLaMA-2-7B plateaus in ICL accuracy and fails to override semantic priors when in-context labels
+  are flipped on a simple happy/sad classification task
+description: 'The paper evaluates the released LLaMA-2-7B checkpoint (used as-is, no fine-tuning) on
+  a simple natural-language ICL task: given in-context sentence pairs linking a character''s action
+  to an emotion label (happy/sad), the model must predict the correct label for a new sentence. In the
+  standard setting, accuracy improves with more in-context examples but quickly plateaus, a pattern
+  shared by all 13 architectures tested. In the flipped-label setting, where ''happy'' and ''sad'' are
+  swapped, LLaMA-2-7B fails to override its pretraining semantic priors and cannot learn the inverted
+  mapping from in-context examples alone, joining the majority of architectures that fail this condition.'
+models:
+- ref: model:llama-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:attention-required-icl-exploring-relationship-between
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The task is a very simple binary classification on 200 short sentence pairs, far from the model's
+  pretraining distribution; specific accuracy values are reported only in Figure 4 and not in the text.
+  The model is evaluated on a task type (few-shot ICL on short sentences) that differs substantially
+  from its pretraining objective.
+extracted_by: automatic-extraction

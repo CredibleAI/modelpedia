@@ -1,0 +1,38 @@
+id: IC-835
+title: CLIP zero-shot predictions exhibit large worst-group accuracy gaps due to spurious correlations
+  on Waterbirds and CelebA
+description: On Waterbirds (bird type vs background) and CelebA (blonde hair vs sex), zero-shot CLIP
+  shows large gaps between average and worst-group accuracy. CLIP ViT-L/14 achieves only 45.3% worst-group
+  accuracy on Waterbirds (gap 39.1%) and 72.8% on CelebA (gap 14.9%). CLIP ResNet-50 is worse on Waterbirds
+  at 39.6% worst-group (gap 37.7%). The model relies on the background or sex as a proxy for the target
+  attribute, a correlation that does not hold causally.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:fairerclip-debiasing-clip-s-zero-shot
+datasets:
+- ref: dataset:waterbirds
+  role: eval
+- ref: dataset:celeba
+  role: eval
+methods: []
+related_work:
+- name: Contrastive adapter
+  anchor: https://arxiv.org/abs/2207.07180
+  role: compared-to
+- name: Orth-Cali
+  anchor: https://arxiv.org/abs/2302.00070
+  role: compared-to
+- name: ERM adapter
+  anchor: https://arxiv.org/abs/2110.04544
+  role: compared-to
+evidence_type: observational
+key_metric: 'Zero-shot WG/avg/gap: CLIP ViT-L/14 Waterbirds 45.3/84.4/39.1, CelebA 72.8/87.6/14.9; CLIP
+  ResNet-50 Waterbirds 39.6/77.3/37.7, CelebA 75.9/82.3/6.4'
+extracted_by: automatic-extraction
+related_findings:
+- IC-834
+- IC-836
+- IC-837

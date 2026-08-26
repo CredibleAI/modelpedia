@@ -178,7 +178,7 @@ def split(documents, entities, sources, prefix, known_concepts, roles=None, text
     roles = roles or {}
     texts = texts or {}
     indexes = {field: link.index_of(entities, node_type) for field, node_type in FIELDS}
-    everything = link.index_of(entities)
+    everything = link.index_of(entities, graph_json.REGISTRY_TYPES)
     variants = link.index_of(entities, graph_json.VARIANT)
     parents = link.parents_of(entities)
 

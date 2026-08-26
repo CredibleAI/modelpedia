@@ -1,0 +1,27 @@
+id: IC-1289
+title: OpenFlamingo and Otter achieve near-chance accuracy on Bongard-OpenWorld, indicating inability
+  to perform multi-image reasoning
+description: 'The paper tests two end-to-end pretrained VLMs, OpenFlamingo and Otter, on Bongard-OpenWorld
+  by presenting them with six positive images, six negative images, and one query image in a single
+  prompt. Both models score at or below the 50% chance level: OpenFlamingo achieves 50.0% and Otter
+  49.3%. The authors attribute this to the models'' inability to perform the holistic multi-image comparison
+  that Bongard-OpenWorld requires, as opposed to processing images independently.'
+models:
+- ref: model:openflamingo
+- ref: model:otter
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:bongard-openworld-few-shot-reasoning-free
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: OpenFlamingo 50.0%, Otter 49.3%, chance 50%
+caveat: The authors note that most publicly available VLMs cannot handle multiple images simultaneously,
+  which already rules out many candidates. The prompt format (splicing images with <|endofchunk|> tokens)
+  may not be optimal for these models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1288
+- IC-1290

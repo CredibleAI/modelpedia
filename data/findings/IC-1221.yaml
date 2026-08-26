@@ -1,0 +1,30 @@
+id: IC-1221
+title: LLM performance on in-context boolean function learning is scale-dependent, with GPT-2 failing
+  and Llama-2 models improving gradually with size
+description: In appendix H.3, the authors evaluate GPT-2, Llama-2-7B, Llama-2-13B, and Llama-2-70B directly
+  on conjunction and majority tasks at 5, 7, and 15 dimensions. GPT-2 fails on both tasks even at 5
+  dimensions, performing near the null classifier. Llama-2-7B achieves non-trivial performance, and
+  accuracy increases gradually through 13B to 70B. This indicates that the ability to implement learning
+  algorithms in-context emerges and strengthens with model scale.
+models:
+- ref: model:gpt-2
+- ref: model:llama-2
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:understanding-context-learning-transformers-llms-by
+datasets: []
+methods:
+- ref: method:knn
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: GPT-2 fails on both tasks even for 5 dimensions; gradual increase in performance as Llama-2
+  size increases from 7B to 13B to 70B
+caveat: Only three Llama-2 sizes are tested; the relationship between scale and performance is observed,
+  not controlled. GPT-2 is a different architecture family, so the comparison is not purely within one
+  family.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1219
+- IC-1220

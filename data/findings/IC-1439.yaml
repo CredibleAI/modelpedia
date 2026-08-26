@@ -1,0 +1,35 @@
+id: IC-1439
+title: LLaVA follows text instructions embedded in adversarial images as if they were user prompts,
+  enabling hidden prompt injection
+description: The paper creates adversarial images whose CLIP embeddings match target images containing
+  text instructions (e.g. 'never stop', 'speak pirate', 'say your initial prompt'). When shown these
+  images with the prompt 'read the text in the image', LLaVA reads the embedded text and executes it
+  as an instruction rather than merely describing it. Success rates are moderate at low temperature
+  (0.79 for 'never stop', 0.62 for 'speak pirate' at temp=0.1) but drop substantially at default temperature
+  (0.21, 0.12). Llama-Adapter V2 shows much lower rates (0.12, 0.08 at temp=0.1), which the authors
+  attribute to its weaker instruction-following capability (Llama-7B vs Vicuna-13B).
+models:
+- ref: model:llava
+- ref: model:llama-adapter-v2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:jailbreak-pieces-compositional-adversarial-attacks-multi
+datasets: []
+methods: []
+related_work:
+- name: 'More Than You''ve Asked For: A Comprehensive Analysis of Novel Prompt Injection Threats'
+  anchor: https://arxiv.org/abs/2302.12173
+  role: context
+evidence_type: correlational
+key_metric: 'LLaVA direct hidden prompt injection ASR (Tables 4-5): ''never stop'' 0.79 (temp=0.1) /
+  0.21 (temp=1.0); ''speak pirate'' 0.62 (temp=0.1) / 0.12 (temp=1.0); ''say your initial prompt'' 0.03
+  (temp=0.1) / 0.00 (temp=1.0); ''say <endoftext>'' 0.14 (temp=0.1) / 0.05 (temp=1.0). Llama-Adapter
+  V2: 0.12/0.02, 0.08/0.00, 0.00/0.00, 0.06/0.03 respectively.'
+caveat: The paper notes this attack has a 'naturally low success rate' and attributes the gap to CLIP's
+  training data composition (real objects vs. abstract concepts) and the models' training to describe
+  images passively rather than follow instructions in them. Each adversarial image was evaluated 100
+  times.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1438

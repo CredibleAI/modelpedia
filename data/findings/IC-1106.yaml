@@ -1,0 +1,36 @@
+id: IC-1106
+title: 'CLIP prompts found by greedy search do not fit random labels: train and test error drop in tandem
+  as the fraction of flipped labels increases, unlike a linear probe which achieves near-random accuracy'
+description: The authors test whether CLIP prompts can memorize noise by running greedy search on CIFAR-10,
+  CIFAR-100, FMOW, and OfficeHome with a controlled fraction of randomly flipped training labels. Both
+  training and test error decrease monotonically and in tandem as the flip ratio increases, indicating
+  the prompts track the true signal rather than the noise. As a baseline, a linear probe trained on
+  the same CLIP features with 100% flipped labels achieves roughly random performance (13.60% accuracy
+  on CIFAR-10), confirming that the prompt space is too small to memorize arbitrary label assignments.
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:understanding-prompt-engineering-may-not-require
+datasets:
+- ref: dataset:cifar-10
+  role: eval
+- ref: dataset:cifar-100
+  role: eval
+- ref: dataset:fmow
+  role: eval
+- ref: dataset:officehome
+  role: eval
+methods:
+- ref: method:linear-probing
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: Linear probe on CIFAR-10 with 100% flipped labels achieves 13.60% accuracy; greedy prompts
+  show monotonic in-tandem drop of train and test error across 0-100% label flip ratio on CIFAR-10,
+  CIFAR-100, FMOW, and OfficeHome
+caveat: The experiment uses a fixed prompt length of 5 and the CLIP vocabulary; the result is specific
+  to the discrete prompt formulation and may not extend to continuous (soft) prompts.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1105

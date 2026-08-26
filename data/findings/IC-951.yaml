@@ -1,0 +1,26 @@
+id: IC-951
+title: The programmatic space achieves behavior-similarity values comparable to the LEAPS latent space,
+  indicating that optimizing the behavior loss alone does not produce a more search-conducive space
+description: The authors measure the ρ-similarity (normalized longest common prefix of action sequences)
+  between a program and its neighbor after 1–10 mutations, in both the programmatic space and the LEAPS
+  latent space (σ = 0.1, 0.25, 0.5). They also measure the identity rate (probability a neighbor is
+  the same program). The programmatic space achieves comparable behavior-similarity to the latent space
+  across all σ settings, and the latent space with σ = 0.1, while achieving high similarity, has a higher
+  identity rate. This shows that the behavior loss, which is the training objective of the LEAPS VAE,
+  does not by itself guarantee a space that is easier to search.
+models:
+- ref: model:leaps
+concepts: []
+sources:
+- ref: source:reclaiming-source-programmatic-policies-programmatic-versus
+datasets: []
+methods: []
+related_work:
+- ref: model:leaps
+  role: compared-to
+evidence_type: correlational
+caveat: 'The behavior-similarity metric is measured on 32 random Karel maps unrelated to any task and
+  1,000 initial programs; it captures local neighborhood structure but does not directly predict search
+  performance, as the authors note: ''the observed result still does not explain the performance discrepancy
+  that we observe when searching for policies that solve tasks.'''
+extracted_by: automatic-extraction

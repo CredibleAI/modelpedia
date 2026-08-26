@@ -1,0 +1,41 @@
+id: IC-709
+title: Swin Transformer parameter redundancy is depth-dependent, with higher layers retaining fewer
+  parameters than lower layers under module-aware pruning
+description: The authors analyse which weights in Swin-S are most important using their module-level
+  distortion metric and observe a clear depth-dependent pattern in the ratio of kept parameters. Lower
+  layers (early in the network) retain a larger fraction of their parameters, while higher layers (deeper
+  in the network) are pruned more aggressively, indicating greater redundancy in deeper layers. Additionally,
+  within the first and second Swin blocks, attention-related layers (att-qkv, att-prj) retain a higher
+  ratio of parameters than MLP-related layers (mlp-fc1, mlp-fc2), suggesting attention is more critical
+  for low-level feature extraction. This depth-dependent redundancy structure is what makes uniform
+  magnitude pruning suboptimal, as it does not account for the varying importance across depths.
+models:
+- ref: model:swin-transformer
+  variant: variant:swin-s
+- ref: model:swin-transformer
+  variant: variant:swin-b
+- ref: model:swin-transformer
+  variant: variant:swin-t
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:data-independent-module-aware-pruning-hierarchical
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:uniform-magnitude-pruning
+  role: compared-to
+related_work:
+- name: Swin Transformer
+  anchor: https://arxiv.org/abs/2103.14030
+  role: builds-on
+evidence_type: observational
+key_metric: 'Swin-S pruned 45% of parameters: lower layers keep a larger ratio of parameters than higher
+  layers (Figure 5); in first and second blocks, attention layers (1,2,5,6) have larger kept ratios
+  than MLP layers (3,4,7,8); Swin-B top-5 drop 0.07% at 52.5% params removed; Swin-S top-5 drop -0.03%
+  at 33.2% params removed'
+caveat: The depth-dependent pattern is observed using the authors' own module-level importance metric;
+  a different importance criterion might reveal a different depth profile. The analysis is limited to
+  Swin Transformers and may not generalise to other hierarchical ViT architectures.
+extracted_by: automatic-extraction

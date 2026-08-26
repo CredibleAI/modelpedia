@@ -1,0 +1,43 @@
+id: IC-869
+title: Models ranking highly on popular LLM leaderboards perform worse than Llama-2-70b-chat on Skill-Mix,
+  suggesting cramming for the leaderboard at the expense of general-purpose text generation
+description: Falcon-180b-chat, Xwin-LM-70b-v0.1, Qwen-14b-chat, and Mistral-7b-instruct-v0.1 all rank
+  above Llama-2-70b-chat on the Open LLM Leaderboard or AlpacaEval, yet all perform worse than Llama-2-70b-chat
+  on Skill-Mix under both GPT-4 and Llama-2 grading. TigerBot-70b-chat, also ranked above Llama-2-70b-chat
+  on the Open LLM Leaderboard, performs even worse than Llama-2-13b-chat on Skill-Mix. The authors interpret
+  this as evidence that training on data similar to leaderboard benchmarks ('cramming') significantly
+  harmed general-purpose text skills.
+models:
+- ref: model:falcon
+  variant: variant:falcon-180b-chat
+- ref: model:xwin-lm-70b-v0-1
+- ref: model:qwen
+  variant: variant:qwen-14b-chat
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-1
+- ref: model:tigerbot-70b-chat
+- ref: model:llama-2
+concepts: []
+sources:
+- ref: source:skill-mix-flexible-expandable-family-evaluations
+datasets:
+- ref: dataset:open-llm-leaderboard
+  role: eval
+- ref: dataset:alpacaeval
+  role: eval
+methods: []
+related_work:
+- ref: dataset:open-llm-leaderboard
+  role: compared-to
+- ref: dataset:alpacaeval
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Ratio of full marks (GPT-4 grading, k=2): Falcon-180b-chat .27, TigerBot-70b-chat .06,
+  Qwen-14b-chat .16, Mistral-7b-instruct-v0.1 .05, versus Llama-2-70b-chat .28'
+caveat: The paper does not directly measure whether these models were trained on leaderboard data; the
+  'cramming' interpretation is inferential. Falcon-180b-chat was evaluated on only 30 combinations.
+extracted_by: automatic-extraction
+related_findings:
+- IC-868
+- IC-870
+- IC-871

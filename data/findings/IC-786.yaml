@@ -1,0 +1,24 @@
+id: IC-786
+title: CLIP-ViT (LC) achieves 0.87 accuracy and 0.91 average precision on fake image detection
+description: The authors trained CLIP-ViT (LC) on a small custom dataset of 100 real and 100 generated
+  images per model (from DP2.0, RV1.4, Epic, SD2.1) and evaluated on 200 test images. CLIP-ViT (LC)
+  achieved 0.87 accuracy and 0.91 average precision. A CAS ensemble MLP trained on the same data achieved
+  0.92 accuracy and 0.96 average precision, outperforming the state-of-the-art fake detector.
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:cas-probability-based-approach-universal-condition
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Table 7: CLIP-ViT (LC) accuracy 0.87, average precision 0.91; CAS ensemble MLP accuracy
+  0.92, average precision 0.96'
+caveat: Small-scale experiment with only 500 training samples; the CAS ensemble uses four different
+  diffusion models as features; the authors note the test and training generation models differ.
+extracted_by: automatic-extraction
+related_findings:
+- IC-783
+- IC-784
+- IC-785

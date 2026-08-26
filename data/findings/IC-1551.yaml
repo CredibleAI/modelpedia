@@ -1,0 +1,41 @@
+id: IC-1551
+title: No consistent relationship between model size and gender fairness scores is observed across six
+  LM families
+description: 'The paper examines the US fairness metric across multiple sizes within six model families
+  (Pythia 70M-12B, OPT 125M-6.7B, LLaMA-2 7B-70B, MPT 7B-30B, OLMo 1B-7B, Mistral/Mixtral 7B-8x7B).
+  No consistent monotonic trend is found: within each family, fairness scores do not reliably increase
+  or decrease with model size. For example, in Pythia on USE-5, the 410M model (28.67%) outperforms
+  the 1.4B (18.37%) and 2.8B (18.23%), while the 12B (31.33%) is highest. The authors conclude that
+  model size alone does not determine gender fairness in non-stereotypical settings.'
+models:
+- ref: model:pythia
+- ref: model:opt
+- ref: model:llama-2
+- ref: model:mpt
+- ref: model:olmo
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-v0-1
+- ref: model:mixtral-8x7b
+  variant: variant:mixtral-8x7b-v0-1
+concepts: []
+sources:
+- ref: source:models-biased-text-without-gender-related
+datasets:
+- ref: dataset:use-5
+  role: eval
+- ref: dataset:winobias
+  role: eval
+- ref: dataset:winogender
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Pythia USE-5 US scores: 70M=21.11%, 160M=15.96%, 410M=28.67%, 1.4B=18.37%, 2.8B=18.23%,
+  6.9B=11.99%, 12B=31.33%; OPT USE-5: 125M=16.05%, 350M=31.46%, 2.7B=29.33%, 6.7B=29.15%'
+caveat: The comparison is limited to models within the same family; cross-family comparisons are confounded
+  by architecture and training data differences.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1549
+- IC-1550
+- IC-1552

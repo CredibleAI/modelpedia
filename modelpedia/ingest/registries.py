@@ -92,6 +92,33 @@ def add_fields(field, key, values):
     return True
 
 
+def set_anchor(field, key, anchor):
+    """An anchor onto an entry that has none. Refuses to touch an entry that already carries one:
+    a proposal is evidence that a URL fits a citation, never that it fits the entity better than
+    what a human already put there. Returns False when it changed nothing, so the caller can
+    count what it actually wrote instead of what it meant to write."""
+    path = path_for(field)
+    lines = path.read_text(encoding="utf-8").splitlines()
+    at = next((i for i, line in enumerate(lines) if line.rstrip() == "%s:" % key), None)
+    if at is None:
+        return False
+    end = next((i for i in range(at + 1, len(lines))
+                if lines[i] and not lines[i].startswith(" ")), len(lines))
+    held = next((i for i in range(at + 1, end) if lines[i].strip().startswith("anchor:")), None)
+    if held is not None:
+        if lines[held].split(":", 1)[1].strip() not in ("", "null", "~"):
+            return False
+        lines[held] = "  anchor: %s" % anchor
+    else:
+        name_at = next((i for i in range(at + 1, end)
+                        if lines[i].strip().startswith("name:")), None)
+        if name_at is None:
+            return False
+        lines.insert(name_at + 1, "  anchor: %s" % anchor)
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return True
+
+
 def add_alias(field, key, spelling):
     path = path_for(field)
     lines = path.read_text(encoding="utf-8").splitlines()

@@ -1,0 +1,37 @@
+id: IC-1361
+title: GPT-4 and other state-of-the-art LLMs achieve near-human accuracy in inferring personal attributes
+  from unstructured text
+description: 'The paper evaluates 9 released LLMs on the PersonalReddit dataset (520 profiles, 1066
+  labels across 8 attributes). GPT-4 achieves 85.5% top-1 and 95.2% top-3 accuracy, approaching human
+  labeler performance. A clear scale trend is observed: Llama-2 7B reaches 51% while Llama-2 70B reaches
+  66%. The models achieve this at 100x lower cost and 240x lower time than human labelers, making large-scale
+  privacy inference feasible.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+- ref: model:llama-2
+- ref: model:claude-instant-1
+- ref: model:palm-2
+concepts: []
+sources:
+- ref: source:beyond-memorization-violating-privacy-via-inference
+datasets:
+- ref: dataset:pan-2018
+  role: eval
+- ref: dataset:acs-income
+  role: eval
+methods: []
+related_work:
+- name: Hegselmann et al. (TabLLM)
+  anchor: https://arxiv.org/abs/2210.10723
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4: 85.5% top-1, 95.2% top-3; Llama-2 7B: 51%; Llama-2 70B: 66%; 100x cost reduction,
+  240x time reduction vs. human labelers'
+caveat: Human labelers had access to subreddit names and search engines, which models did not; the dataset
+  is not publicly released due to privacy concerns
+extracted_by: automatic-extraction
+related_findings:
+- IC-1362
+- IC-1363
+- IC-1364

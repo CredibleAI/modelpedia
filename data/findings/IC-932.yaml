@@ -1,0 +1,42 @@
+id: IC-932
+title: Pre-trained DNN object detectors show a sharp falloff in peripheral detection performance with
+  increasing eccentricity, degrading to near-chance by 20°, while human performance degrades gradually
+description: Seven pre-trained object detection models were evaluated on a two-interval forced-choice
+  peripheral detection task using uniform TTM-transformed COCO images at 5, 10, 15, and 20 degrees eccentricity.
+  All models show a steep drop in average precision and critical eccentricity as eccentricity increases,
+  reaching near-chance performance by 20 degrees. In contrast, 10 human subjects show a gradual, graceful
+  decline in detection accuracy across the same eccentricities. Humans outperform all DNNs, with critical
+  eccentricity thresholds more than 5 degrees greater than any detection model.
+models:
+- ref: model:dino-focalnet-large
+- ref: model:swin-transformer
+  variant: variant:dino-swin-tiny
+- ref: model:detr-r50
+- ref: model:retinanet-r50
+- ref: model:foveabox
+- ref: model:faster-r-cnn
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:coco-periph-bridging-gap-between-human
+datasets:
+- ref: dataset:mscoco
+  role: source
+methods:
+- ref: method:uniform-ttm
+  role: primary
+- ref: method:two-interval-forced-choice-2ifc
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'AP at 0°/5°/10°/15°/20°: DINO-FocalNet-Large 58.4/51.6/44.4/20.2/15.0; DINO-Swin-Tiny 51.3/44.0/34.1/11.1/7.6;
+  DETR-R50 42.0/35.2/25.1/6.9/4.5; RetinaNet-R50 38.7/31.5/22.1/6.9/5.0; FoveaBox 40.4/33.2/23.4/7.5/5.3;
+  Faster R-CNN X101 39.6/32.6/21.8/6.6/4.7; Faster R-CNN R50 36.7/29.4/19.9/5.9/4.2. Human critical
+  eccentricity exceeds all DNNs by more than 5°.'
+caveat: TTM may under-predict human performance and has been primarily validated on greyscale images;
+  the machine psychophysics scoring protocol involves design choices (padded boxes, summed scores, no
+  label enforcement) that may affect absolute performance levels.
+extracted_by: automatic-extraction
+related_findings:
+- IC-933
+- IC-934

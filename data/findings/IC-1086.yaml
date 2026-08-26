@@ -1,0 +1,33 @@
+id: IC-1086
+title: RS LDS fails to increase its number of active states when the underlying dynamics change non-stationarily
+description: On the extended NASCAR synthetic task, where the true number of discrete states shifts
+  from 4 to 6 mid-trajectory, the RS LDS model (with k=6 allocated) still maintains only 4 active states
+  after the dynamics switch, as seen in its most-likely discrete state trajectories. On real IBL mouse
+  electrophysiology data, the RS LDS shows much smaller fluctuations in the number of occupied states
+  per trial (spline r²=0.16) compared to the IRSLDS (r²=0.46), indicating it misses trial-varying structure
+  in state usage. The limitation is the fixed cardinality of the discrete state space in the HMM-based
+  transition prior.
+models:
+- ref: model:rs-lds
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:parsing-neural-dynamics-infinite-recurrent-switching
+datasets:
+- ref: dataset:ibl-brainwide-map
+  role: eval
+methods:
+- ref: method:sequential-monte-carlo
+  role: eval
+related_work:
+- name: Linderman et al. 2016 (RS LDS)
+  anchor: https://arxiv.org/abs/1610.08466
+  role: builds-on
+evidence_type: correlational
+key_metric: 'Extended NASCAR (k=6, 5 seeds): RS LDS test LL 8015.93, dyn MSE 0.35; IBL per-trial spline
+  r²=0.16 (RS LDS) vs 0.46 (IRSLDS); IBL per-trial k=8 test LL: RS LDS −1399.030'
+caveat: The IBL results are from a single session (session id ae8787b1-4229-4d56-b0c2-566b61a25b77)
+  and the authors note they do not aim to make general claims about neural computation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1087

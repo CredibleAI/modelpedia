@@ -1,0 +1,41 @@
+id: IC-1177
+title: LLM-generated misinformation is harder for LLM detectors to detect than human-written misinformation
+  with the same semantics
+description: Eight LLM detector configurations (ChatGPT-3.5, GPT-4, Llama2-7B-chat, Llama2-13B-chat,
+  each with and without zero-shot CoT) were evaluated on PolitiFact, GossipCop, and COAID. Detection
+  accuracy on LLM-generated misinformation is consistently lower than on human-written misinformation.
+  For example, GPT-4 (no CoT) on PolitiFact drops from 48.6% (human-written) to 22.0% (open-ended generation);
+  Llama2-7B-chat (CoT) drops from 47.4% to 27.8% on rewriting generation (19.6% drop). Results hold
+  across all six open-source generators (Llama2-7B/13B/70B, Vicuna-7B/13B/33B) and all three datasets,
+  with most p-values below 0.05.
+models:
+- ref: model:chatgpt
+- ref: model:gpt-4
+- ref: model:llama-2
+- ref: model:vicuna
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:llm-generated-misinformation-be-detected
+datasets:
+- ref: dataset:gossipcop
+  role: eval
+- ref: dataset:coaid
+  role: eval
+methods:
+- ref: method:zero-shot-chain-of-thought
+  role: primary
+- ref: method:paired-t-test
+  role: validation
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4 no-CoT PolitiFact: human-written 48.6%, paraphrase 41.7%, rewriting 34.8%, open-ended
+  22.0%; Llama2-7B-chat CoT PolitiFact: human-written 47.4%, rewriting 27.8% (drop 19.6%); GPT-4 CoT
+  COAID: human-written 81.0%, open-ended 52.7%'
+caveat: Zero-shot setting only; average over three runs for API-based detectors due to output variance;
+  GossipCop and COAID results show less consistent drops than PolitiFact for some detector-generator
+  pairs.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1175
+- IC-1176

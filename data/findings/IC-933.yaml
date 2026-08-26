@@ -1,0 +1,35 @@
+id: IC-933
+title: DNN object detectors do not exhibit the same sensitivity to image clutter as humans in peripheral
+  object detection
+description: Human critical eccentricity for peripheral object detection decreases as the number of
+  nearby objects (clutter) increases, consistent with the visual crowding literature. In contrast, the
+  tested DNN object detectors show no strong relationship between clutter and critical eccentricity;
+  their critical eccentricities remain low regardless of the number of nearby objects. This holds even
+  for models trained on COCO-Periph, which should in principle reflect the degrading effect of clutter
+  on the peripheral representation.
+models:
+- ref: model:dino-focalnet-large
+- ref: model:swin-transformer
+  variant: variant:dino-swin-tiny
+- ref: model:detr-r50
+- ref: model:retinanet-r50
+- ref: model:foveabox
+- ref: model:faster-r-cnn
+concepts: []
+sources:
+- ref: source:coco-periph-bridging-gap-between-human
+datasets:
+- ref: dataset:mscoco
+  role: source
+methods:
+- ref: method:uniform-ttm
+  role: primary
+related_work: []
+evidence_type: correlational
+caveat: Clutter is proxied by the number of ground-truth COCO annotations in the image, which does not
+  label all objects in many scenes; the relationship is assessed qualitatively from Figure 6b without
+  a reported correlation coefficient.
+extracted_by: automatic-extraction
+related_findings:
+- IC-932
+- IC-934

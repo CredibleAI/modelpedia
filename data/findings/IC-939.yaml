@@ -1,0 +1,29 @@
+id: IC-939
+title: CLIP reward landscapes are well-shaped for photorealistic environments but poorly shaped for
+  abstract renderings
+description: The paper evaluates CLIP's cosine-similarity reward in CartPole and MountainCar environments.
+  In CartPole, the reward is well-shaped around the goal regardless of rendering. In the default (abstract)
+  MountainCar, the reward landscape is poorly shaped and the agent cannot be trained to solve the task.
+  When the MountainCar environment is re-rendered with realistic textures, the reward becomes well-shaped
+  and the agent achieves 100% success. The authors attribute this to CLIP's visual encoder being trained
+  on photorealistic images, so abstract renderings fall outside its effective input distribution.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:vision-language-models-zero-shot-reward
+datasets: []
+methods:
+- ref: method:dqn
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: 100% task success rate in cartpole and textured mountaincar; without custom textures, unable
+  to successfully train an agent on mountain car
+caveat: The photorealism requirement is demonstrated on only two simple control environments; the paper
+  does not quantify how far from photorealistic the rendering can be before the reward degrades.
+extracted_by: automatic-extraction
+related_findings:
+- IC-940
+- IC-941

@@ -1,0 +1,67 @@
+id: IC-1330
+title: All 20 evaluated LLMs improve in multi-turn task-solving with additional tool-use turns and GPT-4-simulated
+  language feedback
+description: The paper evaluates 20 open- and closed-source LLMs on 586 multi-turn interaction tasks
+  spanning reasoning, code generation, and decision-making. Every model shows absolute performance gains
+  of 1-8% per additional tool-use turn (k=1 to k=5) and 2-17% from GPT-4-simulated natural language
+  feedback. Closed-source models (GPT-3.5-turbo-0613, Claude-instant-1) show the steepest per-turn improvement
+  slopes (+8.2 and +8.0), while the best open-source model (Lemur-v1-70b SIFT) still lags the best closed-source
+  model by 8.7% in absolute success rate with feedback.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-0613
+- ref: model:gpt-4
+  variant: variant:gpt-4-0613
+- ref: model:claude-instant-1
+- ref: model:chat-bison-001
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-13b
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:vicuna
+  variant: variant:vicuna-v1-5-7b
+- ref: model:vicuna
+  variant: variant:vicuna-v1-5-13b
+- ref: model:codellama-13b
+  variant: variant:codellama-7b
+- ref: model:codellama-34b
+- ref: model:lemur-v1-70b
+concepts: []
+sources:
+- ref: source:mint-evaluating-llms-multi-turn-interaction
+datasets:
+- ref: dataset:humaneval
+  role: eval
+- ref: dataset:mbpp
+  role: eval
+- ref: dataset:alfworld
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:hotpotqa
+  role: eval
+- ref: dataset:math
+  role: eval
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:theoremqa
+  role: eval
+methods: []
+related_work:
+- ref: method:react
+  role: builds-on
+- name: Reflexion
+  anchor: https://arxiv.org/abs/2303.11366
+  role: context
+evidence_type: correlational
+key_metric: performance gains of 1-8% for each turn of tool use and 2-17% with natural language feedback;
+  slopes range +1.1 (CodeLlama-7b base) to +8.2 (GPT-3.5-turbo-0613); delta_feedback ranges +1.7 (Llama-2-7b
+  RLHF) to +17.2 (CodeLlama-7b SIFT)
+caveat: GPT-4-simulated feedback may not cover all possible human responses, particularly in tasks involving
+  nuanced judgments of human values. Metrics may not fully assess interaction quality beyond outcomes.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1331
+- IC-1332

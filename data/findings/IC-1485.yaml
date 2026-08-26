@@ -1,0 +1,31 @@
+id: IC-1485
+title: Sketch Transformer's FID degrades from 31.49 to 404.01 under Gaussian noise at the highest tested
+  intensity
+description: The paper evaluates the released Sketch Transformer on the photo-to-sketch task using 338
+  test photos from the CUFS dataset. Under five noise types at six intensity levels, FID degrades monotonically
+  with noise intensity. For Gaussian noise, FID rises from 31.49 (clean) through 53.33, 69.88, 108.26,
+  124.72, 228.02, to 404.01 at s6. LPIPS similarly rises from 0.3055 to 0.6525. The degradation is consistent
+  across all five noise types tested.
+models:
+- ref: model:sketch-transformer
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:analysis-gan-based-image-image-translation
+datasets:
+- ref: dataset:cufs
+  role: eval
+methods:
+- ref: method:fid
+  role: eval
+- ref: method:lpips
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'FID: 31.49 (clean) to 404.01 (Gaussian s6); LPIPS: 0.3055 (clean) to 0.6525 (Gaussian s6);
+  5 noise types x 6 intensity levels'
+extracted_by: automatic-extraction
+related_findings:
+- IC-1484
+- IC-1486
+- IC-1487

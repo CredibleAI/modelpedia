@@ -1,0 +1,44 @@
+id: IC-1558
+title: Code LLaMA 13B maintains 99.4% passkey retrieval at 128k context despite perplexity rising from
+  2.37 to 2.54 between 98304 and 131072 tokens
+description: 'The paper evaluates Code LLaMA 7B and 13B (both using NTK-aware scaling to 100k context)
+  on sliding-window perplexity over 128k Proof-Pile documents and on passkey retrieval. Code LLaMA 13B
+  shows increasing perplexity beyond 100k tokens (2.37 at 98304, 2.54 at 131072), yet still achieves
+  99.4% passkey retrieval accuracy at 128k context. The authors explicitly note this dissociation: ''while
+  the code llama 13b model exhibits increasing perplexity above 100k context lengths, it was still able
+  to accurately retrieve the passkey at a context length of 128k.'' Code LLaMA 7B shows a similar pattern
+  with 94.3% passkey accuracy at 112k. On standard benchmarks, Code LLaMA 7B drops to 39.9 on ARC-C
+  and 31.1 on MMLU versus 53.1 and 43.8 for the base LLaMA 2 7B.'
+models:
+- ref: model:codellama-13b
+  variant: variant:codellama-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:yarn-efficient-context-window-extension-large
+datasets:
+- ref: dataset:proof-pile
+  role: eval
+- ref: dataset:govreport
+  role: eval
+- ref: dataset:arc-challenge
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:truthfulqa
+  role: eval
+methods: []
+related_work:
+- ref: model:code-llama
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Code LLaMA 13B perplexity: 2.37 at 98304, 2.54 at 131072; passkey accuracy 99.4% at 128k.
+  Code LLaMA 7B perplexity: 2.54 at 98304, 2.71 at 131072; passkey accuracy 94.3% at 112k. Code LLaMA
+  7B benchmarks: ARC-C 39.9, HellaSwag 60.8, MMLU 31.1, TruthfulQA 37.8 (vs base LLaMA 2 7B: 53.1, 77.8,
+  43.8, 39.0).'
+caveat: The paper notes that perplexity 'may not be a great indicator of whether an llm is able to attend
+  to all tokens and does not exhaustively determine long context performance,' suggesting the dissociation
+  may reflect a limitation of perplexity as a metric rather than a true capability preservation.
+extracted_by: automatic-extraction

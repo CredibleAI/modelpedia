@@ -1,0 +1,54 @@
+id: IC-991
+title: LLaMA-2, Falcon-7B, and GPT-3.5-Turbo exhibit large performance spread (up to 76 accuracy points)
+  across semantically equivalent prompt formats, and model comparison rankings are frequently reversed
+  by format choice
+description: The paper evaluates six released LLMs on 53 classification and multiple-choice tasks from
+  Super-NaturalInstructions, sampling 10 semantically equivalent prompt formats per task and measuring
+  accuracy spread. The median spread is 7.5 accuracy points, with 20% of tasks showing at least 15 points
+  of spread for all LLaMA-2 settings. The spread is not eliminated by increasing model size (7B to 70B),
+  adding few-shot examples (1 to 5), or instruction tuning (Falcon-7B vs. Falcon-7B-Instruct). Furthermore,
+  the relative performance ordering of two models is reversed by a format change with probability 0.141
+  (LLaMA-2-13B vs. 70B) and 0.140 (LLaMA-2-7B vs. Falcon-7B) at a 2-point threshold, and in 76% and
+  47% of those cases both comparisons were individually statistically significant. GPT-3.5-Turbo shows
+  a median spread of 6.4 points across 320 formats, and LLaMA-2-70B (4-bit quantized) shows a median
+  spread of 17.1 points.
+models:
+- ref: model:llama-2
+- ref: model:falcon
+  variant: variant:falcon-7b
+- ref: model:falcon
+  variant: variant:falcon-7b-instruct
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:quantifying-language-models-sensitivity-spurious-features
+datasets:
+- ref: dataset:super-naturalinstructions
+  role: eval
+- ref: dataset:instruction-induction
+  role: eval
+methods:
+- ref: method:thompson-sampling
+  role: supporting
+related_work:
+- name: Large Language Models are Human-Level Prompt Engineers
+  anchor: https://openreview.net/forum?id=92gvk82DE-
+  role: context
+- name: Automatic Prompt Optimization with Gradient Descent and Beam Search
+  anchor: https://arxiv.org/abs/2305.03495
+  role: context
+- name: Fantastically Ordered Prompts and Where to Find Them
+  anchor: https://doi.org/10.18653/v1/2022.acl-long.556
+  role: context
+evidence_type: correlational
+key_metric: up to 76 accuracy points (LLaMA-2-13B); median spread 7.5 points; 20% of tasks ≥15 points
+  (LLaMA-2); GPT-3.5 median 0.064 (max 0.562); LLaMA-2-70B median 0.171 (max 0.876); model ranking reversal
+  probability 0.141 (13B vs 70B) and 0.140 (7B vs Falcon-7B) at d=0.02
+caveat: The 10 sampled formats represent a lower bound of true spread; the paper focuses on classification
+  tasks with short inputs; LLaMA-2-70B was evaluated with 4-bit quantization; GPT-3.5 was evaluated
+  with exact prefix matching only (no access to full logits).
+extracted_by: automatic-extraction
+related_findings:
+- IC-992

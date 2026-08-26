@@ -1,0 +1,35 @@
+id: IC-718
+title: GPT-4 achieves 0.882 Pearson correlation with human evaluators on 45 customized score rubrics
+  while GPT-3.5-Turbo achieves only 0.392
+description: The paper measures how well GPT-4 and GPT-3.5-Turbo can assign scores to long-form responses
+  based on user-defined customized score rubrics, compared against human annotators. On 45 instances
+  each with a unique rubric (drawn from Feedback Bench, MT Bench, and Vicuna Bench), GPT-4 reaches 0.882
+  Pearson correlation with humans, while GPT-3.5-Turbo reaches only 0.392. In a pairwise feedback-quality
+  comparison, GPT-4 is preferred over GPT-3.5-Turbo, and GPT-4's feedback is characterized as more neutral
+  and abstract.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts: []
+sources:
+- ref: source:prometheus-inducing-fine-grained-evaluation-capability
+datasets:
+- ref: dataset:vicuna-bench
+  role: eval
+- ref: dataset:mt-bench
+  role: eval
+methods:
+- ref: method:pearson-correlation
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: 'Pearson correlation with human evaluators on 45 customized rubrics: GPT-4 0.882, GPT-3.5-Turbo
+  0.392'
+caveat: The human evaluation set excluded coding and math-related questions; the 45 instances are a
+  small sample. The authors note that GPT-4's self-consistency (measured by sampling 6 times) is lower
+  than its correlation with humans, suggesting some variance in GPT-4's own scoring.
+extracted_by: automatic-extraction
+related_findings:
+- IC-717
+- IC-719

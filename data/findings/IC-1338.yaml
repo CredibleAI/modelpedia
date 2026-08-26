@@ -1,0 +1,46 @@
+id: IC-1338
+title: Chinchilla 70B and Llama 2 7B, trained primarily on text, compress ImageNet patches and Librispeech
+  audio better than domain-specific compressors PNG and FLAC
+description: The paper uses arithmetic coding to turn pretrained language models into lossless compressors
+  and evaluates them on 1 GB datasets of text, image, and audio. Chinchilla 70B, which was trained on
+  a mix of internet text and books, achieves raw compression rates of 48.0% on ImageNet patches and
+  21.0% on Librispeech audio, outperforming the domain-specific PNG compressor (58.5% on ImageNet) and
+  FLAC compressor (30.3% on Librispeech). Llama 2 7B similarly achieves 53.4% on ImageNet and 23.1%
+  on Librispeech. These models have not been explicitly trained on image or audio data, so their cross-modal
+  compression is attributed to in-context learning.
+models:
+- ref: model:chinchilla
+- ref: model:llama-2
+concepts: []
+sources:
+- ref: source:language-modeling-compression
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:librispeech
+  role: eval
+- ref: dataset:enwik9
+  role: eval
+methods:
+- ref: method:arithmetic-coding
+  role: primary
+- ref: method:gzip
+  role: compared-to
+- ref: method:flac
+  role: compared-to
+related_work:
+- name: LLMZip (Valmeekam et al. 2023)
+  anchor: https://arxiv.org/abs/2306.04050
+  role: context
+evidence_type: correlational
+key_metric: 'Chinchilla 70B raw compression: 48.0% (ImageNet), 21.0% (Librispeech); Llama 2 7B: 53.4%
+  (ImageNet), 23.1% (Librispeech); PNG: 58.5% (ImageNet); FLAC: 30.3% (Librispeech); all chunked 2048-byte
+  sequences, 1 GB datasets'
+caveat: The adjusted compression rate (accounting for model parameter size in float16) is extremely
+  poor for these models (e.g., 14048.0% for Chinchilla 70B on ImageNet), meaning the raw compression
+  advantage only holds when model size is not included in the code length. The paper notes it is possible,
+  though unlikely, that some image or audio data was encoded into text in the training corpus.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1339
+- IC-1340

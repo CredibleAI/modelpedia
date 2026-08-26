@@ -1,0 +1,52 @@
+id: IC-1319
+title: Larger LLaMA and LLaMA2 models show better calibration on phrase-level tasks but not consistently
+  on sentence- and paragraph-level tasks
+description: 'The paper evaluates calibration (ECE, Brier score) of LLaMA-7B, LLaMA-13B, LLaMA-30B,
+  LLaMA2-7B, and LLaMA2-13B across phrase-, sentence-, and paragraph-level generation tasks. On phrase-level
+  tasks, the larger models in each family achieve lower ECE and Brier scores than their smaller counterparts.
+  However, on sentence- and paragraph-level tasks, the scaling trend breaks down: for example, LLaMA-30B
+  has higher ECE than LLaMA-7B on WikiQA (0.142 vs. 0.108) and WikiGen (0.165 vs. 0.102), indicating
+  that the within-family scaling benefit does not extend to longer generations.'
+models:
+- ref: model:llama
+- ref: model:llama-2
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:litcab-lightweight-language-model-calibration-over
+datasets:
+- ref: dataset:natural-questions
+  role: eval
+- ref: dataset:sciq
+  role: eval
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:truthfulqa
+  role: eval
+- ref: dataset:wikiqa
+  role: eval
+- ref: dataset:biogen
+  role: eval
+- ref: dataset:wikigen
+  role: eval
+- ref: dataset:qampari
+  role: eval
+methods:
+- ref: method:expected-calibration-error
+  role: eval
+- ref: method:brier-score
+  role: eval
+related_work:
+- name: Kadavath et al. (2022)
+  anchor: https://doi.org/10.48550/arxiv.2207.05221
+  role: context
+evidence_type: correlational
+key_metric: 'Phrase-level NQ ECE: LLaMA-7b 0.144, LLaMA-13b 0.123, LLaMA-30b 0.169; Sentence-level WikiQA
+  ECE: LLaMA-7b 0.108, LLaMA-13b 0.114, LLaMA-30b 0.142; Paragraph-level WikiGen ECE: LLaMA-7b 0.102,
+  LLaMA-13b 0.124, LLaMA-30b 0.165'
+caveat: The scaling trend is inconsistent across individual tasks within the same length category; the
+  paper states the effect 'may not hold true' rather than being uniformly absent.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1320
+- IC-1321

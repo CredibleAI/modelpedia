@@ -1,0 +1,28 @@
+id: IC-1219
+title: Frozen GPT-2 XL contains pre-trained attention heads that implement the nearest-neighbor algorithm
+description: The authors freeze all GPT-2 XL weights and train only new input/output embedding layers
+  on a nearest-neighbor prediction task. The frozen model achieves near-perfect accuracy on the 80 points
+  whose labels are determined by the nearest-neighbor rule. By computing an 'nn-score' for each attention
+  head, they identify 8-10 heads that attend to the label of the nearest-neighbor input, closely implementing
+  the NN algorithm. A randomly initialized transformer of the same size cannot do this, indicating the
+  mechanism was learned during pretraining on language data.
+models:
+- ref: model:gpt-2
+concepts: []
+sources:
+- ref: source:understanding-context-learning-transformers-llms-by
+datasets: []
+methods: []
+related_work:
+- name: In-context learning and induction heads
+  anchor: https://arxiv.org/abs/2209.11895
+  role: context
+evidence_type: observational
+key_metric: near-perfect accuracy on the 80 points labeled with the nearest-neighbor algorithm; 8-10
+  nearest neighbour heads found consistently across multiple runs
+caveat: The claim relies on the nn-score threshold of 0.5 to identify NN heads; the exact attention
+  pattern is an approximation of the true NN algorithm rather than an exact implementation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1220
+- IC-1221

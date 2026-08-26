@@ -1,0 +1,31 @@
+id: IC-913
+title: In OPT-2.7B, Pythia-70M/1.4B/6.9B, and BERT-base, the stable rank of MLP lower layers shows a
+  drop-and-bounce pattern during training that is more salient in top layers while bottom layers show
+  suppressed dropping curves
+description: The paper examines public intermediate checkpoints of OPT-2.7B and Pythia-70M/1.4B/6.9B
+  to verify its theoretical prediction that attention first becomes sparse then dense. While the attention
+  entropy patterns show only a less salient drop-and-bounce, the stable rank of the MLP lower-layer
+  projection matrix shows a much more pronounced drop-and-bounce structure in top layers. In bottom
+  layers, the stable rank shows only dropping curves, suppressed by top-level learning. The same pattern
+  is confirmed in BERT-base (encoder-decoder), where attention entropy and stable rank behave similarly
+  to the decoder-only case.
+models:
+- ref: model:opt
+- ref: model:pythia
+- ref: model:bert
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:joma-demystifying-multilayer-transformers-via-joint
+datasets:
+- ref: dataset:wikitext-103
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The attention entropy patterns in the pre-trained models are described as 'less salient' compared
+  to the from-scratch experiments; the stable rank signal is the more reliable indicator per the authors.
+extracted_by: automatic-extraction
+related_findings:
+- IC-914
+- IC-915

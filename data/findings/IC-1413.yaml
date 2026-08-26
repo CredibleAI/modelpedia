@@ -1,0 +1,33 @@
+id: IC-1413
+title: GPT-4 achieves near-saturation on Python code synthesis (86.6% pass@1) but scores significantly
+  lower on code repair (47.8% avg) and code explanation (52.1% avg) across six languages
+description: The paper evaluates GPT-4 on HumanEvalPack, a benchmark spanning three coding tasks (synthesis,
+  repair, explanation) across six programming languages. On the synthesis task, GPT-4 achieves 86.6%
+  pass@1 on Python, close to the maximum possible. However, on the repair and explanation tasks, GPT-4's
+  average scores drop to 47.8% and 52.1% respectively. The authors note this suggests the original HumanEval
+  benchmark may soon cease to be useful due to models reaching near-maximum performance on synthesis,
+  and that the new repair and explanation variants provide room for future improvement.
+models:
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:octopack-instruction-tuning-code-large-language
+datasets: []
+methods:
+- ref: method:pass-k
+  role: eval
+related_work:
+- ref: dataset:humaneval
+  role: builds-on
+evidence_type: correlational
+key_metric: 86.6% pass@1 Python HumanEvalSynthesize; 47.8% avg HumanEvalFix; 52.1% avg HumanEvalExplain
+  (6 languages)
+caveat: gpt-4 was originally found to score 67% on python humaneval (openai, 2023) and 81% in later
+  work (bubeck et al., 2023). our score for gpt-4 is significantly higher, possibly due to improvements
+  made to the api by openai, contamination of humaneval in gpt-4 training, or slightly different prompting
+  and evaluation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1414
+- IC-1415

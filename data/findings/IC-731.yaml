@@ -1,0 +1,27 @@
+id: IC-731
+title: CLIP (ViT-B/32) achieves only 17.5 recall on video-text temporal alignment because it was trained
+  on images and lacks video dynamics
+description: The paper evaluates CLIP ViT-B/32 on the HTM-Align dataset (80 videos, 49k manually annotated
+  sentences) for the task of aligning text sentences to the correct video frames. CLIP achieves a recall
+  of only 17.5, substantially below video-specific models such as VideoCLIP (44.4) and TempCLR (44.1).
+  The authors attribute this large gap to CLIP having been trained exclusively on image-text pairs,
+  meaning it lacks the ability to capture temporal dynamics in video. This is presented as evidence
+  that image-only pre-training is insufficient for video-text temporal alignment.
+models:
+- ref: model:clip
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:multi-granularity-correspondence-learning-from-long
+datasets: []
+methods: []
+related_work:
+- ref: model:videoclip
+  role: compared-to
+evidence_type: correlational
+key_metric: recall 17.5 on HTM-Align (80 videos, 49k sentences), compared to VideoCLIP 44.4, TempCLR
+  44.1, TAN-32frame 41.1, TAN-64frame 49.2
+caveat: The authors use the word 'possibly' when attributing the gap to image-only training, indicating
+  this is a hypothesis rather than a confirmed causal mechanism. CLIP was not fine-tuned on HowTo100M
+  like the other models, so the comparison also reflects a difference in training data and procedure.
+extracted_by: automatic-extraction

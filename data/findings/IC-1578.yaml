@@ -1,0 +1,31 @@
+id: IC-1578
+title: XLM-R-XL without instruction tuning produces [pad] tokens and fails to complete instruction-following
+  tasks
+description: The paper evaluates the raw XLM-R-XL model (no instruction fine-tuning) on xcopa, xnli,
+  xwinograd, and WMT'14 machine translation. On all three classification tasks the model outputs the
+  special [pad] token instead of a meaningful answer. On machine translation it generates text unrelated
+  to the prompt (e.g., 'fragen und antworten zum.' for a German-to-English translation request). The
+  authors state that it is 'difficult or even impossible to collect the evaluation results' due to this
+  pervasive failure, and provide only a few representative examples rather than a full quantitative
+  evaluation.
+models:
+- ref: model:xlm-r
+  variant: variant:xlm-r-xl
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:bert-family-good-instruction-followers-study
+datasets:
+- ref: dataset:xcopa
+  role: eval
+- ref: dataset:xnli
+  role: eval
+- ref: dataset:xwinograd
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+caveat: Only a few representative examples are shown (Table 19) rather than a systematic evaluation
+  over the full test set; the authors note it is 'difficult or even impossible to collect the evaluation
+  results' quantitatively.
+extracted_by: automatic-extraction

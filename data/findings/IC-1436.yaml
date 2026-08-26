@@ -1,0 +1,30 @@
+id: IC-1436
+title: Imagen Video 5.6B produces high-quality but domain-inappropriate videos on out-of-distribution
+  robotics and egocentric data, failing to generate relevant dynamics
+description: 'When applied to the Bridge robotics dataset and the Ego4D egocentric dataset, the 5.6B
+  Imagen Video model generates videos that are visually high-quality but fail to capture the domain-specific
+  dynamics described in the text prompts. On Bridge, the generated videos contain no robot arm movements
+  despite the text describing manipulation tasks. On Ego4D, the videos contain little egocentric movement
+  because the pretraining data consists mostly of generic internet videos. Aggregate metrics confirm
+  degraded task performance: FVD 350.1 and FID 42.6 on Bridge, FVD 91.7 and IS 3.12 on Ego4D.'
+models:
+- ref: model:imagen-video
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:probabilistic-adaptation-black-box-text-video
+datasets:
+- ref: dataset:bridge-data
+  role: eval
+- ref: dataset:ego4d
+  role: eval
+methods:
+- ref: method:classifier-free-guidance
+  role: supporting
+related_work: []
+evidence_type: correlational
+key_metric: FVD 350.1, FID 42.6 (Bridge, 128 samples); FVD 91.7, IS 3.12 (Ego4D, 1024 samples)
+caveat: Qualitative observations are based on a small number of illustrative examples in figures 7 and
+  8; the aggregate FVD/FID/IS numbers are computed over 128 and 1024 samples respectively but do not
+  isolate the specific failure of missing dynamics from general quality.
+extracted_by: automatic-extraction

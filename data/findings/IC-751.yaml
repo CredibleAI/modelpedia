@@ -1,0 +1,44 @@
+id: IC-751
+title: Arena-Hard-200 reveals larger performance gaps between open and proprietary LLMs than MT-Bench
+description: The paper evaluates ten released models on Arena-Hard-200, a benchmark of 200 challenging
+  user prompts selected from Chatbot Arena conversations. The results show that proprietary models (GPT-4,
+  Claude-2, Claude-instant-v1) score substantially higher than open models (Vicuna, Llama-2, WizardLM),
+  and the gap is wider than what MT-Bench shows. The paper concludes this suggests more room for open
+  models to catch up on challenging real-world tasks.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:claude-instant-1
+- ref: model:vicuna
+  variant: variant:vicuna-7b-v1-5
+- ref: model:vicuna
+  variant: variant:vicuna-13b-v1-5
+- ref: model:vicuna
+  variant: variant:vicuna-33b-v1-3
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:llama-2
+  variant: variant:llama-2-70b-chat
+- ref: model:wizardlm
+  variant: variant:wizardlm-70b-v1-0
+concepts: []
+sources:
+- ref: source:lmsys-chat-1m-large-scale-real
+datasets:
+- ref: dataset:arena-hard-200
+  role: eval
+- ref: dataset:mt-bench
+methods:
+- ref: method:llm-as-a-judge
+  role: eval
+related_work:
+- ref: dataset:mt-bench
+  role: compared-to
+evidence_type: correlational
+caveat: Scores are assigned by GPT-4 as judge, introducing potential bias in favor of GPT-4's own style.
+  The paper does not print exact per-model scores in the text; they appear only in Figure 6.
+extracted_by: automatic-extraction
+related_findings:
+- IC-750
+- IC-752

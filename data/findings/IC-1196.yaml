@@ -1,0 +1,29 @@
+id: IC-1196
+title: Blending a watermarked noise image with a clean image causes watermark detectors to falsely flag
+  clean images as watermarked
+description: 'The paper introduces a spoofing attack: a random noise image is watermarked by the target
+  method, then blended (added) to a clean ImageNet image. The watermark signature in the noise causes
+  the detector to classify the resulting image as watermarked. AUROC drops for all tested methods: DWT-DCT
+  from 0.7550 to 0.6421, DWT-DCT-SVD from 0.8185 to 0.7533, RivaGAN from 0.9991 to 0.9965, and TreeRing
+  from 0.9116 to 0.7134. RivaGAN is the most robust to this attack, but even it shows degradation at
+  low FPR regimes.'
+models:
+- ref: model:rivagan
+- ref: model:treering
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:robustness-ai-image-detectors-fundamental-limits
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'AUROC before/after spoofing: DWT-DCT 0.7550→0.6421, DWT-DCT-SVD 0.8185→0.7533, RivaGAN
+  0.9991→0.9965, TreeRing 0.9116→0.7134'
+caveat: RivaGAN is most robust to spoofing; at low FPR regimes some RivaGAN images can still be spoofed.
+  Attack requires black-box access to the watermarking method to generate the watermarked noise.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1195

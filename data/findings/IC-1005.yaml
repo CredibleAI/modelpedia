@@ -1,0 +1,29 @@
+id: IC-1005
+title: Social bias neurons in BERT-base-cased and RoBERTa-base are concentrated in the deepest transformer
+  layers
+description: 'Using the IG² attribution method, the paper identifies specific feed-forward neurons in
+  BERT-base-cased and RoBERTa-base that are responsible for the logits gap between demographic pairs.
+  These social bias neurons are not uniformly distributed across layers: they are predominantly concentrated
+  in the deepest three layers (10th, 11th, 12th), with the single deepest layer (12th) holding the largest
+  share. This depth-dependent organisation means the bias is most strongly expressed near the output
+  layer.'
+models:
+- ref: model:bert
+- ref: model:roberta
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:devil-neurons-interpreting-mitigating-social-biases
+datasets:
+- ref: dataset:stereoset
+  role: eval
+methods: []
+related_work:
+- ref: method:integrated-gradients
+  role: builds-on
+evidence_type: correlational
+key_metric: highest concentration in layer 12, accounting for approximately 55.7% (BERT) and 36.4% (RoBERTa)
+  of the total quantity; neurons concentrated in layers 10-12
+caveat: The attribution is limited to feed-forward neurons at the masked token position; other model
+  components (attention, other positions) are not examined.
+extracted_by: automatic-extraction

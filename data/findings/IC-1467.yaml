@@ -1,0 +1,31 @@
+id: IC-1467
+title: DECAF achieves PVE 9.65 and f-score 89.6 on the DECAF validation set with a runtime of 19.59
+  seconds per image
+description: The paper reports DECAF's quantitative performance on the DECAF validation set. DECAF uses
+  an optimization-based fitting process that takes 19.59 seconds per image on an A6000 GPU, roughly
+  200x slower than DICE. It achieves the best per-vertex error (9.65) and the highest overall physical
+  plausibility f-score (89.6) among all methods tested. For contact estimation, DECAF achieves face
+  f-score 0.57 and hand f-score 0.47. The paper notes that DECAF requires temporal information from
+  successive frames and 3D ground-truth annotations for training, limiting its generalization to in-the-wild
+  data.
+models:
+- ref: model:decaf
+concepts: []
+sources:
+- ref: source:dice-end-end-deformation-capture-hand
+datasets:
+- ref: dataset:decaf
+  role: eval
+methods:
+- ref: method:decaf
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: PVE 9.65, col. dist. 1.03, non. col. 83.6, touchness 96.6, f-score 89.6, runtime 19.59 s;
+  contact face f-score 0.57, hand f-score 0.47
+caveat: DECAF requires temporal information from successive frames and 3D ground-truth annotations for
+  training; the paper notes limited generalization to in-the-wild data due to reliance on studio-collected
+  3D annotations
+extracted_by: automatic-extraction
+related_findings:
+- IC-1468

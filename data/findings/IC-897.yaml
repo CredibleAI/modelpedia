@@ -1,0 +1,32 @@
+id: IC-897
+title: GPT-4 underperforms codex on Spider text-to-SQL with few-shot prompting, attributed to its zero-shot
+  tuning
+description: The paper evaluates GPT-4, codex, GPT-3.5-turbo, and Starcoder on the Spider development
+  set for text-to-SQL generation using few-shot prompting. GPT-4 achieves a baseline accuracy of 73.2,
+  notably lower than codex at 77.5, and this gap persists with code explanation feedback (73.6 vs 80.8).
+  The authors attribute this to GPT-4 being tuned for zero-shot prompting, making it less effective
+  at following few-shot exemplars. They further note that both GPT-3.5 and GPT-4 show more than 10%
+  worse zero-shot results compared to their few-shot counterparts on this task.
+models:
+- ref: model:gpt-4
+- ref: model:code-davinci-002
+concepts: []
+sources:
+- ref: source:teaching-large-language-models-self-debug
+datasets:
+- ref: dataset:spider
+  role: eval
+methods:
+- ref: method:few-shot-prompting
+  role: supporting
+related_work:
+- name: Coder-Reviewer
+  anchor: https://arxiv.org/abs/2211.16490
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Spider dev: GPT-4 baseline 73.2, +expl. 73.6; codex baseline 77.5, +expl. 80.8'
+caveat: The authors hypothesize the cause (zero-shot tuning) but do not directly test this hypothesis
+  with a controlled experiment.
+extracted_by: automatic-extraction
+related_findings:
+- IC-898

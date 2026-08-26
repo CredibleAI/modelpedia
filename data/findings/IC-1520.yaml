@@ -1,0 +1,40 @@
+id: IC-1520
+title: OpenCLIP's per-sample zero-shot accuracy on ImageNet-based OOD benchmarks is strongly correlated
+  with the perceptual similarity between that sample and its nearest neighbor in LAION-400M
+description: The paper computes the cosine similarity in CLIP ViT-B/16+'s image embedding space between
+  each test sample and its nearest neighbor in LAION-400M, then correlates this per-sample similarity
+  with OpenCLIP's per-sample top-1 zero-shot accuracy. For ImageNet-Sketch, samples with low nearest-neighbor
+  similarity (0.38) are classified with 35% accuracy, while near-duplicates in LAION-400M (similarity
+  close to 1) reach 69% accuracy. The same positive correlation is observed for ImageNet-R and ImageNet-Val,
+  and extends to CelebA and Waterbirds in the appendix. This establishes that the released OpenCLIP
+  model's per-sample performance is meaningfully driven by how similar each test point is to its training
+  data.
+models:
+- ref: model:openclip
+concepts: []
+sources:
+- ref: source:clip-s-generalization-performance-mainly-stem
+datasets:
+- ref: dataset:laion-400m
+  role: source
+- ref: dataset:imagenet-sketch
+  role: eval
+- ref: dataset:imagenet-r
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:celeba
+  role: eval
+- ref: dataset:waterbirds
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: for imagenet-sketch, for example, sketches without similar counterparts in laion-400m (similarity
+  0.38) are classified with 35 % accuracy, while sketches duplicated in laion-400m (similarity close
+  to 1) reach up to 69 % accuracy
+caveat: The correlation is per-sample and does not by itself establish causation; the paper's main pruning
+  experiments (which test causation) are conducted on the authors' own trained models, not on OpenCLIP
+  directly. The similarity metric is CLIP ViT-B/16+ embeddings, and the authors note they cannot guarantee
+  all highly similar images were identified.
+extracted_by: automatic-extraction

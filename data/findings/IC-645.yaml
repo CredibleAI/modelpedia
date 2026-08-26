@@ -1,0 +1,38 @@
+id: IC-645
+title: CLIP, PickScore, and HPSv2 text embeddings share a common direction (cone effect) that captures
+  text-irrelevant preferences, and the orthogonal component c⊥p better measures T2I alignment; CLIP's
+  untrained common direction makes it ineffective for reward fine-tuning
+description: 'The paper computes the mean text embedding direction v across a large prompt set and projects
+  each text embedding onto it. All three CLIP-based models show a strong positive projection: η > 0.4
+  for CLIP and η > 0.6 for PickScore and HPSv2. Decomposing the text embedding into the component along
+  v (text-irrelevant) and the orthogonal component c⊥p (text-relevant) reveals that c⊥p substantially
+  improves T2I alignment retrieval: PickScore r@1 jumps from 42.34 to 67.94 (single) and HPSv2 from
+  54.00 to 67.60. The paper further shows that CLIP''s common direction v is not trained on human preferences
+  (unlike PickScore and HPSv2), so using CLIP as a reward signal for diffusion fine-tuning produces
+  an undefined optimization direction and poor generation quality.'
+models:
+- ref: model:clip
+- ref: model:pickscore
+- ref: model:hpsv2
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:improving-long-text-alignment-text-image
+datasets: []
+methods:
+- ref: method:drtune
+  role: supporting
+- ref: method:lora
+  role: supporting
+related_work:
+- name: Cone effect (Gao et al. 2019)
+  anchor: https://arxiv.org/abs/1907.12009
+  role: context
+evidence_type: correlational
+key_metric: 'η > 0.4 for CLIP, η > 0.6 for PickScore and HPSv2; r@1 retrieval (single/average): CLIP-H
+  cp 86.10/80.40 vs c⊥p 85.80/85.14, PickScore cp 42.34/16.72 vs c⊥p 67.94/64.28, HPSv2 cp 54.00/31.84
+  vs c⊥p 67.60/64.00'
+caveat: The common direction v is computed from a specific prompt dataset; the paper notes the cone
+  effect results from both model initialization and contrastive training, so the exact direction may
+  vary with training details.
+extracted_by: automatic-extraction

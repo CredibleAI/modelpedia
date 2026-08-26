@@ -1,0 +1,32 @@
+id: IC-746
+title: RoBERTa-Large pretrained with different mask ratios exhibits a sweet spot in downstream accuracy
+  on QNLI and SST-2
+description: The paper evaluates RoBERTa-Large checkpoints (from Wettig et al. 2023 for α ≥ 0.15) on
+  QNLI and SST-2 after fine-tuning with a linear head and an explicit average encoder. Test accuracy
+  peaks at mask ratio 0.15 on QNLI and at 0.40 on SST-2, with lower accuracy at both smaller and larger
+  mask ratios. The train-test gap decreases monotonically with mask ratio on QNLI but is U-shaped on
+  SST-2, with its minimum at α = 0.40. The authors attribute the low-α regime to a large generalization
+  gap (high κ) and the high-α regime to poor training accuracy or violation of the soft-invariance assumption.
+models:
+- ref: model:roberta
+  variant: variant:roberta-large
+concepts: []
+sources:
+- ref: source:understanding-augmentation-based-self-supervised-representation
+datasets:
+- ref: dataset:qnli
+  role: eval
+- ref: dataset:sst-2
+  role: eval
+methods:
+- ref: method:linear-probing
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: highest test accuracy at α = 0.15 on QNLI (86.8) and at α = 0.40 on SST-2 (92.4); train-test
+  gap on SST-2 is U-shaped with minimum at α = 0.40
+caveat: For α = 0.05 and 0.10 the authors trained their own encoders rather than using released checkpoints;
+  the average encoder (eqn. 7) is used explicitly, which differs from standard practice of applying
+  the pretrained encoder directly; fine-tuning is applied during downstream, which the theory does not
+  analyze.
+extracted_by: automatic-extraction

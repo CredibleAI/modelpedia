@@ -1,0 +1,42 @@
+id: IC-815
+title: RLHF on general-purpose preference data increases stereotypical bias and decreases truthfulness
+  in Pythia and Llama-7B models
+description: 'The authors apply SFT, PPO, and DPO to four released models using the Anthropic HH dataset
+  and evaluate on stereotypical bias (1152 biased statements) and TruthfulQA (817 multiple-choice questions).
+  Both PPO and DPO significantly increase the stereotypical bias agreement index from below 0.4 to over
+  0.8, with SFT contributing the most to the increase. Truthfulness accuracy decreases by an average
+  of 25% across all models and both RLHF variants. The authors attribute both effects to sycophancy:
+  the helpfulness-oriented preference data makes the model more inclined to agree with user claims.'
+models:
+- ref: model:pythia
+- ref: model:llama
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:more-rlhf-more-trust-impact-preference
+datasets:
+- ref: dataset:anthropic-hh
+  role: train
+- ref: dataset:realtoxicityprompts
+  role: eval
+- ref: dataset:truthfulqa
+  role: eval
+methods:
+- ref: method:ppo
+  role: primary
+- ref: method:direct-preference-optimization
+  role: primary
+related_work:
+- name: Sharma et al. 2023 (sycophancy)
+  anchor: https://arxiv.org/abs/2310.13548
+  role: context
+evidence_type: correlational
+key_metric: stereotypical bias agreement index increases from <0.4 to >0.8; truthfulness accuracy decreases
+  by 25% on average across all models and both algorithms
+caveat: Experiments focus on models up to 7B parameters; the authors note they expect similar trends
+  in larger models based on prior work but do not test them.
+extracted_by: automatic-extraction
+related_findings:
+- IC-816
+- IC-817
+- IC-818

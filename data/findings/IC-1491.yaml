@@ -1,0 +1,24 @@
+id: IC-1491
+title: CLIP zero-shot performance on STEM saturates across model sizes, with only 3.6 points of variation
+  from smallest to largest variant
+description: The paper evaluates nine CLIP variants ranging from RN50 to ViT-L/14@336px on the STEM
+  test set. Average accuracy ranges from 51.3% (ViT-B/16) to 54.9% (RN50x64), a spread of only 3.6 percentage
+  points despite orders-of-magnitude differences in parameter count. The authors conclude that simply
+  scaling up CLIP is insufficient and that new algorithmic advancements are needed.
+models:
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:measuring-vision-language-stem-skills-neural
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Average accuracy: RN50 52.9, RN101 51.5, RN50x4 52.9, RN50x16 52.9, RN50x64 54.9, ViT-B/32
+  53.6, ViT-B/16 51.3, ViT-L/14 54.0, ViT-L/14@336px 54.4'
+caveat: The ViT-B/16 variant (51.3%) is actually lower than RN50 (52.9%), so the relationship is not
+  strictly monotonic with parameter count.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1489
+- IC-1490

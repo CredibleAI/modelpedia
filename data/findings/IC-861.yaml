@@ -1,0 +1,27 @@
+id: IC-861
+title: LLMs achieve near-zero accuracy on the disconnected nodes task, indicating an inability to reason
+  about the absence of edges in a graph
+description: The paper introduces a task where the LLM is given a graph description and asked to identify
+  nodes NOT directly connected to a given node. This requires reasoning about information that is implicit
+  (not explicitly stated in the encoding). PaLM 62B achieves 0.5% accuracy with zero-shot prompting,
+  and zero-CoT, few-shot, CoT, and CoT-bag methods all achieve close to 0.0% accuracy. The authors attribute
+  this to the graph encoding functions primarily encoding connected nodes, leaving the model without
+  explicit information about absent connections.
+models:
+- ref: model:palm-62b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:talk-like-graph-encoding-graphs-large
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'PaLM 62B disconnected nodes: zero-shot 0.5%, zero-CoT/few-shot/CoT/CoT-bag close to 0.0%'
+caveat: The authors note this may be partly an encoding issue (absence not explicitly stated) rather
+  than a pure model limitation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-858
+- IC-859
+- IC-860

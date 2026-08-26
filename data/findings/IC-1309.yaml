@@ -1,0 +1,31 @@
+id: IC-1309
+title: 'GPT-4-0613 exhibits reduced output diversity relative to GPT-3.5: it outperforms on best@1 but
+  underperforms on best@8 under CoT prompting'
+description: Under chain-of-thought prompting, GPT-4-0613 achieves 26.99% optimization rate at best@1
+  versus 21.37% for GPT-3.5, but at best@8 GPT-4 reaches only 42.74% opt / 1.58x speedup while GPT-3.5
+  reaches 43.05% opt / 1.60x. The authors attribute this to a lack of output diversity in GPT-4 despite
+  using the same sampling hyper-parameters (temperature 0.7). The gap is small in absolute terms but
+  consistent across the CoT condition.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:learning-performance-improving-code-edits
+datasets: []
+methods:
+- ref: method:chain-of-thought-prompting
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4 CoT: best@1 26.99% opt, 1.32x; best@8 42.74% opt, 1.58x. GPT-3.5 CoT: best@1 21.37%
+  opt, 1.25x; best@8 43.05% opt, 1.60x.'
+caveat: The authors use the hedged language 'this may demonstrate a lack of output diversity'; the best@8
+  gap is small (0.31% opt, 0.02x speedup) and could reflect sampling variance rather than a systematic
+  diversity difference.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1307
+- IC-1308
+- IC-1310

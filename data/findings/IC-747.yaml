@@ -1,0 +1,57 @@
+id: IC-747
+title: SOTA pruning methods (SparseGPT, Wanda, magnitude) cause significant degradation on knowledge-intensive
+  tasks for Vicuna and Llama models at 25-30%+ unstructured sparsity, and fail completely for n:m structured
+  sparsity
+description: 'The paper applies unstructured and structured (n:m) pruning to Vicuna-7B, Vicuna-13B,
+  Llama-7B, and Llama-2-7B, then evaluates on FreebaseQA (factoid QA), MMLU (multiple-choice reasoning),
+  and MT-Bench (instruction following). All pruning methods show negligible perplexity change up to
+  45-60% sparsity, yet suffer catastrophic drops on knowledge-intensive tasks: on FreebaseQA, magnitude-pruned
+  Vicuna-7B drops from 65.44% to 13.99% at 50% sparsity, and on MMLU from 47.1% to 5.0%. For n:m structured
+  sparsity, all methods show performance drops as severe as 50% or more. Quantization (GPTQ) is comparatively
+  more successful, with 8-bit and 4-bit variants remaining matching for Vicuna-7B and Vicuna-13B respectively.'
+models:
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+- ref: model:vicuna
+  variant: variant:vicuna-13b
+- ref: model:llama
+  variant: variant:llama-7b
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:compressing-llms-truth-rarely-pure-never
+datasets:
+- ref: dataset:freebaseqa
+  role: eval
+- ref: dataset:mmlu
+  role: eval
+- ref: dataset:mt-bench
+  role: eval
+methods:
+- ref: method:sparsegpt
+  role: primary
+- ref: method:wanda
+  role: primary
+- ref: method:magnitude-pruning
+  role: primary
+- ref: method:gptq
+  role: compared-to
+related_work:
+- ref: method:sparsegpt
+  role: builds-on
+- ref: method:wanda
+  role: builds-on
+- ref: method:gptq
+  role: builds-on
+evidence_type: interventional
+key_metric: 'FreebaseQA exact match: magnitude 65.44→13.99, SparseGPT 65.44→42.86, Wanda 65.44→44.66
+  at 50% sparsity (Vicuna-7B); MMLU accuracy: magnitude 0.471→0.050, SparseGPT 0.471→0.308, Wanda 0.471→0.386
+  at 50% sparsity; n:m sparsity performance drop ≥50% for all methods'
+caveat: Evaluation restricted to Vicuna (decoder-only) architecture due to open-source license; matching
+  threshold set at 5% performance drop; results averaged across 3 independent runs
+extracted_by: automatic-extraction
+related_findings:
+- IC-748
+- IC-749

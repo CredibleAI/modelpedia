@@ -1,0 +1,34 @@
+id: IC-1341
+title: DRUM's standard datalog rule extraction is fundamentally incomplete because its predictions depend
+  on counting distinct rule-body matches
+description: The paper proves that DRUM's output for any fact is determined by summing weighted counts
+  of distinct groundings of rule bodies in the input data (Lemma 1). Standard datalog rules fire on
+  any single match regardless of count, so they cannot express this counting. Theorem 1 shows the standard
+  extraction is sound only when the extraction threshold γ is at least the model's prediction threshold
+  β, and Theorem 2 proves that for some DRUM configurations no datalog program at all is both sound
+  and complete. Empirically, across 13 benchmark datasets and four threshold values, the extracted rules
+  cover at most 6.25% of the model's predictions (Table 2), confirming the theoretical incompleteness
+  in practice.
+models:
+- ref: model:drum
+concepts:
+- ref: concept:explanation-faithfulness
+sources:
+- ref: source:faithful-rule-extraction-differentiable-rule-learning
+datasets:
+- ref: dataset:fb15k-237
+  role: eval
+- ref: dataset:nell-995
+  role: eval
+- ref: dataset:wn18rr
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: rule extraction completeness 0.00%–6.25% across 13 datasets and 4 thresholds β ∈ {0.0001,
+  0.001, 0.01, 0.1} (Table 2); paper states 'the rules derive less than 7% of the facts predicted by
+  the models'
+caveat: 'Theorem 2 is an existence result: it shows there exists a DRUM model for which no datalog program
+  is faithful, not that every DRUM model is inexpressible. Empirical results use specific trained instances
+  with depth l=2 and rank n=3.'
+extracted_by: automatic-extraction

@@ -1,0 +1,30 @@
+id: IC-879
+title: Code Llama outperforms Llama-2 on coding (HumanEval) and mathematical (GSM8K) reasoning at both
+  7B and 13B scales
+description: In the limitations section, the paper reports HumanEval and GSM8K scores for Llama-2 and
+  Code Llama at 7B and 13B, sourced from the Open LLM Leaderboard. Code Llama, which continued pre-training
+  on code data, substantially outperforms the corresponding Llama-2 base on both tasks at both scales.
+  The authors use this as secondary validation that pre-training on code data improves coding and mathematical
+  reasoning capabilities, consistent with their main experiments on Pangu.
+models:
+- ref: model:llama-2
+- ref: model:code-llama
+concepts: []
+sources:
+- ref: source:at-which-training-stage-code-data
+datasets:
+- ref: dataset:humaneval
+  role: eval
+- ref: dataset:gsm8k
+  role: eval
+methods: []
+related_work:
+- name: HELM
+  anchor: https://arxiv.org/abs/2211.09110
+  role: context
+evidence_type: correlational
+key_metric: 'HumanEval: Llama-2-7B 12.2, Code Llama-7B 33.5, Llama-2-13B 20.1, Code Llama-13B 36.0;
+  GSM8K: Llama-2-7B 3.49, Code Llama-7B 5.16, Llama-2-13B 10.84, Code Llama-13B 12.13'
+caveat: Data is sourced from the Open LLM Leaderboard rather than measured directly by the authors;
+  the paper notes these are preliminary validations and calls for further verification on larger models.
+extracted_by: automatic-extraction

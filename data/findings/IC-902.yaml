@@ -1,0 +1,39 @@
+id: IC-902
+title: BLIP-2 and MiniGPT-4 confidence-based question selection underperforms the original question
+  for paraphrased candidates but succeeds for semantically enriched REPARe questions
+description: 'The paper compares three selection strategies: using the original question, selecting
+  among PEGASUS-generated paraphrases via model confidence, and selecting among REPARe-generated semantically
+  enriched questions via model confidence. For BLIP-2, paraphrase selection yields 40.23% on A-OKVQA
+  direct (vs. 41.86% baseline, −1.63) and 73.57% on A-OKVQA MC (vs. 73.89%, −0.32), while REPARe selection
+  reaches 44.87% and 77.20% respectively. MiniGPT-4 shows the same pattern: paraphrase selection gives
+  26.28% (A-OKVQA direct, vs. 27.51% baseline) and 40.52% (MC, vs. 41.66%), while REPARe selection reaches
+  33.23% and 63.20%. This indicates the models'' self-assessed confidence is unreliable for choosing
+  among cosmetic rewrites but effective for semantically enriched candidates.'
+models:
+- ref: model:blip-2
+- ref: model:minigpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:rephrase-augment-reason-visual-grounding-questions
+datasets:
+- ref: dataset:vqav2
+  role: eval
+- ref: dataset:a-okvqa
+  role: eval
+methods:
+- ref: method:pegasus
+  role: compared-to
+related_work: []
+evidence_type: correlational
+key_metric: 'BLIP-2: paraphrase selection 62.91/40.23/73.57 vs baseline 62.58/41.86/73.89 (VQAv2/A-OKVQA
+  direct/A-OKVQA MC); REPARe selection 66.43/44.87/77.20. MiniGPT-4 7B: paraphrase selection 51.39/26.28/40.52
+  vs baseline 51.47/27.51/41.66; REPARe selection 54.49/33.23/63.20'
+caveat: The paraphrase baseline uses a single PEGASUS model; the paper does not test whether a stronger
+  paraphraser or more paraphrase candidates would close the gap. The oracle setting (using gold answers
+  for selection) does show paraphrases can help, confirming the issue is in the selection mechanism,
+  not the paraphrases themselves.
+extracted_by: automatic-extraction
+related_findings:
+- IC-900
+- IC-901

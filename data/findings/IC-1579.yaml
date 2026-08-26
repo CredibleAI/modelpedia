@@ -1,0 +1,27 @@
+id: IC-1579
+title: 'ADM''s noise prediction network exhibits exposure bias: during iterative sampling the l2-norm
+  of its ε prediction is systematically larger than during training, and the sampling distribution variance
+  exceeds the training variance with error accumulating toward the end of the chain'
+description: The paper analytically derives that the prediction error x̂t_θ − x0 causes the sampling
+  distribution q_θ(x̂t|x_{t+1}) to have larger variance than the training distribution q(xt|x0) by the
+  term (√α_t β_{t+1}/(1−α_{t+1}) · e_{t+1})². This is empirically verified on the pre-trained ADM model
+  on CIFAR-10 using 20-step sampling with 50k samples per timestep. The l2-norm of εθ during sampling
+  is consistently larger than during training at every timestep, and the multi-step variance error grows
+  monotonically toward t=1 (the end of sampling), confirming that prediction error accumulates over
+  the sampling chain.
+models:
+- ref: model:adm
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:elucidating-exposure-bias-diffusion-models
+datasets:
+- ref: dataset:cifar-10
+  role: eval
+methods: []
+related_work: []
+evidence_type: observational
+caveat: The analysis assumes the prediction error can be modelled as a Gaussian with mean x0; the paper
+  notes this assumption does not affect the variance gap conclusion but the specific magnitude of the
+  error term depends on this approximation.
+extracted_by: automatic-extraction

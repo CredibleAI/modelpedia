@@ -1,0 +1,27 @@
+id: IC-1202
+title: Stable Diffusion 1.5 and 2.1 exhibit a cropping failure mode where synthesized objects are cut
+  off at image boundaries
+description: 'The paper identifies a reproducible failure mode in SD 1.5 and SD 2.1: generated objects
+  appear cropped or truncated at the edges of the image (e.g., a cat''s head cut off). The authors attribute
+  this to random cropping used during training as a data augmentation step, which leaks into the generation
+  process. SDXL addresses this by conditioning on crop coordinates, and the paper shows that SDXL does
+  not exhibit this artifact under the same prompts.'
+models:
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-1-5
+- ref: model:stable-diffusion
+  variant: variant:stable-diffusion-2-1
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:sdxl-improving-latent-diffusion-models-high
+datasets: []
+methods: []
+related_work: []
+evidence_type: observational
+caveat: The paper shows 3 random samples per model per prompt (Fig. 4); the failure is described as
+  'typical' but no systematic rate is quantified.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1203
+- IC-1204

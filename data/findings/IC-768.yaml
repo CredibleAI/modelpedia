@@ -1,0 +1,30 @@
+id: IC-768
+title: MMRealSR exhibits the most consistent performance across degradation cases while SwinIR achieves
+  the highest performance on cases it handles well, among GAN-based Real-SR methods
+description: 'Among GAN-based Real-SR methods evaluated under SEAL, MMRealSR achieves the lowest interquartile
+  range of RPR (RPR_i: 0.08), indicating the most uniform relative improvement across all 100 degradation
+  cases. SwinIR, by contrast, has a higher RPR_i (0.24) but achieves a higher average RPR on acceptable
+  cases (RPR_a: 0.71 vs 0.57 for MMRealSR), meaning it performs better on the cases it can handle. Both
+  achieve high acceptance rates (MMRealSR AR: 0.80, SwinIR AR: 0.81), but they differ in the shape of
+  their performance distribution.'
+models:
+- ref: model:mmrealsr
+- ref: model:swinir
+concepts: []
+sources:
+- ref: source:seal-framework-systematic-evaluation-real-world
+datasets: []
+methods: []
+related_work:
+- name: BSRGAN
+  anchor: https://arxiv.org/abs/2103.14006
+  role: context
+evidence_type: correlational
+key_metric: 'RPR_i: 0.08 (MMRealSR) vs 0.24 (SwinIR); RPR_a: 0.71 (SwinIR) vs 0.57 (MMRealSR); AR: 0.80
+  (MMRealSR) vs 0.81 (SwinIR)'
+caveat: The ranking depends on which metric is prioritized in the coarse-to-fine protocol; if RPR_a
+  is used as the first fine-grained metric, SwinIR ranks first instead of MMRealSR.
+extracted_by: automatic-extraction
+related_findings:
+- IC-766
+- IC-767

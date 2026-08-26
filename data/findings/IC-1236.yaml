@@ -1,0 +1,46 @@
+id: IC-1236
+title: Among 7B LLMs, Llama-2-7b achieves the best zero-shot COMET scores in both translation directions,
+  while MPT-7b leads in BLEU for en-to-xx
+description: The paper evaluates zero-shot translation performance of six 7B LLMs (OPT-7b, BLOOM-7b,
+  Falcon-7b, Llama-1-7b, MPT-7b, Llama-2-7b) plus GPT-3.5-d and GPT-3.5-t on 10 translation directions
+  (cs, de, is, zh, ru to/from English) using WMT'21 and WMT'22 test sets. Llama-2-7b achieves the highest
+  average COMET in both directions (77.16 xx-to-en, 68.88 en-to-xx), while MPT-7b leads in BLEU for
+  en-to-xx (15.90). All 7B models trail GPT-3.5-d and GPT-3.5-t by a substantial margin.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:mpt
+  variant: variant:mpt-7b
+- ref: model:opt
+  variant: variant:opt-7b
+- ref: model:bloom
+  variant: variant:bloom-7b
+- ref: model:falcon
+  variant: variant:falcon-7b
+- ref: model:llama-1-7b
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-text-davinci-003
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo-0301
+concepts: []
+sources:
+- ref: source:paradigm-shift-machine-translation-boosting-translation
+datasets:
+- ref: dataset:wmt21
+  role: eval
+methods:
+- ref: method:comet
+  role: eval
+- ref: method:bleu
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: Llama-2-7b avg COMET 77.16 (xx-en) / 68.88 (en-xx); MPT-7b avg BLEU 23.90 (xx-en) / 15.90
+  (en-xx); GPT-3.5-d avg COMET 83.90 / 84.59; GPT-3.5-t avg COMET 85.46 / 86.56
+caveat: Icelandic test data is from WMT'21 while others are from WMT'22; beam size 5; the paper notes
+  it relies more on COMET than BLEU due to better alignment with human evaluations.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1237
+- IC-1238
+- IC-1239

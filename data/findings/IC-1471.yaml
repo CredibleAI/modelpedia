@@ -1,0 +1,39 @@
+id: IC-1471
+title: Common robustness interventions (AugMix, CutMix, Deep AugMix, texture debiasing, antialiasing)
+  and scaling of data or model size do not resolve geographic disparities in released vision models
+description: The paper evaluates five robustness interventions on pretrained ResNet50 models and measures
+  their effect on geographic disparity in DollarStreet and GEODE. Most interventions produce mixed results,
+  improving one dataset's gap while degrading the other. AugMix is the only intervention that improves
+  both (GEODE by 1.86%, DollarStreet by 0.94%). Separately, the paper measures disparity as a function
+  of data scale (+200M images) and model size (+100M parameters) for CLIP models, finding that scaling
+  neither improves nor conclusively worsens disparities, with averages suggesting exacerbation.
+models:
+- ref: model:resnet
+- ref: model:clip
+concepts: []
+sources:
+- ref: source:progress-object-recognition-benchmarks-improve-generalization
+datasets:
+- ref: dataset:dollarstreet
+  role: eval
+- ref: dataset:geode
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+methods:
+- ref: method:augmix
+  role: primary
+- ref: method:cutmix
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'AugMix: GEODE disparity 3.10% (from 4.96%), DollarStreet 14.22% (from 15.16%); Deep AugMix:
+  GEODE 5.22%, DS 13.53%; CutMix: GEODE 4.38%, DS 16.10%; Texture debiased: GEODE 4.70%, DS 16.20%;
+  Ant-aliased: GEODE 5.54%, DS 13.46%; baseline ResNet50: GEODE 4.96%, DS 15.16%'
+caveat: The authors note that error bars on the scaling plots do not allow drawing conclusive trends,
+  and that the interventions were tested only on ResNet50, not on foundation models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1469
+- IC-1470
+- IC-1472

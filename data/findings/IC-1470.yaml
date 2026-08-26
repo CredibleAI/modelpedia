@@ -1,0 +1,48 @@
+id: IC-1470
+title: Geographic disparities (Europe-Africa accuracy gap) are large across all 98 models and have more
+  than tripled between least and best performing models on DollarStreet
+description: 'The paper measures the maximum absolute accuracy difference between any two regions (geographic
+  disparity) for each of 98 models on DollarStreet and GEODE. All models show substantial disparities:
+  ResNet models average 14.5% on DollarStreet and 5.0% on GEODE, while the best-performing CLIP model
+  shows 17.0% on DollarStreet and 6.5% on GEODE. As ImageNet accuracy increases across the model testbed,
+  the Europe-Africa gap on DollarStreet widens, with disparities more than tripling between the least
+  and most performant models. Europe improves at almost double the rate of Africa.'
+models:
+- ref: model:clip
+- ref: model:resnet
+- ref: model:dinov2
+- ref: model:vit
+- ref: model:convnext
+- ref: model:regnet
+- ref: model:mobilenetv3
+- ref: model:vgg
+- ref: model:hrnet
+- ref: model:flava
+- ref: model:eva-clip
+- ref: model:mlp-mixer
+- ref: model:edgenext
+- ref: model:rexnet
+concepts: []
+sources:
+- ref: source:progress-object-recognition-benchmarks-improve-generalization
+datasets:
+- ref: dataset:dollarstreet
+  role: eval
+- ref: dataset:geode
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'ResNet average disparity: 14.5% (DollarStreet), 5.0% (GEODE); best CLIP disparity: 17.0%
+  (DollarStreet), 6.5% (GEODE); disparities more than tripled between least and best models on DollarStreet;
+  Europe improves at almost double the rate of Africa'
+caveat: The disparity is measured as the max absolute difference between any two regions, which is sensitive
+  to the specific regions present in the dataset. The paper notes GEODE shows much more similar rates
+  of improvement across regions compared to DollarStreet.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1469
+- IC-1471
+- IC-1472

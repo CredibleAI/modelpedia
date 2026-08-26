@@ -1,0 +1,26 @@
+id: IC-997
+title: LLaMA-2-13B-Chat achieves 44.23% zero-shot accuracy on OGBN-ARXIV, substantially below GPT-3.5's
+  73.5%
+description: The paper evaluates the open-source LLaMA-2-13B-Chat as a cost-free alternative to GPT-3.5
+  for zero-shot node classification on OGBN-ARXIV. LLaMA-2-13B-Chat reaches 44.23% accuracy, far below
+  GPT-3.5's 73.5%. On TAPe-ARXIV23 it achieves 44.52%. The authors note that despite this large gap
+  in zero-shot accuracy, the TAPe pipeline still achieves 76.19% with LLaMA-2 explanations, attributing
+  this to the complementary semantic information in the explanations.
+models:
+- ref: model:llama-2
+concepts: []
+sources:
+- ref: source:harnessing-explanations-llm-lm-interpreter-enhanced
+datasets:
+- ref: dataset:ogbn-arxiv
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 44.23% on OGBN-ARXIV; 44.52% on TAPe-ARXIV23 (zero-shot, llama-2-13b-chat)
+caveat: The paper attributes the lower performance to both zero-shot accuracy and explanation quality
+  being inferior to GPT-3.5; no further ablation isolates which factor dominates.
+extracted_by: automatic-extraction
+related_findings:
+- IC-996
+- IC-998

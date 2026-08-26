@@ -1,0 +1,32 @@
+id: IC-1169
+title: CodeLlama-7B and CodeLlama-34B show improvement with CSV prompting on GSM8K and MATH but at much
+  lower absolute accuracy than GPT-4 Code Interpreter
+description: In Appendix C, the authors apply the same CSV zero-shot prompt to CodeLlama-7B and CodeLlama-34B.
+  On GSM8K, CodeLlama-7B improves from 17.44% to 20.85% and CodeLlama-34B from 28.96% to 37.60%. On
+  MATH, CodeLlama-7B improves from 6.56% to 10.18% and CodeLlama-34B from 9.12% to 13.36%. The absolute
+  accuracy remains far below GPT-4 Code Interpreter's 92.9% (GSM8K) and 69.69% (MATH), indicating that
+  the base model's code generation and execution capabilities are critical for the method to be effective.
+models:
+- ref: model:codellama-13b
+  variant: variant:codellama-7b
+- ref: model:codellama-34b
+concepts: []
+sources:
+- ref: source:solving-challenging-math-word-problems-using
+datasets:
+- ref: dataset:gsm8k
+  role: eval
+- ref: dataset:math
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GSM8K: CodeLlama-7B 17.44%→20.85%, CodeLlama-34B 28.96%→37.60%; MATH: CodeLlama-7B 6.56%→10.18%,
+  CodeLlama-34B 9.12%→13.36%'
+caveat: Results are from a single zero-shot prompt with no voting; the paper does not test VW-voting
+  on CodeLlama. The absolute accuracy gap suggests the method's effectiveness is heavily dependent on
+  the base model's code capabilities.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1167
+- IC-1168

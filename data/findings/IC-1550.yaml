@@ -1,0 +1,43 @@
+id: IC-1550
+title: All evaluated LMs systematically prefer male pronoun completions in the non-stereotypical portions
+  of Winobias and Winogender, with margins exceeding 40%
+description: 'Using the Preference Disparity (PD) metric on the |maxPMI(s)| <= 0.65 filtered subsets
+  of Winobias and Winogender, all larger models show a systematic preference for male pronoun completions.
+  PD values are consistently negative (male-skewing) with margins greater than 40% for all models in
+  Table 3. In contrast, on the USE benchmarks the direction varies by model family: Pile-trained models
+  (GPT-J-6B, Pythia) and MPT/OLMo tend to favor female completions, while OPT favors male. LLaMA-2 presents
+  the most balanced preferences, keeping PD below 27% on USE-5.'
+models:
+- ref: model:pythia
+- ref: model:gpt-j
+  variant: variant:gpt-j-6b
+- ref: model:opt
+- ref: model:llama-2
+- ref: model:mpt
+- ref: model:olmo
+- ref: model:mixtral-8x7b
+  variant: variant:mixtral-8x7b-v0-1
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:models-biased-text-without-gender-related
+datasets:
+- ref: dataset:winobias
+  role: eval
+- ref: dataset:winogender
+  role: eval
+- ref: dataset:use-5
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'PD in WB (|maxPMI(s)| <= 0.65): Pythia-12B -55.38, GPT-J-6B -44.62, OPT-6.7B -62.37, LLaMA-2-70B
+  -64.52, MPT-30B -72.04, OLMo-7B -71.51, Mixtral-8x7B -63.44; PD in WG: Pythia-12B -46.38, GPT-J-6B
+  -55.07, OPT-6.7B -46.38, LLaMA-2-70B -42.03, MPT-30B -56.52, OLMo-7B -66.67, Mixtral-8x7B -53.62'
+caveat: The >40% margin claim is stated for the larger models in Table 3; some smaller models (e.g.,
+  Pythia-1.4B at -29.91 on WG) fall below this threshold in the full tables.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1549
+- IC-1551
+- IC-1552

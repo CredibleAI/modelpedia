@@ -1,0 +1,37 @@
+id: IC-1237
+title: Llama-2-7b's pre-existing translation knowledge is diluted by large amounts of parallel data,
+  causing COMET to decline after 100k examples
+description: Fine-tuning Llama-2-7b on en-to-ru parallel data at five scales (10k, 100k, 1m, 5m, 20m)
+  reveals that its COMET score peaks at 10k-100k and then declines, while MPT-7b shows continuous improvement.
+  A randomly initialized 7B model trained from scratch on 20m data reaches similar performance, supporting
+  the hypothesis that large parallel data causes catastrophic forgetting of the LLM's pre-trained knowledge.
+  BLEU does not capture this decline because the WMT training data is domain-matched to the test set.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:mpt
+  variant: variant:mpt-7b
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:paradigm-shift-machine-translation-boosting-translation
+datasets: []
+methods:
+- ref: method:comet
+  role: eval
+- ref: method:bleu
+  role: eval
+related_work:
+- name: NLLB-54b
+  anchor: https://arxiv.org/abs/2207.04672
+  role: compared-to
+evidence_type: correlational
+key_metric: Llama-2-7b COMET peaks at 10k/100k then declines at 5m/20m; MPT-7b COMET improves monotonically;
+  random-init 7B at 20m reaches similar BLEU and COMET to fine-tuned LLMs
+caveat: Single language pair (en-to-ru) only; the decline is visible in COMET but not BLEU; the authors
+  hypothesize catastrophic forgetting but do not directly measure it.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1236
+- IC-1238
+- IC-1239

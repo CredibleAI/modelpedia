@@ -1,0 +1,38 @@
+id: IC-1602
+title: ResNet18, ResNet34, and MobileNetV2 pre-trained on CIFAR10 have decision functions well-approximated
+  by a kernel machine using the trace NTK, with Kendall-τ correlations of 0.776, 0.786, and 0.700
+description: The paper computes the trace neural tangent kernel (trntk) for three pre-trained CIFAR10
+  classifiers and trains a kernel general linear model (KGLM) on the same training data. Faithfulness
+  is measured by Kendall-τ rank correlation between the KGLM's and the NN's softmax probabilities for
+  the correct class, plus test accuracy differential. All three models show high correlation (0.700–0.786)
+  and near-zero accuracy differentials (−0.28% to −0.4%), indicating the trntk KGLM faithfully reproduces
+  the NN's decision function. Among six kernel functions compared for ResNet18, the trntk achieves the
+  highest τk (0.776) versus trntk0 (0.658), proj-trntk (0.737), proj-pntk (0.407), embedding kernel
+  (0.768), and conjugate kernel (0.630).
+models:
+- ref: model:resnet
+  variant: variant:resnet-18
+- ref: model:resnet
+  variant: variant:resnet-34
+- ref: model:mobilenetv2
+concepts:
+- ref: concept:explanation-faithfulness
+sources:
+- ref: source:faithful-efficient-explanations-neural-networks-via
+datasets:
+- ref: dataset:cifar-10
+  role: eval
+methods: []
+related_work:
+- name: TRAK
+  anchor: https://arxiv.org/abs/2303.14186
+  role: builds-on
+evidence_type: correlational
+key_metric: 'τk = 0.776 (ResNet18), 0.786 (ResNet34), 0.700 (MobileNetV2); TAD = −0.28%, −0.29%, −0.4%;
+  ResNet18 kernel comparison: trntk 0.776, trntk0 0.658, proj-trntk 0.737, proj-pntk 0.407, em 0.768,
+  ck 0.630'
+caveat: The trntk computation for ResNet18 took 389 GPU-hours; the paper notes the layerwise computation
+  may be sub-optimal. Kendall-τ only uses the correct-class logit, not the full softmax vector.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1603

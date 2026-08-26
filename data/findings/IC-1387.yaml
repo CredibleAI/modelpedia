@@ -1,0 +1,42 @@
+id: IC-1387
+title: In-context learning capabilities in OPT and LLaMA models remain within 5% of dense-model accuracy
+  even at 60-70% sparsity, and show less than 2% difference between the 30B and 1.3B dense OPT models
+description: The paper evaluates ICL on three parameterized function-learning tasks (2-way linear classification,
+  2-layer neural network, 4-way decision tree) and on open-book/overriding QA. Under SparseGPT pruning,
+  average accuracy across the four main models stays within 5% of the dense model up to 60% sparsity
+  (linear, 2-layer NN) and 70% (decision tree). Under dense scaling, the accuracy difference between
+  OPT-30B and OPT-1.3B is only 1.8%, 1.4%, and 0.1% on the three ICL tasks. Open-book and overriding
+  QA also survive to 50-70% sparsity. The pattern holds for Pythia-12B (50% sparsity) and with Wanda
+  (50% sparsity).
+models:
+- ref: model:opt
+- ref: model:llama
+- ref: model:pythia
+concepts: []
+sources:
+- ref: source:cost-scaling-down-large-language-models
+datasets:
+- ref: dataset:triviaqa
+  role: eval
+- ref: dataset:natural-questions
+  role: eval
+- ref: dataset:disentqa
+  role: eval
+methods:
+- ref: method:sparsegpt
+  role: primary
+- ref: method:wanda
+  role: supporting
+related_work: []
+evidence_type: interventional
+key_metric: '"the average accuracy of the pruned models on linear, 2-layer nn, decision tree classification
+  tasks is within 5% of the dense models up to 60%, 60% and 70% sparsity, respectively"; "the accuracy
+  difference between the largest (30b) and the smallest (1.3b) dense opt model we consider is 1.8%,
+  1.4% and 0.1% on linear, 2-layer nn and decision tree classification tasks, respectively"; open-book:
+  50% (TriviaQA(f)), 60% (NaturalQuestions); overriding: 70% (DisEntQA)'
+caveat: since our work is empirical in nature, our observations may not generalize to all tasks and
+  llms
+extracted_by: automatic-extraction
+related_findings:
+- IC-1386
+- IC-1388

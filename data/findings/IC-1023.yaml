@@ -1,0 +1,40 @@
+id: IC-1023
+title: The binary activation pattern of standard CNNs (VGG, ResNet) carries most of the classification
+  information, as shown by APoP
+description: The authors discovered that if the on/off activation pattern of a CNN is frozen (by replacing
+  ReLU with the recorded binary mask and MaxPool with the recorded indices) and a completely different
+  input (zeros, ones, or random noise) is fed through the network, the model still achieves classification
+  accuracy close to its original. For example, VGG16 drops from 0.698 to 0.575 top-1 (APoP) or to 0.685
+  top-1 (APoP with ReLU), and ResNet152 drops from 0.770 to 0.612 top-1 (APoP) or to 0.759 top-1 (APoP
+  with ReLU). This holds across all eight tested architectures and three input conditions, and even
+  when only a single layer's activations are binarized, accuracy remains above random. The finding implies
+  that the sparsity pattern of which neurons fire, rather than the magnitude of their activations, is
+  the primary carrier of class information in these networks.
+models:
+- ref: model:vgg
+  variant: variant:vgg-16
+- ref: model:vgg
+  variant: variant:vgg-19
+- ref: model:resnet
+  variant: variant:resnet-18
+- ref: model:resnet
+  variant: variant:resnet-34
+- ref: model:resnet
+  variant: variant:resnet50
+concepts: []
+sources:
+- ref: source:respect-model-fine-grained-robust-explanation
+datasets:
+- ref: dataset:imagenet1k
+  role: eval
+methods: []
+related_work: []
+evidence_type: interventional
+key_metric: 'VGG16 top-1: 0.698 (original) → 0.575 (APoP) / 0.685 (APoP & ReLU); ResNet50 top-1: 0.745
+  → 0.569 / 0.733; ResNet152 top-1: 0.770 → 0.612 / 0.759; top-5 VGG16: 0.894 → 0.809 / 0.888; all on
+  ImageNet validation, zeros input'
+caveat: The experiment is conducted on ImageNet validation with standard pretrained checkpoints; the
+  authors note the phenomenon is specific to the activation pattern being frozen across the entire network,
+  and the 'ones' and 'normal' input conditions show different (sometimes higher) APoP accuracies than
+  'zeros', suggesting the result is sensitive to the replacement input.
+extracted_by: automatic-extraction

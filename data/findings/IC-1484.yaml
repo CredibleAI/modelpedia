@@ -1,0 +1,40 @@
+id: IC-1484
+title: GP-UNIT's FID degrades under noisy inputs in reference-guided mode but paradoxically improves
+  in latent-guided mode
+description: The paper measures GP-UNIT's output quality under five noise types (Gaussian, uniform,
+  color, Laplacian, salt-and-pepper) at six intensity levels. In the reference-guided setting, FID degrades
+  from 17.82 (clean) to 36.84 (Gaussian s6), a clear failure mode. In the latent-guided setting, however,
+  FID starts at 22.82 (clean) and actually decreases to 21.76 at Gaussian s6, with KID dropping from
+  9.67 to 7.88. The authors flag this as 'intriguing behavior' and state it will be the subject of future
+  investigation, noting that GP-UNIT integrates an additional latent code or reference image that their
+  theoretical framework does not account for.
+models:
+- ref: model:gp-unit
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:analysis-gan-based-image-image-translation
+datasets:
+- ref: dataset:afhq
+  role: eval
+methods:
+- ref: method:fid
+  role: eval
+- ref: method:kid
+  role: eval
+related_work:
+- name: DiffuseIT
+  anchor: https://arxiv.org/abs/2209.15264
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Reference-guided FID: 17.82 (clean) to 36.84 (Gaussian s6); Latent-guided FID: 22.82 (clean)
+  to 21.76 (Gaussian s6); Latent-guided KID: 9.67 (clean) to 7.88 (Gaussian s6)'
+caveat: The authors note that the FID results for GP-UNIT in the unsupervised setting diverge from theoretical
+  KL-divergence predictions, possibly because GP-UNIT integrates an additional latent code or reference
+  image not contemplated by the theory. They state a comprehensive analysis of this behavior is left
+  for future work.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1485
+- IC-1486
+- IC-1487

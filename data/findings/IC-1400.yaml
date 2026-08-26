@@ -1,0 +1,35 @@
+id: IC-1400
+title: When steerable feature dimension is held constant, increasing the type-l of steerable features
+  does not improve performance of ESCN or EquiformerV2 on IS2RE and S2EF molecular property prediction
+description: 'An ablation study on the OC20 IS2RE dataset (10k training molecules) shows that ESCN with
+  l=2, c=206 (feat dim 1854) achieves 842±13 meV energy MAE, while l=4, c=98 (feat dim 1862) gives 929±15
+  meV and l=6, c=64 (feat dim 1856) gives 872±6 meV. EquiformerV2 shows a similar pattern: l=2, c=34
+  (feat dim 306) gives 841±21 meV versus l=4, c=16 (feat dim 304) at 832±11 meV. On S2EF, ESCN l=2 c=824
+  (feat dim 7416) achieves 246 meV MAE, outperforming ESCN l=6 c=256 (feat dim 7424) at 294 meV. The
+  results support the theoretical claim that information-carrying ability of steerable features is characterized
+  by dimension, not by the highest type utilized.'
+models:
+- ref: model:escn
+- ref: model:equiformerv2
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:rethinking-benefits-steerable-features-3d-equivariant
+datasets:
+- ref: dataset:oc20-is2re
+  role: eval
+- ref: dataset:oc20-s2ef
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'IS2RE: ESCN l=2 c=206: 842±13 meV MAE; l=4 c=98: 929±15; l=6 c=64: 872±6. EquiformerV2
+  l=2 c=34: 841±21 meV; l=4 c=16: 832±11 meV. S2EF: ESCN l=2 c=824: 246 meV MAE; ESCN l=6 c=256: 294
+  meV MAE'
+caveat: The S2EF comparison uses results from [28] for l=2 c=256 and l=6 c=256 (trained 12 epochs on
+  16 GPUs) versus this paper's l=2 c=824 (trained 8 epochs on 2 GPUs), so training budget differs. The
+  authors note these tasks do not rule out confounding factors like over-squashing. IS2RE uses only
+  10k training molecules due to computational constraints.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1399

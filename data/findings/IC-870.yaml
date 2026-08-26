@@ -1,0 +1,30 @@
+id: IC-870
+title: GPT-4's performance on Skill-Mix(k=5) and Skill-Mix(k=6) provides probabilistic evidence of generating
+  novel skill-topic combinations not present in training data
+description: Using upper bounds on skill frequency (p_s ≤ 0.0144), topic frequency (p_t ≤ 0.0022), and
+  corpus size (l ≤ 5×10^10 sentences) estimated from the RedPajama dataset, the paper shows that the
+  expected number of training text pieces containing any given k-skill and topic combination is at most
+  0.07 for k=5 and 0.001 for k=6. GPT-4's observed ratio of full marks (α5 ≈ 0.12, α6 ≈ 0.08 after filtering
+  common skills) exceeds the threshold (3/2)·p^k_s·p_t·l, implying more than one-third of its correct
+  answers involve combinations never jointly seen in training. No other model shows similar evidence.
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:skill-mix-flexible-expandable-family-evaluations
+datasets:
+- ref: dataset:redpajama
+  role: source
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: GPT-4 α5 ≈ 0.12, α6 ≈ 0.08 (after filtering common skills); p^k_s·p_t·l ≤ 0.07 for k=5,
+  ≤ 0.001 for k=6; threshold for 'beyond stochastic parrot' is αk > (3/2)·p^k_s·p_t·l
+caveat: The calculation assumes independence among skill occurrences, which the authors verified only
+  for k=2. The frequency estimates are based on a 1-billion-token sample of RedPajama, not the actual
+  training corpus of GPT-4.
+extracted_by: automatic-extraction
+related_findings:
+- IC-868
+- IC-869
+- IC-871

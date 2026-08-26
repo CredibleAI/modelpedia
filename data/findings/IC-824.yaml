@@ -1,0 +1,22 @@
+id: IC-824
+title: GPT-3 models of all sizes (350M to 175B) can reverse name-description associations in-context
+  with near-perfect accuracy, showing the reversal curse is a property of training rather than reasoning
+description: In an in-context version of the reversal experiment (Appendix B.6), the authors prompted
+  GPT-3 models with a statement in one order (e.g., 'the description is the name') using 3-shot demonstrations
+  at temperature 0, then asked the model to produce the reverse. All GPT-3 sizes achieved 100% accuracy
+  on name-to-description reversal, and 96.67-100% on description-to-name reversal. This contrasts sharply
+  with the fine-tuning results where the same model sizes fail to reverse after training, indicating
+  the model has the reasoning capacity to reverse but the auto-regressive training process does not
+  produce bidirectional associations.
+models:
+- ref: model:gpt-3
+concepts: []
+sources:
+- ref: source:reversal-curse-llms-trained-b-fail
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-3-350m: 100% (name-to-desc), 96.67% (desc-to-name); GPT-3-1.3b, 6.7b, 175b: 100% on
+  both directions (Table 5)'
+extracted_by: automatic-extraction

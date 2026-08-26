@@ -1,0 +1,32 @@
+id: IC-898
+title: GPT-3.5-turbo and GPT-4 are overconfident in their initial code predictions when unit test execution
+  is unavailable
+description: When self-debugging is performed without unit test execution, the model must rely solely
+  on self-generated feedback to assess correctness. GPT-3.5-turbo shows no improvement on Transcoder
+  (89.1 to 89.1) and only 0.6% on MBPP (67.6 to 68.2). GPT-4 shows 0.9% on Transcoder (77.3 to 78.2)
+  and 3.6% on MBPP (72.8 to 76.0). The authors explicitly state that both models 'tend to be overconfident
+  in their initial predictions' in this setting, in contrast to codex which still improves by up to
+  5% without execution.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:teaching-large-language-models-self-debug
+datasets:
+- ref: dataset:transcoder
+  role: eval
+- ref: dataset:mbpp
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'Transcoder without execution: GPT-3.5 89.1→89.1, GPT-4 77.3→78.2; MBPP without execution:
+  GPT-3.5 67.6→68.2, GPT-4 72.8→76.0'
+caveat: The overconfidence is observed specifically in the self-debugging prompting context; it is unclear
+  whether it generalizes to other self-correction or self-evaluation settings.
+extracted_by: automatic-extraction
+related_findings:
+- IC-897

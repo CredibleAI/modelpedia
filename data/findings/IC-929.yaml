@@ -1,0 +1,32 @@
+id: IC-929
+title: Simulated character-level ciphers that never appear in pretraining data cannot bypass safety
+  alignment even with 10+ demonstrations
+description: The authors define non-existent ciphers using random alphabet mapping and Chinese character
+  substitutions that have no prior in the models' pretraining data. These simulated ciphers fail to
+  produce valid or unsafe responses even when provided with more than 10 in-context demonstrations.
+  This contrasts with human ciphers (Caesar, ASCII) and SelfCipher, which do work, indicating that the
+  models' cipher comprehension relies on character-level priors learned during pretraining rather than
+  on-the-fly rule learning.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts: []
+sources:
+- ref: source:gpt-4-too-smart-be-safe
+datasets:
+- ref: dataset:safety-assessment-of-chinese-large-language-models
+  role: eval
+methods: []
+related_work:
+- name: Jailbreaking proprietary large language models using word substitution cipher
+  anchor: https://arxiv.org/abs/2402.10601
+  role: compared-to
+evidence_type: correlational
+caveat: The paper does not report specific numbers for the simulated cipher experiments; the result
+  is stated qualitatively. The authors note that self-defined word-level ciphers (from a separate study)
+  can work, suggesting the limitation is specific to character-level ciphers.
+extracted_by: automatic-extraction
+related_findings:
+- IC-927
+- IC-928

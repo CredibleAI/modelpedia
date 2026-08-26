@@ -1,0 +1,43 @@
+id: IC-673
+title: Trained depthwise convolutional kernels in DS-CNN architectures converge to identifiable DoG-like
+  patterns, with over 95% of ConvNeXtV2 and over 90% of ConvNeXt filters classifiable into a small set
+  of clusters
+description: 'The authors applied unsupervised autoencoder-based clustering to millions of depthwise
+  convolutional kernels extracted from pre-trained DS-CNN models (ConvNeXt, ConvNeXtV2, HoNet, MoGANet,
+  ConvMixer, EfficientNet, MobileNetV3, MixNet, MNASNet, ReplkNet-XL). The kernels converge into approximately
+  ten identifiable clusters resembling difference-of-Gaussian (DoG) functions, their first and second-order
+  derivatives, and cross-shaped patterns. The patterns persist across all layers, with the composition
+  shifting: DoG patterns dominate early layers while cross-shaped patterns become predominant in the
+  final convolutional layer. The degree of convergence varies by architecture, being highest in ConvNeXtV2
+  (up to 98.16%) and lowest in ConvMixer (56.64%).'
+models:
+- ref: model:convnextv2
+- ref: model:convnext
+- ref: model:moganet
+- ref: model:convmixer
+- ref: model:efficientnet
+- ref: model:mobilenetv3
+- ref: model:mnasnet
+- ref: model:replknet-xl
+concepts: []
+sources:
+- ref: source:unveiling-unseen-identifiable-clusters-trained-depthwise
+datasets:
+- ref: dataset:imagenet1k
+  role: source
+- ref: dataset:imagenet-21k
+  role: source
+methods:
+- ref: method:pca
+  role: supporting
+- ref: method:k-means
+  role: supporting
+related_work: []
+evidence_type: observational
+key_metric: 'ConvNeXtV2 tiny 22k: 98.16% filters clustered; ConvNeXtV2 tiny 1k: 97.33%; ConvNeXt tiny:
+  95.21%; HoNet tiny: 80.71%; MoGANet small: 78.87%; ConvMixer 768-32: 56.64%; EfficientNet-B4: 73.78%;
+  MobileNetV3 large: 87.09%'
+caveat: The ConvMixer model shows the weakest convergence (56.64%) with noisier kernels. The 3x3 kernels
+  (MobileNetV3) could not be well-fit by the autoencoder and required a separate k-means method. The
+  authors note the cause of cross-shaped filters remains uncertain.
+extracted_by: automatic-extraction

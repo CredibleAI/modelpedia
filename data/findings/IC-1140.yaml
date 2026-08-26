@@ -1,0 +1,33 @@
+id: IC-1140
+title: Stable Diffusion's internal concept representations encode visual and structural similarities
+  (shape, texture, color) that transcend textual semantics
+description: Conceptor decompositions reveal that SD links concepts based on visual properties rather
+  than purely textual or semantic relationships. Examples include 'sweet peppers' linked to 'fingers'
+  (common shape), 'camel' borrowing skin texture and color from 'cashmere,' 'snake' constructed as a
+  'twisted gecko,' 'bee' linked to 'wasp' and 'honey,' and 'corn' linked to 'maize' and 'comb.' These
+  associations go beyond what would be expected from lexical or encyclopedic knowledge, suggesting the
+  model's internal geometry is organised by visual features. The authors describe these as 'profound
+  learned connections between concepts that transcend textual correlations.'
+models:
+- ref: model:stable-diffusion
+concepts: []
+sources:
+- ref: source:hidden-language-diffusion-models
+datasets:
+- ref: dataset:cifar-10
+  role: eval
+- ref: dataset:conceptnet
+  role: eval
+methods:
+- ref: method:conceptor
+  role: primary
+related_work: []
+evidence_type: observational
+caveat: The visual connections are demonstrated through qualitative examples (Figs. 1, 2, 8) rather
+  than a systematic quantitative analysis across all 188 concepts. The causal mechanism by which visual
+  similarity enters the representation is not isolated.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1137
+- IC-1138
+- IC-1139

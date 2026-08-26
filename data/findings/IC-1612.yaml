@@ -1,0 +1,42 @@
+id: IC-1612
+title: GPT-3.5-turbo achieves the best and most stable performance across all three drug types in conversational
+  drug editing
+description: Using GPT-3.5-turbo (gpt-3.5-turbo-0301) as the backbone, ChatDrug reaches the best hit
+  ratio on 32 of 39 drug editing tasks spanning small molecules, peptides, and proteins. On small molecule
+  tasks, it achieves the best performance on 21 of 28 tasks, with 20 of those exceeding the second-best
+  baseline by over 20 percentage points. On peptide editing, it achieves hit ratios of 56.60–69.80 on
+  single-objective tasks, far exceeding random mutation baselines (1.80–14.40). The model also shows
+  the highest stability (lowest standard deviation) across five random seeds.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts: []
+sources:
+- ref: source:conversational-drug-editing-using-retrieval-domain
+datasets:
+- ref: dataset:zinc
+  role: source
+- ref: dataset:tape
+  role: eval
+methods:
+- ref: method:moleculestm
+  role: compared-to
+- ref: method:mhcflurry-2-0
+  role: eval
+- ref: method:esmfold
+  role: eval
+- ref: method:proteinclap-ebm-nce
+  role: eval
+related_work:
+- ref: method:moleculestm
+  role: compared-to
+evidence_type: correlational
+key_metric: 'best on 32 of 39 tasks; small molecule task 101: 94.13 ± 1.04; peptide task 302: 69.80;
+  protein task 502: 59.68; 20 of 21 best small molecule tasks exceed second-best by >20% hit ratio'
+caveat: Performance is measured within the ChatDrug framework with retrieval and conversation modules,
+  not in zero-shot isolation. The model is accessed via API with temperature 0 and frequency_penalty
+  0.2. The authors note ChatDrug requires conversational rounds to reach strong performance.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1610
+- IC-1611

@@ -1,0 +1,39 @@
+id: IC-719
+title: Llama-2-Chat achieves reasonable human-preference accuracy (51.78-53.67%) as a prompted reward
+  model without specific reward-model training
+description: The paper tests Llama-2-Chat (7B, 13B, 70B) on two human preference benchmarks (HHH Alignment
+  and MT Bench Human Judgment) using a ranking grading scheme, where the model must assign a higher
+  score to the human-preferred response. Despite no reward-model-specific training, Llama-2-Chat achieves
+  51.78%, 52.34%, and 53.67% total accuracy on HHH Alignment respectively. The authors attribute this
+  to the RLHF training in Llama-2-Chat's base model. This is below GPT-4 (63.87%) and GPT-3.5-Turbo
+  (57.12%) but above the dedicated StanfordNLP (44.79%) and ALMOST (49.90%) reward models.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-chat
+- ref: model:stanfordnlp-reward-model
+- ref: model:almost-reward-model
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts: []
+sources:
+- ref: source:prometheus-inducing-fine-grained-evaluation-capability
+datasets:
+- ref: dataset:hhh-alignment
+  role: eval
+methods: []
+related_work:
+- ref: model:almost-reward-model
+  role: compared-to
+- ref: model:stanfordnlp-reward-model
+  role: compared-to
+evidence_type: correlational
+key_metric: 'HHH Alignment total accuracy: Llama-2-Chat 7B 51.78%, 13B 52.34%, 70B 53.67%; StanfordNLP
+  44.79%; ALMOST 49.90%; GPT-3.5-Turbo 57.12%; GPT-4 63.87%'
+caveat: The ranking grading setting requires iterative inference at temperature 1.0 until a winner is
+  obtained, which the authors note is 'not exactly fair compared to other ranking models.' The setting
+  is described as a check of generalization, not a claim of SOTA.
+extracted_by: automatic-extraction
+related_findings:
+- IC-717
+- IC-718

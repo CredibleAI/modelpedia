@@ -1,0 +1,23 @@
+id: IC-681
+title: GPT-3.5 exhibits positional bias when judging which of two LLM responses is superior
+description: The paper reports an observed inherent bias in GPT-3.5 where its evaluation of which response
+  is better depends on the order in which the two responses are presented in the prompt. Even with carefully
+  designed prompts, GPT-3.5's judgment conflicts when the response order is swapped. The authors mitigate
+  this by filtering out inconsistent training samples and by swapping the order at inference time, revising
+  conflicting results to 'tie'. No specific magnitude or proportion of affected samples is reported.
+models:
+- ref: model:gpt-3-5
+concepts:
+- ref: concept:positional-bias
+sources:
+- ref: source:pandalm-automatic-evaluation-benchmark-llm-instruction
+datasets: []
+methods: []
+related_work: []
+evidence_type: observational
+caveat: The paper does not quantify the proportion of samples affected by the bias or the magnitude
+  of the order effect; it is described qualitatively as 'inherent' and handled via filtering.
+extracted_by: automatic-extraction
+related_findings:
+- IC-682
+- IC-683

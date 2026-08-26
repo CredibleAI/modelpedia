@@ -1,0 +1,30 @@
+id: IC-871
+title: Llama-2-70b-chat as a grader is more generous than GPT-4 and systematically gives higher scores
+  to Llama-2 family outputs
+description: 'When both GPT-4 and Llama-2-70b-chat are used to grade the same Skill-Mix generations,
+  Llama-2-70b-chat assigns higher scores overall. More specifically, GPT-4 generally gives a higher
+  score to Mistral-7b-instruct-v0.1 than to Llama-2-7b-chat, but the Llama-2 grader reverses this: it
+  gives a much higher score to Llama-2-7b-chat than to Mistral-7b-instruct-v0.1 for k ≥ 3. The authors
+  conclude via spot-checking that GPT-4 is a more accurate and reliable grader.'
+models:
+- ref: model:llama-2
+- ref: model:gpt-4
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct-v0-1
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:skill-mix-flexible-expandable-family-evaluations
+datasets: []
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'GPT-4 grading k=3: Mistral-7b-instruct-v0.1 .00/.05/.36 vs Llama-2-7b-chat .00/.01/.25;
+  Llama-2 grading k=3: Mistral-7b-instruct-v0.1 .17/.33/.44 vs Llama-2-7b-chat .33/.50/.70'
+caveat: The preference is observed across multiple k values and metrics, but the paper does not quantify
+  the magnitude of the bias in a controlled way beyond the table comparisons.
+extracted_by: automatic-extraction
+related_findings:
+- IC-868
+- IC-869
+- IC-870

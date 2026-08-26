@@ -1,0 +1,28 @@
+id: IC-1464
+title: Vicuna-7B and Vicuna-13B achieve only 14.2% and 18.0% average F1 on zero-shot NER, trailing ChatGPT
+  by over 20 points
+description: Vicuna, a model fine-tuned from LLaMA using ChatGPT conversations, is evaluated zero-shot
+  on the same UniversalNER benchmark. Vicuna-7B scores 14.2% and Vicuna-13B scores 18.0% average F1,
+  both far below ChatGPT's 34.9%. The paper notes that LLaMA and Alpaca perform even worse, close to
+  zero F1. In the out-of-domain evaluation (Table 3), Vicuna-7B scores 13.0% and Vicuna-13B scores 17.5%
+  average F1.
+models:
+- ref: model:vicuna
+concepts: []
+sources:
+- ref: source:universalner-targeted-distillation-from-large-language
+datasets: []
+methods: []
+related_work:
+- name: Chiang et al. 2023 (Vicuna)
+  anchor: https://vicuna.lmsys.org
+  role: context
+evidence_type: correlational
+key_metric: 'Vicuna-7B: 14.2% avg F1 (zero-shot, 43 datasets); Vicuna-13B: 18.0% avg F1; out-of-domain:
+  13.0% (7B), 17.5% (13B)'
+caveat: Vicuna was designed for general instruction following, not targeted NER; the gap with ChatGPT
+  reflects the difference between generic distillation and targeted distillation.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1463
+- IC-1465

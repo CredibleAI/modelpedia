@@ -1,0 +1,40 @@
+id: IC-1193
+title: Vicuna and Alpaca achieve 0% pass rate on all ToolBench tool-use instructions, while GPT-4 and
+  ChatGPT reach 71.1% and 64.8% with DFSDT, revealing a wide capability gap in tool use among released
+  LLMs
+description: The paper evaluates six released LLMs on ToolBench, a benchmark of 126,486 tool-use instructions
+  spanning single-tool and multi-tool scenarios with 16,464 real-world REST APIs. Vicuna and Alpaca,
+  both fine-tuned for general instruction following, fail to pass any instruction across all six evaluation
+  splits (i1-inst, i1-tool, i1-cat, i2-inst, i2-cat, i3-inst), yielding 0.0 pass rate and 0.0 win rate.
+  In contrast, GPT-4 with DFSDT achieves 71.1% average pass rate and ChatGPT with DFSDT achieves 64.8%,
+  while Claude-2 (22.6%) and Text-Davinci-003 (43.1%) fall in between. The authors conclude that current
+  instruction tuning largely focuses on language skills and does not cover the tool-use domain.
+models:
+- ref: model:vicuna
+- ref: model:alpaca
+- ref: model:gpt-4
+- ref: model:chatgpt
+- ref: model:gpt-3
+  variant: variant:text-davinci-003
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:toolllm-facilitating-large-language-models-master
+datasets:
+- ref: dataset:toolbench
+  role: eval
+methods:
+- ref: method:react
+  role: compared-to
+related_work:
+- name: Gorilla
+  anchor: https://arxiv.org/abs/2305.15334
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Pass rate (average across i1-inst, i1-tool, i1-cat, i2-inst, i2-cat, i3-inst): GPT-4+DFSDT
+  71.1, ChatGPT+DFSDT 64.8, Text-Davinci-003+DFSDT 43.1, Claude-2+DFSDT 22.6, Vicuna 0.0, Alpaca 0.0'
+caveat: All models except ToolLLaMA-dfsdt-retriever use the oracle (ground-truth) API set rather than
+  a retriever, so results reflect reasoning ability given the correct tools rather than end-to-end tool
+  selection. The evaluation uses ToolEval (ChatGPT-based automatic evaluator) with 87.1% pass-rate and
+  80.3% win-rate agreement with human annotators.
+extracted_by: automatic-extraction

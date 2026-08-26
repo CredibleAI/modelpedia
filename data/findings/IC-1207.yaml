@@ -1,0 +1,32 @@
+id: IC-1207
+title: For GPT-2-XL, backdoor injection via parameter editing is most effective on intermediate layers
+  (15-35) and notably less effective on the first 10 and last 5 layers
+description: The paper ablates which layers of GPT-2-XL are edited for backdoor injection, measuring
+  attack success rate and clean accuracy for each individual layer. Attacks targeting the first 10 layers
+  or the last 5 layers yield substantially lower ASR, while editing layers 15 through 35 achieves ASR
+  close to 100%. Clean performance remains high across all layers, indicating the model's knowledge
+  is stored in a way that makes intermediate feed-forward layers the critical locus for trigger-target
+  association.
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-xl
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:badedit-backdooring-large-language-models-by
+datasets:
+- ref: dataset:sst-2
+  role: eval
+methods: []
+related_work:
+- ref: method:rome
+  role: builds-on
+evidence_type: interventional
+key_metric: ASR close to 100% for layers 15-35; notably lower for first 10 and last 5 layers (exact
+  per-layer values in Figure 2a)
+caveat: Ablation performed only on GPT-2-XL; the paper does not report the same per-layer analysis for
+  GPT-J or other models.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1206
+- IC-1208

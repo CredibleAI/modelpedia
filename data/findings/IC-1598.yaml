@@ -1,0 +1,36 @@
+id: IC-1598
+title: Retrieval augmentation improves GPT-3.5-turbo-4k on long-context tasks but not GPT-3.5-turbo-16k
+description: The paper measures the effect of adding top-5 retrieved chunks to the input of two context-window
+  variants of GPT-3.5-turbo on three long-context QA tasks (MuSiQue, HotpotQA, MultiFieldQA-EN). For
+  the 4k-context variant, the average score rises from 37.08 to 41.15, a substantial gain. For the 16k-context
+  variant, the average moves from 43.60 to 43.27, showing no meaningful improvement. This suggests that
+  once the model's native context window is large enough to hold the relevant evidence, external retrieval
+  adds little value for this model family.
+models:
+- ref: model:gpt-3-5
+  variant: variant:gpt-3-5-turbo
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:retrieval-meets-long-context-large-language
+datasets:
+- ref: dataset:musique
+  role: eval
+- ref: dataset:hotpotqa
+  role: eval
+- ref: dataset:multifieldqa-en
+  role: eval
+methods:
+- ref: method:retrieval-augmented-generation
+  role: primary
+related_work:
+- name: 'Lost in the middle: how language models use long contexts'
+  anchor: https://arxiv.org/abs/2307.03172
+  role: context
+evidence_type: correlational
+key_metric: GPT-3.5-turbo-4k avg (MSQ/HQA/MFQA) 37.08 → 41.15 with retrieval; GPT-3.5-turbo-16k avg
+  43.60 → 43.27 with retrieval
+caveat: The paper does not specify which retriever was used for the GPT-3.5-turbo retrieval runs, and
+  the 16k model is a black-box API whose internal implementation, preprocessing, and exact model size
+  are unknown to the authors.
+extracted_by: automatic-extraction

@@ -1,0 +1,47 @@
+id: IC-1225
+title: GPT-4 generates realistic dynamic scene layouts from text prompts with only 3 in-context examples,
+  achieving 98% average accuracy across 5 spatiotemporal tasks, with physics knowledge (gravity, elasticity,
+  perspective) generalising to unseen objects from its weights
+description: 'The paper prompts GPT-4 (and GPT-3.5) to generate bounding-box sequences (dynamic scene
+  layouts) for 6-frame videos from text captions, providing only 3 in-context examples illustrating
+  gravity, elasticity, and perspective projection. GPT-4 achieves 98% average rule-based accuracy across
+  5 tasks (numeracy, attribution, visibility, dynamics, sequential), while GPT-3.5 reaches 77%. Critically,
+  GPT-4 generalises to objects and properties not present in the examples: it correctly applies elasticity
+  to a ball but not to a rock, infers air friction for a paper airplane, and applies perspective geometry
+  to a car viewed from different angles. The authors argue this knowledge resides in the model''s weights
+  rather than being extracted from the few examples. Adding retrieval-based video examples does not
+  improve performance (96% vs 98%), confirming the few-shot generalisation.'
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+concepts: []
+sources:
+- ref: source:llm-grounded-video-diffusion-models
+datasets:
+- ref: dataset:webvid-2m
+  role: source
+methods:
+- ref: method:frozen-in-time
+  role: compared-to
+- ref: method:glip
+  role: compared-to
+- ref: method:sort
+  role: compared-to
+related_work:
+- name: LMD
+  anchor: https://arxiv.org/abs/2305.13655
+  role: context
+- name: LayoutGPT
+  anchor: https://arxiv.org/abs/2305.15393
+  role: context
+- name: Attention Refocusing
+  anchor: https://arxiv.org/abs/2306.05427
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4: 100% numeracy, 100% attribution, 100% visibility, 100% dynamics, 88% sequential,
+  98% average. GPT-3.5: 100%, 100%, 100%, 71%, 16%, 77% average. Retrieval-based: 20%, 12%, 28%, 8%,
+  0%, 14% average. 500 prompts total (100 per task).'
+caveat: GPT-4 still fails on some sequential (long-horizon) dynamics (88% not 100%). GPT-3.5 is unstable
+  with only 1 in-context example (2 of 3 runs could not finish). The evaluation uses rule-based metrics
+  on programmatically generated prompts, not human judgment of layout quality.
+extracted_by: automatic-extraction

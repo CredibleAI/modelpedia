@@ -1,0 +1,40 @@
+id: IC-987
+title: When the correct tool is absent from the candidate list, most LLMs hallucinate a tool rather
+  than returning 'none'
+description: 'In the reliability sub-task, the ground-truth tool and its k most similar tools are removed
+  from the candidate list, so the correct answer is ''none''. Under zero-shot prompting, the CSR of
+  most LLMs is below 3%: Llama2-7b 0.90%, Vicuna-7b 1.50%, Koala-13b 1.70%, Llama2-13b 2.31%, Vicuna-13b
+  2.51%, Vicuna-33b 2.81%. Only ChatGPT (50.35%) and ChatGLM2 (6.63%) perform above this floor. Even
+  with five-shot prompting, most models remain below 6% CSR. The authors attribute this to hallucination
+  (fabricating non-existent tools) and sycophancy (avoiding a ''none'' answer to please the user).'
+models:
+- ref: model:chatgpt
+- ref: model:chatglm2
+- ref: model:llama-2
+- ref: model:vicuna
+- ref: model:koala
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:metatool-benchmark-large-language-models-deciding
+datasets: []
+methods: []
+related_work:
+- name: API-Bank
+  anchor: https://arxiv.org/abs/2304.08244
+  role: compared-to
+- name: ToolLLM
+  anchor: https://arxiv.org/abs/2307.16789
+  role: compared-to
+evidence_type: correlational
+key_metric: 'Zero-shot CSR (reliability): ChatGLM2 6.63, ChatGPT 50.35, Llama2-7b 0.90, Llama2-13b 2.31,
+  Vicuna-7b 1.50, Vicuna-13b 2.51, Vicuna-33b 2.81, Koala-13b 1.70. Five-shot CSR: ChatGLM2 15.68, ChatGPT
+  78.49, Llama2-7b 2.51, Llama2-13b 5.93, Vicuna-7b 1.81, Vicuna-13b 3.42, Vicuna-33b 3.11, Koala-13b
+  5.83.'
+caveat: The task removes the correct tool and its k most similar tools, making the remaining candidates
+  deliberately dissimilar; real-world tool lists may contain closer distractors.
+extracted_by: automatic-extraction
+related_findings:
+- IC-986
+- IC-988
+- IC-989

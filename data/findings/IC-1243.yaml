@@ -1,0 +1,37 @@
+id: IC-1243
+title: GPT-4 and GPT-4 Turbo achieve near-zero scores on GAIA level 3 and single-digit to low-double-digit
+  scores on levels 1-2, compared to 87-94% for human annotators
+description: The paper evaluates GPT-4, GPT-4 Turbo, AutoGPT (GPT-4 backend), and GPT-4 with manually
+  selected plugins on 466 GAIA questions across three difficulty levels. All LLM variants score 0% on
+  level 3. On level 1, GPT-4 scores 9.1%, GPT-4 Turbo 13.0%, AutoGPT 14.4%, and GPT-4+plugins 30.3%.
+  On level 2, scores drop to 2.6%, 5.5%, 0.4%, and 9.7% respectively. Human annotators score 93.9%,
+  91.8%, and 87.3% across the three levels. The results demonstrate a fundamental failure of current
+  LLMs in multi-step real-world task completion requiring tool use, web browsing, and multi-modality
+  handling.
+models:
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:gaia-benchmark-general-ai-assistants
+datasets:
+- ref: dataset:gaia
+  role: eval
+methods:
+- ref: method:autogpt
+  role: compared-to
+related_work:
+- ref: dataset:mmlu
+  role: context
+- ref: dataset:gsm8k
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-4: 9.1 ± 2.5 (L1), 2.6 ± 0.6 (L2), 0 (L3); GPT-4 Turbo: 13.0 ± 2.1 (L1), 5.5 ± 1.4
+  (L2), 0 (L3); AutoGPT (GPT-4 backend): 14.4 (L1), 0.4 (L2), 0 (L3); GPT-4+plugins: 30.3 (L1), 9.7
+  (L2), 0 (L3); Human: 93.9 (L1), 91.8 (L2), 87.3 (L3)'
+caveat: GPT-4+plugins scores were obtained by manually selecting plugins per question and cannot be
+  reproduced exactly; plugins change or disappear from the store. The paper only evaluates the strongest
+  available LLMs with tool access.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1244

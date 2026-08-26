@@ -1,0 +1,39 @@
+id: IC-1078
+title: LLaMA models (7B through 65B) exhibit gender bias in language generation, coreference resolution,
+  and sentence likelihood, with stereotypical associations driving predictions
+description: 'The authors evaluate all four LLaMA sizes on three bias measures: a linear model fitted
+  to profession-prompt pronoun probabilities, Winobias coreference, and StereoSet sentence likelihood.
+  In every size, the stereotypical coefficient (as) is positive and the intercept (b) is positive, indicating
+  the models predict male pronouns more often and are influenced by stereotypical gender cues. Winobias
+  shows a large gap between pro- and anti-stereotypical accuracy (Δs of 35.7–40.3%), and StereoSet ss
+  scores of 68.4–71.9 indicate a strong preference for stereotypical completions over anti-stereotypical
+  ones.'
+models:
+- ref: model:llama
+concepts:
+- ref: concept:shortcut
+sources:
+- ref: source:debiasing-algorithm-through-model-adaptation
+datasets:
+- ref: dataset:winobias
+  role: eval
+- ref: dataset:stereoset
+  role: eval
+- ref: dataset:professions-bolukbasi-et-al
+  role: eval
+methods:
+- ref: method:causal-tracing
+  role: supporting
+related_work:
+- ref: method:causal-mediation-analysis
+  role: builds-on
+evidence_type: correlational
+key_metric: 'LLaMA 7B: as=0.235, af=0.320, b=0.072, r²=0.494; Winobias acc=59.1%, Δs=40.3%, Δg=3.0%;
+  StereoSet lms=95.5, ss=71.9, icat=53.7. LLaMA 65B: as=0.249, af=0.316, b=0.095, r²=0.490; Winobias
+  acc=73.3%, Δs=35.7%, Δg=1.4%; StereoSet lms=94.9, ss=69.5, icat=57.9'
+caveat: The linear model fit is moderate (r² > 0.35 but well below 1), so the coefficients capture only
+  part of the prediction variance. The profession set is English-only and the prompt templates were
+  filtered to exclude highly gender-skewed verbs.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1079

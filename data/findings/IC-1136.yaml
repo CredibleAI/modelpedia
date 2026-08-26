@@ -1,0 +1,36 @@
+id: IC-1136
+title: Larger LLMs (LLaMA2-70B, Vicuna-33B) are more stubborn than their smaller counterparts (LLaMA2-7B,
+  Vicuna-7B) when encountering incoherent entity-substitution counter-memory
+description: In the single-source setting with entity-substitution (incoherent) counter-memory, the
+  larger models in each family show higher memorization ratios than their smaller counterparts. The
+  authors attribute this to larger models having enhanced memorization and reasoning capabilities that
+  make them more sensitive to the incoherence in the substituted evidence. This scale-dependent pattern
+  is specific to the incoherent counter-memory condition and does not hold for the coherent generation-based
+  counter-memory.
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-70b
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+- ref: model:vicuna
+  variant: variant:vicuna-33b
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:adaptive-chameleon-stubborn-sloth-revealing-behavior
+datasets:
+- ref: dataset:popqa
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+caveat: The observation is qualitative, based on visual inspection of Figure 2 bar charts; no specific
+  memorization ratio numbers are printed in the text for this comparison. The effect is specific to
+  incoherent (entity-substitution) counter-memory.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1133
+- IC-1134
+- IC-1135

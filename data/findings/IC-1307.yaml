@@ -1,0 +1,41 @@
+id: IC-1307
+title: Released LLMs (CodeLlama 7B/13B/34B, GPT-3.5, GPT-4) achieve limited code-optimization speedups
+  with standard prompting, with the best baseline (GPT-3.5 CoT) reaching only 1.60x versus the 3.66x
+  human reference
+description: 'The paper evaluates five released LLMs on the PIE test set (978 C++ program pairs) using
+  instruction-only, few-shot, and chain-of-thought prompting. Without task-specific training data, all
+  models struggle: CodeLlama 7B achieves at most 1.13x speedup (CoT, best@8), CodeLlama 34B reaches
+  1.30x, GPT-3.5 reaches 1.60x, and GPT-4 reaches 1.58x. The human reference for the same test set is
+  3.66x average speedup. The gap between the best prompting baseline and human performance is roughly
+  2x.'
+models:
+- ref: model:code-llama
+- ref: model:gpt-3-5
+- ref: model:gpt-4
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:learning-performance-improving-code-edits
+datasets:
+- ref: dataset:codenet
+  role: source
+methods:
+- ref: method:chain-of-thought-prompting
+  role: primary
+- ref: method:few-shot-prompting
+  role: primary
+related_work:
+- ref: model:code-llama
+  role: context
+- ref: model:alphacode
+  role: context
+evidence_type: correlational
+key_metric: 'GPT-3.5 CoT best@8: 43.05% opt, 1.60x speedup; GPT-4 CoT best@8: 42.74% opt, 1.58x; CodeLlama
+  34B CoT best@8: 19.63% opt, 1.30x; CodeLlama 7B CoT best@8: 7.46% opt, 1.13x; human reference: 3.66x'
+caveat: Results are measured on a single test set of 978 competitive programming problems in C++; the
+  10% speedup threshold for counting a program as 'optimized' may undercount small but real improvements.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1308
+- IC-1309
+- IC-1310

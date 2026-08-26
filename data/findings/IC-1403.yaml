@@ -1,0 +1,36 @@
+id: IC-1403
+title: All four evaluated LLMs produce negative scores on social rules and secret-keeping dimensions
+  in SOTOPIA interactions
+description: Across all 450 SOTOPIA tasks, every model tested (GPT-4, GPT-3.5, Llama-2-70B-Chat, MPT-30B-Chat)
+  receives a negative average score on both the social rules (soc) and secret (sec) dimensions, indicating
+  systematic failure to maintain social norms and keep private information. GPT-4, despite outperforming
+  others on most dimensions, is not better than the other models on soc and sec. Qualitative examples
+  show models leaking secrets at the beginning of conversations and violating social norms during interactions.
+models:
+- ref: model:gpt-4
+- ref: model:gpt-3-5
+- ref: model:llama-2
+  variant: variant:llama-2-70b-chat
+- ref: model:mpt
+  variant: variant:mpt-30b-chat
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:sotopia-interactive-evaluation-social-intelligence-language
+datasets:
+- ref: dataset:sotopia
+  role: eval
+methods:
+- ref: method:sotopia-eval
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: 'Soc: GPT-4 -0.07, GPT-3.5 -0.08, Llama-2 -0.11, MPT -0.09; Sec: GPT-4 -0.14, GPT-3.5 -0.08,
+  Llama-2 -0.14, MPT -0.07'
+caveat: The scores are close to zero, indicating the violations are minor on average; the evaluation
+  is automated by GPT-4, which the authors note tends to rate higher than humans on soc and sec dimensions.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1401
+- IC-1402
+- IC-1404

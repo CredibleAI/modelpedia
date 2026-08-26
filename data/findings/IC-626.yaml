@@ -1,0 +1,53 @@
+id: IC-626
+title: Llama 7B retains 95% of its common sense reasoning performance when compressed to 2 GB using
+  JLCM
+description: The paper evaluates how Llama 7B's average common sense reasoning score changes when its
+  weights are compressed via the JLCM codebook method. At a compression rate of 7.0 (approximately 2
+  bits per weight), the model's score drops from 56.140 to 53.081, retaining roughly 95% of original
+  performance. At a milder compression rate of 5.33, the score is 55.940. The authors note this enables
+  loading the model on a 2 GB device such as an iPhone 8.
+models:
+- ref: model:llama
+  variant: variant:llama-7b
+concepts: []
+sources:
+- ref: source:network-memory-footprint-compression-through-jointly
+datasets:
+- ref: dataset:piqa
+  role: eval
+- ref: dataset:boolq
+  role: eval
+- ref: dataset:arc
+  role: eval
+- ref: dataset:obqa
+  role: eval
+- ref: dataset:hellaswag
+  role: eval
+- ref: dataset:winogrande
+  role: eval
+methods:
+- ref: method:optq
+  role: compared-to
+- ref: method:squeezellm
+  role: compared-to
+- ref: method:awq
+  role: compared-to
+- ref: method:llm-int8
+  role: compared-to
+- ref: method:rex
+  role: supporting
+related_work:
+- ref: method:optq
+  role: compared-to
+- ref: method:squeezellm
+  role: compared-to
+- ref: method:llm-int8
+  role: compared-to
+evidence_type: correlational
+key_metric: 'original score: 56.140; JLCM at compression 7.0: 53.081; JLCM at compression 5.33: 55.940;
+  JLCM (+REX) at compression 6.95: 56.002'
+caveat: The compression is applied per-layer with a small calibration set; results depend on the specific
+  JLCM hyperparameters and the calibration data used.
+extracted_by: automatic-extraction
+related_findings:
+- IC-627

@@ -1,0 +1,32 @@
+id: IC-1554
+title: LRE faithfulness in GPT-J is concentrated in intermediate layers and drops sharply in later layers,
+  consistent with a mode switch from relational encoding to next-token prediction
+description: 'When the LRE is estimated from subject representations extracted at different layers of
+  GPT-J, faithfulness follows a characteristic pattern: it rises to a peak in intermediate layers (e.g.,
+  layers 7-17 for the ''plays the sport of'' relation) and then plummets in later layers. The authors
+  hypothesize this reflects a mode switch where the representation shifts from encoding relational knowledge
+  to encoding next-token prediction. When the relation-specific context is removed from the prompt so
+  the object immediately follows the subject, faithfulness continues to improve in later layers, supporting
+  the hypothesis that the drop is caused by the model overwriting relational structure with prediction-specific
+  structure.'
+models:
+- ref: model:gpt-j
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:linearity-relation-decoding-transformer-language-models
+datasets: []
+methods:
+- ref: method:linear-relational-embedding
+  role: primary
+related_work: []
+evidence_type: correlational
+key_metric: faithfulness peaks at layers 7-17 then plummets for 'plays the sport of' in GPT-J; faithfulness
+  keeps improving in later layers when relation-specific text is removed from prompt
+caveat: Demonstrated for a small number of selected relations; the mode-switch is a hypothesis, not
+  a proven mechanism; single-state patching at deeper layers is confounded by attention leakage from
+  unpatched earlier layers
+extracted_by: automatic-extraction
+related_findings:
+- IC-1553
+- IC-1555

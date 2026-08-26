@@ -1,0 +1,44 @@
+id: IC-1199
+title: GPT-2 next-token distributions contain correctable tail errors from the softmax bottleneck that
+  degrade generation quality under low-entropy sampling, with basis-aware threshold sampling improving
+  MAUVE across all four sizes
+description: The paper demonstrates that GPT-2's low-rank softmax matrix causes probability overestimation
+  for tokens outside the true support, leading to incoherent text under low-entropy (near-greedy) decoding.
+  By exploiting the linear structure of the softmax matrix, the authors' basis-aware threshold (BAT)
+  sampling selectively rejects high-probability but implausible tokens while retaining lower-probability
+  but valid ones. Across all four GPT-2 sizes, BA-η outperforms standard η-sampling on MAUVE, with the
+  gap largest for GPT-2-large. Human annotators also narrowly prefer BA-η generations over η-sampling
+  generations.
+models:
+- ref: model:gpt-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:closing-curious-case-neural-text-degeneration
+datasets:
+- ref: dataset:openwebtext
+  role: eval
+methods:
+- ref: method:nucleus-sampling
+  role: compared-to
+- ref: method:mauve
+  role: eval
+related_work:
+- ref: method:nucleus-sampling
+  role: context
+- name: Breaking the softmax bottleneck (Yang et al. 2018)
+  anchor: https://openreview.net/forum?id=hkwzsg-cz
+  role: builds-on
+- name: Top-k sampling (Fan et al. 2018)
+  anchor: https://doi.org/10.18653/v1/p18-1082
+  role: context
+evidence_type: correlational
+key_metric: 'MAUVE (OWT test): small η 85.0±1.4 vs ba-η 87.8±1.0; medium η 90.4±0.1 vs ba-η 92.2±0.6;
+  large η 86.0±0.5 vs ba-η 88.4±0.5; xl η 87.1±1.2 vs ba-η 89.6±0.4. Human eval (ba-η≡0.002 vs η=0.002):
+  0.43/0.38/0.19; (ba-η≡0.024 vs η=0.024): 0.48/0.47/0.05'
+caveat: Pilot study on 5000 prefixes; BAT does not pair well with nucleus sampling; for certain prefixes
+  and low-entropy parameters, ba-ε accepts no tokens; linear program computation is expensive (amortized
+  ~0.1 s/token); results limited to low-entropy generation settings
+extracted_by: automatic-extraction
+related_findings:
+- IC-1200

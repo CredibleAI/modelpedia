@@ -1,0 +1,37 @@
+id: IC-683
+title: LLaMA-7B, LLaMA-30B, Vicuna-7B, and Vicuna-13B achieve low accuracy (12.11% to 42.24%) in zero-shot
+  and few-shot log-likelihood response evaluation
+description: The paper tests released LLMs as evaluators by computing the log-likelihood of generating
+  'response 1 is better', 'response 2 is better', or 'tie' continuations from a shared context. In zero-shot,
+  LLaMA-7B achieves accuracy 12.11 and F1 8.77, while LLaMA-30B reaches accuracy 31.43 and F1 32.83.
+  With 5 in-context examples, LLaMA-7B improves to accuracy 24.82 (F1 25.43) and LLaMA-30B to accuracy
+  42.24 (F1 42.93). Vicuna-7B achieves accuracy 15.92 (F1 14.90) and Vicuna-13B accuracy 35.24 (F1 36.29)
+  in log-likelihood mode. All are well below the 59.26% accuracy of the purpose-trained PandaLM-7B.
+models:
+- ref: model:llama
+  variant: variant:llama-7b
+- ref: model:llama
+  variant: variant:llama-30b
+- ref: model:vicuna
+  variant: variant:vicuna-7b
+- ref: model:vicuna
+  variant: variant:vicuna-13b
+concepts: []
+sources:
+- ref: source:pandalm-automatic-evaluation-benchmark-llm-instruction
+datasets: []
+methods: []
+related_work:
+- ref: model:vicuna
+  role: context
+evidence_type: correlational
+key_metric: 'LLaMA-7B 0-shot: acc 12.11, F1 8.77; LLaMA-30B 0-shot: acc 31.43, F1 32.83; LLaMA-7B 5-shot:
+  acc 24.82, F1 25.43; LLaMA-30B 5-shot: acc 42.24, F1 42.93; Vicuna-7B: acc 15.92, F1 14.90; Vicuna-13B:
+  acc 35.24, F1 36.29'
+caveat: The evaluation uses log-likelihood of short continuations rather than full generation; the paper
+  notes that un-tuned LLaMA 'struggles with adhering to user-specified format requirements', which may
+  limit the log-likelihood approach.
+extracted_by: automatic-extraction
+related_findings:
+- IC-681
+- IC-682

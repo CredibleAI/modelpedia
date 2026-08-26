@@ -1,0 +1,39 @@
+id: IC-1576
+title: Base and aligned LLMs share 77.7% of top-1 token predictions, with distribution shifts concentrated
+  in stylistic tokens rather than knowledge content
+description: 'The paper decodes aligned LLM outputs and checks each token''s rank in the base model''s
+  probability distribution. Across 1,000 examples, 77.7% of tokens are top-1 in both models (unshifted),
+  92.2% are within top-3, and only 7.8% are shifted (rank > 3). The shifted tokens are predominantly
+  discourse markers, transitional phrases, and safety disclaimers (e.g., ''thank'', ''hello'', ''however'',
+  ''remember''), while knowledge-intensive tokens (e.g., ''chihuahua'') appear at unshifted positions.
+  This pattern holds across three model pairs: Llama-2-7b vs Llama-2-7b-chat, Llama-2-7b vs Vicuna-7b-v1.5,
+  and Mistral-7b vs Mistral-7b-instruct, with shifted ratios of 7.8%, 4.8%, and 5.2% respectively.'
+models:
+- ref: model:llama-2
+  variant: variant:llama-2-7b
+- ref: model:llama-2
+  variant: variant:llama-2-7b-chat
+- ref: model:mistral-7b
+  variant: variant:mistral-7b-instruct
+- ref: model:vicuna
+  variant: variant:vicuna-7b-v1-5
+concepts: []
+sources:
+- ref: source:unlocking-spell-base-llms-rethinking-alignment
+datasets: []
+methods:
+- ref: method:kl-divergence
+  role: supporting
+related_work:
+- ref: dataset:lima
+  role: context
+evidence_type: correlational
+key_metric: 77.7% unshifted, 14.5% marginal, 7.8% shifted (Llama-2-7b vs Llama-2-7b-chat); 82.4%/12.8%/4.8%
+  (Llama-2-7b vs Vicuna-7b-v1.5); 82.2%/12.5%/5.2% (Mistral-7b vs Mistral-7b-instruct); 92.2% within
+  top-3
+caveat: Analysis uses greedy decoding and different input templates for base vs aligned models (zero-shot
+  template for base, official chat template for aligned), which may introduce some confound. The 1,000
+  examples come from Just-Eval-Instruct, a single evaluation set.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1577

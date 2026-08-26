@@ -1,0 +1,34 @@
+id: IC-1263
+title: LLaMA-2 7B and 13B attention signal for predicting factual errors is available by approximately
+  50% of layers, enabling early stopping without performance degradation, while LLaMA-2 70B shows a
+  slight performance drop
+description: The paper tests whether the attention-to-constraints signal is available before the final
+  layer by training the SAT Probe on attention weights from only the first l' layers. For LLaMA-2 7B
+  and 13B, stopping at roughly half the layers (layer 15-20 of 32-40) preserves failure-prediction AUROC
+  with no meaningful degradation across most single-constraint datasets, saving 50% of wall-clock time
+  on failures. For LLaMA-2 70B (80 layers), using only early layers results in a slight but measurable
+  drop in performance, indicating the signal becomes sharper in later layers for the largest model.
+models:
+- ref: model:llama-2
+concepts:
+- ref: concept:scale-dependent-behaviour
+sources:
+- ref: source:attention-satisfies-constraint-satisfaction-lens-factual
+datasets:
+- ref: dataset:counterfact
+  role: eval
+- ref: dataset:wikidata
+  role: source
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'For LLaMA-2 7B and 13B: stop at ~50% of layers with no degradation in average AUROC, saving
+  50% wall-clock time on failures for most datasets; for LLaMA-2 70B: slight performance drop with early
+  stopping'
+caveat: The early stopping result is for the failure-prediction task (SAT Probe), not for the model's
+  own generation quality; the 70B result is described qualitatively as a 'slight drop' without a single
+  unified number
+extracted_by: automatic-extraction
+related_findings:
+- IC-1261
+- IC-1262

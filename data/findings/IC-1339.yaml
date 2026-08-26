@@ -1,0 +1,35 @@
+id: IC-1339
+title: Chinchilla 1B's compression rate improves with increasing sequence length across text, image,
+  and audio, demonstrating in-context learning without gradient updates
+description: The paper measures the compression rate of Chinchilla 1B, gzip, and a small transformer
+  over subsequences of increasing length (up to 2048 bytes), averaged over 100 sequences per dataset.
+  For all three data modalities (enwik9, ImageNet, Librispeech), the compression rate decreases (improves)
+  as the sequence length grows, indicating the model is learning data statistics in-context. Chinchilla
+  1B achieves the best compression rates across all modalities and sequence lengths compared to gzip
+  and the small transformer.
+models:
+- ref: model:chinchilla
+concepts: []
+sources:
+- ref: source:language-modeling-compression
+datasets:
+- ref: dataset:enwik9
+  role: eval
+- ref: dataset:imagenet1k
+  role: eval
+- ref: dataset:librispeech
+  role: eval
+methods:
+- ref: method:arithmetic-coding
+  role: primary
+- ref: method:gzip
+  role: compared-to
+related_work: []
+evidence_type: correlational
+caveat: The results are from a plot (Figure 4) with no tabulated values; the improvement is described
+  qualitatively as 'decrease quickly with increasing sequence length.' The small transformer used for
+  comparison was trained by the authors on enwik8.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1338
+- IC-1340

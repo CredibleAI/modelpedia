@@ -1,0 +1,39 @@
+id: IC-818
+title: RLHF on general-purpose preference data has negligible net effect on toxicity in Pythia and Llama-7B
+  models
+description: 'Using the RealToxicityPrompts benchmark (1.2k toxic and 1.2k nontoxic prompts) with the
+  Perspective API as a toxicity scorer, the authors measure expected maximum toxicity across four prompt
+  settings (toxic/nontoxic user prompts crossed with benign/adversarial system prompts). Toxicity exhibits
+  non-significant fluctuations across RLHF stages: a slight increase after SFT followed by a decrease
+  from PPO or DPO. The net effect is negligible, varies across models, and falls within the error margin.
+  The authors explain this as a cancellation: SFT amplifies toxic content in chosen responses, while
+  PPO/DPO reinforce less toxic outputs because rejected responses are more toxic.'
+models:
+- ref: model:pythia
+- ref: model:llama
+concepts: []
+sources:
+- ref: source:more-rlhf-more-trust-impact-preference
+datasets:
+- ref: dataset:anthropic-hh
+  role: train
+- ref: dataset:realtoxicityprompts
+  role: eval
+methods:
+- ref: method:ppo
+  role: primary
+- ref: method:direct-preference-optimization
+  role: primary
+- ref: method:perspective-api
+  role: eval
+related_work: []
+evidence_type: correlational
+key_metric: net impact on toxicity is negligible; chosen responses have average toxicity 0.13 and high
+  toxicity rate 5.7%, rejected responses 0.18 and 8.6%
+caveat: The net effect is within error bounds and varies across models; the authors note the improvement
+  in the second stage does not guarantee outweighing the negative effect from SFT.
+extracted_by: automatic-extraction
+related_findings:
+- IC-815
+- IC-816
+- IC-817

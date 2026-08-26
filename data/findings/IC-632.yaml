@@ -1,0 +1,24 @@
+id: IC-632
+title: BLIP-2 succeeds on only 5 out of 100 advanced compositional vision-language tasks
+description: The paper evaluates BLIP-2 on four advanced vision-language tasks (meme interpretation,
+  recipe generation, advertisement creation, poem composition) with 25 images each, assessed by human
+  evaluators. BLIP-2 succeeded on 0/25 memes, 4/25 recipes, 1/25 ads, and 0/25 poems, totalling 5/100.
+  The paper attributes this to BLIP-2's use of FLAN-T5-XXL as its language model, which is less capable
+  than the Vicuna LLM used in MiniGPT-4, and notes that even after fine-tuning BLIP-2 on the authors'
+  second-stage data it still generates short responses and fails to generalise to advanced tasks.
+models:
+- ref: model:blip-2
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:minigpt-4-enhancing-vision-language-understanding
+datasets: []
+methods: []
+related_work: []
+evidence_type: observational
+key_metric: 0/25 meme, 4/25 recipes, 1/25 ads, 0/25 poem, 5/100 avg
+extracted_by: automatic-extraction
+related_findings:
+- IC-633
+- IC-634
+- IC-635

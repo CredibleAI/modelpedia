@@ -1,0 +1,35 @@
+id: IC-983
+title: 'In Stable Diffusion''s CLIP text-encoder, knowledge about all visual attributes is localized
+  to a single causal state: the first self-attention layer at the last subject token'
+description: 'Applying the same causal tracing to the 12-block CLIP ViT-L/336px text-encoder, the paper
+  finds only one causal state across all four visual attributes: the first self-attention layer (self-attn-0)
+  corresponding to the last subject token in the caption. Restoring this single layer in a corrupted
+  model restores high-fidelity generation, while restoring any of the other 11 layers does not. This
+  contrasts with LLMs where factual knowledge is in mid-MLP layers. The paper confirms the localization
+  by showing that editing (via Diff-QuickFix) the causal layer effectively removes or updates concepts,
+  while editing non-causal layers (1-11) produces no change in CLIP-score.'
+models:
+- ref: model:stable-diffusion
+- ref: model:clip
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:localizing-editing-knowledge-text-image-generative
+datasets: []
+methods:
+- ref: method:causal-mediation-analysis
+  role: primary
+- ref: method:clipscore
+  role: eval
+related_work: []
+evidence_type: interventional
+key_metric: CLIP-score for incorrect fact (e.g., Donald Trump as US president) decreases from 0.28 to
+  0.23 after editing; CLIP-score for correct fact (e.g., Joe Biden) increases from 0.22 to 0.29; editing
+  non-causal layers (1-11) shows no intended change
+caveat: The finding is specific to the CLIP-based text-encoder in Stable Diffusion. The paper notes
+  this is 'in stark contrast to the causal states in other language models which are often the mid-mlp
+  layers.' The single causal state observation is for the four attributes tested (objects, style, action,
+  color).
+extracted_by: automatic-extraction
+related_findings:
+- IC-982

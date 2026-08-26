@@ -1,0 +1,36 @@
+id: IC-1167
+title: GPT-4 Code Interpreter's mathematical reasoning accuracy is positively correlated with code usage
+  frequency, with its iterative code generation and self-debugging mechanism as the primary driver of
+  its 69.69% zero-shot MATH accuracy
+description: 'The paper constrains GPT-4 Code Interpreter''s code usage via three prompts (no code,
+  one code block, unrestricted) and measures accuracy on MATH. Restricting code to zero uses drops accuracy
+  to 60.80%, one use to 67.58%, while unrestricted code (base prompt) yields 69.69%. The paper attributes
+  the gap to the model''s self-debugging mechanism: generating code in brief segments interleaved with
+  natural language, evaluating execution results, and correcting errors. Across five difficulty levels,
+  code usage frequency increases with problem difficulty, and the accuracy gain from more code is most
+  pronounced on harder problems.'
+models:
+- ref: model:gpt-4
+concepts: []
+sources:
+- ref: source:solving-challenging-math-word-problems-using
+datasets:
+- ref: dataset:math
+  role: eval
+methods: []
+related_work:
+- name: Chain-of-Thought
+  anchor: https://openreview.net/forum?id=_vjqlmesb_j
+  role: context
+- ref: method:program-of-thoughts
+  role: context
+evidence_type: correlational
+key_metric: 'MATH accuracy: prompt 1 (no code) 60.80%, prompt 2 (one code) 67.58%, base prompt 69.69%,
+  CSV prompt 73.54%; GPT-4 baseline 42.20%'
+caveat: The correlation between code usage frequency and accuracy is observational; the paper does not
+  intervene on the model's weights. The authors note that geometry problems show only 0.6% improvement
+  from CSV, possibly because they require multi-modality.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1168
+- IC-1169

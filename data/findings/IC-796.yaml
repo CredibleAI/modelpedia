@@ -1,0 +1,37 @@
+id: IC-796
+title: GPT-2 Small MLP weight matrices are full-rank across all 12 layers and residual stream features
+  are linearly recoverable from post-GELU MLP hidden activations, providing the structural conditions
+  for the subspace patching illusion
+description: The paper measures the 100 smallest singular values of W_in and W_out for all 12 MLP layers
+  in GPT-2 Small and finds them bounded well away from zero, confirming full-rank transformations. It
+  then trains linear regression probes to recover a random residual stream direction from post-GELU
+  MLP activations, finding r² = 0.71±0.17 (p < 0.005) across layers. A binary classification experiment
+  confirms that even very small perturbations (z=0.0001) of a random direction in the residual stream
+  are linearly detectable in MLP activations (accuracy 0.69). These structural properties mean the GELU
+  nonlinearity adds noise but does not destroy linear information, enabling the disconnected-dormant
+  decomposition that underlies the illusion.
+models:
+- ref: model:gpt-2
+  variant: variant:gpt-2-small
+concepts:
+- ref: concept:linear-representation
+sources:
+- ref: source:this-subspace-you-looking-interpretability-illusion
+datasets:
+- ref: dataset:openwebtext
+  role: eval
+methods:
+- ref: method:linear-probing
+  role: primary
+- ref: method:logistic-regression
+  role: primary
+related_work: []
+evidence_type: observational
+key_metric: 'r² = 0.71±0.17, mse = 0.31±0.18, p < 0.005 for linear regression recovering residual stream
+  directions from MLP activations; binary classification accuracy: z=0.0001 → 0.69, z=0.001 → 0.83,
+  z=0.01 → 0.87, z=0.1 → 0.996'
+caveat: The linear recoverability is measured on OpenWebText-10k samples, not on the IOI distribution
+  specifically. The full-rank property is expected for popular architectures where d_mlp = 4×d_model.
+extracted_by: automatic-extraction
+related_findings:
+- IC-795

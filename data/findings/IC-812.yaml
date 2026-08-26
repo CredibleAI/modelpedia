@@ -1,0 +1,44 @@
+id: IC-812
+title: InstructGPT (text-davinci-003) reduces content diversity in co-written essays while GPT-3 (davinci)
+  does not, and the effect is attributable to the model's own less diverse text contributions
+description: In a controlled experiment with 38 writers producing 100 argumentative essays per condition
+  (solo, GPT-3, InstructGPT) across 10 topics, essays co-written with InstructGPT show significantly
+  higher homogenization (0.1660 vs 0.1536 solo, 0.1578 GPT-3 at key-point level with ROUGE-L) and lower
+  lexical and content diversity. GPT-3 does not produce a statistically significant difference from
+  solo writing. The mechanism is that InstructGPT's own generated text is less diverse (pairwise suggestion
+  similarity 0.20 vs 0.11 ROUGE-L), while user-contributed text remains statistically unchanged regardless
+  of which model assists.
+models:
+- ref: model:instructgpt
+- ref: model:gpt-3
+concepts:
+- ref: concept:failure-mode
+sources:
+- ref: source:writing-language-models-reduce-content-diversity
+datasets: []
+methods:
+- ref: method:rouge-l
+  role: eval
+- ref: method:bertscore
+  role: eval
+- ref: method:agglomerative-clustering
+  role: eval
+- ref: method:self-bleu
+  role: eval
+related_work:
+- name: Training a Helpful and Harmless Assistant with RLHF (Bai et al. 2022)
+  anchor: https://arxiv.org/abs/2204.05862
+  role: context
+- name: Training Language Models to Follow Instructions with Human Feedback (Ouyang et al. 2022)
+  anchor: https://arxiv.org/abs/2203.02155
+  role: context
+evidence_type: correlational
+key_metric: 'Corpus homogenization (key point, ROUGE-L): solo 0.1536, gpt3 0.1578, instructgpt 0.1660;
+  fraction of unique 5-grams: solo 0.991, gpt3 0.988, instructgpt 0.977; pairwise suggestion similarity
+  (ROUGE-L): instructgpt 0.20 vs gpt3 0.11; all instructgpt vs solo/gpt3 differences significant at
+  p < 0.05'
+caveat: Experiments use two limited-access OpenAI models; the authors note other models may exhibit
+  different behavior given the RLHF pipeline is highly customized. The study focuses on single interactions;
+  dynamics may change through repeated interactions over time. Participants are native English speakers
+  from the US recruited via Upwork.
+extracted_by: automatic-extraction

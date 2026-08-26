@@ -1,0 +1,54 @@
+id: IC-636
+title: Syntactic phenomena (determiner-noun and subject-verb agreement) localize to the same topmost-layer
+  MLP neurons as factual information in BERT, GPT-2, and Llama-2
+description: Using integral-of-gradient attribution and neuron suppression, the paper shows that grammatical
+  number in determiners is captured by just two neurons in BERT (w(10) 2096 for singular, w(9) 1094
+  for plural), with the same localisation metrics (|KN|, τ, r²₁) as ParaRel factual relations. The identified
+  KNs occupy the topmost layers for both syntactic and factual phenomena, with no depth-based separation.
+  Suppressing the plural neuron produces significant probability changes across all plural modifiers,
+  but also affects words like 'scattered' that do not specify number, indicating reliance on co-occurrence
+  frequency.
+models:
+- ref: model:bert
+- ref: model:gpt-2
+- ref: model:llama-2
+concepts:
+- ref: concept:depth-dependent-structure
+sources:
+- ref: source:knowledge-neuron-thesis-have-knowledge
+datasets:
+- ref: dataset:blimp
+  role: eval
+- ref: dataset:pararel
+  role: eval
+methods:
+- ref: method:kn-edit
+  role: primary
+- ref: method:integrated-gradients
+  role: primary
+- ref: method:causal-tracing
+  role: supporting
+related_work:
+- ref: method:knowledge-neurons
+  role: compared-to
+- name: Jawahar et al. 2019
+  anchor: https://doi.org/10.18653/v1/p19-1356
+  role: compared-to
+- name: Tenney et al. 2019
+  anchor: https://doi.org/10.18653/v1/p19-1452
+  role: compared-to
+- name: Geva et al. 2021
+  anchor: https://doi.org/10.18653/v1/2021.emnlp-main.446
+  role: builds-on
+evidence_type: interventional
+key_metric: '|KN| 1.86 (DNA.2) to 9.79 (DNA w. adj irr. 1) for BLIMP vs 0.167 (P101) to 28.993 (P20)
+  for ParaRel on BERT; w(10) 2096 in 93% of ''this'' pairs and 75% of ''that'' pairs; w(9) 1094 in 100%
+  of ''these'' and ''those'' pairs'
+caveat: The patterns identified by the neurons deviate from strict grammatical rules, affecting modifiers
+  that do not specify number (e.g., 'scattered', 'any', 'all'), suggesting the neurons capture co-occurrence
+  statistics rather than pure syntactic features.
+extracted_by: automatic-extraction
+related_findings:
+- IC-637
+- IC-638
+- IC-639

@@ -1,0 +1,32 @@
+id: IC-1552
+title: Deduplication of pretraining data does not consistently improve gender fairness in Pythia models
+description: 'The paper compares original and deduplicated Pythia models (70M-12B) on all five benchmarks
+  using the US metric. The effect of deduplication is inconsistent across sizes and benchmarks: it improves
+  fairness for Pythia-70M (+6.73 on USE-5) and Pythia-6.9B (+6.52 on USE-5) but worsens it for Pythia-410M
+  (-17.14 on USE-5) and Pythia-12B (-11.65 on USE-5). The authors conclude that deduplication does not
+  provide a reliable path to reducing gender bias in non-stereotypical settings.'
+models:
+- ref: model:pythia
+concepts: []
+sources:
+- ref: source:models-biased-text-without-gender-related
+datasets:
+- ref: dataset:use-5
+  role: eval
+- ref: dataset:winobias
+  role: eval
+- ref: dataset:winogender
+  role: eval
+methods: []
+related_work: []
+evidence_type: correlational
+key_metric: 'USE-5 fairness change from deduplication: Pythia-70M +6.73, 160M -1.38, 410M -17.14, 1.4B
+  -5.52, 2.8B +4.62, 6.9B +6.52, 12B -11.65; WG: 70M +2.80, 160M -3.74, 410M -1.87, 1.4B -18.69, 2.8B
+  -1.87, 6.9B +9.35, 12B +1.87'
+caveat: Only Pythia models have publicly available deduplicated variants, so the finding is limited
+  to this one model family.
+extracted_by: automatic-extraction
+related_findings:
+- IC-1549
+- IC-1550
+- IC-1551

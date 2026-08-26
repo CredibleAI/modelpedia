@@ -1,0 +1,28 @@
+id: IC-799
+title: WizardMath-70b scores lower than base Llama-2-70b on TabMWP (49.8% vs 57.5%), indicating degraded
+  OOD generalization from rationale-based fine-tuning
+description: The paper reports that WizardMath-70b, which was fine-tuned with rationale-based mathematical
+  data, underperforms the base Llama-2-70b model on the out-of-distribution TabMWP dataset. WizardMath-70b
+  achieves 49.8% while Llama-2-70b achieves 57.5%. The authors use this as evidence that 'rationale-based
+  fine-tuning negatively affects out-of-distribution generalization.' This is contrasted with TORA-70b,
+  which achieves 74.0% on the same dataset.
+models:
+- ref: model:wizardmath
+- ref: model:llama-2
+concepts: []
+sources:
+- ref: source:tora-tool-integrated-reasoning-agent-mathematical
+datasets:
+- ref: dataset:tabmwp
+  role: eval
+methods: []
+related_work:
+- ref: model:wizardmath
+  role: compared-to
+evidence_type: correlational
+key_metric: 'WizardMath-70b: 49.8% on TabMWP; Llama-2-70b (base): 57.5% on TabMWP'
+caveat: The comparison is between a fine-tuned model and its base; the gap may reflect the specific
+  fine-tuning data and procedure of WizardMath rather than a general property of rationale-based training.
+extracted_by: automatic-extraction
+related_findings:
+- IC-798
