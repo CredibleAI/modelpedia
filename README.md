@@ -33,7 +33,7 @@ You will run these most often. None of them touches the network.
 
 | Command | What it does |
 |---|---|
-| `python3 run_tests.py` | Runs all 442 tests across six suites. No arguments. |
+| `python3 run_tests.py` | Runs all 473 tests across six suites. No arguments. |
 | `python3 build.py` | Validates `data/`, writes `out/graph.json`, prints an audit. **Exits non-zero and writes nothing if validation fails, so run it before every commit.** |
 | `python3 render.py` | Builds the static site into `site/` from `out/graph.json`. |
 | `python3 export.py` | Writes one CSV per node type plus `edges.csv` into `out/csv/`. |

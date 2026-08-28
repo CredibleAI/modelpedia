@@ -4,10 +4,10 @@ __pycache__/
 .claude/
 .vscode/
 
-sources_pdfs/
-corpus/
-out/
-site/
+/sources_pdfs/
+/corpus/
+/out/
+/site/
 *.part
 *.log
 

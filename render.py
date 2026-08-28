@@ -8,6 +8,7 @@ from modelpedia.site.html_bits import (anchor, definition_list, entry, entry_lis
 from modelpedia import paths
 from modelpedia import record_keys as keys
 from modelpedia import schema
+from modelpedia.site import about
 from modelpedia.site import site_paths
 
 HOME = site_paths.INDEX
@@ -61,9 +62,6 @@ STATUS_BADGE = '<span class="wip" title="%s">%s</span>' % (escape(STATUS_TITLE),
 LEDE = ("A finding is a claim about how one model behaves, made by someone other than its "
         "authors, after the fact. Findings about different models meet on the mechanisms they "
         "describe.")
-
-FOOTER = ("%(findings)d findings. %(nodes)d nodes, "
-          "%(shared)d shared by more than one finding.")
 
 
 class View(NamedTuple):
@@ -121,6 +119,10 @@ def outside_link(item):
     text = escape(str(item.get(keys.NAME) or ""))
     target = item.get(keys.ANCHOR)
     return anchor(target, text, EXTERNAL) if target else text
+
+
+def external_link(url, text):
+    return anchor(url, escape(text), EXTERNAL)
 
 
 def byline(view, data):
@@ -249,6 +251,9 @@ def bridge_entries(view, node):
 def navigation(view):
     items = ["<li>%s%s</li>" % (anchor(site_paths.href(view.here, HOME), escape(PAGE_TITLE)),
                                STATUS_BADGE)]
+    here = ' aria-current="page"' if view.here.startswith(about.SEGMENT + "/") else ""
+    items.append("<li>%s</li>" % anchor(site_paths.href(view.here, about.PATH),
+                                        escape(about.LABEL), here))
     for node_type in graph_json.PAGE_TYPES:
         current = ' aria-current="page"' if view.here.startswith(
             node_type.url_segment + "/") else ""
@@ -256,15 +261,6 @@ def navigation(view):
             site_paths.href(view.here, site_paths.registry_page(node_type.name)),
             escape(node_type.label), current))
     return "<nav><ul>%s</ul>%s</nav>" % ("".join(items), THEME_TOGGLE)
-
-
-def footer(view):
-    findings = nodes_of(view, graph_json.FINDING)
-    return FOOTER % {
-        "findings": len(findings),
-        "nodes": len(view.nodes),
-        "shared": len(graph_json.shared_entities(view.reached)),
-    }
 
 
 def page(view, title, body, body_class=""):
@@ -278,7 +274,6 @@ def page(view, title, body, body_class=""):
         "<body%s>" % (' class="%s"' % body_class if body_class else ""),
         navigation(view),
         body,
-        "<footer>%s</footer>" % footer(view),
         THEME_SCRIPT,
         "</body></html>",
     ])
@@ -375,6 +370,10 @@ def iter_pages(graph, stylesheet=None):
                 here=HOME)
     yield STYLESHEET, stylesheet
     yield HOME, page(base, PAGE_TITLE, home_body(base), body_class="home")
+
+    here = base._replace(here=about.PATH)
+    yield about.PATH, page(here, "%s — %s" % (about.TITLE, PAGE_TITLE),
+                           about.body(here, link, external_link), body_class="about")
 
     for node_type in graph_json.PAGE_TYPES:
         view = base._replace(here=site_paths.registry_page(node_type.name))

@@ -14,6 +14,8 @@ from modelpedia import graph as graph_json
 from modelpedia import paths
 import render
 from modelpedia.build import report
+from modelpedia.site import about
+from modelpedia.site import charts
 from modelpedia.site import site_paths
 from tests.test_build import sample_db
 
@@ -722,3 +724,131 @@ def test_pipeline_smoke_real_data_builds_site_and_csv_outputs():
         edge_rows, _ = export.write_edges(graph, out / export.EDGE_FILE)
     assert table_rows == len(graph["nodes"])
     assert edge_rows == len(graph["edges"])
+
+
+def about_view():
+    return at(view_of(), about.PATH)
+
+
+def test_the_about_page_is_built_and_linked_from_every_page():
+    pages = render.render_site(graph_of())
+    assert about.PATH in pages
+    documents = [page for path, page in pages.items() if path.endswith(".html")]
+    assert documents
+    for document in documents:
+        assert ">About</a>" in document
+
+
+def test_the_navigation_marks_about_only_when_the_reader_is_there():
+    assert 'aria-current="page">About</a>' in render.navigation(about_view())
+    assert "aria-current" not in render.navigation(view_of())
+
+
+def test_the_about_charts_count_the_graph_rather_than_a_fixed_table():
+    assert charts.evidence_counts(about_view()) == [
+        ("observational", 1), ("correlational", 0), ("interventional", 0)]
+
+
+def test_a_second_finding_moves_the_evidence_chart():
+    def second(findings):
+        findings["XX-002"] = dict(findings["XX-001"], id="XX-002",
+                                  evidence_type="interventional", related_findings=[])
+    view = at(view_of(findings=second), about.PATH)
+    assert charts.evidence_counts(view) == [
+        ("observational", 1), ("correlational", 0), ("interventional", 1)]
+
+
+def test_every_evidence_bar_carries_its_value_as_a_class():
+    body = charts.evidence_chart(about_view())
+    for value in charts.EVIDENCE_ORDER:
+        assert 'class="bar-fill ev-%s"' % value in body
+
+
+def test_a_bar_is_scaled_against_the_largest_value_in_its_own_chart():
+    body = charts.chart("Title", "Note", [("a", 5, ""), ("b", 1, "")])
+    assert "--share:100.0%" in body
+    assert "--share:20.0%" in body
+
+
+def test_a_chart_with_nothing_counted_does_not_divide_by_zero():
+    assert "--share:0.0%" in charts.chart("Title", "Note", [("a", 0, "")])
+
+
+def test_a_ranked_chart_says_how_much_of_the_registry_it_leaves_out():
+    def orphan(entities):
+        entities["method:unused"] = {"type": graph_json.METHOD, "name": "Unused"}
+    view = at(view_of(entities=orphan), about.PATH)
+    body = charts.ranked_chart(view, render.link, graph_json.METHOD, "Methods", "Note.")
+    assert "All 1 reached by at least one finding, out of 2 in the registry." in body
+    assert "Unused" not in body
+
+
+def test_a_ranked_chart_that_shows_everything_claims_no_top_slice():
+    body = charts.ranked_chart(about_view(), render.link, graph_json.CONCEPT, "Concepts", "Note.")
+    assert "All 1 in the registry." in body
+
+
+def test_a_chart_label_drops_the_synonyms_the_registry_name_carries():
+    assert charts.short_name("GPT-4 / ChatGPT4 / GPT-4 Code Interpreter") == "GPT-4"
+    assert charts.short_name("CLIP") == "CLIP"
+
+
+def test_the_dataset_distribution_folds_its_tail_into_one_bucket():
+    rows, longest = charts.datasets_per_finding(about_view())
+    assert len(rows) == charts.DATASET_BUCKETS + 1
+    assert rows[-1][0] == "%d or more" % charts.DATASET_BUCKETS
+    assert (rows[1], longest) == (("1", 1), 1)
+
+
+def test_the_diagram_is_inline_svg_carrying_no_stylesheet_and_no_baked_colour():
+    body = about.diagram(about_view())
+    assert body.count("<svg") == 1
+    assert "<style" not in body
+    assert "fill=" not in body
+    assert 'class="dg-cap"' in body
+
+
+def test_the_diagram_chart_is_drawn_from_the_data_not_from_fixed_heights():
+    body = about.mini_chart([("observational", 1), ("correlational", 0), ("interventional", 4)])
+    assert 'height="16.0" class="dg-mini ev-observational"' in body
+    assert 'height="2" class="dg-mini ev-correlational"' in body
+    assert 'height="64.0" class="dg-mini ev-interventional"' in body
+
+
+def test_the_about_page_counts_the_base_it_is_built_from():
+    assert about.counts(about_view()).startswith("1 finding drawn from 1 source")
+
+
+def test_about_is_the_first_section_after_the_site_name():
+    labels = re.findall(r"<li>(?:.*?)>([^<]+)</a>", render.navigation(view_of()))
+    assert labels[0] == render.PAGE_TITLE
+    assert labels[1] == about.LABEL
+
+
+def test_no_page_carries_the_counter_footer_any_more():
+    pages = render.render_site(graph_of())
+    documents = [page for path, page in pages.items() if path.endswith(".html")]
+    assert documents
+    for document in documents:
+        assert "<footer" not in document
+
+
+def test_the_catalog_charts_are_tabbed_with_exactly_one_open():
+    body = charts.all_charts(about_view(), render.link)
+    assert body.count('class="tab-input"') == body.count('class="tab" for=')
+    assert body.count(" checked>") == 1
+    assert body.count('class="chart panel"') == body.count('class="tab" for=')
+
+
+def test_a_tab_label_points_at_the_input_that_opens_it():
+    body = charts.tabbed([("One", "<figure></figure>"), ("Two", "<figure></figure>")], "g")
+    assert '<input class="tab-input" type="radio" name="g" id="g-0" checked>' in body
+    assert '<label class="tab" for="g-1">Two</label>' in body
+
+
+def test_more_charts_than_stylesheet_slots_fall_back_to_a_plain_stack():
+    items = [("T%d" % index, "<figure>%d</figure>" % index)
+             for index in range(charts.TAB_SLOTS + 1)]
+    body = charts.tabbed(items, "g")
+    assert "tab-input" not in body
+    assert body.count("<figure>") == len(items)
