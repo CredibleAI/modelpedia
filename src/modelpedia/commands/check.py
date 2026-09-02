@@ -1,4 +1,3 @@
-import sys
 from pathlib import Path
 
 import yaml
@@ -99,11 +98,11 @@ def render(fid, errors, rows):
     return "\n".join(lines)
 
 
-def main():
-    if len(sys.argv) != 2:
-        print("usage: python3 check.py path/to/candidate.yaml")
+def main(argv):
+    if len(argv) != 2:
+        print("usage: modelpedia check path/to/candidate.yaml")
         return 2
-    path = Path(sys.argv[1])
+    path = Path(argv[1])
     if not path.is_file():
         print("no such file: %s" % path)
         return 2
@@ -121,6 +120,3 @@ def main():
     blocked = errors or [row for row in rows if row[2] != RESOLVED]
     return 1 if blocked else 0
 
-
-if __name__ == "__main__":
-    raise SystemExit(main())

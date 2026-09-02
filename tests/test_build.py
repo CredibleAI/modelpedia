@@ -10,7 +10,7 @@ from modelpedia import paths
 from modelpedia import graph as graph_json
 from modelpedia import schema
 from modelpedia.build import validate
-import build
+from modelpedia.commands import build
 import yaml
 
 VOCABULARIES = {

@@ -6,13 +6,13 @@ import tempfile
 from contextlib import redirect_stdout
 from pathlib import Path
 
-import export
+from modelpedia.commands import export
 from modelpedia.build import assemble
 from modelpedia.build import database
 from modelpedia import graph_io
 from modelpedia import graph as graph_json
 from modelpedia import paths
-import render
+from modelpedia.commands import render
 from modelpedia.build import report
 from modelpedia.site import about
 from modelpedia.site import charts

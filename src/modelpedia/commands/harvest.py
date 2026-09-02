@@ -12,6 +12,7 @@ import urllib.request
 from pathlib import Path
 
 from modelpedia import atomic
+from modelpedia import cli
 from modelpedia import console
 from modelpedia import graph as graph_json
 from modelpedia import paths
@@ -43,6 +44,7 @@ PDF_OPTIONS = ("--tier", "--limit", "--ids", "--pause", "--venue")
 REVIEW_OPTIONS = ("--limit", "--from", "--pause")
 RANK_OPTIONS = ("--out", "--venue")
 ANCHOR_OPTIONS = ("--at",)
+ANCHOR_FLAGS = ("--write",)
 
 DEAD_BATCHES = 3
 GIVE_UP_AFTER = 10
@@ -53,11 +55,6 @@ IMPORT_REVIEW_KEYS = ("review_id", "id")
 FORUM_IN_ANCHOR = re.compile(r"[?&]id=([A-Za-z0-9]+)")
 
 VENV_PYTHON = paths.ROOT / ".venv" / "bin" / "python"
-
-
-def fail(message):
-    print("ERROR %s" % message)
-    return 1
 
 
 def interpreter_hint():
@@ -351,45 +348,20 @@ def fetch_pdf(connection, paper_id, target, retries=RETRIES, delay=DELAY):
     return True
 
 
-def options(rest, allowed):
-    given, index = {}, 0
-    while index < len(rest):
-        flag = rest[index]
-        if flag not in allowed:
-            raise ValueError("unknown option %r; expected one of %s" % (flag, ", ".join(allowed)))
-        if index + 1 >= len(rest):
-            raise ValueError("%s needs a value" % flag)
-        given[flag] = rest[index + 1]
-        index += 2
-    return given
+fail = cli.fail
+positive = cli.positive
+
+
+def options(rest, allowed, flags=()):
+    return cli.options(rest, allowed, flags)
 
 
 def chosen_tiers(value):
-    if value is None:
-        return DOWNLOAD_TIERS
-    tiers = tuple(part.strip() for part in value.split(",") if part.strip())
-    unknown = [tier for tier in tiers if tier not in ALL_TIERS]
-    if not tiers or unknown:
-        raise ValueError("--tier takes %s, not %r" % ("/".join(ALL_TIERS), value))
-    return tiers
+    return cli.comma_list(value, ALL_TIERS, "--tier", default=DOWNLOAD_TIERS)
 
 
 def number_between(value, flag, low=0.0, high=1.0):
-    try:
-        parsed = float(value)
-    except (TypeError, ValueError):
-        raise ValueError("%s takes a number between %.1f and %.1f, not %r" % (flag, low, high, value))
-    if not low <= parsed <= high:
-        raise ValueError("%s takes a number between %.1f and %.1f, not %r" % (flag, low, high, value))
-    return parsed
-
-
-def positive(value, flag="--limit"):
-    if value is None:
-        return None
-    if not value.isdigit() or int(value) < 1:
-        raise ValueError("%s takes a positive whole number, not %r" % (flag, value))
-    return int(value)
+    return cli.number(value, flag, low=low, high=high)
 
 
 def selected_rows(tiers, ids, venue_id=None):
@@ -984,109 +956,134 @@ def propose_anchors(write_at=None):
     return 1 if failed else 0
 
 
-USAGE = """usage: run these with .venv/bin/python -- openreview-py lives there, not in system python
+BATCH_NEEDS_LIMIT = ("--pause needs --limit: the pause is what separates one batch from the "
+                     "next, and with no batch size there is only ever one batch")
 
-  .venv/bin/python harvest.py doctor                 offline dependency and API contract checks
-  .venv/bin/python harvest.py preflight [venue_id]   check python, package, login and venue
-  .venv/bin/python harvest.py venues [substring]     list venue identifiers
-  .venv/bin/python harvest.py meta <venue_id> [--all]  metadata only, screened, resumable
-  .venv/bin/python harvest.py reviews <venue_id> [--limit N] [--pause S] [--from FILE]
-                                                     official reviews, one request per paper,
-                                                     resumable; --limit N --pause S fetches N,
-                                                     waits S seconds and carries on by itself
-                                                     until the venue is done; --from imports a
-                                                     dump instead of asking the API
-  .venv/bin/python harvest.py rescreen               recompute every score from what is on disk
-  .venv/bin/python harvest.py rank [--out FILE] [--venue ID]
-                                                     one table for every venue plus one per venue
-                                                     beside it; --venue narrows it to one
-  .venv/bin/python harvest.py stats                  tier breakdown of the manifest
-  .venv/bin/python harvest.py pdfs [--tier a,b] [--venue ID] [--limit N] [--pause S] [--ids FILE]
-                                                     --ids overrides --tier; one id per line.
-                                                     --limit N --pause S batches it the same way
-                                                     reviews does, for the same quota
-  .venv/bin/python harvest.py text                   pypdfium2 over downloaded pdfs
-  .venv/bin/python harvest.py anchors [--write] [--at S]
-                                                     DBLP then Crossref for entities with no
-                                                     anchor; proposals only unless --write, which
-                                                     applies those scoring --at or above (1.00)
 
-  a venue runs meta -> reviews -> rescreen -> rank. Only the first two touch the network.
-  OPENREVIEW_USERNAME and OPENREVIEW_PASSWORD must be set in the environment."""
+def run_doctor(rest):
+    return doctor()
+
+
+def run_preflight(rest):
+    return preflight(rest[0] if rest else None)
+
+
+def run_venues(rest):
+    return list_venues(rest[0] if rest else None)
+
+
+def run_meta(rest):
+    if not rest:
+        return fail("meta needs a venue id")
+    return harvest_meta(rest[0], accepted_only="--all" not in rest)
+
+
+def run_reviews(rest):
+    if not rest:
+        return fail("reviews needs a venue id")
+    try:
+        given = options(rest[1:], REVIEW_OPTIONS)
+        limit = positive(given.get("--limit"))
+        pause = positive(given.get("--pause"), "--pause")
+    except ValueError as error:
+        return fail(str(error))
+    if "--from" in given:
+        source = Path(given["--from"])
+        if not source.exists():
+            return fail("cannot read %s" % source)
+        return import_reviews(rest[0], source)
+    if pause and not limit:
+        return fail(BATCH_NEEDS_LIMIT)
+    return harvest_reviews(rest[0], limit, pause=pause)
+
+
+def run_rescreen(rest):
+    return rescreen()
+
+
+def run_rank(rest):
+    try:
+        given = options(rest, RANK_OPTIONS)
+    except ValueError as error:
+        return fail(str(error))
+    return rank(Path(given["--out"]) if "--out" in given else RANKING, given.get("--venue"))
+
+
+def run_stats(rest):
+    return show_stats()
+
+
+def run_pdfs(rest):
+    try:
+        given = options(rest, PDF_OPTIONS)
+        tiers = chosen_tiers(given.get("--tier"))
+        limit = positive(given.get("--limit"))
+        pause = positive(given.get("--pause"), "--pause")
+        ids = store.read_ids(Path(given["--ids"])) if "--ids" in given else None
+    except ValueError as error:
+        return fail(str(error))
+    if pause and not limit:
+        return fail(BATCH_NEEDS_LIMIT)
+    return harvest_pdfs(tiers, limit, ids=ids, pause=pause, venue_id=given.get("--venue"))
+
+
+def run_text(rest):
+    return harvest_text()
+
+
+def run_anchors(rest):
+    try:
+        given = options(rest, ANCHOR_OPTIONS, ANCHOR_FLAGS)
+        at = number_between(given.get("--at"), "--at") if "--at" in given else 1.0
+    except ValueError as error:
+        return fail(str(error))
+    return propose_anchors(at if given.get("--write") else None)
+
+
+COMMANDS = (
+    cli.Command("doctor", run_doctor,
+                note="offline dependency and API contract checks"),
+    cli.Command("preflight", run_preflight, "preflight [venue_id]",
+                "check python, package, login and venue"),
+    cli.Command("venues", run_venues, "venues [substring]",
+                "list venue identifiers"),
+    cli.Command("meta", run_meta, "meta <venue_id> [--all]",
+                "metadata only, screened, resumable"),
+    cli.Command("reviews", run_reviews,
+                "reviews <venue_id> [--limit N] [--pause S] [--from FILE]",
+                """official reviews, one request per paper,
+                   resumable; --limit N --pause S fetches N,
+                   waits S seconds and carries on by itself
+                   until the venue is done; --from imports a
+                   dump instead of asking the API"""),
+    cli.Command("rescreen", run_rescreen,
+                note="recompute every score from what is on disk"),
+    cli.Command("rank", run_rank, "rank [--out FILE] [--venue ID]",
+                """one table for every venue plus one per venue
+                   beside it; --venue narrows it to one"""),
+    cli.Command("stats", run_stats,
+                note="tier breakdown of the manifest"),
+    cli.Command("pdfs", run_pdfs,
+                "pdfs [--tier a,b] [--venue ID] [--limit N] [--pause S] [--ids FILE]",
+                """--ids overrides --tier; one id per line.
+                   --limit N --pause S batches it the same way
+                   reviews does, for the same quota"""),
+    cli.Command("text", run_text,
+                note="pypdfium2 over downloaded pdfs"),
+    cli.Command("anchors", run_anchors, "anchors [--write] [--at S]",
+                """DBLP then Crossref for entities with no
+                   anchor; proposals only unless --write, which
+                   applies those scoring --at or above (1.00)"""),
+)
+
+USAGE = cli.usage_text(
+    COMMANDS, "modelpedia harvest",
+    header="OPENREVIEW_USERNAME and OPENREVIEW_PASSWORD must be set in the environment.\n",
+    footer="  a venue runs meta -> reviews -> rescreen -> rank. Only the first two touch the "
+           "network.")
 
 
 def main(argv):
     console.line_buffered()
-    if len(argv) < 2:
-        print(USAGE)
-        return 2
-    command, rest = argv[1], argv[2:]
+    return cli.dispatch(argv, COMMANDS, USAGE)
 
-    if command == "doctor":
-        return doctor()
-    if command == "preflight":
-        return preflight(rest[0] if rest else None)
-    if command == "venues":
-        return list_venues(rest[0] if rest else None)
-    if command == "meta":
-        if not rest:
-            return fail("meta needs a venue id")
-        return harvest_meta(rest[0], accepted_only="--all" not in rest)
-    if command == "reviews":
-        if not rest:
-            return fail("reviews needs a venue id")
-        try:
-            given = options(rest[1:], REVIEW_OPTIONS)
-            limit = positive(given.get("--limit"))
-            pause = positive(given.get("--pause"), "--pause")
-        except ValueError as error:
-            return fail(str(error))
-        if "--from" in given:
-            source = Path(given["--from"])
-            if not source.exists():
-                return fail("cannot read %s" % source)
-            return import_reviews(rest[0], source)
-        if pause and not limit:
-            return fail("--pause needs --limit: the pause is what separates one batch from the "
-                        "next, and with no batch size there is only ever one batch")
-        return harvest_reviews(rest[0], limit, pause=pause)
-    if command == "rescreen":
-        return rescreen()
-    if command == "rank":
-        try:
-            given = options(rest, RANK_OPTIONS)
-        except ValueError as error:
-            return fail(str(error))
-        return rank(Path(given["--out"]) if "--out" in given else RANKING,
-                    given.get("--venue"))
-    if command == "stats":
-        return show_stats()
-    if command == "pdfs":
-        try:
-            given = options(rest, PDF_OPTIONS)
-            tiers = chosen_tiers(given.get("--tier"))
-            limit = positive(given.get("--limit"))
-            pause = positive(given.get("--pause"), "--pause")
-            ids = store.read_ids(Path(given["--ids"])) if "--ids" in given else None
-        except ValueError as error:
-            return fail(str(error))
-        if pause and not limit:
-            return fail("--pause needs --limit: the pause is what separates one batch from the "
-                        "next, and with no batch size there is only ever one batch")
-        return harvest_pdfs(tiers, limit, ids=ids, pause=pause, venue_id=given.get("--venue"))
-    if command == "text":
-        return harvest_text()
-    if command == "anchors":
-        try:
-            given = options([f for f in rest if f != "--write"], ANCHOR_OPTIONS)
-            at = number_between(given.get("--at"), "--at") if "--at" in given else 1.0
-        except ValueError as error:
-            return fail(str(error))
-        return propose_anchors(at if "--write" in rest else None)
-
-    print(USAGE)
-    return 2
-
-
-if __name__ == "__main__":
-    raise SystemExit(main(sys.argv))

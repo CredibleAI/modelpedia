@@ -1,4 +1,3 @@
-import sys
 from pathlib import Path
 
 import yaml
@@ -31,6 +30,3 @@ def main(argv):
     print(verification.render(fid, report))
     return 1 if verification.blocking(report) or verification.nothing_verified(report) else 0
 
-
-if __name__ == "__main__":
-    raise SystemExit(main(sys.argv))

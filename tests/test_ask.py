@@ -3,7 +3,7 @@ import json
 import tempfile
 from pathlib import Path
 
-import ask
+from modelpedia.commands import ask
 from modelpedia.ingest import chat
 from modelpedia.ingest import prompt as promptlib
 

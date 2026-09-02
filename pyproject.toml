@@ -21,6 +21,9 @@ dev = [
     "urllib3>=2",
 ]
 
+[project.scripts]
+modelpedia = "modelpedia.__main__:main"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

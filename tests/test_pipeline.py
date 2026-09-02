@@ -6,8 +6,8 @@ import tempfile
 import yaml
 from pathlib import Path
 
-import check
-import harvest
+from modelpedia.commands import check
+from modelpedia.commands import harvest
 from modelpedia import atomic
 from modelpedia.build import database
 from modelpedia import paths

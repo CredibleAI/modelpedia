@@ -5,7 +5,7 @@ from pathlib import Path
 
 import yaml
 
-import extract
+from modelpedia.commands import extract
 
 CORPUS_CONSTANTS = ("PROMPTS", "ANSWERS", "TEXTS", "PDFS", "REPORT", "PROPOSED", "TAGS", "META")
 

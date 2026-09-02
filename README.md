@@ -51,14 +51,14 @@ You will run these most often. None of them touches the network.
 | Command | What it does |
 |---|---|
 | `pytest` | Runs the whole suite. No arguments — `pyproject.toml` points it at `tests/`. Collection is automatic, so a new test file is picked up without being registered anywhere. |
-| `python3 build.py` | Validates `data/`, writes `out/graph.json`, prints an audit. **Exits non-zero and writes nothing if validation fails, so run it before every commit.** |
-| `python3 render.py` | Builds the static site into `site/` from `out/graph.json`. |
-| `python3 export.py` | Writes one CSV per node type plus `edges.csv` into `out/csv/`. |
+| `modelpedia build` | Validates `data/`, writes `out/graph.json`, prints an audit. **Exits non-zero and writes nothing if validation fails, so run it before every commit.** |
+| `modelpedia render` | Builds the static site into `site/` from `out/graph.json`. |
+| `modelpedia export` | Writes one CSV per node type plus `edges.csv` into `out/csv/`. |
 
 The usual loop after editing any YAML file:
 
 ```bash
-python3 build.py && python3 render.py
+modelpedia build && modelpedia render
 ```
 
 Then open `site/index.html` by double-clicking it. Links are relative, so no server is needed and
@@ -77,8 +77,8 @@ which registry entries lack an anchor, and which registry entries nothing reache
 
 | Command | What it does |
 |---|---|
-| `python3 check.py path/to/candidate.yaml` | Schema errors and link resolution for a candidate finding that is not in `data/` yet. Blames only the candidate, never the existing registries. |
-| `python3 verify.py data/findings/ID.yaml source.pdf` | Locates the record's numbers, linked entity names and stable identifiers in the PDF, and finds the page sharing most of the caveat's vocabulary. |
+| `modelpedia check path/to/candidate.yaml` | Schema errors and link resolution for a candidate finding that is not in `data/` yet. Blames only the candidate, never the existing registries. |
+| `modelpedia verify data/findings/ID.yaml source.pdf` | Locates the record's numbers, linked entity names and stable identifiers in the PDF, and finds the page sharing most of the caveat's vocabulary. |
 
 `verify.py` changes nothing on disk. Missing items are suspicions for a human, not corrections.
 It exits 1 when a check is blocking **or when the record offered nothing to check at all** — an
@@ -88,23 +88,23 @@ empty finding must not report `0 blocking` and look like a pass.
 
 ## Gathering papers
 
-`harvest.py` is one of the two scripts that talk to the network, the other being `ask.py`. Run it
-with `.venv/bin/python`, because
-`openreview-py` lives there. `OPENREVIEW_USERNAME` and `OPENREVIEW_PASSWORD` must be set in the
+`modelpedia harvest` is one of the two commands that talk to the network, the other being
+`modelpedia ask`. It needs the ingest extra (`uv sync --extra ingest`), because `openreview-py`
+is not part of the core. `OPENREVIEW_USERNAME` and `OPENREVIEW_PASSWORD` must be set in the
 environment — never in the repository.
 
 | Command | What it does |
 |---|---|
-| `harvest.py doctor` | Offline. Checks the interpreter, the installed packages and that the API client still has the methods we call. No account needed. |
-| `harvest.py preflight [venue_id]` | Everything `doctor` does, plus a real login. With a venue id it also reports which API generation answers for it, a sample paper's fields and whether that paper's reviews are reachable. **Run this once before harvesting a new conference.** |
-| `harvest.py venues [substring]` | Lists venue identifiers, e.g. `harvest.py venues ICML`. |
-| `harvest.py meta <venue_id> [--all]` | Fetches metadata only — no PDFs — screens each paper and appends a row per paper to `corpus/manifest.jsonl`. Resumable: papers already in the manifest are skipped. `--all` includes rejected submissions. |
-| `harvest.py reviews <venue_id> [--limit N] [--pause S] [--from FILE]` | Fetches the official reviews into `corpus/reviews/<venue>.jsonl`, one request per paper, resumable. `--limit N --pause S` fetches N papers, waits S seconds and carries on by itself until the venue is done — the way to spend a quota that refills on a clock without retyping the command. `--from` imports a review dump that is already on disk instead of asking the API. |
-| `harvest.py rescreen` | Offline. Recomputes every score in the manifest from the metadata and reviews already on disk. Run it after changing `screen.py`. |
-| `harvest.py rank [--out FILE] [--venue ID]` | Offline. Writes one deterministic table for every venue in the manifest to `corpus/reports/ranking.csv`, plus `ranking-<venue>.csv` beside it for each venue on its own, and prints a venue-by-venue comparison. `--venue` narrows the whole thing to one. The comparison carries a `reviewed` column, because a venue whose reviews are still downloading scores low for a reason that has nothing to do with the venue. |
-| `harvest.py stats` | Tier breakdown of the manifest, how many papers carry a review, how many PDFs and texts are on disk, and which screening rules produced each row. |
-| `harvest.py pdfs [--tier a,b] [--venue ID] [--limit N] [--pause S] [--ids FILE]` | Downloads PDFs for the chosen tiers into `corpus/pdf/`. Defaults to `strong,possible`, which reaches **every** venue in the manifest until `--venue` narrows it. `--ids` takes a file with one identifier per line and overrides `--tier`. `--limit N --pause S` batches it exactly as `reviews` does, against the same quota. |
-| `harvest.py text` | Extracts text from every PDF into `corpus/text/`, skipping files already done. |
+| `modelpedia harvest doctor` | Offline. Checks the interpreter, the installed packages and that the API client still has the methods we call. No account needed. |
+| `modelpedia harvest preflight [venue_id]` | Everything `doctor` does, plus a real login. With a venue id it also reports which API generation answers for it, a sample paper's fields and whether that paper's reviews are reachable. **Run this once before harvesting a new conference.** |
+| `modelpedia harvest venues [substring]` | Lists venue identifiers, e.g. `modelpedia harvest venues ICML`. |
+| `modelpedia harvest meta <venue_id> [--all]` | Fetches metadata only — no PDFs — screens each paper and appends a row per paper to `corpus/manifest.jsonl`. Resumable: papers already in the manifest are skipped. `--all` includes rejected submissions. |
+| `modelpedia harvest reviews <venue_id> [--limit N] [--pause S] [--from FILE]` | Fetches the official reviews into `corpus/reviews/<venue>.jsonl`, one request per paper, resumable. `--limit N --pause S` fetches N papers, waits S seconds and carries on by itself until the venue is done — the way to spend a quota that refills on a clock without retyping the command. `--from` imports a review dump that is already on disk instead of asking the API. |
+| `modelpedia harvest rescreen` | Offline. Recomputes every score in the manifest from the metadata and reviews already on disk. Run it after changing `screen.py`. |
+| `modelpedia harvest rank [--out FILE] [--venue ID]` | Offline. Writes one deterministic table for every venue in the manifest to `corpus/reports/ranking.csv`, plus `ranking-<venue>.csv` beside it for each venue on its own, and prints a venue-by-venue comparison. `--venue` narrows the whole thing to one. The comparison carries a `reviewed` column, because a venue whose reviews are still downloading scores low for a reason that has nothing to do with the venue. |
+| `modelpedia harvest stats` | Tier breakdown of the manifest, how many papers carry a review, how many PDFs and texts are on disk, and which screening rules produced each row. |
+| `modelpedia harvest pdfs [--tier a,b] [--venue ID] [--limit N] [--pause S] [--ids FILE]` | Downloads PDFs for the chosen tiers into `corpus/pdf/`. Defaults to `strong,possible`, which reaches **every** venue in the manifest until `--venue` narrows it. `--ids` takes a file with one identifier per line and overrides `--tier`. `--limit N --pause S` batches it exactly as `reviews` does, against the same quota. |
+| `modelpedia harvest text` | Extracts text from every PDF into `corpus/text/`, skipping files already done. |
 
 A venue runs `meta` → `reviews` → `rescreen` → `rank`. Only the first two touch the network, so
 changing a screening rule costs one offline pass rather than a second visit to the API.
@@ -124,19 +124,19 @@ comparable. Downloading is a separate step so a bad screening rule costs nothing
 
 | Command | What it does |
 |---|---|
-| `extract.py prompts [paper,paper] [--pages]` | Builds one extraction prompt per paper from `corpus/text/` into `corpus/prompts/`. With no argument, every paper. The whole paper goes in: there is no length limit, because the endpoint's window is three times the longest text in the corpus. `--pages` writes the instructions without the text into `corpus/prompts-pages/`, for `ask.py --pdf`. |
-| `extract.py collect <directory>` | Reads model answers from a directory, repairs common YAML damage, matches each answer to its paper by content and saves it into `corpus/answers/`. Add `file.txt=<paper>` to assign an answer that cannot be matched. |
-| `extract.py verify` | Checks every citation the model wrote against the text of its own paper and writes `corpus/reports/entities.jsonl`. Exits 1 if any citation is rejected. |
-| `extract.py propose [N]` | Lists entities the answers name that no registry holds, reaching N papers or more. Also reports which concepts the model refused, proposed or silently skipped. Writes `corpus/reports/proposed.jsonl`. |
-| `extract.py tags [all]` | Writes one small tagging prompt per finding that carries no concept. `all` re-tags every finding instead. |
-| `extract.py split [--write] [--force]` | Turns collected answers into records under `data/findings/`. **Reports only by default.** `--write` creates files but never overwrites; `--force` overwrites. |
-| `extract.py status` | Where the pipeline stands: nine stages with counts, read off disk. |
-| `extract.py entities [N]` | One small prompt per proposed entity reaching N papers or more, into `corpus/prompts-entities/`, with an `_index.jsonl` that pairs each answer back to its proposal. |
-| `extract.py adopt <dir> [--write]` | Reads those answers into the registries. **Every anchor is checked against a paper that cites the entity**; a family outside the closed list, or a canonical title already written, is reported rather than written. |
-| `extract.py retag <dir> [--write]` | Reads tagging answers onto records. An identifier outside the closed concept list is reported and never written. |
-| `extract.py facets` | One prompt per model that carries no facet, into `corpus/prompts-facets/`. A model described by hand is left alone. |
-| `extract.py refacet <dir> [--write]` | Writes `modality`, `task` and `domain` onto entries that already exist. A value outside the vocabulary is refused. |
-| `extract.py compare <dir> <dir>` | Two sets of answers to the same papers, side by side: findings, models, `key_metric` numbers and citations, each checked against that paper's own text. Answers are paired by file name, and only papers both sides answered are counted. |
+| `modelpedia extract prompts [paper,paper] [--pages]` | Builds one extraction prompt per paper from `corpus/text/` into `corpus/prompts/`. With no argument, every paper. The whole paper goes in: there is no length limit, because the endpoint's window is three times the longest text in the corpus. `--pages` writes the instructions without the text into `corpus/prompts-pages/`, for `ask.py --pdf`. |
+| `modelpedia extract collect <directory>` | Reads model answers from a directory, repairs common YAML damage, matches each answer to its paper by content and saves it into `corpus/answers/`. Add `file.txt=<paper>` to assign an answer that cannot be matched. |
+| `modelpedia extract verify` | Checks every citation the model wrote against the text of its own paper and writes `corpus/reports/entities.jsonl`. Exits 1 if any citation is rejected. |
+| `modelpedia extract propose [N]` | Lists entities the answers name that no registry holds, reaching N papers or more. Also reports which concepts the model refused, proposed or silently skipped. Writes `corpus/reports/proposed.jsonl`. |
+| `modelpedia extract tags [all]` | Writes one small tagging prompt per finding that carries no concept. `all` re-tags every finding instead. |
+| `modelpedia extract split [--write] [--force]` | Turns collected answers into records under `data/findings/`. **Reports only by default.** `--write` creates files but never overwrites; `--force` overwrites. |
+| `modelpedia extract status` | Where the pipeline stands: nine stages with counts, read off disk. |
+| `modelpedia extract entities [N]` | One small prompt per proposed entity reaching N papers or more, into `corpus/prompts-entities/`, with an `_index.jsonl` that pairs each answer back to its proposal. |
+| `modelpedia extract adopt <dir> [--write]` | Reads those answers into the registries. **Every anchor is checked against a paper that cites the entity**; a family outside the closed list, or a canonical title already written, is reported rather than written. |
+| `modelpedia extract retag <dir> [--write]` | Reads tagging answers onto records. An identifier outside the closed concept list is reported and never written. |
+| `modelpedia extract facets` | One prompt per model that carries no facet, into `corpus/prompts-facets/`. A model described by hand is left alone. |
+| `modelpedia extract refacet <dir> [--write]` | Writes `modality`, `task` and `domain` onto entries that already exist. A value outside the vocabulary is refused. |
+| `modelpedia extract compare <dir> <dir>` | Two sets of answers to the same papers, side by side: findings, models, `key_metric` numbers and citations, each checked against that paper's own text. Answers are paired by file name, and only papers both sides answered are counted. |
 
 A candidate from the entity linker is **never** accepted automatically. It is a suggestion for a
 human: on four real suggestions, two were wrong.
@@ -150,15 +150,15 @@ without a person in the middle. It speaks the OpenAI chat API over `urllib` and 
 
 | Command | What it does |
 |---|---|
-| `ask.py doctor` | Endpoint, models served, and one 200-token round trip. Exits 1 if the chosen model is not served or does not answer. |
-| `ask.py run [options]` | `corpus/prompts/` → `corpus/runs/text/`, one file per paper. Resumable: a paper already answered is not asked again unless `--force`. `--dir` and `--out` move both ends, `--only` and `--limit` narrow the run, `--dry-run` prints the plan and sends nothing. |
+| `modelpedia ask doctor` | Endpoint, models served, and one 200-token round trip. Exits 1 if the chosen model is not served or does not answer. |
+| `modelpedia ask run [options]` | `corpus/prompts/` → `corpus/runs/text/`, one file per paper. Resumable: a paper already answered is not asked again unless `--force`. `--dir` and `--out` move both ends, `--only` and `--limit` narrow the run, `--dry-run` prints the plan and sends nothing. |
 
 ```bash
-python3 ask.py doctor && python3 ask.py run --limit 5 && python3 extract.py collect corpus/runs/text
+modelpedia ask doctor && modelpedia ask run --limit 5 && modelpedia extract collect corpus/runs/text
 ```
 
 `--pdf corpus/pdf` sends the paper as one image per page instead of as text, paired with
-`extract.py prompts --pages`. The endpoint refuses PDF files outright but accepts images, so the
+`modelpedia extract prompts --pages`. The endpoint refuses PDF files outright but accepts images, so the
 pages are rendered locally with `pypdfium2` and Pillow. It costs about 1900 tokens per page —
 1.8x the text of the same paper — and a paper beyond roughly 65 pages no longer fits the model's
 window at all. Use it where the extracted text is poor, not by default: given the figures, the

@@ -2,13 +2,13 @@ import hashlib
 import http.client
 import json
 import os
-import sys
 import time
 import urllib.error
 import urllib.request
 from pathlib import Path
 
 from modelpedia import atomic
+from modelpedia import cli
 from modelpedia import console
 from modelpedia import paths
 from modelpedia.ingest import chat
@@ -32,9 +32,20 @@ VALUE_OPTIONS = ("--dir", "--out", "--only", "--limit", "--model", "--max-tokens
 FLAGS = ("--force", "--dry-run")
 
 
-def fail(message):
-    print("ERROR %s" % message)
-    return 1
+fail = cli.fail
+positive = cli.positive
+
+
+def options(rest):
+    return cli.options(rest, VALUE_OPTIONS, FLAGS)
+
+
+def number(value, flag, most=None):
+    return cli.number(value, flag, high=most)
+
+
+def effort(value):
+    return cli.one_of(value, chat.EFFORTS, "--think")
 
 
 class Refused(Exception):
@@ -83,53 +94,6 @@ def ask(prompt, header, settings, retries=chat.RETRIES, delay=chat.DELAY, images
             print("  RETRY in %.1fs: %s" % (wait, error))
             time.sleep(wait)
     raise Refused("%d attempts failed, last: %s" % (retries, last))
-
-
-def options(rest):
-    given, index = {}, 0
-    while index < len(rest):
-        flag = rest[index]
-        if flag in FLAGS:
-            given[flag] = True
-            index += 1
-            continue
-        if flag not in VALUE_OPTIONS:
-            raise ValueError("unknown option %r; expected one of %s"
-                             % (flag, ", ".join(VALUE_OPTIONS + FLAGS)))
-        if index + 1 >= len(rest):
-            raise ValueError("%s needs a value" % flag)
-        given[flag] = rest[index + 1]
-        index += 2
-    return given
-
-
-def positive(value, flag):
-    if value is None:
-        return None
-    if not str(value).isdigit() or int(value) < 1:
-        raise ValueError("%s takes a positive whole number, not %r" % (flag, value))
-    return int(value)
-
-
-def number(value, flag, most=None):
-    if value is None:
-        return None
-    try:
-        parsed = float(value)
-    except ValueError:
-        raise ValueError("%s takes a number, not %r" % (flag, value))
-    if parsed < 0 or (most is not None and parsed > most):
-        raise ValueError("%s takes a number between 0 and %s, not %r"
-                         % (flag, most if most is not None else "infinity", value))
-    return parsed
-
-
-def effort(value):
-    if value is None:
-        return None
-    if value not in chat.EFFORTS:
-        raise ValueError("--think takes %s, not %r" % ("/".join(chat.EFFORTS), value))
-    return value
 
 
 def settings_from(given):
@@ -333,13 +297,7 @@ def doctor(settings):
     return 0
 
 
-USAGE = """usage:
-  python3 ask.py doctor [--model M] [--think off|low|medium|xhigh]
-                                     endpoint, served models, one 200-token round trip
-  python3 ask.py run [options]       corpus/prompts -> corpus/runs/text-<think>, one per paper,
-                                     resumable: a paper already answered is not asked again
-
-  --dir D          prompts to send, default corpus/prompts (corpus/tags for tagging prompts)
+OPTION_HELP = """  --dir D          prompts to send, default corpus/prompts (corpus/tags for tagging prompts)
   --out D          where answers land; by default one directory per run under corpus/runs,
                    named <input>-<think>: text-medium, pages-low, text-and-pages-xhigh
   --only a,b       these prompt names only
@@ -364,32 +322,45 @@ USAGE = """usage:
   with the same settings cannot help, because temperature 0 makes them deterministic."""
 
 
-def main(argv):
-    console.line_buffered()
-    if len(argv) < 2:
-        print(USAGE)
-        return 2
-    command, rest = argv[1], argv[2:]
+def parsed(rest):
+    given = options(rest)
+    return (given, settings_from(given),
+            positive(given.get("--limit"), "--limit"),
+            number(given.get("--delay"), "--delay") or 0.0)
+
+
+def run_doctor(rest):
     try:
-        given = options(rest)
-        settings = settings_from(given)
-        limit = positive(given.get("--limit"), "--limit")
-        delay = number(given.get("--delay"), "--delay") or 0.0
+        _, settings, _, _ = parsed(rest)
     except ValueError as error:
         return fail(str(error))
-
-    if command == "doctor":
-        return doctor(settings)
-    if command == "run":
-        source = given.get("--dir") or PROMPTS
-        target = given.get("--out") or default_out(source, given.get("--pdf"),
-                                                 settings.think)
-        return run(source, target, settings,
-                   only=given.get("--only"), limit=limit, force=bool(given.get("--force")),
-                   dry=bool(given.get("--dry-run")), delay=delay, pdfs=given.get("--pdf"))
-    print(USAGE)
-    return 2
+    return doctor(settings)
 
 
-if __name__ == "__main__":
-    raise SystemExit(main(sys.argv))
+def run_run(rest):
+    try:
+        given, settings, limit, delay = parsed(rest)
+    except ValueError as error:
+        return fail(str(error))
+    source = given.get("--dir") or PROMPTS
+    target = given.get("--out") or default_out(source, given.get("--pdf"), settings.think)
+    return run(source, target, settings,
+               only=given.get("--only"), limit=limit, force=bool(given.get("--force")),
+               dry=bool(given.get("--dry-run")), delay=delay, pdfs=given.get("--pdf"))
+
+
+COMMANDS = (
+    cli.Command("doctor", run_doctor, "doctor [--model M] [--think off|low|medium|xhigh]",
+                "endpoint, served models, one 200-token round trip"),
+    cli.Command("run", run_run, "run [options]",
+                """corpus/prompts -> corpus/runs/text-<think>, one per paper,
+                   resumable: a paper already answered is not asked again"""),
+)
+
+USAGE = cli.usage_text(COMMANDS, "modelpedia ask", column=37, footer=OPTION_HELP)
+
+
+def main(argv):
+    console.line_buffered()
+    return cli.dispatch(argv, COMMANDS, USAGE)
+

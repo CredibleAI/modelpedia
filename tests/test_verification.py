@@ -5,7 +5,7 @@ from pathlib import Path
 
 import yaml
 
-import verify
+from modelpedia.commands import verify
 from modelpedia.build import database
 from modelpedia import graph as graph_json
 from modelpedia.ingest import anchors

@@ -122,6 +122,3 @@ def main():
         print("%-20s %3d rows, %2d columns" % (filename, rows, columns))
     return 0
 
-
-if __name__ == "__main__":
-    raise SystemExit(main())

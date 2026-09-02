@@ -33,10 +33,10 @@ jobs:
         run: uv run pytest
 
       - name: Validate the data and assemble the graph
-        run: uv run python build.py
+        run: uv run modelpedia build
 
       - name: Render the static site
-        run: uv run python render.py
+        run: uv run modelpedia render
 
       - uses: actions/upload-pages-artifact@v3
         with:

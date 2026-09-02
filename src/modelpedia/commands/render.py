@@ -399,6 +399,3 @@ def main():
     staging.replace(paths.SITE)
     print("wrote %d pages under site/, open site/%s" % (pages, HOME))
 
-
-if __name__ == "__main__":
-    main()

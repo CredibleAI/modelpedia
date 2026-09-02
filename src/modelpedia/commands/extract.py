@@ -1,9 +1,9 @@
 import json
-import sys
 from pathlib import Path
 
 import yaml
 
+from modelpedia import cli
 from modelpedia import console
 from modelpedia import graph as graph_json
 from modelpedia import paths
@@ -34,9 +34,7 @@ EXAMPLES = ("TM-007", "FX-001")
 READABLE = (".yaml", ".yml", ".txt", ".md", "")
 
 
-def fail(message):
-    print("ERROR %s" % message)
-    return 1
+fail = cli.fail
 
 
 def texts():
@@ -677,83 +675,128 @@ def refacet(inbox, write=False):
     return 0
 
 
-USAGE = """usage:
-  python3 extract.py status                   gdzie jestesmy: etap po etapie, z licznikami\n  python3 extract.py prompts [paper,paper] [--pages]
-                                             corpus/text -> corpus/prompts, one per paper;
-                                             --pages writes the instructions alone to
-                                             corpus/prompts-pages, for ask.py --pdf
-  python3 extract.py collect <directory>     model answers -> corpus/answers, matched by content
-                                             add file.txt=<paper> for answers with no findings
-  python3 extract.py verify                  check every citation against its source PDF
-  python3 extract.py propose [N]             new entities not in any registry, N papers or more
-  python3 extract.py tags [all]              one tagging prompt per finding without a concept\n  python3 extract.py entities [N]            one prompt per proposed entity reaching N papers,\n                                             asking the model whether it earns a registry entry\n  python3 extract.py adopt <dir> [--write]   read those answers, check every anchor against the\n                                             citing paper, report; --write applies them
-  python3 extract.py compare <dir> <dir>     two sets of answers to the same papers, side by side:
-                                             findings, models, numbers and citations checked
-                                             against each paper's own text. Matched by file name
-  python3 extract.py split [--write] [--force]  collected answers -> data/findings/, reports first;
-                                             --write never overwrites, --force does"""
+def run_prompts(rest):
+    chosen = [item for item in rest if item != "--pages"]
+    return write_prompts(chosen[0] if chosen else None, "--pages" in rest)
+
+
+def run_collect(rest):
+    if not rest:
+        return fail("collect needs a directory")
+    try:
+        pairs = assignments_from(rest[1:])
+    except ValueError as error:
+        return fail(str(error))
+    return collect(rest[0], pairs)
+
+
+def run_verify(rest):
+    return verify()
+
+
+def run_facets(rest):
+    return facet_prompts()
+
+
+def run_refacet(rest):
+    if not rest:
+        return fail("refacet needs a directory of answers")
+    return refacet(rest[0], "--write" in rest)
+
+
+def run_retag(rest):
+    if not rest:
+        return fail("retag needs a directory of tagging answers")
+    return retag(rest[0], "--write" in rest, "--replace" in rest)
+
+
+def run_tags(rest):
+    return tags(rest[0] if rest else None)
+
+
+def whole_number(rest, command, least=1, default=1):
+    if not rest:
+        return default, None
+    try:
+        given = int(rest[0])
+    except ValueError:
+        return None, fail("%s takes a whole number of papers, not %r" % (command, rest[0]))
+    if given < least:
+        return None, fail("%s takes a positive number of papers, not %d" % (command, given))
+    return given, None
+
+
+def run_entities(rest):
+    given, complaint = whole_number(rest, "entities", least=0, default=3)
+    return complaint if complaint is not None else entity_prompts(given)
+
+
+def run_adopt(rest):
+    if not rest:
+        return fail("adopt needs a directory of answers")
+    return adopt(rest[0], write="--write" in rest)
+
+
+def run_status(rest):
+    return status()
+
+
+def run_compare(rest):
+    if len(rest) < 2:
+        return fail("compare needs two directories of answers")
+    return compare(rest[0], rest[1])
+
+
+def run_split(rest):
+    return split("--write" in rest, "--force" in rest)
+
+
+def run_propose(rest):
+    given, complaint = whole_number(rest, "propose")
+    return complaint if complaint is not None else propose(given)
+
+
+COMMANDS = (
+    cli.Command("status", run_status,
+                note="where the pipeline stands: stage by stage, with counts"),
+    cli.Command("prompts", run_prompts, "prompts [paper,paper] [--pages]",
+                """corpus/text -> corpus/prompts, one per paper;
+                   --pages writes the instructions alone to
+                   corpus/prompts-pages, for ask.py --pdf"""),
+    cli.Command("collect", run_collect, "collect <directory>",
+                """model answers -> corpus/answers, matched by content
+                   add file.txt=<paper> for answers with no findings"""),
+    cli.Command("verify", run_verify,
+                note="check every citation against its source PDF"),
+    cli.Command("propose", run_propose, "propose [N]",
+                "new entities not in any registry, N papers or more"),
+    cli.Command("tags", run_tags, "tags [all]",
+                "one tagging prompt per finding without a concept"),
+    cli.Command("entities", run_entities, "entities [N]",
+                """one prompt per proposed entity reaching N papers,
+                   asking the model whether it earns a registry entry"""),
+    cli.Command("adopt", run_adopt, "adopt <dir> [--write]",
+                """read those answers, check every anchor against the
+                   citing paper, report; --write applies them"""),
+    cli.Command("retag", run_retag, "retag <dir> [--write] [--replace]",
+                "read tagging answers onto records"),
+    cli.Command("facets", run_facets,
+                note="one prompt per model that carries no facet"),
+    cli.Command("refacet", run_refacet, "refacet <dir> [--write]",
+                "write modality, task and domain onto existing entries"),
+    cli.Command("compare", run_compare, "compare <dir> <dir>",
+                """two sets of answers to the same papers, side by side:
+                   findings, models, numbers and citations checked
+                   against each paper's own text. Matched by file name"""),
+    cli.Command("split", run_split, "split [--write] [--force]",
+                """collected answers -> data/findings/, reports first;
+                   --write never overwrites, --force does"""),
+)
+
+USAGE = cli.usage_text(COMMANDS, "modelpedia extract")
 
 
 def main(argv):
     console.line_buffered()
-    if len(argv) < 2:
-        print(USAGE)
-        return 2
-    command, rest = argv[1], argv[2:]
-    if command == "prompts":
-        chosen = [item for item in rest if item != "--pages"]
-        return write_prompts(chosen[0] if chosen else None, "--pages" in rest)
-    if command == "collect":
-        if not rest:
-            return fail("collect needs a directory")
-        try:
-            pairs = assignments_from(rest[1:])
-        except ValueError as error:
-            return fail(str(error))
-        return collect(rest[0], pairs)
-    if command == "verify":
-        return verify()
-    if command == "facets":
-        return facet_prompts()
-    if command == "refacet":
-        if not rest:
-            return fail("refacet needs a directory of answers")
-        return refacet(rest[0], "--write" in rest)
-    if command == "retag":
-        if not rest:
-            return fail("retag needs a directory of tagging answers")
-        return retag(rest[0], "--write" in rest, "--replace" in rest)
-    if command == "tags":
-        return tags(rest[0] if rest else None)
-    if command == "entities":
-        try:
-            least = int(rest[0]) if rest else 3
-        except ValueError:
-            return fail("entities takes a whole number of papers, not %r" % rest[0])
-        return entity_prompts(least)
-    if command == "adopt":
-        if not rest:
-            return fail("adopt needs a directory of answers")
-        return adopt(rest[0], write="--write" in rest)
-    if command == "status":
-        return status()
-    if command == "compare":
-        if len(rest) < 2:
-            return fail("compare needs two directories of answers")
-        return compare(rest[0], rest[1])
-    if command == "split":
-        return split("--write" in rest, "--force" in rest)
-    if command == "propose":
-        try:
-            least = int(rest[0]) if rest else 1
-        except ValueError:
-            return fail("propose takes a whole number of papers, not %r" % rest[0])
-        if least < 1:
-            return fail("propose takes a positive number of papers, not %d" % least)
-        return propose(least)
-    print(USAGE)
-    return 2
+    return cli.dispatch(argv, COMMANDS, USAGE)
 
-
-if __name__ == "__main__":
-    raise SystemExit(main(sys.argv))
