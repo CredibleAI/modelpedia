@@ -74,12 +74,6 @@ def entity_notes(document):
 
 
 def resolved(name, field, indexes, variants, parents):
-    """The same question the splitter asks, asked the same way. `models` has to go through
-    `resolve_model`, because a checkpoint lives in the registry as a variant under its model and
-    an index of models alone cannot see it. Until 2026-08-21 this function used the plain index
-    and proposed 26 papers' worth of `Llama-3-8B` as missing while `variant:llama-3-8b` sat in
-    models.yaml. Two tools disagreeing about what the registry already holds is worse than either
-    answer, because the curation list is built from one and the refusals from the other."""
     if field == "models":
         return link.resolve_model(name, indexes[field], variants, parents)[0]
     return link.resolve(name, indexes[field])

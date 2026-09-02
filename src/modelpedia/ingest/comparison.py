@@ -47,10 +47,6 @@ def flat_key(name):
 
 
 def registry_keys(entities):
-    """Two answers name the same model in two spellings far more often than they disagree
-    about it, so the comparison counts registry slugs where the linker is certain and falls
-    back to the flattened name where it is not. A certain hit only; a candidate list is not
-    a decision, here as anywhere else."""
     index = link.index_of(entities)
 
     def key_for(name):
@@ -60,10 +56,6 @@ def registry_keys(entities):
 
 
 def named(finding, field, key_for=flat_key):
-    """A model may be written as a name, as a name plus a variant, or -- against the rules, but
-    it happens -- as a bare checkpoint string. All three are counted, because otherwise a side
-    that writes `Gemma 2` + variant `Gemma 2 2B` reads as disagreeing with one that writes
-    `Gemma 2 2b`, and that is a difference in shape, not in what the paper is about."""
     for item in finding.get(field) or []:
         if isinstance(item, str):
             written = [item]
@@ -80,8 +72,6 @@ def unreadable_side(error):
 
 
 def side_of(document, doc, key_for=flat_key):
-    """Everything measured about one answer to one paper. `doc` is that paper's own text:
-    numbers and citations are checked against it, never against another paper's."""
     findings = answers.entries_of(document, answers.FINDINGS)
     models, concepts, evidence = set(), set(), []
     numbers = {state: 0 for state in NUMBER_STATES}
@@ -109,8 +99,6 @@ def read_side(raw, doc, key_for):
 
 
 def rows(left, right, doc_for, key_for=flat_key):
-    """Papers answered by both sides only. A paper one side never saw says nothing about
-    either, and averaging it in would read as a difference between the models."""
     found = []
     for paper in sorted(set(left) & set(right)):
         doc = doc_for(paper)
@@ -138,9 +126,6 @@ def share(part, whole):
 
 
 def agreement(found):
-    """One number for the question the comparison exists to answer: of the models one side
-    named, how many did the other name too. Models, because a model name is the one thing in
-    a finding that a paper either contains or does not."""
     left = sum(len(row.left.models) for row in found)
     both = sum(len(row.shared()) for row in found)
     right = sum(len(row.right.models) for row in found)

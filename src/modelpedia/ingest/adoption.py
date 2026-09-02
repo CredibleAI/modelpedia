@@ -159,13 +159,6 @@ def read(raw):
 
 
 def anchor_is_in(anchor, pages):
-    """The methodology's own requirement, and the reason this step is not trusted as returned:
-    an anchor counts only when a paper that cites the entity carries it. Measured on an earlier
-    run, two of seven method anchors were written from general knowledge and pointed elsewhere.
-
-    An arXiv number, a DOI or an OpenReview id is checked as an identifier, because the paper
-    prints it in its own formatting. Anything else -- a project page, a Wikipedia article -- is
-    checked as the address itself, since that is the only form the paper could carry."""
     if not str(anchor or "").strip():
         return False
     found = verification.anchor_identifier(anchor)
@@ -194,8 +187,6 @@ def slug_for(title, name):
 
 
 def judge(row, document, pages, families):
-    """What the model said, with the two things it is not trusted on checked: an identifier it
-    invented for `family`, and an anchor the citing paper does not carry."""
     decision = str(document.get(DECISION) or "").strip().lower()
     title = str(document.get("title") or row["name"]).strip()
     family = str(document.get("family") or "").strip()
@@ -225,10 +216,6 @@ def judge(row, document, pages, families):
 
 
 def already_held(verdict, indexes, variants, parents):
-    """The deterministic guard the model does not get to override. It adopted `LLaVA-v1.5-7B`
-    and `Gemini Pro 1.5` as fresh entries with `variant:llava-1-5-7b` and `variant:gemini-1-5-pro`
-    already in the registry -- and it had both in its closest-entries list when it did. A name
-    that resolves to an entry is that entry, whatever the answer says."""
     index = indexes.get(verdict.field)
     if index is None:
         return ""

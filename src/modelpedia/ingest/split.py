@@ -3,6 +3,7 @@ import re
 from typing import NamedTuple
 
 from modelpedia import graph as graph_json
+from modelpedia import models
 from modelpedia import record_keys as keys
 from modelpedia import schema
 from modelpedia.ingest import answers
@@ -155,22 +156,26 @@ def named_in_title(title, dropped, paper):
     return ""
 
 
+def squeezed(value):
+    return " ".join(str(value or "").split())
+
+
 def record_for(finding, source_ref, links, concepts, related):
-    record = {
-        "title": " ".join(str(finding.get("title") or "").split()),
-        "description": " ".join(str(finding.get("description") or "").split()),
-        "models": links["models"],
-        "concepts": concepts,
-        "sources": [{keys.REF: source_ref}],
-        "datasets": links["datasets"],
-        "methods": links["methods"],
-        "related_work": related,
-        "evidence_type": str(finding.get("evidence_type") or "").strip() or None,
-        "key_metric": " ".join(str(finding.get("key_metric") or "").split()),
-        "caveat": " ".join(str(finding.get("caveat") or "").split()),
-        "extracted_by": AUTOMATIC,
-    }
-    return {key: value for key, value in record.items() if value not in ("", None) or key == "concepts"}
+    return models.Finding(
+        id=None,
+        title=squeezed(finding.get("title")),
+        description=squeezed(finding.get("description")),
+        models=tuple(models.link_from(item) for item in links["models"]),
+        concepts=tuple(models.link_from(item) for item in concepts),
+        sources=(models.Ref(ref=source_ref),),
+        datasets=tuple(models.link_from(item) for item in links["datasets"]),
+        methods=tuple(models.link_from(item) for item in links["methods"]),
+        related_work=tuple(models.link_from(item) for item in related),
+        evidence_type=str(finding.get("evidence_type") or "").strip() or None,
+        key_metric=squeezed(finding.get("key_metric")),
+        caveat=squeezed(finding.get("caveat")),
+        extracted_by=AUTOMATIC,
+    ).to_dict()
 
 
 def split(documents, entities, sources, prefix, known_concepts, roles=None, texts=None,
@@ -215,9 +220,6 @@ def split(documents, entities, sources, prefix, known_concepts, roles=None, text
 
 
 def cross_linked(kept):
-    """Two findings out of one paper are about the same study, so each names the others. The
-    methodology states this and the splitter did not do it: 0 of the 42 records written on
-    2026-08-10 carried `related_findings`."""
     by_paper = {}
     for candidate in kept:
         by_paper.setdefault(candidate.paper, []).append(candidate.identifier)

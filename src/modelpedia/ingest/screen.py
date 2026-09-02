@@ -139,9 +139,6 @@ def word_pattern(words):
 
 
 def retuned(group, weight, cap, dropped=()):
-    """The same vocabulary read in a different voice. Reviewers say `robustness` and `limitation`
-    about every paper, so those terms separate nothing in review text even though they separate
-    a great deal in an abstract."""
     return Group(weight, cap,
                  tuple(stem for stem in group.stems if stem not in dropped),
                  tuple(word for word in group.words if word not in dropped))
@@ -202,10 +199,6 @@ def terms_in(field, group, pattern):
 
 
 def agreed(fields, group, pattern, consensus):
-    """A term counts once at least `consensus` of the fields carry it. A single field is the
-    degenerate case, which is what an abstract is: one voice agrees with itself. Four independent
-    descriptions of the same paper are the one advantage reviews have over an abstract, and the
-    gate is also what stops the counter saturating on long text without tuning any weight."""
     seen = [terms_in(field, group, pattern) for field in fields]
     counted = collections.Counter(term for found in seen for term in found)
     need = max(1, math.ceil(consensus * len(fields)))
@@ -241,16 +234,11 @@ def review_screen(texts):
 
 
 def side_score(subscores, rules):
-    """What one rule set contributed to a total. The rule set owns the list of its own groups, so
-    a reader never has to keep a second table of which column came from which side."""
     return round(sum(points for name, points in dict(subscores).items()
                      if name in rules.groups), 2)
 
 
 def combine(*screenings):
-    """Every score is in the same currency, so the total is their sum and nothing is rescaled.
-    Group names are unique across rule sets, so the subscores of both sides survive side by side
-    instead of being merged into an axis nobody can read back."""
     score = round(sum(one.score for one in screenings), 2)
     return Screening(score, tier_of(score),
                      tuple(signal for one in screenings for signal in one.signals),

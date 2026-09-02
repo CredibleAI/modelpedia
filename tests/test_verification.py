@@ -23,7 +23,7 @@ FINDING = {
     "sources": [{"ref": "source:paper"}],
     "datasets": [{"ref": "dataset:pile", "role": "eval"}],
     "methods": [{"ref": "method:probe", "role": "primary"}],
-    "related_work": [{"ref": "rw:earlier", "role": "context"}],
+    "related_work": [{"ref": "method:earlier", "role": "context"}],
 }
 
 ENTITIES = {
@@ -33,8 +33,8 @@ ENTITIES = {
     "dataset:pile": {"type": graph_json.DATASET, "name": "The Pile"},
     "method:probe": {"type": graph_json.METHOD, "name": "Linear probing",
                      "anchor": "https://arxiv.org/abs/1610.01644"},
-    "rw:earlier": {"type": graph_json.RELATED_WORK, "name": "Earlier work",
-                   "anchor": "https://doi.org/10.1000/example"},
+    "method:earlier": {"type": graph_json.METHOD, "name": "Earlier work",
+                       "anchor": "https://doi.org/10.1000/example"},
 }
 
 
@@ -83,7 +83,7 @@ def test_entity_mentions_are_located_by_page():
               for check in verification.entity_checks(FINDING, ENTITIES, doc)}
     assert checks["model:thing"].pages == (1,)
     assert checks["dataset:pile"].pages == (2,)
-    assert checks["rw:earlier"].state == verification.REVIEW
+    assert checks["method:earlier"].state == verification.REVIEW
     assert "concept:idea" not in checks
     assert "source:paper" not in checks
 
@@ -93,7 +93,7 @@ def test_stable_anchor_identifiers_are_checked_in_the_source():
     checks = {check.subject: check
               for check in verification.anchor_checks(FINDING, ENTITIES, doc)}
     assert checks["method:probe"].pages == (1,)
-    assert checks["rw:earlier"].pages == (2,)
+    assert checks["method:earlier"].pages == (2,)
 
 
 def test_caveat_locator_requires_human_judgment():
@@ -216,7 +216,7 @@ def test_repeated_model_variants_check_the_model_once_and_each_variant_once():
         finding, entities, document("Thing small and Thing large were evaluated."))
     assert [check.subject for check in checks] == [
         "model:thing", "variant:small", "variant:large", "dataset:pile",
-        "method:probe", "rw:earlier",
+        "method:probe", "method:earlier",
     ]
 
 

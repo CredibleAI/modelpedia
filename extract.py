@@ -268,9 +268,6 @@ FINDING_PREFIX = "IC"
 
 
 def highest_number(prefix):
-    """A second run continues the sequence instead of starting at one. Without this the writer
-    numbered from `IC-001` again, found those files on disk, skipped them as "already there" and
-    dropped 42 fresh records without saying so."""
     found = [int(path.stem.rpartition("-")[2]) for path in paths.FINDINGS.glob("%s-*.yaml" % prefix)
              if path.stem.rpartition("-")[2].isdigit()]
     return max(found, default=0)
@@ -282,8 +279,6 @@ def written_sources(findings):
 
 
 def without_written_sources(kept, findings):
-    """A paper whose findings are already in the base is not written a second time. The base is
-    additive here: replacing a record is a decision about data, not a step in a run."""
     held = written_sources(findings)
     fresh = [candidate for candidate in kept
              if not ({link[keys.REF] for link in candidate.record.get("sources") or []} & held)]
@@ -357,9 +352,6 @@ def split(write=False, force=False):
 
 
 def an_answer(path):
-    """A leading underscore marks a file that is about the run rather than an answer in it:
-    `_log.jsonl` and any note left beside it. Without this rule a README in a run directory
-    would be collected as if a model had written it."""
     return not (path.is_dir() or path.name.startswith("_")
                 or path.suffix.lower() not in READABLE)
 

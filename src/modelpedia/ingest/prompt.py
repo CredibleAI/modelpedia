@@ -386,11 +386,6 @@ def as_example(record, names):
 
 
 def clipped(body, limit=MAX_PAPER_CHARS):
-    """No limit by default since 2026-08-19: the endpoint carries 131072 tokens and the longest
-    text in the corpus is 249652 characters, roughly 69000 tokens, so a whole paper fits with the
-    instructions and the answer. A limit is still accepted, because a smaller window will want
-    one, and a paper that does not fit comes back as an explicit refusal from the server rather
-    than as a silently shortened paper."""
     if limit is None or len(body) <= limit:
         return body, False
     return body[:limit // 2] + OMITTED + body[-(limit // 2):], True
@@ -415,7 +410,6 @@ PAGES_TAIL = ("The paper follows as one image per page, in order. Read them: the
 
 
 def build_pages(title, concepts, examples, names):
-    """The instructions without the extracted text, for the same paper sent as page images."""
     return "\n".join(head(title, concepts, examples, names) + list(PAGES_TAIL)
                      + ["\nReturn the YAML now, and nothing else."])
 
@@ -433,16 +427,6 @@ def build(title, raw_text, concepts, examples, names, limit=MAX_PAPER_CHARS):
 
 
 def instructions(body):
-    """Everything the prompt says about the base rather than about this paper: the schema, the
-    concept list, the registry names and the examples. It is what changes when the base grows
-    underneath a run, and it is invisible in a hash of the whole prompt, because the paper text
-    dominates that and makes every paper differ from every other one anyway.
-
-    Both per-paper parts are cut, and the title is the one that is easy to miss: it is the last
-    line of the instruction block, before the paper, so cutting only at `PAPER_OPEN` leaves it in.
-    Measured on 972 real prompts, that mistake gave 972 distinct hashes -- the same as no signal.
-    A prompt with no paper in it, the `--pages` variant, still carries the title and is cut there
-    too."""
     body = str(body or "")
     for marker in (PAPER_TITLE, PAPER_OPEN):
         head_part, found, _ = body.partition(marker)

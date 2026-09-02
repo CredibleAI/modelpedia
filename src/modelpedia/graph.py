@@ -9,8 +9,6 @@ CONCEPT = "concept"
 METHOD = "method"
 DATASET = "dataset"
 SOURCE = "source"
-RELATED_WORK = "rw"
-PERSON = "person"
 
 
 class NodeType(NamedTuple):
@@ -57,7 +55,6 @@ EDGE_USES_METHOD = "uses_method"
 EDGE_CITES = "cites"
 EDGE_VARIANT_OF = "variant_of"
 EDGE_RELATES_TO_FINDING = "relates_to_finding"
-EDGE_AUTHORED_BY = "authored_by"
 
 VARIANT_NOT_SPECIFIED = "not-specified-in-source"
 
@@ -88,24 +85,9 @@ def finding_count(usages):
     return len({usage.finding for usage in usages})
 
 
-def authors_by_source(graph):
-    authors = {}
-    for edge in graph["edges"]:
-        if edge["type"] == EDGE_AUTHORED_BY:
-            authors.setdefault(edge["source"], []).append(edge["target"])
-    return authors
-
-
 def findings_reaching(graph):
-    reached = {key: {usage.finding for usage in usages}
-               for key, usages in usage_by_entity(graph).items()}
-    for source_id, people in authors_by_source(graph).items():
-        findings = reached.get(source_id)
-        if not findings:
-            continue
-        for person in people:
-            reached.setdefault(person, set()).update(findings)
-    return reached
+    return {key: {usage.finding for usage in usages}
+            for key, usages in usage_by_entity(graph).items()}
 
 
 def shared_entities(reached):

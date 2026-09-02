@@ -125,10 +125,6 @@ def bound_waiting(connection, cap=RETRY_AFTER_CAP, total=RETRY_TOTAL):
 
 
 def asked_to_wait(error):
-    """Seconds the server asked us to wait, or None when this is not a rate limit. The login
-    endpoint allows three attempts per window and every harvest command logs in once, so the
-    fourth command of a chain is refused through no fault of its own -- which is how an overnight
-    run died on 2026-08-24 with `meta` and `reviews` a second apart."""
     payload = error.args[0] if error.args else None
     if not isinstance(payload, dict) or payload.get("status") != 429:
         return None
@@ -172,8 +168,6 @@ def connect_v1():
 
 
 def generation_of(connection, venue_id):
-    """Which API answers for this venue. ICLR 2024 and later carry a `venueid` on API2; ICLR 2023
-    and older only exist on API1, where acceptance is a phrase in the `venue` field instead."""
     _, count = connection.get_notes(content={"venueid": venue_id}, limit=1, with_count=True)
     return API2 if count else API1
 
@@ -185,9 +179,6 @@ def submission_invitation(connection, venue_id):
 
 
 def accepted(note):
-    """API1 states the decision as the venue name: a rejected or withdrawn paper keeps a phrase
-    saying so, an accepted one names the track. An empty field decides nothing, so it is not
-    read as an acceptance."""
     venue = str(value_of((note.content or {}).get("venue")) or "").strip().lower()
     return bool(venue) and not any(venue.startswith(mark) or mark in venue for mark in REFUSED)
 
@@ -215,20 +206,12 @@ def reviews_of(connection, forum_id):
 
 
 def venue_review_count(connection, venue_id):
-    """How many reviews the venue answers for in one request instead of one per paper. Report
-    only: `harvest.py reviews` walks the forums, because a paginated sweep that quietly returns
-    half the pages looks exactly like a venue with fewer reviews -- that is what DBLP did on
-    2026-08-06. A fast path may replace the walk once this number can be checked against a total."""
     _, count = connection.get_notes(invitation="%s/-/%s" % (venue_id, REVIEW_INVITATION),
                                     parent_invitations=True, limit=1, with_count=True)
     return count
 
 
 def prose_fields(content):
-    """Every text field a reviewer wrote, whatever the form called them. ICLR names them
-    `summary`/`strengths`/`weaknesses`/`questions` from 2024 on and
-    `summary_of_the_paper`/`strength_and_weaknesses`/... in 2023, so the rule keeps unknown prose
-    and drops only the scores and checkboxes it can name."""
     return {key: value for key, value in flat_content(content).items()
             if isinstance(value, str) and key not in NOT_PROSE and value.strip()}
 

@@ -48,9 +48,6 @@ def dumped(key, entry):
 
 
 def insert_variant(model_key, variant_key, name):
-    """Into the model's own `variants:` block, which is where a checkpoint lives. Written as a
-    text insertion rather than a load-and-dump so the rest of a hand-curated file keeps the
-    shape its author gave it."""
     path = path_for("models")
     lines = path.read_text(encoding="utf-8").splitlines()
     start = next((i for i, line in enumerate(lines) if line == "%s:" % model_key), None)
@@ -70,8 +67,6 @@ def insert_variant(model_key, variant_key, name):
 
 
 def add_fields(field, key, values):
-    """Extra keys onto an entry that already exists, right after its `name:`. A text insertion
-    for the same reason as `insert_variant`: the rest of a hand-curated file keeps its shape."""
     path = path_for(field)
     lines = path.read_text(encoding="utf-8").splitlines()
     at = next((i for i, line in enumerate(lines) if line.rstrip() == "%s:" % key), None)
@@ -93,10 +88,6 @@ def add_fields(field, key, values):
 
 
 def set_anchor(field, key, anchor):
-    """An anchor onto an entry that has none. Refuses to touch an entry that already carries one:
-    a proposal is evidence that a URL fits a citation, never that it fits the entity better than
-    what a human already put there. Returns False when it changed nothing, so the caller can
-    count what it actually wrote instead of what it meant to write."""
     path = path_for(field)
     lines = path.read_text(encoding="utf-8").splitlines()
     at = next((i for i, line in enumerate(lines) if line.rstrip() == "%s:" % key), None)
@@ -143,22 +134,10 @@ CHECKPOINT = re.compile(
 
 
 def family_stem(title):
-    """What is left of a checkpoint name once the size and the tuning fall away: `Vicuna-7B-v1.5`
-    and `Vicuna-13B` are both `vicuna`.
-
-    A bare version number is deliberately NOT stripped, because it is as often part of the family
-    name as of the checkpoint: `GPT-2` and `Llama 3.1` are families, `Vicuna-7B` is not. Stripping
-    it turned `GPT-2` into `gpt` and would have merged two unrelated releases. Only sizes, point
-    versions after a size, and tuning words go."""
     return link.slugify(CHECKPOINT.sub("", title)).strip("-")
 
 
 def regrouped(adopted):
-    """One family per stem, not one per checkpoint. The model is asked about each name on its own,
-    so when a family is absent from the registry every one of its checkpoints answers `new` and
-    the registry ends up with four Vicunas instead of one with four variants. Measured 2026-08-21:
-    8 spurious families out of 26. The shortest title in a group names the family; where no
-    proposal carries the bare family name, the stem does."""
     groups = {}
     for verdict in adopted:
         if verdict.field == "models" and verdict.family == "new":
@@ -180,9 +159,6 @@ def regrouped(adopted):
 
 
 def apply(verdicts, held, entities):
-    """Every adopted entry that is not already in the registry, written where its kind belongs.
-    A refusal writes nothing except an alias, which is the one case where a refusal still carries
-    information: the thing is here already, under another spelling."""
     done, skipped, aliases = [], [], []
     fresh = {field: [] for field in FILES}
     used = {field: taken(field, entities) for field in FILES}

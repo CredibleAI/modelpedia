@@ -216,12 +216,6 @@ def findings_using(view, node_id):
             for usage in usages]
 
 
-def findings_through_sources(view, node_id):
-    direct = {usage.finding for usage in view.usage.get(node_id, [])}
-    return [entry(escape(fid), link(view, fid, label=view.nodes[fid]["data"]["title"]))
-            for fid in sorted(view.reached.get(node_id, set()) - direct)]
-
-
 def entity_meta(view, node):
     data = node["data"]
     parts = []
@@ -349,10 +343,6 @@ def entity_body(view, node):
     used_by = findings_using(view, node["id"])
     if used_by:
         out += [heading("Findings"), entry_list(used_by)]
-
-    through_sources = findings_through_sources(view, node["id"])
-    if through_sources:
-        out += [heading("Findings through their sources"), entry_list(through_sources)]
 
     if node["type"] == graph_json.MODEL:
         bridges = bridge_entries(view, node)

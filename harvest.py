@@ -82,8 +82,6 @@ def connect(generation=api.API2):
 
 
 def source_for(venue_id):
-    """The client that answers for this venue, and which generation it turned out to be. Asking
-    beats hardcoding a year: nothing here has to be edited when the next venue moves."""
     connection = connect()
     generation = api.generation_of(connection, venue_id)
     if generation == api.API1:
@@ -171,13 +169,6 @@ def harvest_meta(venue_id, accepted_only=True):
 
 
 def fetch_each(rows, ask, delay, every=100, give_up_after=GIVE_UP_AFTER):
-    """One pass over a batch. `ask(row)` does the work and names what happened; anything it raises
-    counts as a failure and leaves that paper unanswered, which is what makes the retry land on
-    exactly the papers that owe one.
-
-    A run of failures that long is a spent quota rather than bad luck on one paper, and the rest
-    of the batch would only spend an hour finding that out one refusal at a time. The papers it
-    never reached are simply not answered for, so the next batch picks them up."""
     answered, counts, running = set(), collections.Counter(), 0
     for number, row in enumerate(rows, start=1):
         try:
@@ -200,12 +191,6 @@ def fetch_each(rows, ask, delay, every=100, give_up_after=GIVE_UP_AFTER):
 
 
 def in_batches(outstanding, fetch, limit=None, pause=None):
-    """How a quota that refills on a clock is spent without anyone retyping the command: take
-    `limit` at a time, drop whatever the batch answered for, wait `pause` measured from the start
-    of the batch, go again. Returns what was counted, what is still owed, and whether it gave up.
-
-    DEAD_BATCHES batches in a row answering for nothing is a refusal rather than a quota, and
-    waiting the clock out on that would only look like progress."""
     totals, barren = collections.Counter(), 0
     while outstanding:
         batch = outstanding[:limit] if limit else outstanding
@@ -232,8 +217,6 @@ def batch_plan(outstanding, limit, pause, what):
 
 
 def sleep_until_next_batch(pause, started, left):
-    """The pause is measured from the start of the batch, not its end, because a quota of N per
-    hour refills an hour after the requests were spent, not an hour after the last one landed."""
     waited = time.monotonic() - started
     rest = max(0.0, pause - waited)
     print("  batch took %s, %d paper(s) left, next batch in %s"
@@ -247,10 +230,6 @@ def as_clock(seconds):
 
 
 def harvest_reviews(venue_id, limit=None, delay=REVIEW_DELAY, pause=None):
-    """One request per paper. Slower than a venue-wide sweep and certain in exchange: a paper the
-    fetch already answered for is written down, so an interrupted run resumes where it stopped.
-    With `pause` it keeps going by itself, `limit` papers at a time, which is how a quota that
-    refills on a clock is spent without anyone retyping the command."""
     wanted = [row for row in manifest_rows() if row["venue"] == venue_id]
     if not wanted:
         return fail("no paper from %s is in the manifest; run: harvest.py meta %s"
@@ -310,8 +289,6 @@ def first_of(row, keys):
 
 
 def import_reviews(venue_id, source):
-    """A review dump someone already has. The same store, the same row, no network -- the file is
-    joined to the manifest on the OpenReview forum id and anything it does not name is dropped."""
     held = {row["id"] for row in manifest_rows() if row["venue"] == venue_id}
     if not held:
         return fail("no paper from %s is in the manifest" % venue_id)
@@ -416,9 +393,6 @@ def positive(value, flag="--limit"):
 
 
 def selected_rows(tiers, ids, venue_id=None):
-    """`--venue` narrows whatever `--tier` or `--ids` chose. Without it a tier reaches every
-    conference in the manifest, which is right for a corpus-wide sweep and wrong every time
-    someone means one conference."""
     held = manifest_rows()
     if venue_id:
         venues = sorted({row["venue"] for row in held})
@@ -459,18 +433,12 @@ def harvest_pdfs(tiers=DOWNLOAD_TIERS, limit=None, delay=DELAY, ids=None, pause=
     clients = {}
 
     def client_for(row):
-        """One client per venue, because the generation is a property of the venue and a run may
-        span several. Asking API2 for an API1 note answers `NotFoundError` on every paper, which
-        looks exactly like a venue with no PDFs: measured 2026-08-25 on ICLR 2023, 314 papers,
-        zero downloaded, nothing in the log but 404s."""
         venue = row["venue"]
         if venue not in clients:
             clients[venue] = source_for(venue)[0]
         return clients[venue]
 
     def one_pdf(row):
-        """A response that is not a PDF still answered, so it does not come back in the next batch
-        of the same run. It is not on disk either, so a later run does ask again."""
         return "got" if fetch_pdf(client_for(row), row["id"], PDFS / ("%s.pdf" % row["id"])) \
             else "refused"
 
@@ -521,8 +489,6 @@ def screened(row, held):
 
 
 def rescreen():
-    """Offline on purpose. The metadata and the reviews are already on disk, so changing the rules
-    costs a pass over a file rather than a second run at the API."""
     rows = manifest_rows()
     if not rows:
         return fail("%s is empty; run: harvest.py meta <venue_id>" % MANIFEST.name)
@@ -549,9 +515,6 @@ def rescreen():
 
 
 def findings_per_forum():
-    """Our own findings joined back to the corpus through the OpenReview id in a source anchor.
-    This is the only ground truth the ranking has, and it covers one venue and one sample of it,
-    so it calibrates a threshold and cannot validate one."""
     forum_of = {}
     for slug, entity in database.load_registries().items():
         if entity.get("type") != graph_json.SOURCE:
@@ -602,9 +565,6 @@ def ranked_rows(rows, held):
 
 
 def as_csv(rows, columns):
-    """Built whole, then written in one step by `atomic`, like every other artifact here. Two
-    ranks racing each other used to be able to interleave into one half-written file -- and two
-    of anything racing is what an accidentally repeated command makes."""
     buffer = io.StringIO(newline="")
     writer = csv.DictWriter(buffer, fieldnames=list(columns))
     writer.writeheader()
@@ -633,10 +593,6 @@ def venue_row(label, entries):
 
 
 def band_table(ranked):
-    """One line per venue, so the question the thresholds actually raise -- do they mean the same
-    thing at a second conference -- is answered by looking rather than assumed. `reviewed` is in
-    the table and not in a footnote because a half-fetched venue scores low for a reason that has
-    nothing to do with the venue, and two columns side by side invite exactly that reading."""
     by_venue = collections.defaultdict(list)
     for entry in ranked:
         by_venue[entry["venue"]].append(entry)
@@ -757,8 +713,6 @@ def show_stats():
 
 
 def sample_submission(connection, venue_id, generation):
-    """One accepted paper and how many there are. API1 has no `venueid`, so the count there is of
-    every submission and the acceptance is read off each note instead."""
     if generation == api.API1:
         notes = connection.get_notes(invitation=api.BLIND_SUBMISSION % venue_id, limit=25)
         accepted = [note for note in notes if api.accepted(note)]
@@ -864,7 +818,6 @@ class LookupFailed(Exception):
 
 
 def ask_dblp(query, rows=DBLP_ROWS):
-    """Raises rather than returning nothing: a failed request must never read as 'no match'."""
     address = "%s?%s" % (DBLP, urllib.parse.urlencode(
         {"q": query, "format": "json", "h": rows}))
     request = urllib.request.Request(address, headers={"User-Agent": DBLP_AGENT})
@@ -882,7 +835,6 @@ def ask_dblp(query, rows=DBLP_ROWS):
 
 
 def ask_crossref(citation, rows=CROSSREF_ROWS):
-    """Crossref matches a whole reference string; DBLP does not index anything but computing."""
     address = "%s?%s" % (CROSSREF, urllib.parse.urlencode(
         {"query.bibliographic": anchorlib.bibliographic(citation), "rows": rows,
          "select": "DOI,title"}))
@@ -935,7 +887,6 @@ def dblp_match(citation):
 
 
 def resolved(citation):
-    """(index, score, title, url). DBLP first; Crossref covers what it does not index."""
     failures = []
     try:
         score, title, url = dblp_match(citation)
@@ -976,9 +927,6 @@ def confirmed_citations(entities, wanted):
 
 
 def apply_anchors(taken, entities, write_at):
-    """Only the proposals at or above `write_at`, and only onto entries that still carry no
-    anchor. The proposals file is written first and stays whole, so the ones this leaves behind
-    are exactly the ones a human still has to judge."""
     strong = [row for row in taken if row["score"] >= write_at]
     wrote, refused = 0, []
     for row in sorted(strong, key=lambda item: item["key"]):

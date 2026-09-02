@@ -20,20 +20,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
+          enable-cache: true
           python-version: "3.12"
 
-      - run: pip install -r requirements.txt
+      - name: Install exactly what the lockfile pins
+        run: uv sync --locked
 
       - name: Run the test suite
-        run: python run_tests.py
+        run: uv run pytest
 
       - name: Validate the data and assemble the graph
-        run: python build.py
+        run: uv run python build.py
 
       - name: Render the static site
-        run: python render.py
+        run: uv run python render.py
 
       - uses: actions/upload-pages-artifact@v3
         with:

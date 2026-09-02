@@ -124,8 +124,6 @@ RENDER_SCALE = 2.0
 
 
 def page_images(path, scale=RENDER_SCALE, limit=None):
-    """The same PDF as pictures instead of as text, for a model that can look at it. `scale` is
-    multiples of 72 dpi, so 2.0 is 144 dpi and a US-letter page comes out 1224 pixels wide."""
     pdfium = library()
     try:
         document = pdfium.PdfDocument(str(path))

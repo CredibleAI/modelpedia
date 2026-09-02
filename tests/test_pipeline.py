@@ -75,10 +75,6 @@ def test_every_registry_entity_resolves_to_its_own_slug():
 
 
 def test_an_index_can_be_narrowed_to_several_types_at_once():
-    """A link field that accepts several registry types needs an index of exactly those. Wider is
-    not safer: `related_work` resolved against every entity produced `ref: variant:sdxl`, which
-    the validator rejects only after the record is on disk -- two of 447 fresh records on
-    2026-08-26."""
     entities = sample_db().entities
     everything = link.index_of(entities)
     registries = link.index_of(entities, graph_json.REGISTRY_TYPES)
@@ -301,8 +297,6 @@ def test_a_paper_with_nothing_to_do_with_explanation_screens_weak():
 
 
 def test_an_abstract_alone_cannot_reach_the_top_tier():
-    """The tier bands a total that has a review half in it. An abstract-only row is missing
-    evidence, not failing it, which is why the manifest records the review count next to it."""
     assert screen.screen(*AUDIT).tier == screen.POSSIBLE
     with_reviews = screen.combine(screen.screen(*AUDIT),
                                   screen.review_screen(AUDIT_REVIEWS))
@@ -350,9 +344,6 @@ def carries_screening_vocabulary(name):
 
 
 def test_a_name_the_registry_happens_to_hold_does_not_lift_a_paper():
-    """Removed 2026-08-23. The registry is built from the findings of these same papers, so a
-    paper that yielded one put its own names into the thing that then scored it -- E9. A name
-    that is also a screening term still scores, as a term; that is the vocabulary, not the base."""
     plain = screen.screen("spatial statistics", "we evaluate on a corpus here")
     lifted = [entity["name"] for entity in database.load_registries().values()
               if entity.get("name") and not carries_screening_vocabulary(entity["name"])
@@ -362,8 +353,6 @@ def test_a_name_the_registry_happens_to_hold_does_not_lift_a_paper():
 
 
 def test_a_term_only_one_reviewer_uses_does_not_count():
-    """Four independent descriptions of the same paper are the one thing an abstract cannot
-    fake, and the consensus gate is what spends them."""
     alone = screen.review_screen(("the paper probes the circuit inside the model",
                                   "the writing is clear", "the experiments are adequate"))
     shared = screen.review_screen(("the paper probes the circuit inside the model",
@@ -374,7 +363,6 @@ def test_a_term_only_one_reviewer_uses_does_not_count():
 
 
 def test_one_text_agrees_with_itself():
-    """An abstract is the degenerate case of the same gate, not a second mechanism."""
     single = screen.review_screen(("the paper probes the circuit inside the model",))
     assert single.points("r-xai") > 0.0
 
@@ -698,8 +686,6 @@ LINE_SEPARATOR = "\u2028"
 
 
 def test_a_record_carrying_a_unicode_line_separator_is_still_one_row():
-    """U+2028 sits inside real review prose and `json.dumps(ensure_ascii=False)` leaves it there.
-    Reading with `splitlines()` cut 92 rows in half on 2026-08-23 and called them bad JSON."""
     def check(directory):
         held = store.load_reviews(harvest.REVIEWS)
         assert held.complaints == ()
@@ -713,9 +699,6 @@ def test_a_record_carrying_a_unicode_line_separator_is_still_one_row():
 
 
 class FakeReviewer:
-    """Answers for a forum, and can be told to refuse the first N requests the way a spent quota
-    would, or to start refusing after N the way one running out mid-batch does."""
-
     def __init__(self, refuse_first=0, refuse_after=None, reviews_per_paper=2):
         self.refuse_first = refuse_first
         self.refuse_after = refuse_after
@@ -745,8 +728,6 @@ class Reply:
 
 
 class NoClock:
-    """The loop's own clock, so a test can watch an hour pass without waiting for it."""
-
     def __init__(self, elapsed=0.0):
         self.elapsed = elapsed
         self.paused = []
@@ -788,10 +769,6 @@ def test_one_command_keeps_fetching_batch_after_batch_until_the_venue_is_done():
 
 
 def test_a_quota_running_out_mid_batch_gives_the_batch_up_instead_of_grinding_through_it():
-    """Otherwise a batch of 500 spends the whole hour discovering the same refusal 500 times, and
-    the pause that is supposed to wait the quota out never gets to run. Refused from the fifth
-    paper on, the whole escalation shows: give the batch up, pause, find it still refused, and
-    stop after DEAD_BATCHES rather than waiting out the clock forever."""
     reviewer = FakeReviewer(refuse_after=4)
     code, held, paused = fetched(["p%d" % n for n in range(200)], reviewer,
                                  limit=200, pause=3600)
@@ -811,8 +788,6 @@ def test_a_paper_left_unasked_by_a_given_up_batch_is_the_first_one_asked_next_ti
 
 
 class FakeAttachments:
-    """The PDF half of the same API, with the same quota and the same 429."""
-
     def __init__(self, refuse_after=None, not_a_pdf=()):
         self.refuse_after = refuse_after
         self.not_a_pdf = set(not_a_pdf)
@@ -849,8 +824,6 @@ def downloaded(papers, connection, limit=None, pause=None, on_disk=()):
 
 
 def test_pdfs_keep_downloading_batch_after_batch_like_the_reviews_do():
-    """A download of several hundred files meets the same quota as the reviews did, so it needs
-    the same loop or it stops after the first batch and never comes back."""
     connection = FakeAttachments()
     code, on_disk, paused = downloaded(["p%d" % n for n in range(7)], connection,
                                        limit=3, pause=3600)
@@ -868,8 +841,6 @@ def test_a_pdf_already_on_disk_is_not_asked_for_again():
 
 
 def test_a_response_that_is_not_a_pdf_counts_as_answered_so_the_run_can_end():
-    """Otherwise it is never on disk, never dropped from the list, and the batch loop asks about
-    it every hour until the heat death of the laptop."""
     connection = FakeAttachments(not_a_pdf=["p1"])
     code, on_disk, paused = downloaded(["p0", "p1", "p2"], connection, limit=3, pause=3600)
     assert connection.asked == ["p0", "p1", "p2"]
@@ -888,8 +859,6 @@ def test_a_pdf_quota_running_out_mid_batch_gives_the_batch_up_too():
 
 
 def test_pdfs_ask_each_venue_through_the_api_generation_that_answers_for_it():
-    """ICLR 2023 lives on API1 and API2 answers `NotFoundError` for every one of its notes, which
-    reads exactly like a venue with no PDFs. Measured 2026-08-25: 314 papers, zero downloaded."""
     asked = []
 
     class PerVenue:
@@ -927,8 +896,6 @@ def test_a_pause_without_a_batch_size_is_refused_for_pdfs_as_well():
 
 
 def test_a_tier_reaches_every_conference_until_venue_narrows_it():
-    """`--tier strong,possible` over a manifest holding three conferences is three conferences
-    worth of PDFs, which is right for a sweep and wrong every time someone means one year."""
     kept = harvest.MANIFEST
     try:
         with tempfile.TemporaryDirectory() as directory:
@@ -959,8 +926,6 @@ def test_a_limit_without_a_pause_is_still_one_batch_and_then_stop():
 
 
 def test_the_pause_is_measured_from_the_start_of_the_batch_not_its_end():
-    """A quota of N an hour refills an hour after the requests were spent, not an hour after the
-    last one landed, so a batch that itself took fifteen minutes waits forty-five."""
     clock = NoClock()
     kept = harvest.time
     try:
@@ -1024,8 +989,6 @@ def test_a_review_store_row_survives_the_round_trip():
 
 
 def test_a_paper_the_fetch_found_no_review_for_is_not_asked_about_again():
-    """The marker keeps the fetch resumable; dropping it from the load keeps the review count
-    the number of reviews rather than the number of answers."""
     def check(directory):
         path = harvest.REVIEWS / store.store_name("V/2026")
         assert store.reviewed_ids(path) == {"aaa", "bbb"}
@@ -1144,8 +1107,6 @@ def test_a_venue_the_manifest_does_not_hold_is_refused_not_written_empty():
 
 
 def test_a_half_fetched_venue_is_marked_in_the_table_not_in_a_footnote():
-    """Two columns side by side invite the reading that one venue is worse than the other, when
-    the whole difference can be a download that has not finished."""
     assert harvest.reviewed_share([{"reviews": 2}, {"reviews": 0}]) == 0.5
     assert harvest.reviewed_share([{"reviews": 2}]) == 1.0
     assert harvest.reviewed_share([]) == 0.0
@@ -1165,8 +1126,6 @@ def test_one_venue_alone_gets_no_redundant_copy_of_itself():
 
 
 def test_the_ranking_is_replaced_in_one_step_like_every_other_artifact():
-    """Two ranks racing each other must not be able to leave half a file, and an accidentally
-    repeated command is exactly two of everything."""
     def check(directory):
         target = directory / "ranking.csv"
         target.write_text("stare, nieprawdziwe dane\n", encoding="utf-8")
@@ -1461,9 +1420,6 @@ class Mounted:
 
 
 def test_one_throttled_request_can_no_longer_park_the_whole_run():
-    """Measured 2026-08-23: `Retry-After: 3600` on a 429 held the process asleep inside a single
-    call for fifty minutes, before the first paper was asked for. The quota wait belongs to the
-    caller's batch pause, where it is printed and can be interrupted."""
     from urllib3.util.retry import Retry
 
     connection = Mounted(Retry(total=10, backoff_factor=1, backoff_max=120,
@@ -2374,7 +2330,6 @@ def test_a_model_that_already_carries_a_facet_is_left_alone():
 
 
 def registry_file(body):
-    """A registry file on disk, so `set_anchor` is exercised as the text editor it is."""
     directory = tempfile.mkdtemp()
     path = Path(directory) / "datasets.yaml"
     path.write_text(body, encoding="utf-8")
@@ -2395,8 +2350,6 @@ def test_an_anchor_is_written_onto_an_entry_that_has_none():
 
 
 def test_an_anchor_already_there_is_never_overwritten():
-    """A proposal is evidence that a URL fits a citation, never that it fits the entity better
-    than what a human already put there."""
     path = registry_file("dataset:one:\n  name: One\n  anchor: https://example.org/kept\n")
     kept = registries.path_for
     try:

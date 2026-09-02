@@ -239,8 +239,6 @@ def test_an_unusable_answer_and_a_failed_request_exit_differently():
 
 
 def prompt_like(instructions, title, paper):
-    """The real shape: instructions, then the paper title as the last line of that block, then
-    the paper between its markers."""
     return "".join([instructions, promptlib.PAPER_TITLE, title, "\n",
                     promptlib.PAPER_OPEN, "\n", paper, "\n", promptlib.PAPER_CLOSE])
 
@@ -254,8 +252,6 @@ PAPER_C = prompt_like(GROWN, "What does CLIP look at?", "paper one")
 
 
 def test_two_papers_asked_under_one_registry_share_a_context_sha():
-    """The whole-prompt hash cannot say this: the paper text dominates it, so every paper differs
-    from every other one regardless of what the instructions said."""
     whole_a, context_a = ask.fingerprints(PAPER_A)
     whole_b, context_b = ask.fingerprints(PAPER_B)
     assert context_a == context_b
@@ -270,7 +266,6 @@ def test_one_paper_asked_after_the_base_grew_gets_a_new_context_sha():
 
 
 def test_a_prompt_with_neither_title_nor_paper_is_all_context():
-    """The --pages variant carries no paper text, so the whole body is the context."""
     pages = "instructions only, images follow"
     whole, context = ask.fingerprints(pages)
     assert whole == context
@@ -297,10 +292,6 @@ def test_a_refused_attempt_records_the_instructions_too():
 
 
 def test_every_prompt_directory_gets_a_run_directory_of_its_own():
-    """Until 2026-08-26 anything that was not `corpus/prompts` fell through to `text-<think>`, so
-    a tagging run with no explicit `--out` would have written its answers into the directory
-    holding the extraction answers. The docstring promised `<input>-<think>` and the code gave it
-    for three cases out of six."""
     from modelpedia import paths as p
     assert ask.default_out(p.PROMPTS, None).name == "text-medium"
     assert ask.default_out(p.PAGE_PROMPTS, "corpus/pdf").name == "pages-medium"

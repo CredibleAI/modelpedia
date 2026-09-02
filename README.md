@@ -11,19 +11,36 @@ This README is a manual. What every command does, in the order you would normall
 
 ## Setup
 
+Dependencies are declared in `pyproject.toml` and pinned in `uv.lock`. Install
+[uv](https://docs.astral.sh/uv/), then:
+
 ```bash
-python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+uv sync
 ```
+
+That creates `.venv` with exactly the versions in the lockfile and nothing else. Prefix commands
+with `uv run`, or activate the environment once per shell:
 
 ```bash
 source .venv/bin/activate
 ```
 
-Activate once per shell and every command below works as written. `PyYAML` is all the build and
-the site need. `pypdfium2` is used to read PDFs and `openreview-py` only by `harvest.py`. That
-script and `ask.py` are the two that touch the network, and `ask.py` needs nothing installed:
-the model endpoint speaks the OpenAI chat API, which is one POST that `urllib` can make. `pillow`
-is needed only by `ask.py --pdf`, which renders pages to images; nothing else imports it.
+**The build and the site need `PyYAML` and nothing else** — that is a rule, not an accident, and
+`pyproject.toml` encodes it: everything the ingestion side needs is an optional extra, so a
+checkout that only builds the site never installs it.
+
+```bash
+uv sync --extra ingest
+```
+
+That adds `openreview-py` (only `harvest.py`), `pypdfium2` (reading PDFs) and `pillow` (only
+`ask.py --pdf`, which renders pages to images). `harvest.py` and `ask.py` are the two scripts that
+touch the network, and `ask.py` needs nothing installed at all: the model endpoint speaks the
+OpenAI chat API, which is one POST that `urllib` can make.
+
+The test suite runs on the core dependencies alone — measured, not assumed: the whole suite passes
+with `PyYAML`, `pytest` and `urllib3` installed and none of the extras. That is what keeps the
+rule above honest, so it is worth re-checking whenever a test grows a new import.
 
 ---
 
@@ -33,7 +50,7 @@ You will run these most often. None of them touches the network.
 
 | Command | What it does |
 |---|---|
-| `python3 run_tests.py` | Runs all 473 tests across six suites. No arguments. |
+| `pytest` | Runs the whole suite. No arguments — `pyproject.toml` points it at `tests/`. Collection is automatic, so a new test file is picked up without being registered anywhere. |
 | `python3 build.py` | Validates `data/`, writes `out/graph.json`, prints an audit. **Exits non-zero and writes nothing if validation fails, so run it before every commit.** |
 | `python3 render.py` | Builds the static site into `site/` from `out/graph.json`. |
 | `python3 export.py` | Writes one CSV per node type plus `edges.csv` into `out/csv/`. |
@@ -166,14 +183,17 @@ verify.py        a finding + its PDF -> evidence locations and suspicions
 harvest.py       OpenReview -> corpus/; one of the two scripts that use the network
 extract.py       corpus/ -> prompts, answers, proposals, data/findings/
 ask.py           corpus/prompts/ -> corpus/runs/text/; the other script that uses the network
-run_tests.py     runs all six suites
 
-modelpedia/      the library; imported, never run
+pyproject.toml   dependencies, the optional ingest extra, and the pytest settings
+uv.lock          the exact resolved versions; CI installs from this and nothing else
+
+src/modelpedia/  the library; imported, never run
   graph.py       node and edge types, the NODE_TYPES table
   schema.py      the finding schema: link fields, vocabularies, regexes
   paths.py       every filesystem location; the only file that derives the root
   graph_io.py    load/dump out/graph.json with the format_version guard
   atomic.py      write-then-rename; the single .part convention
+  models.py      the finding as a typed record: Finding, Ref, Inline, and the field order
   record_keys.py string constants for keys inside records
   console.py     console output primitives
 
@@ -207,7 +227,7 @@ out/, site/      build artifacts; not tracked, delete and rebuild freely
 
 ## Rules worth knowing before you edit anything
 
-**Never search a PDF except through `modelpedia/ingest/text.py`.** Extracted text breaks words
+**Never search a PDF except through `src/modelpedia/ingest/text.py`.** Extracted text breaks words
 across lines, splits small-capital headings and mangles ligatures. A plain `grep` misses them and
 reports absence that is not real. This has already cost the project one wrongly deleted citation.
 

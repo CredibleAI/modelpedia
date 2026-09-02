@@ -104,8 +104,6 @@ def read(raw):
 
 
 def chosen(document, known):
-    """Only identifiers from the closed list reach a record. The model picks; it never invents,
-    and an invented one is reported rather than dropped in silence."""
     taken, invented = [], []
     for item in document.get("concepts") or []:
         key = item if isinstance(item, str) else (item or {}).get("id")

@@ -52,11 +52,6 @@ def slugify(value):
 
 
 def valid_slug(text):
-    """A slug the schema accepts: `SLUG` wants a letter first. What starts with a digit moves to
-    the end rather than being dropped, because it is part of the name: `3D Gaussian Splatting`
-    becomes `gaussian-splatting-3d`, `2WikiMultihopQA` becomes `wikimultihopqa-2`. Two generators
-    needed this on 2026-08-22 -- entity slugs and source slugs -- and each learned it the same
-    way, by leaving the build red."""
     slug = slugify(text)
     if not slug or not slug[0].isdigit():
         return slug
@@ -82,21 +77,12 @@ def aliases(name):
 
 
 def add(table, name, key):
-    """One key at most once per name. Two aliases that differ only in case -- `AutoDAN` and
-    `AutoDan` -- normalise to one string, and appending blindly put the same key in twice, which
-    `settle` then read as two candidates and refused to resolve. A spelling written twice must
-    not make an entry harder to find than writing it once."""
     keys = table.setdefault(name, [])
     if key not in keys:
         keys.append(key)
 
 
 def index_of(entities, node_type=None):
-    """`node_type` may be one type or a collection of them. A collection is what a link field
-    needs when it accepts several: an index wider than the field it serves resolves a name to a
-    slug the field cannot hold, and the validator rejects the record only after it is written.
-    Measured 2026-08-26: two of 447 fresh records carried `related_work: {ref: variant:...}`,
-    because a variant is an entity but not a registry type."""
     wanted = ({node_type} if isinstance(node_type, str)
               else frozenset(node_type) if node_type is not None else None)
     identifiers, by_name, by_slug, by_compact = [], {}, {}, {}

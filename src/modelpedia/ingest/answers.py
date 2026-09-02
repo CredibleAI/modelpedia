@@ -66,12 +66,6 @@ def quoted_prose(raw):
 
 
 def one_scalar(raw):
-    """A field whose value is a closed quote followed by more text: `key_metric: "a"; "b"`.
-    YAML reads the quote, then finds a scalar where the mapping should end, and the whole answer
-    is lost over one line. Seen 2026-08-20 on JVkdSi7Ekg. The value is re-encoded whole, so
-    nothing the model wrote is dropped. Only reached after the plainer repairs have failed, which
-    is what keeps it away from documents that already parse -- a quoted scalar spanning two lines
-    is legal YAML and must not be touched."""
     lines = []
     for line in raw.splitlines():
         match = PROSE.match(line)
@@ -88,9 +82,6 @@ def one_scalar(raw):
 
 
 def loadable(raw):
-    """YAML forbids a handful of codepoints outright, and a citation copied verbatim out of a
-    paper can carry one: U+FFFE reached us from an oracle-bone paper on 2026-08-19 and made the
-    whole answer unparseable. Dropping them is a repair and is reported as one."""
     return FORBIDDEN.sub("", raw)
 
 

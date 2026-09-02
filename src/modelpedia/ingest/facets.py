@@ -57,8 +57,6 @@ def block(allowed):
 
 
 def wanted(entities):
-    """Models with no facet at all. A model that carries one axis was described by hand and is
-    left alone: this step fills gaps, it does not overwrite judgements."""
     found = {}
     for key, entity in sorted(entities.items()):
         if entity.get("type") != graph_json.MODEL:
@@ -104,8 +102,6 @@ def read(raw):
 
 
 def chosen(document, allowed):
-    """Values the vocabulary knows, in the vocabulary's own spelling. Anything else is reported:
-    an axis is closed, and a value outside it would fail `check_model_facets` at build time."""
     taken, refused = {}, []
     for field in FIELDS:
         written = document.get(field)

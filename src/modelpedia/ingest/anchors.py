@@ -33,7 +33,6 @@ def segments(citation):
 
 
 def queries(citation):
-    """Title guesses to search with. Sloppy on purpose: match_score throws the bad ones out."""
     found, parts = [], segments(citation)
     for part in parts[1:1 + QUERIES]:
         query = PUNCTUATION.sub(" ", NOISE.sub(" ", part).lower())
@@ -44,12 +43,6 @@ def queries(citation):
 
 
 def match_score(title, citation):
-    """Share of the found title's content words the citation also carries.
-
-    A title too thin to say anything scores 1.00 for free: Crossref answered one query with
-    "Geoffrey E. Hinton", two words, both of them in the citation's author list. Same failure
-    as a two-word citation passing the citation check, and the same fix.
-    """
     wanted = verification.content_words(title)
     if len(wanted) < MIN_TITLE_WORDS:
         return 0.0
@@ -57,7 +50,6 @@ def match_score(title, citation):
 
 
 def bibliographic(citation):
-    """Crossref matches a whole reference string, so it needs no title guess at all."""
     body = NOISE.sub(" ", " ".join(str(citation or "").split()))
     return " ".join(body.split())[:CITATION_CHARS]
 

@@ -54,8 +54,6 @@ def credentials():
 
 
 def call(path, header, body=None, timeout=chat.TIMEOUT):
-    """Raises on every failure, including a refusal from the server: a request that did not
-    happen must never reach the caller looking like an answer."""
     request = urllib.request.Request(
         endpoint() + path, data=body,
         headers={"Authorization": header, "Content-Type": "application/json"})
@@ -157,22 +155,12 @@ JPEG_QUALITY = 80
 
 
 def page_uris(pdf):
-    """The paper as pictures. JPEG rather than PNG: measured on a 29-page ICLR paper, both cost
-    the model exactly 1927 tokens per page, and JPEG is a third of the bytes on the wire."""
     images = textutil.page_images(pdf)
     return [chat.data_uri(textutil.jpeg_bytes(image, JPEG_QUALITY), "image/jpeg")
             for image in images]
 
 
 def default_out(source, pdfs, think=chat.THINK):
-    """One directory per run, named for what the run varied: the input (text, page images, both)
-    and the thinking budget, always both, never abbreviated.
-
-    The first version left the budget out when it matched the current default, which made the
-    directory name depend on a constant. Changing that constant to `medium` on 2026-08-21 silently
-    pointed a fresh run at the directory holding the old `low` answers, mixed nine files into it
-    and skipped the 21 papers it should have redone. The prompt version stays out of the name
-    on purpose -- `prompt_sha` in the log carries it exactly, and a name cannot."""
     folder = Path(source).name
     with_pages = folder == Path(paths.PAGE_PROMPTS).name
     if with_pages and pdfs:
@@ -187,17 +175,10 @@ def default_out(source, pdfs, think=chat.THINK):
 
 
 def fingerprint(body):
-    """Which prompt produced this answer. Two runs of one paper differ by the prompt far more
-    often than by anything else, and a run nobody can attribute is a run nobody can compare."""
     return hashlib.sha256(body.encode("utf-8")).hexdigest()[:12]
 
 
 def fingerprints(body):
-    """The whole prompt, and the instructions without the paper. The first tells two runs of one
-    paper apart; the second tells two states of the base apart, and only it can, because the paper
-    text dominates the whole-prompt hash and makes every paper differ from every other regardless.
-    ICLR 2025 and ICLR 2024 were asked from the same directory under instructions that had already
-    diverged after 25488 identical characters, and nothing in the log said so."""
     return fingerprint(body), fingerprint(promptlib.instructions(body))
 
 

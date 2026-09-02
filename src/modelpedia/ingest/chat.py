@@ -8,9 +8,6 @@ MODEL = "Qwen/Qwen3.8-27B-FP8"
 MAX_TOKENS = 24000
 TEMPERATURE = 0.0
 TIMEOUT = 900
-# Measured 2026-08-20 on 21 papers, medium against low: 49 findings against 46, two numbers
-# absent from the source out of 572 against three out of 437, citations confirmed 85% against
-# 80%, and 30% more wall clock. The longest answer was 17127 tokens, so MAX_TOKENS is enough.
 THINK = "medium"
 THINK_OFF = "off"
 EFFORTS = (THINK_OFF, "low", "medium", "xhigh")
@@ -55,10 +52,6 @@ class Reply(NamedTuple):
         return OK
 
     def hit_the_window(self, max_tokens):
-        """Two different truncations wear one `finish_reason: length`. Either the answer used up
-        the `max_tokens` we asked for, or prompt and answer together reached what the model can
-        hold -- and then raising `max_tokens` changes nothing, which is the opposite advice.
-        Measured 2026-08-19 on a 65-page paper sent as images: 930 tokens out of 24000."""
         return self.state() == TRUNCATED and self.completion_tokens < max_tokens
 
 
@@ -79,14 +72,6 @@ def content_of(prompt, images):
 
 
 def request_body(prompt, settings=Settings(), images=()):
-    """Two ways to control thinking, both measured against this server on 2026-08-19:
-    `enable_thinking: false` reaches a different branch of the chat template and returns no
-    reasoning at all; `reasoning_effort` keeps it and bounds it. Left alone, the model spends
-    every token of `max_tokens` thinking and returns an empty `content`.
-
-    The levels are the server's, not ours, and guessing them cost 21 refused requests on
-    2026-08-20: it takes `low`, `medium` and `xhigh`, and `xhigh` is what it uses when nothing is
-    sent. There is no `high`."""
     body = {
         "model": settings.model,
         "messages": [{"role": "user", "content": content_of(prompt, images)}],

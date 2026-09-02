@@ -37,7 +37,6 @@ def safe_id(paper_id):
 
 
 def venue_slug(venue_id):
-    """One spelling of a venue identifier as a file name, for every file that carries one."""
     return UNSAFE_NAME.sub("-", str(venue_id or "")).strip("-")
 
 
@@ -70,11 +69,8 @@ def review_complaint(row):
 
 
 def json_lines(path):
-    """Split on the newline and nothing else, and every JSONL reader in the project comes here
-    to do it. `splitlines()` also breaks on U+2028 and U+2029, which
-    `json.dumps(ensure_ascii=False)` writes through unescaped because JSON does not consider them
-    line breaks -- 111 of them sat in ICLR 2025 review prose and cost 92 rows on 2026-08-23,
-    silently, because half a record is not valid JSON and reads as one bad line."""
+    """Not `splitlines()`: it also breaks on U+2028 and U+2029, which JSON does not treat as line
+    breaks. 111 sit in ICLR 2025 review prose and cut 92 records in half. See do-naprawy.md D23."""
     if not path.exists():
         return
     for number, line in enumerate(path.read_text(encoding="utf-8").split("\n"), start=1):
@@ -130,11 +126,6 @@ def mean_rating(rows):
 
 
 def load_reviews(folder):
-    """One store per venue, appended as it is fetched, so a run that dies halfway resumes. The
-    same review written twice by two runs is the same `review_id` and is counted once. A row with
-    no fields is the fetch writing down that it asked and this paper has no review: `reviewed_ids`
-    counts it so the fetch does not ask again, and this function drops it so the review count
-    stays the number of reviews rather than the number of answers."""
     by_paper, complaints, seen = {}, [], set()
     for path in sorted(folder.glob("*.jsonl")) if folder.exists() else ():
         for row, complaint in read(path, review_complaint):
@@ -188,8 +179,6 @@ def row_for(paper_id, content, venue_id, screening, rules_version, pdf_url,
 
 
 def rescored(row, screening, rules_version, reviews=0, rating=None):
-    """The metadata is what it was; only the reading of it changes. Everything the fetch put in
-    the row survives, so a rescreen never costs a field."""
     return dict(row, tier=screening.tier, score=screening.score,
                 subscores=dict(screening.subscores), reviews=reviews, rating=rating,
                 signals=["%s:%s" % (signal.group, signal.term) for signal in screening.signals],
