@@ -1,7 +1,5 @@
 import collections
-import csv
 import http.client
-import io
 import json
 import re
 import sys
@@ -17,10 +15,10 @@ from modelpedia import graph as graph_json
 from modelpedia import paths
 from modelpedia.build import database
 from modelpedia.ingest import anchors as anchorlib
-from modelpedia.ingest import citations
-from modelpedia.ingest import link
+from modelpedia.ingest import batching
 from modelpedia.ingest import manifest as store
 from modelpedia.ingest import openreview as api
+from modelpedia.ingest import ranking
 from modelpedia.ingest import registries
 from modelpedia.ingest import screen
 from modelpedia.ingest import text as textutil
@@ -44,9 +42,6 @@ REVIEW_OPTIONS = ("--limit", "--from", "--pause")
 RANK_OPTIONS = ("--out", "--venue")
 ANCHOR_OPTIONS = ("--at",)
 ANCHOR_FLAGS = ("--write",)
-
-DEAD_BATCHES = 3
-GIVE_UP_AFTER = 10
 
 IMPORT_PAPER_KEYS = ("forum", "id")
 IMPORT_REVIEW_KEYS = ("review_id", "id")
@@ -154,75 +149,14 @@ def harvest_meta(venue_id, accepted_only=True):
     for tier in ALL_TIERS:
         print("  %-9s %d" % (tier, counts[tier]))
     print("these tiers stand on the abstract alone; the review half of the score is still zero.\n"
-          "run: harvest.py reviews %s, then harvest.py rescreen" % venue_id)
+          "run: modelpedia harvest reviews %s, then modelpedia harvest rescreen" % venue_id)
     return 1 if refused else 0
-
-
-def fetch_each(rows, ask, delay, every=100, give_up_after=GIVE_UP_AFTER):
-    answered, counts, running = set(), collections.Counter(), 0
-    for number, row in enumerate(rows, start=1):
-        try:
-            counts[ask(row)] += 1
-            answered.add(row["id"])
-            running = 0
-        except Exception as error:
-            counts["failed"] += 1
-            running += 1
-            print("  FAILED %s: %s" % (row["id"], error))
-            if running >= give_up_after:
-                print("  %d refusals in a row after %d paper(s); giving the batch up here"
-                      % (running, number - 1))
-                break
-            continue
-        if number % every == 0:
-            print("  %d/%d" % (number, len(rows)))
-        time.sleep(delay)
-    return answered, counts
-
-
-def in_batches(outstanding, fetch, limit=None, pause=None):
-    totals, barren = collections.Counter(), 0
-    while outstanding:
-        batch = outstanding[:limit] if limit else outstanding
-        started = time.monotonic()
-        answered, counts = fetch(batch)
-        totals.update(counts)
-        outstanding = [row for row in outstanding if row["id"] not in answered]
-
-        barren = barren + 1 if not answered else 0
-        if barren >= DEAD_BATCHES:
-            print("  %d batches in a row answered for nothing; stopping rather than waiting\n"
-                  "  out the clock on what looks like a refusal and not a quota" % barren)
-            return totals, outstanding, True
-        if not outstanding or not pause:
-            return totals, outstanding, False
-        sleep_until_next_batch(pause, started, len(outstanding))
-    return totals, outstanding, False
-
-
-def batch_plan(outstanding, limit, pause, what):
-    if pause and limit:
-        print("%d %s per batch, %s between batches measured from the start of each: %d batch(es)"
-              % (limit, what, as_clock(pause), -(-len(outstanding) // limit)))
-
-
-def sleep_until_next_batch(pause, started, left):
-    waited = time.monotonic() - started
-    rest = max(0.0, pause - waited)
-    print("  batch took %s, %d paper(s) left, next batch in %s"
-          % (as_clock(waited), left, as_clock(rest)))
-    time.sleep(rest)
-
-
-def as_clock(seconds):
-    whole = int(seconds)
-    return "%d:%02d:%02d" % (whole // 3600, whole % 3600 // 60, whole % 60)
 
 
 def harvest_reviews(venue_id, limit=None, delay=REVIEW_DELAY, pause=None):
     wanted = [row for row in manifest_rows() if row["venue"] == venue_id]
     if not wanted:
-        return fail("no paper from %s is in the manifest; run: harvest.py meta %s"
+        return fail("no paper from %s is in the manifest; run: modelpedia harvest meta %s"
                     % (venue_id, venue_id))
     REVIEWS.mkdir(parents=True, exist_ok=True)
     target = REVIEWS / store.store_name(venue_id)
@@ -236,8 +170,6 @@ def harvest_reviews(venue_id, limit=None, delay=REVIEW_DELAY, pause=None):
           % (len(wanted), venue_id, len(already), len(outstanding)))
     if not outstanding:
         return 0
-    batch_plan(outstanding, limit, pause, "papers")
-
     connection, _ = source_for(venue_id)
 
     def one_review(row):
@@ -256,18 +188,16 @@ def harvest_reviews(venue_id, limit=None, delay=REVIEW_DELAY, pause=None):
                     row["id"], venue_id, "%s-none" % row["id"], None, {})) + "\n")
         return "got" if written else "empty"
 
-    try:
-        totals, outstanding, gave_up = in_batches(
-            outstanding, lambda batch: fetch_each(batch, one_review, delay), limit, pause)
-    except KeyboardInterrupt:
-        print("\nstopped by hand; what was answered for is on disk and the same command resumes")
+    outcome = batching.fetched(outstanding, one_review, "papers", delay, limit, pause,
+                      "what was answered for is on disk")
+    if outcome is None:
         return 1
+    totals, outstanding, gave_up = outcome
 
     print("reviews for %d papers, %d papers have none, %d requests failed"
           % (totals["got"], totals["empty"], totals["failed"]))
-    if outstanding:
-        print("%d paper(s) still to fetch; run the same command again" % len(outstanding))
-    print("run harvest.py rescreen to fold them into the manifest")
+    batching.still_to_fetch(outstanding)
+    print("run modelpedia harvest rescreen to fold them into the manifest")
     return 1 if gave_up or totals["failed"] else 0
 
 
@@ -314,7 +244,7 @@ def import_reviews(venue_id, source):
     print("imported %d reviews into %s" % (taken, target.name))
     print("  %d belong to papers outside %s, %d carried no review prose" % (outside, venue_id,
                                                                             unusable))
-    print("run harvest.py rescreen to fold them into the manifest")
+    print("run modelpedia harvest rescreen to fold them into the manifest")
     return 0 if taken else 1
 
 
@@ -393,8 +323,6 @@ def harvest_pdfs(tiers=DOWNLOAD_TIERS, limit=None, delay=DELAY, ids=None, pause=
              len(held), len(outstanding)))
     if not outstanding:
         return 0
-    batch_plan(outstanding, limit, pause, "pdfs")
-
     clients = {}
 
     def client_for(row):
@@ -407,17 +335,15 @@ def harvest_pdfs(tiers=DOWNLOAD_TIERS, limit=None, delay=DELAY, ids=None, pause=
         return "got" if fetch_pdf(client_for(row), row["id"], PDFS / ("%s.pdf" % row["id"])) \
             else "refused"
 
-    try:
-        totals, outstanding, gave_up = in_batches(
-            outstanding, lambda batch: fetch_each(batch, one_pdf, delay, every=50), limit, pause)
-    except KeyboardInterrupt:
-        print("\nstopped by hand; what is on disk stays and the same command resumes")
+    outcome = batching.fetched(outstanding, one_pdf, "pdfs", delay, limit, pause,
+                      "what is on disk stays", every=50)
+    if outcome is None:
         return 1
+    totals, outstanding, gave_up = outcome
 
     print("downloaded %d, %d answered with something that is not a PDF, %d requests failed"
           % (totals["got"], totals["refused"], totals["failed"]))
-    if outstanding:
-        print("%d paper(s) still to fetch; run the same command again" % len(outstanding))
+    batching.still_to_fetch(outstanding)
     return 1 if gave_up or totals["failed"] or totals["refused"] else 0
 
 
@@ -448,20 +374,15 @@ def held_reviews():
     return held
 
 
-def screened(row, held):
-    abstract = screen.screen(row.get("title"), row.get("abstract"), row.get("keywords") or [])
-    return screen.combine(abstract, screen.review_screen(held.texts(row["id"])))
-
-
 def rescreen():
     rows = manifest_rows()
     if not rows:
-        return fail("%s is empty; run: harvest.py meta <venue_id>" % MANIFEST.name)
+        return fail("%s is empty; run: modelpedia harvest meta <venue_id>" % MANIFEST.name)
     held = held_reviews()
 
     moved, unreviewed, fresh = collections.Counter(), 0, []
     for row in rows:
-        total = screened(row, held)
+        total = ranking.screened(row, held)
         moved[(row.get("tier") or screen.UNKNOWN_VERSION, total.tier)] += 1
         count = held.count(row["id"])
         unreviewed += not count
@@ -474,7 +395,7 @@ def rescreen():
         print("  %-9s -> %-9s %6d%s" % (before, after, count, "" if before != after else "  (held)"))
     if unreviewed:
         print("  %d row(s) carry no review, so their total is the abstract half alone and their\n"
-              "  tier is not comparable with the rest; run harvest.py reviews for their venue"
+              "  tier is not comparable with the rest; run modelpedia harvest reviews for their venue"
               % unreviewed)
     return 0
 
@@ -496,107 +417,34 @@ def findings_per_forum():
     return counted
 
 
-def sampled_ids():
-    if not paths.PDF_SELECTION.exists():
-        return set()
-    return {line.strip() for line
-            in paths.PDF_SELECTION.read_text(encoding="utf-8").splitlines()
-            if line.strip() and not line.startswith("#")}
-
-
-GROUP_COLUMNS = tuple(name for rules in screen.RULESETS for name in rules.groups)
-RANK_COLUMNS = (("pos", "venue", "id", "title", "url", "tier", "total", "abstract", "review",
-                 "reviews", "rating") + GROUP_COLUMNS + ("sampled", "findings"))
-
-
-def ranked_rows(rows, held):
-    yielded, sampled = findings_per_forum(), sampled_ids()
-    ranked = []
-    for row in rows:
-        total = screened(row, held)
-        points = dict(total.subscores)
-        ranked.append(dict(
-            {name: points.get(name, 0.0) for name in GROUP_COLUMNS},
-            venue=row["venue"], id=row["id"], title=row.get("title") or "",
-            url=api.forum_url(row["id"]), tier=total.tier, total=total.score,
-            abstract=screen.side_score(total.subscores, screen.ABSTRACT),
-            review=screen.side_score(total.subscores, screen.REVIEW),
-            reviews=held.count(row["id"]), rating=held.rating(row["id"]),
-            sampled=int(row["id"] in sampled), findings=yielded.get(row["id"], 0)))
-    ranked.sort(key=lambda entry: (-entry["total"], entry["id"]))
-    for position, entry in enumerate(ranked, start=1):
-        entry["pos"] = position
-    return ranked
-
-
-def as_csv(rows, columns):
-    buffer = io.StringIO(newline="")
-    writer = csv.DictWriter(buffer, fieldnames=list(columns))
-    writer.writeheader()
-    writer.writerows(rows)
-    return buffer.getvalue()
-
-
-def quantile(values, share):
-    ordered = sorted(values)
-    return ordered[min(len(ordered) - 1, int(share * len(ordered)))] if ordered else 0.0
-
-
-def reviewed_share(entries):
-    return sum(1 for entry in entries if entry["reviews"]) / len(entries) if entries else 0.0
-
-
-def venue_row(label, entries):
-    tiers = collections.Counter(entry["tier"] for entry in entries)
-    totals = [entry["total"] for entry in entries]
-    kept = tiers[screen.STRONG] + tiers[screen.POSSIBLE]
-    return "%-30s %6d %8.1f%% %7.1f %6.1f %6.1f %8d %9d %6d %6.1f%%" % (
-        label[:30], len(entries), 100.0 * reviewed_share(entries),
-        quantile(totals, 0.5), quantile(totals, 0.75), quantile(totals, 0.90),
-        tiers[screen.STRONG], tiers[screen.POSSIBLE], tiers[screen.WEAK],
-        100.0 * kept / len(entries) if entries else 0.0)
-
-
 def band_table(ranked):
-    by_venue = collections.defaultdict(list)
-    for entry in ranked:
-        by_venue[entry["venue"]].append(entry)
-    print("%-30s %6s %9s %7s %6s %6s %8s %9s %6s %7s"
-          % ("venue", "papers", "reviewed", "median", "p75", "p90", "strong", "possible", "weak",
-             "pass"))
-    for venue, entries in sorted(by_venue.items()):
-        print(venue_row(venue, entries))
-    if len(by_venue) > 1:
-        print(venue_row("ALL", ranked))
-
-    kept = sum(1 for entry in ranked if entry["tier"] != screen.WEAK)
-    print("\nthresholds strong >= %.1f, possible >= %.1f: %d of %d papers pass (%.1f%%)"
-          % (screen.STRONG_AT, screen.POSSIBLE_AT, kept, len(ranked),
-             100.0 * kept / len(ranked) if ranked else 0.0))
-
-    unfinished = {venue: entries for venue, entries in by_venue.items()
-                  if reviewed_share(entries) < 1.0}
-    for venue, entries in sorted(unfinished.items()):
-        missing = sum(1 for entry in entries if not entry["reviews"])
-        print("\n  WARN %s is %.1f%% reviewed: %d paper(s) carry the abstract half only, which\n"
-              "  lowers this venue's whole column. Do not compare it with a finished one until\n"
-              "  harvest.py reviews %s has run out of papers to fetch."
-              % (venue, 100.0 * reviewed_share(entries), missing, venue))
+    print(ranking.band_table(ranked))
 
 
-def venue_target(target, venue_id):
-    return target.with_name("%s-%s%s" % (target.stem, store.venue_slug(venue_id), target.suffix))
+def show_stats():
+    rows = manifest_rows()
+    if not rows:
+        print("corpus/manifest.jsonl is empty; run: modelpedia harvest meta <venue_id>")
+        return 0
+    by_rules = collections.Counter(row.get("rules_version") or screen.UNKNOWN_VERSION
+                                   for row in rows)
+    print(ranking.tier_table(rows, ALL_TIERS))
+    print("\npdf on disk: %d, text on disk: %d"
+          % (len(list(PDFS.glob("*.pdf"))) if PDFS.exists() else 0,
+             len(list(TEXTS.glob("*.txt"))) if TEXTS.exists() else 0))
+    print(ranking.rules_in_use(by_rules, screen.RULES_VERSION, screen.UNKNOWN_VERSION))
+    return 0
 
 
 def write_ranking(target, ranked):
-    atomic.write_text(target, as_csv(ranked, RANK_COLUMNS))
+    atomic.write_text(target, ranking.as_csv(ranked, ranking.RANK_COLUMNS))
     print("  %-56s %d row(s)" % (target, len(ranked)))
 
 
 def rank(target=RANKING, venue_id=None):
     rows = manifest_rows()
     if not rows:
-        return fail("%s is empty; run: harvest.py meta <venue_id>" % MANIFEST.name)
+        return fail("%s is empty; run: modelpedia harvest meta <venue_id>" % MANIFEST.name)
     venues = sorted({row["venue"] for row in rows})
     if venue_id and venue_id not in venues:
         return fail("no paper from %r is in the manifest; it holds %s"
@@ -605,75 +453,17 @@ def rank(target=RANKING, venue_id=None):
         rows = [row for row in rows if row["venue"] == venue_id]
 
     held = held_reviews()
-    ranked = ranked_rows(rows, held)
+    ranked = ranking.ranked_rows(rows, held, findings_per_forum())
 
     target.parent.mkdir(parents=True, exist_ok=True)
     write_ranking(target, ranked)
     if not venue_id and len(venues) > 1:
         for one in venues:
-            write_ranking(venue_target(target, one),
+            write_ranking(ranking.venue_target(target, one),
                           [entry for entry in ranked if entry["venue"] == one])
     print()
 
     band_table(ranked)
-    return 0
-
-
-def show_stats():
-    rows = manifest_rows()
-    if not rows:
-        print("corpus/manifest.jsonl is empty; run: python3 harvest.py meta <venue_id>")
-        return 0
-    by_venue, by_rules, reviewed = {}, {}, {}
-    for row in rows:
-        by_venue.setdefault(row["venue"], {}).setdefault(row["tier"], 0)
-        by_venue[row["venue"]][row["tier"]] += 1
-        reviewed.setdefault(row["venue"], 0)
-        reviewed[row["venue"]] += bool(row.get("reviews"))
-        version = row.get("rules_version") or screen.UNKNOWN_VERSION
-        by_rules[version] = by_rules.get(version, 0) + 1
-
-    print("%-30s %8s %9s %6s %7s %9s" % ("venue", "strong", "possible", "weak", "total",
-                                         "reviewed"))
-    totals = {tier: 0 for tier in ALL_TIERS}
-    for venue, tiers in sorted(by_venue.items()):
-        for tier in ALL_TIERS:
-            totals[tier] += tiers.get(tier, 0)
-        print("%-30s %8d %9d %6d %7d %9d"
-              % (venue[:30], tiers.get(screen.STRONG, 0), tiers.get(screen.POSSIBLE, 0),
-                 tiers.get(screen.WEAK, 0), sum(tiers.values()), reviewed[venue]))
-    print("%-30s %8d %9d %6d %7d %9d"
-          % ("ALL", totals[screen.STRONG], totals[screen.POSSIBLE], totals[screen.WEAK],
-             len(rows), sum(reviewed.values())))
-    if sum(reviewed.values()) < len(rows):
-        print("  a row with no review is scored on its abstract alone, so its tier sits below\n"
-              "  every reviewed row by construction; harvest.py reviews <venue_id> closes that")
-
-    print("\npdf on disk: %d, text on disk: %d"
-          % (len(list(PDFS.glob("*.pdf"))) if PDFS.exists() else 0,
-             len(list(TEXTS.glob("*.txt"))) if TEXTS.exists() else 0))
-
-    print("screening rules in use now: %s" % screen.RULES_VERSION)
-    for version, count in sorted(by_rules.items(), key=lambda pair: -pair[1]):
-        if version == screen.RULES_VERSION:
-            mark = ""
-        elif version == screen.UNKNOWN_VERSION:
-            mark = "  <- unfingerprinted"
-        else:
-            mark = "  <- stale"
-        print("  %-14s %d row(s)%s" % (version, count, mark))
-
-    stale = sum(count for version, count in by_rules.items()
-                if version not in (screen.RULES_VERSION, screen.UNKNOWN_VERSION))
-    if stale:
-        print("  %d row(s) carry a tier computed by rules that are no longer the ones in "
-              "screen.py; their tier and signals were never recomputed" % stale)
-    unknown = by_rules.get(screen.UNKNOWN_VERSION, 0)
-    if unknown:
-        print("  %d row(s) predate rules fingerprinting, so they carry no version to compare"
-              % unknown)
-    if stale or unknown:
-        print("  harvest.py rescreen recomputes every row from the metadata already on disk")
     return 0
 
 
@@ -721,7 +511,7 @@ def preflight(venue_id=None):
         label, notes, count = sample_submission(connection, venue_id, generation)
     except openreview.OpenReviewException as error:
         print("%-26s unavailable: %s" % ("submissions", error))
-        print("\nrun: harvest.py venues %s" % venue_id.split(".")[0])
+        print("\nrun: modelpedia harvest venues %s" % venue_id.split(".")[0])
         return 1
     print("%-26s %s" % (label, count))
     if not notes:
@@ -748,10 +538,10 @@ def preflight(venue_id=None):
     if missing:
         print("\nnot ready: fix the checks above before harvesting")
         return 1
-    print("\nready: harvest.py meta %s" % venue_id)
+    print("\nready: modelpedia harvest meta %s" % venue_id)
     if not reachable:
         print("reviews are not reachable for the sampled paper, so the review half of the score\n"
-              "would stay zero for this venue; check that before running harvest.py reviews")
+              "would stay zero for this venue; check that before running modelpedia harvest reviews")
     return 0
 
 
@@ -778,10 +568,6 @@ ENTITIES = paths.ENTITY_REPORT
 PROPOSALS = paths.ANCHOR_PROPOSALS
 
 
-class LookupFailed(Exception):
-    pass
-
-
 def ask_dblp(query, rows=DBLP_ROWS):
     address = "%s?%s" % (DBLP, urllib.parse.urlencode(
         {"q": query, "format": "json", "h": rows}))
@@ -796,7 +582,7 @@ def ask_dblp(query, rows=DBLP_ROWS):
             return [hit.get("info", {}) for hit in hits if isinstance(hit, dict)]
         except NETWORK as error:
             last = error
-    raise LookupFailed("%s: %s" % (query[:48], last))
+    raise anchorlib.LookupFailed("%s: %s" % (query[:48], last))
 
 
 def ask_crossref(citation, rows=CROSSREF_ROWS):
@@ -813,82 +599,7 @@ def ask_crossref(citation, rows=CROSSREF_ROWS):
             return payload.get("message", {}).get("items", [])
         except NETWORK as error:
             last = error
-    raise LookupFailed("crossref: %s" % last)
-
-
-def crossref_match(citation):
-    best = (0.0, "", "")
-    for item in ask_crossref(citation):
-        title = " ".join(item.get("title") or [])
-        score = anchorlib.match_score(title, citation)
-        if score > best[0]:
-            best = (score, title, anchorlib.doi_url(item.get("DOI")))
-    return best
-
-
-def links_of(record):
-    found = record.get("ee")
-    if isinstance(found, list):
-        return [str(item) for item in found]
-    return [str(found)] if found else []
-
-
-def dblp_match(citation):
-    best, answered = (0.0, "", ""), False
-    for query in anchorlib.queries(citation):
-        try:
-            records = ask_dblp(query)
-            answered = True
-        except LookupFailed:
-            continue
-        for record in records:
-            title = str(record.get("title") or "")
-            score = anchorlib.match_score(title, citation)
-            if score > best[0]:
-                best = (score, title, anchorlib.url_from(links_of(record)))
-    if not answered:
-        raise LookupFailed("every query for this citation failed")
-    return best
-
-
-def resolved(citation):
-    failures = []
-    try:
-        score, title, url = dblp_match(citation)
-        if url and score >= anchorlib.DBLP_MATCH_AT:
-            return "dblp", score, title, url
-    except LookupFailed as error:
-        failures.append(str(error))
-        score, title, url = 0.0, "", ""
-    try:
-        other, other_title, other_url = crossref_match(citation)
-        if other_url and other >= anchorlib.CROSSREF_MATCH_AT:
-            return "crossref", other, other_title, other_url
-    except LookupFailed as error:
-        failures.append(str(error))
-        other, other_title, other_url = 0.0, "", ""
-    if len(failures) == 2:
-        raise LookupFailed("; ".join(failures))
-    if other > score:
-        return "crossref", other, other_title, other_url
-    return "dblp", score, title, url
-
-
-def confirmed_citations(entities, wanted):
-    found = {}
-    if not ENTITIES.exists():
-        return found
-    index = link.index_of(entities)
-    for _, line in store.json_lines(ENTITIES):
-        row = json.loads(line)
-        if row.get("state") != citations.CONFIRMED or not (row.get("citation") or "").strip():
-            continue
-        hit = link.resolve(str(row.get("name") or ""), index)
-        if hit.kind != link.HIT or hit.slug not in wanted:
-            continue
-        if len(row["citation"]) > len(found.get(hit.slug, "")):
-            found[hit.slug] = row["citation"]
-    return found
+    raise anchorlib.LookupFailed("crossref: %s" % last)
 
 
 def apply_anchors(taken, entities, write_at):
@@ -913,7 +624,7 @@ def apply_anchors(taken, entities, write_at):
 def propose_anchors(write_at=None):
     db = database.load()
     wanted = set(anchorlib.missing_anchor(db.entities))
-    citations_by_key = confirmed_citations(db.entities, wanted)
+    citations_by_key = anchorlib.confirmed_citations(ENTITIES, db.entities, wanted)
     print("%d entities have no anchor, %d of them carry a confirmed citation"
           % (len(wanted), len(citations_by_key)))
     if not citations_by_key:
@@ -923,8 +634,8 @@ def propose_anchors(write_at=None):
     for key in sorted(citations_by_key):
         citation = citations_by_key[key]
         try:
-            index, score, title, url = resolved(citation)
-        except LookupFailed as error:
+            index, score, title, url = anchorlib.resolved(citation, ask_dblp, ask_crossref)
+        except anchorlib.LookupFailed as error:
             failed += 1
             print("  request failed  %-42s %s" % (key, error))
             continue

@@ -177,7 +177,7 @@ def report(counts, failures, seconds, prompt_tokens, completion_tokens, target,
               % (seconds[0], seconds[len(seconds) // 2], seconds[-1]))
         print("  tokens: %d in, %d out" % (sum(prompt_tokens), sum(completion_tokens)))
     if counts[chat.TRUNCATED]:
-        print("  a truncated answer is kept as <name>%s, which extract.py collect ignores"
+        print("  a truncated answer is kept as <name>%s, which modelpedia extract collect ignores"
               % TRUNCATED_SUFFIX)
         if counts[chat.TRUNCATED] - windowed:
             print("  %d ran out of max_tokens: raise --max-tokens or lower --think and ask again"
@@ -194,7 +194,7 @@ def run(source, target, settings, only=None, limit=None, force=False, dry=False,
     authorize = authorize or credentials
     folder = Path(source)
     if not folder.is_dir():
-        return fail("%s is not a directory; run: python3 extract.py prompts" % source)
+        return fail("%s is not a directory; run: modelpedia extract prompts" % source)
     prompts, missing = chosen(folder, only)
     for name in missing:
         print("  WARN %s has no prompt in %s, skipped" % (name, folder))
@@ -261,7 +261,7 @@ def run(source, target, settings, only=None, limit=None, force=False, dry=False,
         print("  %-10s %d asked for by name and not on disk: %s"
               % ("missing", len(missing), ", ".join(missing)))
     if counts[chat.OK]:
-        print("\nnext: python3 extract.py collect %s" % target)
+        print("\nnext: modelpedia extract collect %s" % target)
     if failures or missing:
         return 1
     if counts[chat.TRUNCATED] or counts[chat.EMPTY]:
@@ -314,7 +314,7 @@ OPTION_HELP = """  --dir D          prompts to send, default corpus/prompts (cor
   --timeout N      seconds per request, default 900
   --delay N        seconds between requests, default 0
   --pdf D          send the paper as page images rendered from the PDFs in D, instead of relying
-                   on the text inside the prompt. Pair it with: extract.py prompts --pages
+                   on the text inside the prompt. Pair it with: modelpedia extract prompts --pages
 
   MODEL_API_USERNAME and MODEL_API_PASSWORD must be set in the environment.
   MODEL_API_URL overrides the endpoint.

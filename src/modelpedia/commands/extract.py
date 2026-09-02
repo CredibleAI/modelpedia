@@ -81,7 +81,7 @@ def registry_names(entities):
 def write_prompts(argument=None, pages=False):
     available = texts()
     if not available:
-        return fail("no extracted text; run: harvest.py text")
+        return fail("no extracted text; run: modelpedia harvest text")
     db = database.load()
     concepts = {key: entry for key, entry in db.entities.items()
                 if entry.get("type") == graph_json.CONCEPT}
@@ -211,7 +211,7 @@ CITATION_STATES = (citations.CONFIRMED, citations.PARTIAL, citations.REJECTED, c
 def verify():
     documents = collected()
     if not documents:
-        return fail("no collected answers; run: extract.py collect <directory>")
+        return fail("no collected answers; run: modelpedia extract collect <directory>")
     rows, tally = [], {state: 0 for state in CITATION_STATES}
     for paper, entity, verdict in judged_entities(documents):
         tally[verdict.state] += 1
@@ -242,7 +242,7 @@ def verdicts_for(documents):
 def propose(least=1):
     documents = collected()
     if not documents:
-        return fail("no collected answers; run: extract.py collect <directory>")
+        return fail("no collected answers; run: modelpedia extract collect <directory>")
     db = database.load()
     found = proposals.gather(documents, db.entities, verdicts_for(documents))
     kept = [item for item in found if item.reach() >= least]
@@ -299,7 +299,7 @@ def source_entries(documents):
 def split(write=False, force=False):
     documents = collected()
     if not documents:
-        return fail("no collected answers; run: extract.py collect <directory>")
+        return fail("no collected answers; run: modelpedia extract collect <directory>")
     db = database.load()
     entries, by_paper = source_entries(documents)
     known = {key for key, entity in db.entities.items()
@@ -420,7 +420,7 @@ def proposed_rows(least):
 def entity_prompts(least=3):
     rows = proposed_rows(least)
     if rows is None:
-        return fail("no proposals; run: extract.py propose")
+        return fail("no proposals; run: modelpedia extract propose")
     if not rows:
         return fail("no proposal reaches %d papers" % least)
     db = database.load()
@@ -451,7 +451,7 @@ def adopt(inbox, write=False):
         return fail("%s is not a directory" % inbox)
     index_path = ENTITY_PROMPTS / ENTITY_INDEX_FILE
     if not index_path.exists():
-        return fail("%s is missing; run: extract.py entities" % index_path)
+        return fail("%s is missing; run: modelpedia extract entities" % index_path)
     rows = {json.loads(line)["file"]: json.loads(line)["row"]
             for line in index_path.read_text(encoding="utf-8").splitlines()}
     db = database.load()
@@ -762,7 +762,7 @@ COMMANDS = (
     cli.Command("prompts", run_prompts, "prompts [paper,paper] [--pages]",
                 """corpus/text -> corpus/prompts, one per paper;
                    --pages writes the instructions alone to
-                   corpus/prompts-pages, for ask.py --pdf"""),
+                   corpus/prompts-pages, for modelpedia ask --pdf"""),
     cli.Command("collect", run_collect, "collect <directory>",
                 """model answers -> corpus/answers, matched by content
                    add file.txt=<paper> for answers with no findings"""),

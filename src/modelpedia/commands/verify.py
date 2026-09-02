@@ -9,7 +9,7 @@ from modelpedia.ingest import verification
 
 def main(argv):
     if len(argv) != 3:
-        print("usage: python3 verify.py data/findings/ID.yaml source.pdf")
+        print("usage: modelpedia verify data/findings/ID.yaml source.pdf")
         return 2
     finding_path, source_path = map(Path, argv[1:])
     if not finding_path.is_file():

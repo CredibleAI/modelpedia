@@ -16,6 +16,7 @@ from modelpedia.ingest import answers
 from modelpedia.ingest import manifest as store
 from modelpedia.ingest import citations
 from modelpedia.ingest import link
+from modelpedia.ingest import batching
 from modelpedia.ingest import openreview
 from modelpedia.ingest import prompt
 from modelpedia.ingest import proposals
@@ -24,6 +25,7 @@ from modelpedia.ingest import report
 from modelpedia.ingest import split as splitter
 from modelpedia.ingest import tagging
 from modelpedia.build import validate
+from modelpedia.ingest import ranking
 from modelpedia.ingest import screen
 from modelpedia.ingest import text
 from tests.test_build import sample_db
@@ -744,7 +746,7 @@ class NoClock:
 
 def fetched(papers, reviewer, limit=None, pause=None, clock=None):
     clock = clock or NoClock()
-    kept = (harvest.MANIFEST, harvest.REVIEWS, harvest.connect, harvest.time)
+    kept = (harvest.MANIFEST, harvest.REVIEWS, harvest.connect, batching.time)
     try:
         with tempfile.TemporaryDirectory() as directory:
             harvest.MANIFEST = Path(directory) / "manifest.jsonl"
@@ -752,11 +754,11 @@ def fetched(papers, reviewer, limit=None, pause=None, clock=None):
             harvest.MANIFEST.write_text(
                 "".join(manifest_line(paper, "weak") for paper in papers), encoding="utf-8")
             harvest.connect = lambda generation=openreview.API2: reviewer
-            harvest.time = clock
+            batching.time = clock
             code = harvest.harvest_reviews("V/2026", limit=limit, delay=0, pause=pause)
             return code, store.load_reviews(harvest.REVIEWS), clock.paused
     finally:
-        harvest.MANIFEST, harvest.REVIEWS, harvest.connect, harvest.time = kept
+        harvest.MANIFEST, harvest.REVIEWS, harvest.connect, batching.time = kept
 
 
 def test_one_command_keeps_fetching_batch_after_batch_until_the_venue_is_done():
@@ -774,15 +776,15 @@ def test_a_quota_running_out_mid_batch_gives_the_batch_up_instead_of_grinding_th
                                  limit=200, pause=3600)
     assert code == 1
     assert sorted(held.by_paper) == ["p%d" % n for n in range(4)]
-    assert len(reviewer.asked) == 4 + harvest.GIVE_UP_AFTER * (1 + harvest.DEAD_BATCHES)
-    assert paused == [3600] * harvest.DEAD_BATCHES
+    assert len(reviewer.asked) == 4 + batching.GIVE_UP_AFTER * (1 + batching.DEAD_BATCHES)
+    assert paused == [3600] * batching.DEAD_BATCHES
     assert len(reviewer.asked) < 200
 
 
 def test_a_paper_left_unasked_by_a_given_up_batch_is_the_first_one_asked_next_time():
     reviewer = FakeReviewer(refuse_after=4)
     fetched(["p%d" % n for n in range(200)], reviewer, limit=200, pause=3600)
-    resumed = 4 + harvest.GIVE_UP_AFTER
+    resumed = 4 + batching.GIVE_UP_AFTER
     assert reviewer.asked[:5] == ["p0", "p1", "p2", "p3", "p4"]
     assert reviewer.asked[resumed] == "p4"
 
@@ -805,7 +807,7 @@ class FakeAttachments:
 
 def downloaded(papers, connection, limit=None, pause=None, on_disk=()):
     clock = NoClock()
-    kept = (harvest.MANIFEST, harvest.PDFS, harvest.connect, harvest.time)
+    kept = (harvest.MANIFEST, harvest.PDFS, harvest.connect, batching.time)
     try:
         with tempfile.TemporaryDirectory() as directory:
             harvest.MANIFEST = Path(directory) / "manifest.jsonl"
@@ -816,11 +818,11 @@ def downloaded(papers, connection, limit=None, pause=None, on_disk=()):
             harvest.MANIFEST.write_text(
                 "".join(manifest_line(paper, "strong") for paper in papers), encoding="utf-8")
             harvest.connect = lambda generation=openreview.API2: connection
-            harvest.time = clock
+            batching.time = clock
             code = harvest.harvest_pdfs(limit=limit, delay=0, pause=pause)
             return code, sorted(path.stem for path in harvest.PDFS.glob("*.pdf")), clock.paused
     finally:
-        harvest.MANIFEST, harvest.PDFS, harvest.connect, harvest.time = kept
+        harvest.MANIFEST, harvest.PDFS, harvest.connect, batching.time = kept
 
 
 def test_pdfs_keep_downloading_batch_after_batch_like_the_reviews_do():
@@ -854,7 +856,7 @@ def test_a_pdf_quota_running_out_mid_batch_gives_the_batch_up_too():
     code, on_disk, paused = downloaded(["p%d" % n for n in range(100)], connection,
                                        limit=100, pause=3600)
     assert on_disk == ["p0", "p1"]
-    assert len(connection.asked) == 2 + harvest.GIVE_UP_AFTER * (1 + harvest.DEAD_BATCHES)
+    assert len(connection.asked) == 2 + batching.GIVE_UP_AFTER * (1 + batching.DEAD_BATCHES)
     assert code == 1
 
 
@@ -872,7 +874,7 @@ def test_pdfs_ask_each_venue_through_the_api_generation_that_answers_for_it():
             asked.append((self.venue, id))
             return b"%PDF-1.7 body"
 
-    kept = (harvest.MANIFEST, harvest.PDFS, harvest.source_for, harvest.time)
+    kept = (harvest.MANIFEST, harvest.PDFS, harvest.source_for, batching.time)
     try:
         with tempfile.TemporaryDirectory() as directory:
             harvest.MANIFEST = Path(directory) / "manifest.jsonl"
@@ -883,10 +885,10 @@ def test_pdfs_ask_each_venue_through_the_api_generation_that_answers_for_it():
                 + json.dumps({"id": "ccc", "tier": "strong", "venue": "W/2023"}) + "\n",
                 encoding="utf-8")
             harvest.source_for = lambda venue: (PerVenue(venue), openreview.API2)
-            harvest.time = NoClock()
+            batching.time = NoClock()
             assert harvest.harvest_pdfs(delay=0) == 0
     finally:
-        harvest.MANIFEST, harvest.PDFS, harvest.source_for, harvest.time = kept
+        harvest.MANIFEST, harvest.PDFS, harvest.source_for, batching.time = kept
 
     assert sorted(asked) == [("V/2026", "aaa"), ("W/2023", "ccc")]
 
@@ -927,25 +929,25 @@ def test_a_limit_without_a_pause_is_still_one_batch_and_then_stop():
 
 def test_the_pause_is_measured_from_the_start_of_the_batch_not_its_end():
     clock = NoClock()
-    kept = harvest.time
+    kept = batching.time
     try:
-        harvest.time = clock
+        batching.time = clock
         clock.now = 900.0
-        harvest.sleep_until_next_batch(3600, 0.0, 4)
+        batching.sleep_until_next_batch(3600, 0.0, 4)
     finally:
-        harvest.time = kept
+        batching.time = kept
     assert clock.paused == [2700.0]
 
 
 def test_a_batch_slower_than_the_pause_starts_the_next_one_without_waiting():
     clock = NoClock()
-    kept = harvest.time
+    kept = batching.time
     try:
-        harvest.time = clock
+        batching.time = clock
         clock.now = 5000.0
-        harvest.sleep_until_next_batch(3600, 0.0, 4)
+        batching.sleep_until_next_batch(3600, 0.0, 4)
     finally:
-        harvest.time = kept
+        batching.time = kept
     assert clock.paused == []
 
 
@@ -962,7 +964,7 @@ def test_batches_that_answer_for_nothing_stop_the_loop_instead_of_waiting_out_th
     code, held, paused = fetched(["p0", "p1"], reviewer, limit=1, pause=3600)
     assert code == 1
     assert held.by_paper == {}
-    assert len(paused) == harvest.DEAD_BATCHES - 1
+    assert len(paused) == batching.DEAD_BATCHES - 1
 
 
 def test_a_pause_without_a_batch_size_is_refused_rather_than_ignored():
@@ -1071,7 +1073,7 @@ def test_ranking_writes_one_file_per_venue_beside_the_combined_one():
         assert harvest.rank(target) == 0
         assert target.exists()
         for venue, expected in (("V/2026", ["aaa", "bbb"]), ("W/2025", ["ccc"])):
-            beside = harvest.venue_target(target, venue)
+            beside = ranking.venue_target(target, venue)
             assert beside.exists(), beside
             with beside.open(encoding="utf-8") as handle:
                 rows = list(csv.DictReader(handle))
@@ -1090,7 +1092,7 @@ def test_a_position_in_a_per_venue_file_is_that_venue_s_own_position():
             rows = list(csv.DictReader(handle))
         assert [row["id"] for row in rows] == ["ccc"]
         assert rows[0]["pos"] == "1"
-        assert not harvest.venue_target(target, "V/2026").exists()
+        assert not ranking.venue_target(target, "V/2026").exists()
         return 0
 
     with_corpus(two_venue_corpus(), [], check)
@@ -1107,10 +1109,10 @@ def test_a_venue_the_manifest_does_not_hold_is_refused_not_written_empty():
 
 
 def test_a_half_fetched_venue_is_marked_in_the_table_not_in_a_footnote():
-    assert harvest.reviewed_share([{"reviews": 2}, {"reviews": 0}]) == 0.5
-    assert harvest.reviewed_share([{"reviews": 2}]) == 1.0
-    assert harvest.reviewed_share([]) == 0.0
-    row = harvest.venue_row("V/2026", [{"reviews": 0, "tier": screen.WEAK, "total": 1.0},
+    assert ranking.reviewed_share([{"reviews": 2}, {"reviews": 0}]) == 0.5
+    assert ranking.reviewed_share([{"reviews": 2}]) == 1.0
+    assert ranking.reviewed_share([]) == 0.0
+    row = ranking.venue_row("V/2026", [{"reviews": 0, "tier": screen.WEAK, "total": 1.0},
                                        {"reviews": 3, "tier": screen.STRONG, "total": 9.0}])
     assert "50.0%" in row
 
@@ -1141,8 +1143,8 @@ def test_the_ranking_is_replaced_in_one_step_like_every_other_artifact():
 def test_every_ranking_column_comes_from_a_rule_set_or_is_named_once():
     for rules in screen.RULESETS:
         for name in rules.groups:
-            assert name in harvest.RANK_COLUMNS
-    assert len(set(harvest.RANK_COLUMNS)) == len(harvest.RANK_COLUMNS)
+            assert name in ranking.RANK_COLUMNS
+    assert len(set(ranking.RANK_COLUMNS)) == len(ranking.RANK_COLUMNS)
 
 
 def test_a_freshly_harvested_row_says_it_has_seen_no_review_yet():
