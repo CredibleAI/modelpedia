@@ -13,7 +13,6 @@ from pathlib import Path
 
 from modelpedia import atomic
 from modelpedia import cli
-from modelpedia import console
 from modelpedia import graph as graph_json
 from modelpedia import paths
 from modelpedia.build import database
@@ -54,14 +53,8 @@ IMPORT_REVIEW_KEYS = ("review_id", "id")
 
 FORUM_IN_ANCHOR = re.compile(r"[?&]id=([A-Za-z0-9]+)")
 
-VENV_PYTHON = paths.ROOT / ".venv" / "bin" / "python"
-
-
 def interpreter_hint():
-    if VENV_PYTHON.exists() and Path(sys.executable) != VENV_PYTHON:
-        return ("\n      it is installed in .venv, so run this as:"
-                "\n      %s harvest.py ..." % VENV_PYTHON)
-    return ""
+    return "\n      openreview-py is an optional extra; install it with: uv sync --extra ingest"
 
 
 def openreview_module():
@@ -1083,7 +1076,5 @@ USAGE = cli.usage_text(
            "network.")
 
 
-def main(argv):
-    console.line_buffered()
-    return cli.dispatch(argv, COMMANDS, USAGE)
+main = cli.runner(COMMANDS, USAGE)
 

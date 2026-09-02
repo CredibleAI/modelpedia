@@ -10,19 +10,17 @@ from modelpedia.ingest import prompt as promptlib
 ANSWER = "considered: []\nfindings: []\n"
 
 
+AUTHORIZED = lambda: "Basic test"
+
+
 @contextlib.contextmanager
 def workspace(prompts):
-    original_ask, original_credentials = ask.ask, ask.credentials
-    ask.credentials = lambda: "Basic test"
     with tempfile.TemporaryDirectory() as directory:
         root = Path(directory)
         (root / "prompts").mkdir()
         for name, body in prompts.items():
             (root / "prompts" / ("%s.txt" % name)).write_text(body, encoding="utf-8")
-        try:
-            yield root / "prompts", root / "replies"
-        finally:
-            ask.ask, ask.credentials = original_ask, original_credentials
+        yield root / "prompts", root / "replies"
 
 
 def replying(text, finish_reason="stop", reasoning=""):
@@ -121,69 +119,58 @@ def test_a_server_complaint_is_read_out_of_its_envelope():
 
 def test_a_dry_run_sends_nothing():
     with workspace({"AAA": "prompt"}) as (source, target):
-        ask.ask = exploding
-        assert ask.run(source, target, chat.Settings(), dry=True) == 0
+        assert ask.run(source, target, chat.Settings(), dry=True, send=exploding, authorize=AUTHORIZED) == 0
         assert not target.exists()
 
 
 def test_an_answer_is_written_under_the_name_of_its_prompt():
     with workspace({"AAA": "prompt"}) as (source, target):
-        ask.ask = replying(ANSWER)
-        assert ask.run(source, target, chat.Settings()) == 0
+        assert ask.run(source, target, chat.Settings(), send=replying(ANSWER), authorize=AUTHORIZED) == 0
         assert (target / "AAA.txt").read_text(encoding="utf-8").strip() == ANSWER.strip()
         assert log_rows(target)[0]["state"] == chat.OK
 
 
 def test_a_paper_already_answered_is_not_asked_again():
     with workspace({"AAA": "prompt", "BBB": "prompt"}) as (source, target):
-        ask.ask = replying(ANSWER)
-        assert ask.run(source, target, chat.Settings(), only="AAA") == 0
-        ask.ask = exploding
-        assert ask.run(source, target, chat.Settings(), only="AAA") == 0
+        assert ask.run(source, target, chat.Settings(), only="AAA", send=replying(ANSWER), authorize=AUTHORIZED) == 0
+        assert ask.run(source, target, chat.Settings(), only="AAA", send=exploding, authorize=AUTHORIZED) == 0
 
 
 def test_force_asks_again():
     with workspace({"AAA": "prompt"}) as (source, target):
-        ask.ask = replying(ANSWER)
-        assert ask.run(source, target, chat.Settings()) == 0
-        ask.ask = replying("considered: []\nfindings: [x]\n")
-        assert ask.run(source, target, chat.Settings(), force=True) == 0
+        assert ask.run(source, target, chat.Settings(), send=replying(ANSWER), authorize=AUTHORIZED) == 0
+        assert ask.run(source, target, chat.Settings(), force=True, send=replying("considered: []\nfindings: [x]\n"), authorize=AUTHORIZED) == 0
         assert "[x]" in (target / "AAA.txt").read_text(encoding="utf-8")
 
 
 def test_a_truncated_answer_is_kept_apart_and_reported():
     with workspace({"AAA": "prompt"}) as (source, target):
-        ask.ask = replying("considered:", finish_reason="length")
-        assert ask.run(source, target, chat.Settings()) == ask.UNUSABLE
+        assert ask.run(source, target, chat.Settings(), send=replying("considered:", finish_reason="length"), authorize=AUTHORIZED) == ask.UNUSABLE
         assert (target / ("AAA" + ask.TRUNCATED_SUFFIX)).exists()
         assert not (target / "AAA.txt").exists()
 
 
 def test_a_refused_request_writes_no_answer_and_exits_nonzero():
     with workspace({"AAA": "prompt"}) as (source, target):
-        ask.ask = refusing("HTTP 400: context length exceeded")
-        assert ask.run(source, target, chat.Settings()) == 1
+        assert ask.run(source, target, chat.Settings(), send=refusing("HTTP 400: context length exceeded"), authorize=AUTHORIZED) == 1
         assert not (target / "AAA.txt").exists()
         assert log_rows(target)[0]["state"] == "failed"
 
 
 def test_a_prompt_that_does_not_exist_is_named_and_skipped():
     with workspace({"AAA": "prompt"}) as (source, target):
-        ask.ask = exploding
-        assert ask.run(source, target, chat.Settings(), only="ZZZ") == 1
+        assert ask.run(source, target, chat.Settings(), only="ZZZ", send=exploding, authorize=AUTHORIZED) == 1
 
 
 def test_a_name_that_does_not_exist_fails_the_run_even_when_the_rest_answered():
     with workspace({"AAA": "prompt"}) as (source, target):
-        ask.ask = replying(ANSWER)
-        assert ask.run(source, target, chat.Settings(), only="AAA,ZZZ") == 1
+        assert ask.run(source, target, chat.Settings(), only="AAA,ZZZ", send=replying(ANSWER), authorize=AUTHORIZED) == 1
         assert (target / "AAA.txt").exists()
 
 
 def test_a_missing_prompt_directory_is_refused():
     with workspace({"AAA": "prompt"}) as (source, target):
-        ask.ask = exploding
-        assert ask.run(source.parent / "absent", target, chat.Settings()) == 1
+        assert ask.run(source.parent / "absent", target, chat.Settings(), send=exploding, authorize=AUTHORIZED) == 1
 
 
 def test_a_prompt_with_page_images_carries_them_as_content_parts():
@@ -201,8 +188,7 @@ def test_without_images_the_content_stays_a_plain_string():
 
 def test_a_pdf_that_is_not_there_fails_its_paper_and_not_the_run():
     with workspace({"AAA": "prompt", "BBB": "prompt"}) as (source, target):
-        ask.ask = replying(ANSWER)
-        assert ask.run(source, target, chat.Settings(), pdfs=str(source / "absent")) == 1
+        assert ask.run(source, target, chat.Settings(), pdfs=str(source / "absent"), send=replying(ANSWER), authorize=AUTHORIZED) == 1
         assert not (target / "AAA.txt").exists()
         assert log_rows(target)[0]["state"] == "failed"
 
@@ -231,11 +217,9 @@ def test_a_different_thinking_budget_is_a_different_run():
 
 def test_an_unusable_answer_and_a_failed_request_exit_differently():
     with workspace({"AAA": "prompt"}) as (source, target):
-        ask.ask = replying("", finish_reason="stop")
-        assert ask.run(source, target, chat.Settings()) == ask.UNUSABLE
+        assert ask.run(source, target, chat.Settings(), send=replying("", finish_reason="stop"), authorize=AUTHORIZED) == ask.UNUSABLE
     with workspace({"BBB": "prompt"}) as (source, target):
-        ask.ask = refusing("HTTP 503")
-        assert ask.run(source, target, chat.Settings()) == 1
+        assert ask.run(source, target, chat.Settings(), send=refusing("HTTP 503"), authorize=AUTHORIZED) == 1
 
 
 def prompt_like(instructions, title, paper):
@@ -273,8 +257,7 @@ def test_a_prompt_with_neither_title_nor_paper_is_all_context():
 
 def test_every_logged_attempt_records_which_instructions_produced_it():
     with workspace({"p1": PAPER_A, "p2": PAPER_B}) as (source, target):
-        ask.ask = replying(ANSWER)
-        assert ask.run(source, target, chat.Settings()) == 0
+        assert ask.run(source, target, chat.Settings(), send=replying(ANSWER), authorize=AUTHORIZED) == 0
         rows = log_rows(target)
     assert len(rows) == 2
     assert all(row["context_sha"] for row in rows)
@@ -284,8 +267,7 @@ def test_every_logged_attempt_records_which_instructions_produced_it():
 
 def test_a_refused_attempt_records_the_instructions_too():
     with workspace({"p1": PAPER_A}) as (source, target):
-        ask.ask = refusing("endpoint said no")
-        ask.run(source, target, chat.Settings())
+        ask.run(source, target, chat.Settings(), send=refusing("endpoint said no"), authorize=AUTHORIZED)
         rows = log_rows(target)
     assert rows[0]["state"] == "failed"
     assert rows[0]["context_sha"] == ask.fingerprints(PAPER_A)[1]

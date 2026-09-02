@@ -1,7 +1,6 @@
 import sys
 
 from modelpedia import cli
-from modelpedia import console
 from modelpedia.commands import ask, build, check, export, extract, harvest, render, verify
 
 
@@ -38,9 +37,11 @@ USAGE = cli.usage_text(
            "  harvest, extract and ask carry sub-commands; run them with no arguments to see them.")
 
 
+dispatcher = cli.runner(COMMANDS, USAGE)
+
+
 def main(argv=None):
-    console.line_buffered()
-    return cli.dispatch(sys.argv if argv is None else argv, COMMANDS, USAGE)
+    return dispatcher(sys.argv if argv is None else argv)
 
 
 if __name__ == "__main__":

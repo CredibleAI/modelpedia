@@ -189,7 +189,9 @@ def report(counts, failures, seconds, prompt_tokens, completion_tokens, target,
 
 
 def run(source, target, settings, only=None, limit=None, force=False, dry=False,
-        delay=0.0, pdfs=None):
+        delay=0.0, pdfs=None, send=None, authorize=None):
+    send = send or ask
+    authorize = authorize or credentials
     folder = Path(source)
     if not folder.is_dir():
         return fail("%s is not a directory; run: python3 extract.py prompts" % source)
@@ -220,7 +222,7 @@ def run(source, target, settings, only=None, limit=None, force=False, dry=False,
 
     target.mkdir(parents=True, exist_ok=True)
     atomic.clear_partials(target)
-    header = credentials()
+    header = authorize()
     counts = {state: 0 for state in chat.STATES}
     failures, seconds, prompt_tokens, completion_tokens = [], [], [], []
     windowed = 0
@@ -230,7 +232,7 @@ def run(source, target, settings, only=None, limit=None, force=False, dry=False,
             prompt_sha, context_sha = fingerprints(prompt)
             try:
                 images = page_uris(Path(pdfs) / ("%s.pdf" % path.stem)) if pdfs else ()
-                reply = ask(prompt, header, settings, images=images)
+                reply = send(prompt, header, settings, images=images)
             except (Refused, chat.Unreadable, textutil.MissingTool, OSError) as error:
                 failures.append((path.stem, str(error)))
                 log_row(log, path.stem, settings, "failed", None, str(error),
@@ -360,7 +362,5 @@ COMMANDS = (
 USAGE = cli.usage_text(COMMANDS, "modelpedia ask", column=37, footer=OPTION_HELP)
 
 
-def main(argv):
-    console.line_buffered()
-    return cli.dispatch(argv, COMMANDS, USAGE)
+main = cli.runner(COMMANDS, USAGE)
 

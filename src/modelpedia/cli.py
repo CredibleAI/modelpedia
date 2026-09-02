@@ -1,5 +1,7 @@
 from typing import NamedTuple
 
+from modelpedia import console
+
 NOTE_COLUMN = 51
 
 
@@ -20,6 +22,13 @@ def dispatch(argv, commands, usage):
             return command.run(rest)
     print(usage)
     return 2
+
+
+def runner(commands, usage):
+    def main(argv):
+        console.line_buffered()
+        return dispatch(argv, commands, usage)
+    return main
 
 
 def usage_text(commands, prefix, header="", footer="", column=NOTE_COLUMN):

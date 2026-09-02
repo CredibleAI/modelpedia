@@ -796,7 +796,5 @@ COMMANDS = (
 USAGE = cli.usage_text(COMMANDS, "modelpedia extract")
 
 
-def main(argv):
-    console.line_buffered()
-    return cli.dispatch(argv, COMMANDS, USAGE)
+main = cli.runner(COMMANDS, USAGE)
 
