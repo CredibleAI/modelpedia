@@ -31,6 +31,8 @@ From the paper ([arXiv:2609.01090](https://arxiv.org/abs/2609.01090)):
 A **finding** is a third-party claim about how one model behaves, made after the fact. Findings
 about different models meet on the mechanisms they describe.
 
+[![Modelpedia pipeline](assets/pipeline.png)](https://arxiv.org/abs/2609.01090)
+
 ### What is in the catalog
 
 | | |
@@ -61,7 +63,7 @@ uv sync --extra ingest
 It adds `openreview-py`, `pypdfium2` and `pillow`, which only `modelpedia harvest` and
 `modelpedia ask` use. Those are also the only two commands that reach the network.
 
-## Documentation
+## Usage
 
 The everyday loop, after editing any YAML file under `data/`:
 
@@ -78,9 +80,9 @@ you get the same graph and the same 3160 pages, byte for byte.
 The [About page](https://credibleai.github.io/modelpedia/index.html) covers the record schema and
 the pipeline. For method and results, read the paper.
 
-## API Reference
+## Commands
 
-One command with eight sub-commands. Run any of them bare to see its own options.
+One command with eight sub-commands. Run any of them bare to see its own options. Writing `modelpedia` in terminal will show you commands with their short descriptions.
 
 | Command | Purpose |
 |---|---|
