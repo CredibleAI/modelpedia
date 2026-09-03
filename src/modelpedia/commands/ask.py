@@ -6,6 +6,7 @@ import time
 import urllib.error
 import urllib.request
 from pathlib import Path
+from typing import NamedTuple
 
 from modelpedia import atomic
 from modelpedia import cli
@@ -188,85 +189,111 @@ def report(counts, failures, seconds, prompt_tokens, completion_tokens, target,
             print("  help; send fewer pages, or send the text instead of the images")
 
 
-def run(source, target, settings, only=None, limit=None, force=False, dry=False,
-        delay=0.0, pdfs=None, send=None, authorize=None):
-    send = send or ask
-    authorize = authorize or credentials
-    folder = Path(source)
-    if not folder.is_dir():
-        return fail("%s is not a directory; run: modelpedia extract prompts" % source)
-    prompts, missing = chosen(folder, only)
-    for name in missing:
-        print("  WARN %s has no prompt in %s, skipped" % (name, folder))
-    if not prompts:
-        return fail("no prompts in %s" % folder)
+class Plan(NamedTuple):
+    prompts: list
+    missing: list
+    held: list
+    todo: list
+    capped: int
 
-    target = Path(target)
+
+def plan_for(folder, target, only=None, force=False, limit=None):
+    prompts, missing = chosen(folder, only)
     held = [path for path in prompts if (target / path.name).exists() and not force]
     todo = [path for path in prompts if path not in held]
     capped = len(todo) - limit if limit and len(todo) > limit else 0
-    if capped:
-        todo = todo[:limit]
+    return Plan(prompts, missing, held, todo[:limit] if capped else todo, capped)
 
-    print("%d prompts in %s, %d already answered, asking %d%s"
-          % (len(prompts), folder, len(held), len(todo),
-             ", %d held back by --limit" % capped if capped else ""))
-    print("  %s, think %s, max_tokens %d, temperature %s%s"
-          % (settings.model, settings.think, settings.max_tokens, settings.temperature,
-             ", pages rendered from %s" % pdfs if pdfs else ""))
-    if dry:
-        print("\nnothing sent; drop --dry-run to ask")
-        return 1 if missing else 0
-    if not todo:
-        return 1 if missing else 0
 
-    target.mkdir(parents=True, exist_ok=True)
-    atomic.clear_partials(target)
-    header = authorize()
-    counts = {state: 0 for state in chat.STATES}
-    failures, seconds, prompt_tokens, completion_tokens = [], [], [], []
-    windowed = 0
-    with (target / LOG).open("a", encoding="utf-8") as log:
-        for number, path in enumerate(todo, start=1):
-            prompt = path.read_text(encoding="utf-8", errors="replace")
-            prompt_sha, context_sha = fingerprints(prompt)
-            try:
-                images = page_uris(Path(pdfs) / ("%s.pdf" % path.stem)) if pdfs else ()
-                reply = send(prompt, header, settings, images=images)
-            except (Refused, chat.Unreadable, textutil.MissingTool, OSError) as error:
-                failures.append((path.stem, str(error)))
-                log_row(log, path.stem, settings, "failed", None, str(error),
-                        prompt_sha, context_sha)
-                continue
-            state = reply.state()
-            counts[state] += 1
-            windowed += 1 if reply.hit_the_window(settings.max_tokens) else 0
-            seconds.append(reply.seconds)
-            prompt_tokens.append(reply.prompt_tokens)
-            completion_tokens.append(reply.completion_tokens)
-            if state == chat.OK:
-                atomic.write_text(target / path.name, reply.text + "\n")
-            elif state == chat.TRUNCATED:
-                atomic.write_text(target / (path.stem + TRUNCATED_SUFFIX), reply.text + "\n")
-            log_row(log, path.stem, settings, state, reply,
-                    "context window full" if reply.hit_the_window(settings.max_tokens) else "",
-                    prompt_sha, context_sha)
-            print("  %-14s %-9s %5d tokens out, %5.1fs   %d/%d%s"
-                  % (path.stem, state, reply.completion_tokens, reply.seconds, number, len(todo),
-                     "   %d pages" % len(images) if images else ""))
-            time.sleep(delay)
+def describe(plan, folder, settings, pdfs=None):
+    return "\n".join([
+        "%d prompts in %s, %d already answered, asking %d%s"
+        % (len(plan.prompts), folder, len(plan.held), len(plan.todo),
+           ", %d held back by --limit" % plan.capped if plan.capped else ""),
+        "  %s, think %s, max_tokens %d, temperature %s%s"
+        % (settings.model, settings.think, settings.max_tokens, settings.temperature,
+           ", pages rendered from %s" % pdfs if pdfs else "")])
 
-    report(counts, failures, seconds, prompt_tokens, completion_tokens, target, windowed)
-    if missing:
-        print("  %-10s %d asked for by name and not on disk: %s"
-              % ("missing", len(missing), ", ".join(missing)))
-    if counts[chat.OK]:
-        print("\nnext: modelpedia extract collect %s" % target)
+
+def exit_code(counts, failures, missing):
+    """Three outcomes, and the middle one is the point: `UNUSABLE` says every request came back
+    but some answers cannot be used, so asking again with the same settings cannot help --
+    temperature 0 makes them deterministic. A failure, by contrast, is worth retrying."""
     if failures or missing:
         return 1
     if counts[chat.TRUNCATED] or counts[chat.EMPTY]:
         return UNUSABLE
     return 0
+
+
+def ask_each(todo, target, settings, send, header, log, pdfs=None, delay=0.0):
+    counts = {state: 0 for state in chat.STATES}
+    failures, seconds, prompt_tokens, completion_tokens = [], [], [], []
+    windowed = 0
+    for number, path in enumerate(todo, start=1):
+        prompt = path.read_text(encoding="utf-8", errors="replace")
+        prompt_sha, context_sha = fingerprints(prompt)
+        images = ()
+        try:
+            images = page_uris(Path(pdfs) / ("%s.pdf" % path.stem)) if pdfs else ()
+            reply = send(prompt, header, settings, images=images)
+        except (Refused, chat.Unreadable, textutil.MissingTool, OSError) as error:
+            failures.append((path.stem, str(error)))
+            log_row(log, path.stem, settings, "failed", None, str(error),
+                    prompt_sha, context_sha)
+            continue
+        state = reply.state()
+        full = reply.hit_the_window(settings.max_tokens)
+        counts[state] += 1
+        windowed += 1 if full else 0
+        seconds.append(reply.seconds)
+        prompt_tokens.append(reply.prompt_tokens)
+        completion_tokens.append(reply.completion_tokens)
+        if state == chat.OK:
+            atomic.write_text(target / path.name, reply.text + "\n")
+        elif state == chat.TRUNCATED:
+            atomic.write_text(target / (path.stem + TRUNCATED_SUFFIX), reply.text + "\n")
+        log_row(log, path.stem, settings, state, reply,
+                "context window full" if full else "", prompt_sha, context_sha)
+        print("  %-14s %-9s %5d tokens out, %5.1fs   %d/%d%s"
+              % (path.stem, state, reply.completion_tokens, reply.seconds, number, len(todo),
+                 "   %d pages" % len(images) if images else ""))
+        time.sleep(delay)
+    return counts, failures, seconds, prompt_tokens, completion_tokens, windowed
+
+
+def run(source, target, settings, only=None, limit=None, force=False, dry=False,
+        delay=0.0, pdfs=None, send=None, authorize=None):
+    folder, target = Path(source), Path(target)
+    if not folder.is_dir():
+        return fail("%s is not a directory; run: modelpedia extract prompts" % source)
+    plan = plan_for(folder, target, only, force, limit)
+    for name in plan.missing:
+        print("  WARN %s has no prompt in %s, skipped" % (name, folder))
+    if not plan.prompts:
+        return fail("no prompts in %s" % folder)
+
+    print(describe(plan, folder, settings, pdfs))
+    if dry:
+        print("\nnothing sent; drop --dry-run to ask")
+        return 1 if plan.missing else 0
+    if not plan.todo:
+        return 1 if plan.missing else 0
+
+    target.mkdir(parents=True, exist_ok=True)
+    atomic.clear_partials(target)
+    header = (authorize or credentials)()
+    with (target / LOG).open("a", encoding="utf-8") as log:
+        counts, failures, seconds, ins, outs, windowed = ask_each(
+            plan.todo, target, settings, send or ask, header, log, pdfs, delay)
+
+    report(counts, failures, seconds, ins, outs, target, windowed)
+    if plan.missing:
+        print("  %-10s %d asked for by name and not on disk: %s"
+              % ("missing", len(plan.missing), ", ".join(plan.missing)))
+    if counts[chat.OK]:
+        print("\nnext: modelpedia extract collect %s" % target)
+    return exit_code(counts, failures, plan.missing)
 
 
 def doctor(settings):

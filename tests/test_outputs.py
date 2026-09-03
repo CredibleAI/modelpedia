@@ -13,6 +13,7 @@ from modelpedia import graph_io
 from modelpedia import graph as graph_json
 from modelpedia import paths
 from modelpedia.commands import render
+from modelpedia.site import parts
 from modelpedia.build import report
 from modelpedia.site import about
 from modelpedia.site import charts
@@ -271,11 +272,11 @@ HREF = re.compile(r'href="([^"]+)"')
 
 def view_of(**changes):
     graph = graph_of(**changes)
-    return render.View(graph=graph,
+    return parts.View(graph=graph,
                        nodes=graph_json.nodes_by_id(graph),
                        usage=graph_json.usage_by_entity(graph),
                        reached=graph_json.findings_reaching(graph),
-                       here=render.HOME)
+                       here=parts.HOME)
 
 
 def at(view, path):
@@ -337,7 +338,7 @@ def test_a_variant_has_no_page_and_points_at_an_anchor_on_its_model():
 
 
 def test_a_link_without_a_role_carries_no_role_marker():
-    assert render.role_marker(None) == ""
+    assert parts.role_marker(None) == ""
 
 
 def test_a_definition_list_drops_rows_with_no_value():
@@ -351,14 +352,14 @@ def test_a_definition_list_with_nothing_to_show_renders_nothing():
 
 def test_a_model_link_carries_a_second_link_to_the_variant():
     view = view_of()
-    row = render.model_row(view, view.nodes["XX-001"]["data"])
+    row = parts.model_row(view, view.nodes["XX-001"]["data"])
     assert row.count("<a href=") == 2
     assert "#variant-thing-small" in row
 
 
 def test_a_variant_label_drops_the_model_name_it_repeats():
     view = view_of()
-    assert render.variant_label(view, "model:thing", "variant:thing-small") == "small"
+    assert parts.variant_label(view, "model:thing", "variant:thing-small") == "small"
 
 
 def test_a_model_named_once_per_variant_is_still_listed_once():
@@ -372,7 +373,7 @@ def test_a_model_named_once_per_variant_is_still_listed_once():
             {"ref": "model:thing", "variant": "variant:thing-small"},
             {"ref": "model:thing", "variant": "variant:thing-big"}]
     view = view_of(entities=two_variants, findings=both)
-    row = render.model_row(view, view.nodes["XX-001"]["data"])
+    row = parts.model_row(view, view.nodes["XX-001"]["data"])
     assert row.count(">Thing<") == 1
     assert row.count("<a href=") == 3
 
@@ -382,7 +383,7 @@ def test_a_variant_recorded_as_not_specified_produces_no_link():
         findings["XX-001"]["models"] = [
             {"ref": "model:thing", "variant": graph_json.VARIANT_NOT_SPECIFIED}]
     view = view_of(findings=unspecified)
-    assert render.model_row(view, view.nodes["XX-001"]["data"]).count("<a href=") == 1
+    assert parts.model_row(view, view.nodes["XX-001"]["data"]).count("<a href=") == 1
 
 
 def test_every_finding_states_its_extraction_method_only():
@@ -450,26 +451,26 @@ def test_authors_are_collected_from_the_sources_without_repeating_anyone():
         findings["XX-001"]["sources"] = [{"ref": "source:the-paper"},
                                          {"ref": "source:the-paper"}]
     view = view_of(findings=twice)
-    assert render.finding_authors(view, view.nodes["XX-001"]["data"]) == ["Ada Lovelace"]
+    assert parts.finding_authors(view, view.nodes["XX-001"]["data"]) == ["Ada Lovelace"]
 
 
 def test_the_navigation_marks_the_section_the_page_belongs_to():
-    nav = render.navigation(at(view_of(), "methods/probe/index.html"))
+    nav = parts.navigation(at(view_of(), "methods/probe/index.html"))
     assert nav.count('aria-current="page"') == 1
     assert '<a href="../index.html" aria-current="page">Methods</a>' in nav
 
 
 def test_the_navigation_marks_nothing_on_the_home_page():
-    assert 'aria-current' not in render.navigation(view_of())
+    assert 'aria-current' not in parts.navigation(view_of())
 
 
 def test_every_page_marks_the_site_as_a_prototype_beside_its_name():
     pages = render.render_site(graph_of())
-    documents = [doc for path, doc in pages.items() if path != render.STYLESHEET]
+    documents = [doc for path, doc in pages.items() if path != parts.STYLESHEET]
     assert documents
     for document in documents:
-        assert render.STATUS_LABEL in document
-        assert document.index(render.PAGE_TITLE) < document.index('class="wip"')
+        assert parts.STATUS_LABEL in document
+        assert document.index(parts.PAGE_TITLE) < document.index('class="wip"')
 
 
 def test_the_home_page_marks_the_prototype_on_its_heading_too():
@@ -477,23 +478,23 @@ def test_the_home_page_marks_the_prototype_on_its_heading_too():
     body = render.home_body(view)
     heading = body[body.index("<h1>"):body.index("</h1>")]
     assert 'class="wip"' in heading
-    assert render.STATUS_LABEL in heading
+    assert parts.STATUS_LABEL in heading
 
 
 def test_the_navigation_carries_the_theme_toggle():
-    nav = render.navigation(view_of())
+    nav = parts.navigation(view_of())
     assert 'class="theme-toggle"' in nav
     assert nav.count("<button") == 1
 
 
 def test_every_page_ships_the_theme_init_and_toggle_scripts():
     pages = render.render_site(graph_of())
-    documents = [doc for path, doc in pages.items() if path != render.STYLESHEET]
+    documents = [doc for path, doc in pages.items() if path != parts.STYLESHEET]
     assert documents
     for document in documents:
         assert "localStorage.getItem('theme')" in document
         assert 'class="theme-toggle"' in document
-        assert document.index(render.THEME_INIT) < document.index("<title>")
+        assert document.index(parts.THEME_INIT) < document.index("<title>")
 
 
 def test_a_shared_concept_bridges_two_models():
@@ -533,7 +534,7 @@ def test_only_node_types_with_a_url_segment_get_their_own_page():
 
 def test_the_site_has_a_home_page_and_one_index_per_registry():
     pages = render.render_site(graph_of())
-    assert render.HOME in pages
+    assert parts.HOME in pages
     for node_type in graph_json.PAGE_TYPES:
         assert site_paths.registry_page(node_type.name) in pages
 
@@ -685,7 +686,7 @@ def test_a_successful_render_and_export_leave_no_staging_directory():
                 render.main()
                 assert export.main() == 0
             assert list(root.glob("*" + paths.PARTIAL)) == []
-            assert (paths.SITE / render.HOME).is_file()
+            assert (paths.SITE / parts.HOME).is_file()
             assert (paths.CSV / "findings.csv").is_file()
     finally:
         paths.GRAPH, paths.SITE, paths.CSV = original_graph, original_site, original_csv
@@ -697,11 +698,11 @@ def test_every_internal_link_in_the_real_site_resolves():
 
 def test_the_stylesheet_is_written_once_and_linked_from_every_page():
     pages = render.render_site(graph_of())
-    assert pages[render.STYLESHEET] == render.stylesheet_text()
+    assert pages[parts.STYLESHEET] == parts.stylesheet_text()
     documents = [page for path, page in pages.items() if path.endswith(".html")]
     assert documents
     for document in documents:
-        assert render.STYLESHEET in document
+        assert parts.STYLESHEET in document
         assert "<style>" not in document
 
 
@@ -710,8 +711,8 @@ def test_pipeline_smoke_real_data_builds_site_and_csv_outputs():
     graph = assemble.graph_from(db)
     pages = render.render_site(graph)
     grouped = export.nodes_by_type(graph)
-    assert render.HOME in pages
-    assert pages[render.STYLESHEET] == render.stylesheet_text()
+    assert parts.HOME in pages
+    assert pages[parts.STYLESHEET] == parts.stylesheet_text()
     with tempfile.TemporaryDirectory() as directory:
         out = Path(directory)
         table_rows = 0
@@ -740,8 +741,8 @@ def test_the_about_page_is_built_and_linked_from_every_page():
 
 
 def test_the_navigation_marks_about_only_when_the_reader_is_there():
-    assert 'aria-current="page">About</a>' in render.navigation(about_view())
-    assert "aria-current" not in render.navigation(view_of())
+    assert 'aria-current="page">About</a>' in parts.navigation(about_view())
+    assert "aria-current" not in parts.navigation(view_of())
 
 
 def test_the_about_charts_count_the_graph_rather_than_a_fixed_table():
@@ -778,13 +779,13 @@ def test_a_ranked_chart_says_how_much_of_the_registry_it_leaves_out():
     def orphan(entities):
         entities["method:unused"] = {"type": graph_json.METHOD, "name": "Unused"}
     view = at(view_of(entities=orphan), about.PATH)
-    body = charts.ranked_chart(view, render.link, graph_json.METHOD, "Methods", "Note.")
+    body = charts.ranked_chart(view, parts.link, graph_json.METHOD, "Methods", "Note.")
     assert "All 1 reached by at least one finding, out of 2 in the registry." in body
     assert "Unused" not in body
 
 
 def test_a_ranked_chart_that_shows_everything_claims_no_top_slice():
-    body = charts.ranked_chart(about_view(), render.link, graph_json.CONCEPT, "Concepts", "Note.")
+    body = charts.ranked_chart(about_view(), parts.link, graph_json.CONCEPT, "Concepts", "Note.")
     assert "All 1 in the registry." in body
 
 
@@ -820,8 +821,8 @@ def test_the_about_page_counts_the_base_it_is_built_from():
 
 
 def test_about_is_the_first_section_after_the_site_name():
-    labels = re.findall(r"<li>(?:.*?)>([^<]+)</a>", render.navigation(view_of()))
-    assert labels[0] == render.PAGE_TITLE
+    labels = re.findall(r"<li>(?:.*?)>([^<]+)</a>", parts.navigation(view_of()))
+    assert labels[0] == parts.PAGE_TITLE
     assert labels[1] == about.LABEL
 
 
@@ -834,7 +835,7 @@ def test_no_page_carries_the_counter_footer_any_more():
 
 
 def test_the_catalog_charts_are_tabbed_with_exactly_one_open():
-    body = charts.all_charts(about_view(), render.link)
+    body = charts.all_charts(about_view(), parts.link)
     assert body.count('class="tab-input"') == body.count('class="tab" for=')
     assert body.count(" checked>") == 1
     assert body.count('class="chart panel"') == body.count('class="tab" for=')

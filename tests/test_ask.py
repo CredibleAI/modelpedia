@@ -288,3 +288,74 @@ def test_two_prompt_directories_never_share_a_run_directory():
     sources = (p.PROMPTS, p.TAGS, p.FACET_PROMPTS, p.ENTITY_PROMPTS)
     outs = [ask.default_out(s, None) for s in sources]
     assert len(set(outs)) == len(outs)
+
+
+def prompts_in(root, names):
+    folder = root / "prompts"
+    folder.mkdir(parents=True, exist_ok=True)
+    for name in names:
+        (folder / ("%s.txt" % name)).write_text("body", encoding="utf-8")
+    return folder
+
+
+def test_the_plan_separates_what_is_answered_from_what_is_left(tmp_path):
+    folder = prompts_in(tmp_path, ["AAA", "BBB", "CCC"])
+    target = tmp_path / "out"
+    target.mkdir()
+    (target / "AAA.txt").write_text("done", encoding="utf-8")
+    plan = ask.plan_for(folder, target)
+    assert [p.stem for p in plan.held] == ["AAA"]
+    assert [p.stem for p in plan.todo] == ["BBB", "CCC"]
+    assert plan.capped == 0
+
+
+def test_force_puts_an_answered_paper_back_into_the_queue(tmp_path):
+    folder = prompts_in(tmp_path, ["AAA"])
+    target = tmp_path / "out"
+    target.mkdir()
+    (target / "AAA.txt").write_text("done", encoding="utf-8")
+    assert [p.stem for p in ask.plan_for(folder, target, force=True).todo] == ["AAA"]
+
+
+def test_a_limit_trims_the_queue_and_says_how_many_it_held_back(tmp_path):
+    folder = prompts_in(tmp_path, ["AAA", "BBB", "CCC"])
+    plan = ask.plan_for(folder, tmp_path / "out", limit=2)
+    assert [p.stem for p in plan.todo] == ["AAA", "BBB"]
+    assert plan.capped == 1
+
+
+def test_a_name_that_is_not_on_disk_is_reported_as_missing(tmp_path):
+    folder = prompts_in(tmp_path, ["AAA"])
+    plan = ask.plan_for(folder, tmp_path / "out", only="AAA,ZZZ")
+    assert plan.missing == ["ZZZ"]
+    assert [p.stem for p in plan.todo] == ["AAA"]
+
+
+def test_the_plan_line_names_the_limit_only_when_one_bit(tmp_path):
+    folder = prompts_in(tmp_path, ["AAA", "BBB"])
+    settings = chat.Settings()
+    full = ask.describe(ask.plan_for(folder, tmp_path / "out"), folder, settings)
+    trimmed = ask.describe(ask.plan_for(folder, tmp_path / "out", limit=1), folder, settings)
+    assert "held back by --limit" not in full
+    assert "1 held back by --limit" in trimmed
+
+
+def test_a_clean_run_exits_zero():
+    counts = {chat.OK: 3, chat.TRUNCATED: 0, chat.EMPTY: 0}
+    assert ask.exit_code(counts, [], []) == 0
+
+
+def test_a_failure_or_a_missing_name_is_worth_asking_again_so_it_exits_one():
+    counts = {chat.OK: 1, chat.TRUNCATED: 0, chat.EMPTY: 0}
+    assert ask.exit_code(counts, [("AAA", "boom")], []) == 1
+    assert ask.exit_code(counts, [], ["ZZZ"]) == 1
+
+
+def test_an_unusable_answer_exits_three_because_asking_again_cannot_help():
+    assert ask.exit_code({chat.OK: 1, chat.TRUNCATED: 1, chat.EMPTY: 0}, [], []) == ask.UNUSABLE
+    assert ask.exit_code({chat.OK: 1, chat.TRUNCATED: 0, chat.EMPTY: 1}, [], []) == ask.UNUSABLE
+
+
+def test_a_failure_outranks_an_unusable_answer_because_it_is_the_retryable_one():
+    counts = {chat.OK: 0, chat.TRUNCATED: 1, chat.EMPTY: 0}
+    assert ask.exit_code(counts, [("AAA", "boom")], []) == 1
