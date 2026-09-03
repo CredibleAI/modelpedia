@@ -6,6 +6,7 @@ import tempfile
 from contextlib import redirect_stdout
 from pathlib import Path
 
+from tests.helpers import sample_db
 from modelpedia.commands import export
 from modelpedia.build import assemble
 from modelpedia.build import database
@@ -18,7 +19,6 @@ from modelpedia.build import report
 from modelpedia.site import about
 from modelpedia.site import charts
 from modelpedia.site import site_paths
-from tests.test_build import sample_db
 
 
 def graph_of(**changes):

@@ -4,6 +4,7 @@ import tempfile
 from pathlib import Path
 from contextlib import redirect_stdout
 
+from tests.helpers import FINDING, sample_db
 from modelpedia.build import assemble
 from modelpedia.build import database
 from modelpedia import paths
@@ -12,61 +13,6 @@ from modelpedia import schema
 from modelpedia.build import validate
 from modelpedia.commands import build
 import yaml
-
-VOCABULARIES = {
-    graph_json.FINDING: {
-        "evidence_type": ["observational", "correlational", "interventional"],
-        "extracted_by": ["manual-extraction", "automatic-extraction"],
-    },
-    graph_json.MODEL: {
-        "modality": ["image", "text"],
-        "domain": ["geospatial"],
-        "task": ["generative"],
-    },
-    schema.ROLE_SCOPE: {
-        "datasets": ["train", "eval"],
-        "methods": ["primary"],
-        "related_work": ["builds-on"],
-    },
-}
-
-ENTITIES = {
-    "model:thing": {"type": graph_json.MODEL, "name": "Thing", "modality": ["image"],
-                    "variants": {"variant:thing-small": {"name": "Thing small"}}},
-    "variant:thing-small": {"type": graph_json.VARIANT, "name": "Thing small",
-                            "parent": "model:thing"},
-    "concept:idea": {"type": graph_json.CONCEPT, "name": "Idea"},
-    "method:probe": {"type": graph_json.METHOD, "name": "Probe", "anchor": "https://example.org"},
-    "dataset:pile": {"type": graph_json.DATASET, "name": "Pile", "anchor": "https://example.org"},
-    "source:the-paper": {"type": graph_json.SOURCE, "name": "The paper", "date": "2026-01",
-                         "authors": ["Ada Lovelace"]},
-}
-
-FINDING = {
-    "id": "XX-001",
-    "extracted_by": "manual-extraction",
-    "title": "A title",
-    "description": "A description.",
-    "evidence_type": "observational",
-    "concepts": [{"ref": "concept:idea"}],
-    "models": [{"ref": "model:thing", "variant": "variant:thing-small"}],
-    "sources": [{"ref": "source:the-paper"}],
-    "datasets": [{"ref": "dataset:pile", "role": "eval"}],
-    "methods": [{"ref": "method:probe", "role": "primary"}],
-    "related_work": [{"name": "Earlier work", "anchor": "https://example.org/earlier",
-                      "role": "builds-on"}],
-    "related_findings": [],
-}
-
-
-def sample_db(**changes):
-    db = database.Database(vocabularies=copy.deepcopy(VOCABULARIES),
-                        entities=copy.deepcopy(ENTITIES),
-                        findings={"XX-001": copy.deepcopy(FINDING)})
-    for key, mutate in changes.items():
-        mutate(getattr(db, key))
-    return db
-
 
 def only_error(db):
     errors = validate.errors(db)
