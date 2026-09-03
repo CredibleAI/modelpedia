@@ -408,7 +408,7 @@ def test_an_alias_pointing_outside_the_written_registries_is_skipped_not_crashed
     refusal = adoption.Verdict("Linear rep", "methods", adoption.REFUSE, "", "", "",
                                "concept:linear-representation", "already held", "")
     done = registries.apply([refusal], set(), {})
-    assert any("pominiety" in line for line in done)
+    assert any("skipped" in line for line in done)
 
 def test_a_variant_whose_family_is_absent_is_reported_not_raised():
     from modelpedia.ingest import registries

@@ -314,7 +314,7 @@ def split(write=False, force=False):
     used = {link[keys.REF] for candidate in kept
             for link in candidate.record.get("sources") or []}
     if already:
-        print("  %d kandydatow pominietych: ich praca ma juz rekordy w bazie" % already)
+        print("  %d candidates skipped: their paper already has records in the base" % already)
     print(report.for_split(report.Split(
         kept=tuple(kept), dropped=tuple(dropped), refused=tuple(refused),
         papers=len(documents), entries=len(entries), used=len(used))))
@@ -501,19 +501,19 @@ def adopt(inbox, write=False):
 
 
 STAGES = (
-    ("1. pdf pobrane", lambda: (len(list(PDFS.glob("*.pdf"))) if PDFS.exists() else 0, None)),
-    ("2. tekst wyciagniety", lambda: (len(texts()), len(list(PDFS.glob("*.pdf")))
+    ("1. pdfs downloaded", lambda: (len(list(PDFS.glob("*.pdf"))) if PDFS.exists() else 0, None)),
+    ("2. text extracted", lambda: (len(texts()), len(list(PDFS.glob("*.pdf")))
                                       if PDFS.exists() else 0)),
-    ("3. prompty ekstrakcyjne", lambda: (len(list(PROMPTS.glob("*.txt"))) if PROMPTS.exists()
+    ("3. extraction prompts", lambda: (len(list(PROMPTS.glob("*.txt"))) if PROMPTS.exists()
                                          else 0, len(texts()))),
-    ("4. odpowiedzi modelu", lambda: (answered(), len(list(PROMPTS.glob("*.txt")))
+    ("4. model answers", lambda: (answered(), len(list(PROMPTS.glob("*.txt")))
                                       if PROMPTS.exists() else 0)),
-    ("5. zebrane do answers", lambda: (len(list(ANSWERS.glob("*.yaml"))) if ANSWERS.exists()
+    ("5. collected into answers", lambda: (len(list(ANSWERS.glob("*.yaml"))) if ANSWERS.exists()
                                        else 0, answered())),
-    ("6. cytaty sprawdzone", lambda: (lines_in(REPORT), None)),
-    ("7. encje zaproponowane", lambda: (lines_in(PROPOSED), None)),
-    ("8. decyzje o encjach", lambda: (entity_answers(), lines_in(PROPOSED))),
-    ("9. findingi w bazie", lambda: (len(list(paths.FINDINGS.glob("*.yaml"))), None)),
+    ("6. citations checked", lambda: (lines_in(REPORT), None)),
+    ("7. entities proposed", lambda: (lines_in(PROPOSED), None)),
+    ("8. decisions on entities", lambda: (entity_answers(), lines_in(PROPOSED))),
+    ("9. findings in the base", lambda: (len(list(paths.FINDINGS.glob("*.yaml"))), None)),
 )
 
 
@@ -541,16 +541,16 @@ def findings_waiting():
 
 
 def status():
-    print("gdzie jestesmy")
+    print('where the pipeline stands')
     for label, measure in STAGES:
         done, total = measure()
         share = "" if not total else "  %3.0f%%" % (100 * done / total)
         print("  %-26s %6d%s%s"
-              % (label, done, "" if total is None else " z %d" % total, share))
+              % (label, done, "" if total is None else " of %d" % total, share))
     print()
-    print("  findingow w zebranych odpowiedziach: %d" % findings_waiting())
+    print("  findings waiting in collected answers: %d" % findings_waiting())
     db = database.load()
-    print("  rejestry: %d modeli, %d wariantow, %d zbiorow, %d metod, %d konceptow"
+    print('  registries: %d models, %d variants, %d datasets, %d methods, %d concepts'
           % tuple(sum(1 for entity in db.entities.values() if entity.get("type") == node_type)
                   for node_type in (graph_json.MODEL, graph_json.VARIANT, graph_json.DATASET,
                                     graph_json.METHOD, graph_json.CONCEPT)))

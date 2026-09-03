@@ -186,20 +186,20 @@ def apply(verdicts, held, entities):
             twin = found.slug if found.kind == link.HIT else None
         if twin:
             aliases.append((verdict.field, twin, verdict.name))
-            done.append("%s: ta sama nazwa co %s, dopisany jako alias" % (verdict.name, twin))
+            done.append("%s: same name as %s, added as an alias instead" % (verdict.name, twin))
             continue
         key = free_slug(PREFIX[verdict.field], adoption.slug_for(verdict.title, verdict.name),
                         used[verdict.field])
         fresh[verdict.field].append(dumped(key, adoption.entry_for(verdict)))
         named_here.add(key)
         written_titles[title_key] = key
-        done.append("%s%s" % (key, "" if verdict.anchor else "  (bez anchora)"))
+        done.append("%s%s" % (key, "" if verdict.anchor else "  (no anchor)"))
     for family_key in sorted({family for family, _ in variants}):
         if family_key in entities or family_key in named_here:
             continue
         fresh["models"].append(dumped(family_key, {"name": family_key.split(":", 1)[1].title()}))
         used["models"].add(family_key)
-        done.append("%s  (rodzina zlozona z wariantow)" % family_key)
+        done.append("%s  (family assembled from its variants)" % family_key)
 
     for field, blocks in fresh.items():
         append(field, blocks)
@@ -210,7 +210,7 @@ def apply(verdicts, held, entities):
         if insert_variant(family_key, key, verdict.title):
             done.append("%s pod %s" % (key, family_key))
         else:
-            skipped.append((verdict.name, "%s: nie ma takiej rodziny w pliku" % family_key))
+            skipped.append((verdict.name, "%s: no such family in the file" % family_key))
 
     for field, key, spelling in aliases:
         add_alias(field, key, spelling)
@@ -224,6 +224,6 @@ def apply(verdicts, held, entities):
         if add_alias(field, verdict.alias_of, verdict.name):
             done.append("alias %s -> %s" % (verdict.name, verdict.alias_of))
     for name, target in skipped:
-        done.append("alias %s -> %s pominiety: to nie jest rejestr, do ktorego piszemy"
+        done.append("alias %s -> %s skipped: that is not a registry we write to"
                     % (name, target))
     return done
