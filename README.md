@@ -162,7 +162,7 @@ the same papers side by side.
 
 Ideas for where the catalog should go next are collected in an open
 [development ideas spreadsheet](https://onedrive.live.com/:x:/g/personal/f467752cf3943808/IQAquTDDbdKnQY4OdRuWF4AXAdEOBNnJ-KAYPFNanxR4yFw?rtime=lhfvm-AI30g&redeem=aHR0cHM6Ly8xZHJ2Lm1zL3gvYy9mNDY3NzUyY2YzOTQzODA4L0lRQXF1VEREYmRLblFZNE9kUnVXRjRBWEFkRU9CTm5KLUtBWVBGTmFueFI0eUZ3P2U9YlhzYWhU) - add a row, or open an issue. Proposals are also welcome
-by email at [franciszekbern1@gmail.com](mailto:franciszekbern1@gmail.com).
+by email at [modelpedia.project@gmail.com](mailto:modelpedia.project@gmail.com).
 
 ## License
 
