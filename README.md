@@ -12,18 +12,21 @@
 
 </div>
 
-## Title and Description
+## About
 
-Scientific knowledge about AI models is produced faster than the community can organize it. Every
-few months a new foundation model reshapes the field and hundreds of papers, blogs, and technical
-reports document how each behaves or fails. Yet, these findings remain scattered and effectively
-unretrievable. To address this gap we present Modelpedia, an automated, LLM-assisted framework that
-extracts findings about models from published papers, links it to the model, dataset, method, and
-concept it concerns, and aggregates the result into a searchable public catalog. Applying the
-prototype to accepted ICLR 2024 and 2025 papers, we extract over a thousand findings and, treating
-the catalog itself as an object of study, run a meta-analysis of how the community investigates
-models. Now, we invite the community to explore, contribute to, and build on the open catalog, and
-to help establish model findings as a shared foundation for the meta-science of AI.
+From the paper ([arXiv:2609.01090](https://arxiv.org/abs/2609.01090)):
+
+> Scientific knowledge about AI models is produced faster than the community can organize it.
+> Every few months a new foundation model reshapes the field and hundreds of papers, blogs, and
+> technical reports document how each behaves or fails. Yet, these findings remain scattered and
+> effectively unretrievable. To address this gap we present Modelpedia, an automated, LLM-assisted
+> framework that extracts findings about models from published papers, links it to the model,
+> dataset, method, and concept it concerns, and aggregates the result into a searchable public
+> catalog. Applying the prototype to accepted ICLR 2024 and 2025 papers, we extract over a
+> thousand findings and, treating the catalog itself as an object of study, run a meta-analysis of
+> how the community investigates models. Now, we invite the community to explore, contribute to,
+> and build on the open catalog, and to help establish model findings as a shared foundation for
+> the meta-science of AI.
 
 A **finding** is a third-party claim about how one model behaves, made after the fact. Findings
 about different models meet on the mechanisms they describe.
@@ -69,8 +72,8 @@ modelpedia build && modelpedia render
 `build` validates the data and writes `out/graph.json`. `render` writes `site/`, which opens by
 double-clicking `site/index.html`; links are relative, so no server is needed.
 
-Run the test suite with `pytest`. The whole pipeline is deterministic: the same data produces the
-same graph, the same 3160 pages and the same CSVs.
+Run the test suite with `pytest`. The pipeline is deterministic: rebuild from the same YAML and
+you get the same graph and the same 3160 pages, byte for byte.
 
 The [About page](https://credibleai.github.io/modelpedia/index.html) covers the record schema and
 the pipeline. For method and results, read the paper.
@@ -149,9 +152,9 @@ Findings that carry no concept get tagged, models that carry no facets get fille
 | `modelpedia extract refacet <answers> --write` | Write the accepted facets. |
 | `modelpedia build && modelpedia render` | Rebuild the graph and the site. |
 
-Suggestions from the entity linker are never applied on their own; a person decides. To compare
-two runs over the same papers after changing a prompt or a setting, use
-`modelpedia extract compare <dir> <dir>`.
+The entity linker only proposes; whoever runs the pipeline accepts or rejects each suggestion.
+After changing a prompt or a setting, `modelpedia extract compare <dir> <dir>` puts two runs over
+the same papers side by side.
 
 ## Contributing
 

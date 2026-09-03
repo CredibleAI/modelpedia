@@ -30,7 +30,3 @@ It does not extend to the papers the records were extracted from. Each record
 names its source and links to it; the source stays under whatever terms its
 publisher set. A finding states a claim a paper made — it is not a copy of the
 paper, and reusing this catalog is not a licence to the underlying work.
-
-Records marked `extracted_by: automatic-extraction` were written by a language
-model from the source text and have not been read against that source by a
-person. Their presence here is not a claim that they are correct.
